@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account</title>
+
+  <style>
+    :root {
+      --bg: #000;
+      --card: #0a0a0a;
+      --border: rgba(255, 255, 255, .08);
+      --text: #fff;
+      --muted: #aaa;
+      --red: #e82127;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100dvh;
+    }
+
+    /* CONTAINER */
+    .wrapper {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+    }
+
+    /* CARD */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      backdrop-filter: blur(20px);
+      overflow: hidden;
+    }
+
+    /* TITLE */
+    h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .sub {
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    /* FIELD */
+    .field {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 12px;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .helper {
+      font-size: 13px;
+      color: #e11d48;
+      min-height: 18px;
+      margin-bottom: 10px;
+    }
+
+    /* PASSWORD WRAP */
+    .pass-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .eye {
+      position: absolute;
+      right: 14px;
+      top: 45%;
+      transform: translateY(-50%);
+      width: 20px;
+      cursor: pointer;
+    }
+
+    /* SELECT */
+    select.field {
+      appearance: none;
+    }
+
+    /* CHECKBOX */
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    /* BUTTON */
+    .btn {
+      width: 100%;
+      padding: 15px;
+      background: var(--red);
+      border: none;
+      border-radius: 14px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+
+
+    .sub a {
+      color: #e82127;
+      text-decoration: none;
+    }
+
+
+    /* ENERGY SWEEP */
+
+    .card::before{
+    content:"";
+    position:absolute;
+    top:-50%;
+    left:-150%;
+    width:300%;
+    height:250%;
+    background:linear-gradient(
+    135deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0) 35%,
+    rgba(255,255,255,0.12) 50%,
+    rgba(255,255,255,0) 65%,
+    rgba(255,255,255,0) 100%
+    );
+    animation:sweep 8s infinite;
+    pointer-events:none;
+    }
+
+    @keyframes sweep{
+    0%{transform:translateX(-60%) translateY(-60%);}
+    40%{transform:translateX(60%) translateY(60%);}
+    100%{transform:translateX(60%) translateY(60%);}
+    }   
+
+  </style>
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <div class="card">
+      <img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="" style="height: 40px;margin-bottom: 20px;">
+      <h1>Create Account</h1>
+      <div class="sub">Join Tesla Investment Platform</div>
+      <div class="sub">Already an investor? <a href="login.html">Log in</a></div>
+
+      <input id="fullname" class="field" placeholder="Full Name">
+      <div id="nameHelper" class="helper"></div>
+
+      <input id="email" class="field" placeholder="Email">
+      <div id="emailHelper" class="helper"></div>
+
+      <div class="pass-wrap">
+        <input id="password" type="password" class="field" placeholder="Password">
+        <img id="passIcon" class="eye" src="images/visible_on.png" onclick="togglePass()">
+      </div>
+      <div id="passHelper" class="helper"></div>
+
+      <div class="pass-wrap">
+        <input id="confirmPassword" type="password" class="field" placeholder="Confirm Password">
+        <img id="confirmIcon" class="eye" src="images/visible_on.png" onclick="toggleConfirmPass()">
+      </div>
+      <div id="confirmHelper" class="helper"></div>
+
+      <select id="country" class="field">
+        <option value="">Select Country</option>
+      </select>
+      <div id="countryHelper" class="helper"></div>
+
+      <div class="check" onclick="">
+        <input type="checkbox" id="consent">
+        <label>I agree to platform terms</label>
+      </div>
+      <div id="consentHelper" class="helper"></div>
+
+      <button id="registerBtn" class="btn" disabled>Create Account</button>
+
+    </div>
+  </div>
+
+  <script>
+    const API = "https://script.google.com/macros/s/AKfycbyo6uGNQ_IDRTkm5AEzPPRLkdzarH8BUzETivaZ8pFl1eq82j6FwYwj_vK8AfeGBKmX-Q/exec";
+
+    const eyeOpen = "images/visible_on.png";
+    const eyeClosed = "images/visible_off.png";
+
+    const passIcon = document.getElementById("passIcon");
+    const confirmIcon = document.getElementById("confirmIcon");
+
+    function togglePass() {
+      const p = document.getElementById("password");
+      p.type = p.type === "password" ? "text" : "password";
+      if (passIcon) passIcon.src = p.type === "password" ? eyeOpen : eyeClosed;
+    }
+
+    function toggleConfirmPass() {
+      const p = document.getElementById("confirmPassword");
+      p.type = p.type === "password" ? "text" : "password";
+      if (confirmIcon) confirmIcon.src = p.type === "password" ? eyeOpen : eyeClosed;
+    }
+
+    /* COUNTRY DATASET */
+    const countries = [
+      "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina", "Armenia",
+      "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Belgium",
+      "Benin", "Bolivia", "Botswana", "Brazil", "Bulgaria", "Burkina Faso", "Cambodia",
+      "Cameroon", "Canada", "Chile", "China", "Colombia", "Costa Rica", "Croatia", "Cyprus",
+      "Czech Republic", "Denmark", "Dominican Republic", "Ecuador", "Egypt", "Estonia",
+      "Ethiopia", "Finland", "France", "Georgia", "Germany", "Ghana", "Greece", "Guatemala",
+      "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Ireland", "Israel",
+      "Italy", "Jamaica", "Japan", "Jordan", "Kenya", "Kuwait", "Latvia", "Lebanon", "Lithuania",
+      "Luxembourg", "Malaysia", "Malta", "Mexico", "Morocco", "Netherlands", "New Zealand",
+      "Nigeria", "Norway", "Pakistan", "Peru", "Philippines", "Poland", "Portugal", "Qatar",
+      "Romania", "Saudi Arabia", "Senegal", "Singapore", "Slovakia", "Slovenia", "South Africa",
+      "South Korea", "Spain", "Sri Lanka", "Sweden", "Switzerland", "Thailand", "Turkey",
+      "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Vietnam", "Zambia",
+      "Zimbabwe"
+    ];
+
+    const country = document.getElementById("country");
+    countries.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c;
+      opt.textContent = c;
+      country.appendChild(opt);
+    });
+
+    const fullname = document.getElementById("fullname");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+    const consent = document.getElementById("consent");
+    const btn = document.getElementById("registerBtn");
+
+    const nameHelper = document.getElementById("nameHelper");
+    const emailHelper = document.getElementById("emailHelper");
+    const passHelper = document.getElementById("passHelper");
+    const confirmHelper = document.getElementById("confirmHelper");
+    const countryHelper = document.getElementById("countryHelper");
+    const consentHelper = document.getElementById("consentHelper");
+
+    function validEmail(e) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+    }
+
+    function capitalizeName(name) {
+      return name.toLowerCase().split(" ").filter(Boolean)
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    }
+
+    function setError(field, helper, message) {
+      if (message) {
+        field.style.borderColor = "#e11d48";
+        helper.textContent = message;
+      } else {
+        field.style.borderColor = "";
+        helper.textContent = "";
+      }
+    }
+
+    function validate() {
+
+      let ok = true;
+
+      if (fullname.value.trim().length < 3) {
+        setError(fullname, nameHelper, "Enter your full name");
+        ok = false;
+      } else setError(fullname, nameHelper, "");
+
+      if (!validEmail(email.value)) {
+        setError(email, emailHelper, "Enter a valid email");
+        ok = false;
+      } else setError(email, emailHelper, "");
+
+      if (password.value.length < 6) {
+        setError(password, passHelper, "Minimum 6 characters");
+        ok = false;
+      } else setError(password, passHelper, "");
+
+      if (confirmPassword.value !== password.value) {
+        setError(confirmPassword, confirmHelper, "Passwords do not match");
+        ok = false;
+      } else setError(confirmPassword, confirmHelper, "");
+
+      if (!country.value) {
+        countryHelper.textContent = "Select your country";
+        ok = false;
+      } else countryHelper.textContent = "";
+
+      if (!consent.checked) {
+        consentHelper.textContent = "You must agree before continuing";
+        ok = false;
+      } else consentHelper.textContent = "";
+
+      btn.disabled = !ok;
+    }
+
+    [fullname, email, password, confirmPassword, country, consent]
+      .forEach(el => el.addEventListener("input", validate));
+
+    let creating = false;
+
+    btn.onclick = async () => {
+
+      if (btn.disabled || creating) return;
+
+      creating = true;
+      btn.textContent = "Creating...";
+      btn.disabled = true;
+
+      try {
+
+        const payload = {
+          action: "register",
+          name: capitalizeName(fullname.value.trim()),
+          email: email.value.trim().toLowerCase(),
+          password: password.value,
+          balance: 0,
+          equity: 0,
+          profit: 0,
+          volume: 0,
+          country: country.value,
+        };
+
+        const res = await fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await res.text();
+        if (!text.startsWith("{")) throw new Error();
+
+        const data = JSON.parse(text);
+
+        if (data.status) {
+          localStorage.setItem("uid", data.uid);
+          window.location.href = "dashboard.html";
+        } else {
+          alert(data.message || "Registration failed");
+          btn.disabled = false;
+          btn.textContent = "Create Account";
+          creating = false;
+        }
+
+      } catch {
+        alert("Connection error");
+        btn.disabled = false;
+        btn.textContent = "Create Account";
+        creating = false;
+      }
+
+    };
+  </script>
+
+</body>
+
+</html>
