@@ -1510,6 +1510,123 @@
 
     </style>
 
+    <style>
+    .notification-view{
+        height:100dvh;
+        width:100%;
+        max-width:500px;
+        margin:auto;
+        background:var(--bg);
+        display:flex;
+        flex-direction:column;
+        overflow:hidden;
+    }
+
+    .notification-header{
+        padding:15px;
+        display:flex;
+        align-items:center;
+        gap:15px;
+        border-bottom:1px solid rgba(255,255,255,0.05);
+    }
+
+    .notification-header span{
+        cursor:pointer;
+        font-weight:600;
+    }
+
+
+ .notification-list{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    padding: 20px;
+}
+
+.notification-card{
+    background:var(--bg-card);
+    padding:18px;
+    border-radius:12px;
+    border:1px solid #1e1e1e;
+    transition:0.3s;
+    cursor: pointer;
+}
+
+.notification-card.unread{
+    border-left:4px solid white;
+    background:#151515;
+}
+
+.notification-card:hover{
+    transform:translateY(-3px);
+}
+
+.notif-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+}
+
+.notif-title{
+    font-weight:600;
+    color:#fff;
+}
+
+.notif-date{
+    font-size:12px;
+    opacity:.6;
+}
+
+.notif-message{
+    font-size:14px;
+    opacity:.5;
+}
+
+.notif-message{
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.notification-bottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-top: 1px solid var(--bg-soft);
+    margin-top: 20px;
+    font-size: 12px;
+    padding: 10px 0px 0px 0px;
+}
+
+.read-status-badge{
+    padding: 4px 12px;
+    font-size: 12px;
+    border-radius: 50px; /* pill shape */
+    font-weight: 600;
+    display: inline-block;
+    min-width: 70px;
+    text-align: center;
+}
+
+.badge-unread{
+    background: white; /* green */
+    color: black;
+}
+
+.badge-read{
+    background: var(--card); /* gray */
+    color: var(--text-muted);
+    border: 1px solid var(--bg-soft);
+}
+    </style>
+
+<style>
+
+</style>    
+
 </head>
 
 <body>
@@ -1532,9 +1649,9 @@
                     </div>
                 </div>
             </div>
-            <div class="notification">
+            <div class="notification" id="notificationBtn">
                 <img src="icons/bell_1.png" alt="" style="height: 20px;">
-                <div class="notify-count">2</div>
+                <div class="notify-count" id="notifyCount" style="display: none;"></div>
             </div>
         </div>
 
@@ -1853,11 +1970,21 @@
 
     </div>
 
+    <!-- ================= NOTIFICATION PAGE VIEW ================= -->
+    <div id="notificationView" class="notification-view" style="display:none;">
+
+        <div class="notification-header">
+            <img src="icons/cancle.png" alt="" id="backFromNotifications" style="height: 40px; width: 40px;padding: 11px;cursor: pointer;">
+            <h2>Notifications</h2>
+        </div>
+
+        <div id="notificationList" class="notification-list"></div>
+
+    </div>
 
 
 
-
-    <!-- ================= TRADING ACTION PANEL ================= -->
+    <!-- ================= MODAL ACTION PANEL ================= -->
     <div class="trade-panel-overlay" id="tradePanelOverlay">
 
         <div class="trade-panel">
@@ -1866,6 +1993,16 @@
                 <h2 id="tradeTitle">Trade</h2>
                 <span id="closeTradePanel" style="cursor: pointer;">✕</span>
             </div>
+
+
+            <!-- ================= NOTIFICATION DETAILS VIEW ================= -->
+            <div id="notificationDetailsView" class="trade-view" style="display:none;">
+                <div style="padding:15px;">
+                    <h3 id="notifModalTitle"></h3>
+                    <p id="notifModalDate" style="opacity:.6; font-size:12px;"></p>
+                    <div style="margin-top:15px;" id="notifModalMessage"></div>
+                </div>
+            </div>            
 
 
 
@@ -1941,7 +2078,6 @@
             </div>
 
         
-
             <!-- ================= DEPOSIT VIEW ================= -->
             <div id="depositView" class="trade-view">
 
@@ -2063,7 +2199,7 @@
     <div id="toastBox" class="toast-box"></div>
 
 
-<!-- ================= JAVASCRIPT NAVIGATION =================-->
+<!-- ================= BOTTOM NAV BAR JAVASCRIPT NAVIGATION =================-->
     <script>
 
         const navItems = document.querySelectorAll('.nav-item');
@@ -2502,6 +2638,25 @@
 
 
 
+    /* ===========================
+    FETCH NOTIFICATIONS
+    =========================== */
+
+    async function fetchNotifications(){
+
+        const data = await safeFetch({
+            action:"getNotifications",
+            uid:UID
+        });
+
+        if(!data || !data.status){
+            console.error("Failed to fetch notifications");
+            return;
+        }
+
+        renderNotifications(data.notifications || []);
+    }
+
 
     /* ===========================
     RENDER TRANSACTIONS
@@ -2631,25 +2786,88 @@
     }
 
 
+
+
+    /* ===========================
+    RENDER NOTIFICATIONS
+    =========================== */
+
+    function renderNotifications(notifications){
+
+        const container = document.getElementById("notificationList");
+        if(!container) return;
+
+        container.innerHTML = "";
+
+        if(!notifications || notifications.length === 0){
+            container.innerHTML = "<p style='opacity:.6'>No notifications yet.</p>";
+            updateNotificationBadge(0);
+            return;
+        }
+
+        let unreadCount = 0;
+
+        notifications.forEach(notif => {
+
+            const statusNormalized = notif.status
+                ? notif.status.toString().trim().toLowerCase()
+                : "";
+
+            const isUnread = statusNormalized === "unread";
+
+            if(isUnread) unreadCount++;
+
+            const card = document.createElement("div");
+            card.className = "notification-card " + (isUnread ? "unread" : "");
+
+            card.innerHTML = `
+                <div class="notif-header">
+                    <div class="notif-title">${notif.title}</div>
+                    <div class="read-status-badge ${isUnread ? "badge-unread" : "badge-read"}">
+                        ${isUnread ? "Unread" : "Read"}
+                    </div>
+                </div>
+
+                <div class="notif-message">${notif.message}</div>
+
+                <div class="notification-bottom">
+                    <p class="notif-date">${notif.date}</p>
+                    <p style="color:white;">View</p>
+                </div>
+            `;
+
+            card.addEventListener("click", function(){
+                openNotification(notif, card);
+            });
+
+            container.appendChild(card);
+        });
+
+        updateNotificationBadge(unreadCount);
+    }
+
+
+
     /* ===========================
     AUTO REFRESH (5s)
     =========================== */
 
     let refreshInterval = null;
 
+
     function startAutoRefresh(){
 
-        fetchUser(); // immediate load
+        fetchUser();
+        fetchTransactions();
+        fetchNotifications(); // 👈 add this
 
         refreshInterval = setInterval(()=>{
             fetchUser();
-            fetchTransactions();            
+            fetchTransactions();
+            fetchNotifications(); // 👈 add this
         },5000);
-
-
     }
-
-   
+    
 
     function copyWallet(){
 
@@ -2982,8 +3200,6 @@
     </script>   
     
 
-
-
     <script>
 
     /* ================= CAMPAIGN SLIDER ================= */
@@ -3033,13 +3249,15 @@
 
     </script>    
 
-    <!--========================TRADE PANEL========================-->
+
+    <!--========================MODAL PANEL CONTROL SCRIPT========================-->
     <script>
 
         const tradeOverlay = document.getElementById("tradePanelOverlay");
         const tradeBody = document.getElementById("tradeBody");
         const tradeTitle = document.getElementById("tradeTitle");
         const closeTradePanel = document.getElementById("closeTradePanel");
+
 
         /* ACTION BUTTONS */
         document.querySelectorAll(".action-btn").forEach(btn=>{
@@ -3082,6 +3300,14 @@
             document.getElementById("transferView").style.display = "none";
             document.getElementById("analyticsModalView").style.display = "none";
             document.getElementById("transactionReceiptView").style.display = "none";
+            document.getElementById("notificationDetailsView").style.display = "none";
+
+
+            if (type === "notificationDetails") {
+                tradeTitle.innerText = "Notification";
+                document.getElementById("notificationDetailsView").style.display = "block";
+            }
+
 
             if (type === "deposit") {
                 tradeTitle.innerText = "Deposit USDT";
@@ -3575,8 +3801,162 @@
     </script>
 
 
+    <!--NOTIFICATION PAGE NAVIGATION SCRIPT-->
+    <script>
+
+    const appView = document.querySelector(".app");
+    const notificationView = document.getElementById("notificationView");
+    const notificationBtn = document.getElementById("notificationBtn");
+    const backFromNotifications = document.getElementById("backFromNotifications");
+    const notificationList = document.getElementById("notificationList");
+
+    /* OPEN NOTIFICATION VIEW */
+    notificationBtn.onclick = () => {
+        appView.style.display = "none";
+        notificationView.style.display = "flex";
+        loadNotifications();
+    };
+
+    /* BACK TO APP */
+    backFromNotifications.onclick = () => {
+        notificationView.style.display = "none";
+        appView.style.display = "flex";
+    };
+
+    </script>
+
+
+
+
+
+<script>
+function openNotification(notif, card){
+
+    openTradePanel("notificationDetails");
+
+    document.getElementById("notifModalTitle").innerText = notif.title;
+    document.getElementById("notifModalDate").innerText = notif.date;
+    document.getElementById("notifModalMessage").innerText = notif.message;
+
+    const statusNormalized = notif.status
+        ? notif.status.toString().trim().toLowerCase()
+        : "";
+
+    if(statusNormalized === "unread"){
+
+        // Remove unread styling
+        card.classList.remove("unread");
+
+        // Update status badge visually
+        const badge = card.querySelector(".read-status-badge");
+        if(badge){
+            badge.classList.remove("badge-unread");
+            badge.classList.add("badge-read");
+            badge.innerText = "Read";
+        }
+
+        // Decrease top notification count
+        decreaseBadge();
+
+        // Prevent double triggering
+        notif.status = "Read";
+
+        // Sync backend
+        markNotificationAsRead(notif.id);
+    }
+}
+</script>
+
+
+<script>
+function updateNotificationBadge(count){
+
+    const badge = document.getElementById("notifyCount");
+    if(!badge) return;
+
+    if(count > 0){
+        badge.style.display = "flex";
+        badge.innerText = count > 99 ? "99+" : count;
+    }else{
+        badge.style.display = "none";
+        badge.innerText = "0";
+    }
+}
+
+function decreaseBadge(){
+
+    const badge = document.getElementById("notifyCount");
+    if(!badge || badge.style.display === "none") return;
+
+    let current = parseInt(badge.innerText) || 0;
+
+    if(current > 1){
+        badge.innerText = current - 1;
+    }else{
+        badge.style.display = "none";
+        badge.innerText = "0";
+    }
+}
+</script>
+
+<script>
+function markNotificationAsRead(notificationId){
+
+    const uid = localStorage.getItem("uid");
+    if(!uid || !notificationId) return;
+
+    fetch(API,{
+        method:"POST",
+        body:JSON.stringify({
+            action:"markNotificationRead",
+            id:notificationId,
+            uid:uid
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        // Optional: you can log success if needed
+    })
+    .catch(err => {
+        console.error("Mark read failed", err);
+    });
+}
+</script>
+
+<script>
+function loadNotifications(){
+
+    const uid = localStorage.getItem("uid");
+    if(!uid) return;
+
+    fetch(API,{
+        method:"POST",
+        body:JSON.stringify({
+            action:"getNotifications",
+            uid:uid
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        if(data.status){
+            renderNotifications(data.notifications);
+        }else{
+            updateNotificationBadge(0);
+        }
+
+    })
+    .catch(err => {
+        console.error("Notification load error", err);
+        updateNotificationBadge(0);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", loadNotifications);
+</script>
 
 
 </body>
 
 </html>
+
