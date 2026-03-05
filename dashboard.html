@@ -7,7 +7,7 @@
     <title>Crypto Dashboard</title>
 
     <style>
-        /* ================= THEME VARIABLES ================= */
+        /*=================THEME VARIABLES=================*/
         :root {
 
             /* Scrollbar */
@@ -23,13 +23,14 @@
             --text: #fff;
             --muted: #aaa;
             --red: #e82127;
+            --bg-border-line: #ffffff21;
 
             /* Backgrounds */
             --bg-main-start: #1e2235;
             --bg-main-end: #0e0f1a;
             --bg-app-start: #1c2033;
             --bg-app-end: #111320;
-            --bg-card: #0a0a0a;
+            --bg-card: #0f0f0f;
             --bg-soft: #ffffff0c;
             --bg-nav: #0a0a0a;
             --bg-filter: #0a0a0a;
@@ -61,7 +62,11 @@
             --bar3-end: #ffc1c1;
         }
 
-        /* ================= RESET ================= */
+        .border-line{
+            border: 1px solid var(--bg-border-line);
+        }
+
+        /*=================RESET=================*/
         * {
             margin: 0;
             padding: 0;
@@ -77,7 +82,7 @@
             overflow: hidden;
         }
 
-        /* ================= APP LAYOUT ================= */
+        /*=================APP LAYOUT=================*/
         .app {
             height: 100dvh;
             width: 100%;
@@ -89,16 +94,17 @@
             overflow: hidden;
         }
 
-        /* ================= HEADER ================= */
+        /*=================HEADER=================*/
         .header {
             flex-shrink: 0;
             padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 2px solid #ffffff31;
         }
 
-        /* ================= CONTENT ================= */
+        /*=================CONTENT=================*/
         .content {
             flex: 1;
             overflow-y: auto;
@@ -110,7 +116,7 @@
             display: none;
         }
 
-        /* ================= BOTTOM NAV ================= */
+        /*=================BOTTOM NAV=================*/
         .bottom-nav {
             flex-shrink: 0;
             padding: 10px;
@@ -125,10 +131,10 @@
         }
 
         .card-border {
-            border: 1px solid var(--border-soft);
+            border: 1px solid var(--bg-border-line);
         }
 
-        /* ================= PROFILE ================= */
+        /*=================PROFILE=================*/
         .profile {
             display: flex;
             align-items: center;
@@ -176,14 +182,14 @@
             color: var(--accent-primary);
         }
 
-        /* ================= NOTIFICATION ================= */
+        /*=================NOTIFICATION=================*/
         .notification {
             position: relative;
             width: 42px;
             height: 42px;
-            border-radius: 50%;
-            background: var(--card);
-            border: 1px solid var(--bg-soft);
+            border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--bg-border-line);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -207,13 +213,14 @@
             color: var(--text-primary);
         }
 
-        /* ================= BALANCE ================= */
+        /*=================BALANCE=================*/
         .balance-section {
             display: flex;
             flex-direction: column;
             gap: 3px;
             font-size: 14px;
             color: var(--text-secondary);
+            margin-top: 20px;
         }
 
         .balance {
@@ -239,10 +246,10 @@
             font-weight: 600;
         }
 
-        /* ================= CARD ================= */
+        /*=================CARD=================*/
         .card {
             background: var(--bg-card);
-            border: 1px solid var(--border-soft);            
+            border: 1px solid var(--bg-border-line);            
             border-radius: 20px;
             padding: 18px;
             margin-top: 20px;
@@ -317,7 +324,7 @@
             color: var(--text);
         }
 
-        /* ================= TOP ASSETS ================= */
+        /*=================TOP ASSETS=================*/
         .section-title {
             margin-top: 25px;
             font-size: 18px;
@@ -346,7 +353,7 @@
             color: var(--text-primary);
         }
 
-        /* ================= ASSETS ================= */
+        /*=================ASSETS=================*/
         .asset-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -379,16 +386,13 @@
         }
 
         .small-pill {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
             font-size: 11px;
             padding: 6px 10px;
             border-radius: 12px;
             background: var(--bg-soft);
         }
 
-        /* ================= NAV ================= */
+        /*=================NAV=================*/
         .nav-item {
             width: 60px;
             height: 60px;
@@ -407,7 +411,7 @@
             opacity: 1;
         }
 
-        /* ================= PAGE SYSTEM ================= */
+        /*=================PAGE SYSTEM=================*/
         .page {
             display: none;
             animation: fadeIn .25s ease;
@@ -429,7 +433,7 @@
             }
         }
 
-        /* ================= NAV ICON IMAGE ================= */
+        /*=================NAV ICON IMAGE=================*/
         .nav-item img {
             width: 26px;
             height: 26px;
@@ -438,7 +442,7 @@
     </style>
 
     <style>
-        /* ================= GLOBAL SCROLLBAR STYLING ================= */
+        /*=================GLOBAL SCROLLBAR STYLING=================*/
 
         /* Firefox */
         * {
@@ -473,7 +477,7 @@
 
 
 
-        /* ================= HORIZONTAL ASSET ROW ================= */
+        /*=================HORIZONTAL ASSET ROW=================*/
         .asset-scroll-wrapper {
             overflow-x: auto;
             padding-bottom: 10px;
@@ -498,7 +502,7 @@
             padding: 15px;
             position: relative;
             color: var(--text-primary);
-            border: 1px solid var(--border-soft);
+            border: 1px solid var(--bg-border-line);
             transition: .2s ease;
         }
 
@@ -506,7 +510,7 @@
             transform: translateY(-4px);
         }
 
-        /* ================= WALLET ACTION BUTTONS ================= */
+        /*=================WALLET ACTION BUTTONS=================*/
 
         .wallet-actions {
             display: flex;
@@ -517,8 +521,8 @@
 
         .action-btn {
             flex: 1;
-            background: var(--bg-soft);
-            border: 1px solid var(--border-soft);
+            background: var(--bg-card);
+            border: 1px solid var(--bg-border-line);
             color: var(--text-primary);
             padding: 14px 10px;
             border-radius: 18px;
@@ -546,7 +550,7 @@
     </style>
 
     <style>
-        /* ================= TRADE PANEL ================= */
+        /*=================TRADE PANEL=================*/
 
         .trade-panel-overlay {
             position: fixed;
@@ -753,7 +757,7 @@
             /* behind content */
         }
 
-        /* ================= ANALYTICS LOADING SWEEP ================= */
+        /*=================ANALYTICS LOADING SWEEP=================*/
 
         .asset.loading {
             position: relative;
@@ -814,7 +818,7 @@
             border-radius: 22px;
             padding: 22px;
             margin-top: 10px;
-            border: 1px solid var(--bg-soft);
+            border: 1px solid var(--bg-border-line);
         }
 
         .portfolioChart-title-row {
@@ -923,7 +927,7 @@
     .grok-trade-card{
         margin-top: 20px;
         background: var(--card);
-        border: 1px solid var(--bg-soft);
+        border: 1px solid var(--bg-border-line);
         border-radius: 14px;
         padding: 20px;
         width: 100%;
@@ -1006,7 +1010,7 @@
         cursor: pointer;
         font-weight: 600;
         background: var(--bg-soft);
-        border: var(--bg-soft) 1px solid;
+        border: var(--bg-border-line) 1px solid;
         color: #fff;
         transition: 0.3s ease;
         position: relative;
@@ -1029,7 +1033,7 @@
 
     <style>
 
-    /* ================= SLIDER CONTAINER ================= */
+    /*=================SLIDER CONTAINER=================*/
 
     .campaign-slider{
         width:100%;
@@ -1038,14 +1042,14 @@
         margin-top:20px;
     }
 
-    /* ================= TRACK ================= */
+    /*=================TRACK=================*/
 
     .campaign-track{
         display:flex;
         transition:transform 0.5s ease;
     }
 
-    /* ================= CARD ================= */
+    /*=================CARD=================*/
 
     .campaign-card{
         min-width:100%;
@@ -1056,7 +1060,7 @@
         box-shadow:0 4px 20px rgba(0,0,0,0.35),
     }
 
-    /* ================= DOTS ================= */
+    /*=================DOTS=================*/
 
     .campaign-dots{
 
@@ -1212,7 +1216,7 @@
         padding:14px 16px;
         border-radius:16px;
         background: var(--card); /* match your crypto asset card background */
-        border: 1px solid var(--bg-soft);
+        border: 1px solid var(--bg-border-line);
         cursor:pointer;
         transition:all .2s ease;
     }
@@ -1292,9 +1296,9 @@
     </style>
 
     <style>
-    /* =====================================
+    /*=====================================
     TESLA STYLE FX RECEIPT
-    ===================================== */
+   =====================================*/
 
     .receipt-box{
         width:100%;
@@ -1426,7 +1430,7 @@
     }
 
     .portfolio-card{
-        border:1px solid var(--bg-soft);
+        border:1px solid var(--bg-border-line);
         border-radius:14px;
         padding:26px;
         background:var(--card);
@@ -1459,7 +1463,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 1px solid var(--bg-soft);
+        border: 1px solid var(--bg-border-line);
         background-color: var(--bg-card);
         border-radius: 20px;
         padding: 20px;
@@ -1552,7 +1556,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    border-top: 1px solid var(--bg-soft);
+    border-top: 1px solid var(--bg-border-line);
     margin-top: 20px;
     font-size: 12px;
     padding: 10px 0px 0px 0px;
@@ -1594,6 +1598,7 @@
         display: flex;
         align-items: center;
         gap: 6px;
+        width: fit-content;
     }
 
     .momentum-icon {
@@ -1611,6 +1616,58 @@
         color: #ff4d4d;
         font-weight: 600;
     }   
+    </style>
+
+    <style>
+
+    .momentum-icon {
+        width: 16px;
+        height: 16px;
+        object-fit: contain;
+    }
+
+    .info-pill {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        font-size: 12px;
+        gap: 8px;
+    }
+
+    .ai-badge {
+        background-color: var(--accent-primary);
+        color: #fff;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    .green { color: #00ff88; font-weight: 600; }
+    .red { color: #ff4d4d; font-weight: 600; }    
+    </style>
+
+    <style>
+    .asset-section{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .asset {
+        position: relative; /* Ensure badge can be positioned */
+    }
+
+    .ai-badge.top-right {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background-color: var(--accent-primary);
+        color: #fff;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 4px;
+        z-index: 2;
+        font-size: 12px;
+    }
     </style>
 
 </head>
@@ -1648,7 +1705,7 @@
         <!-- SCROLLABLE CONTENT -->
         <div class="content">
 
-            <!-- ================= HOME PAGE ================= -->
+            <!--=================HOME PAGE=================-->
             <div class="page active" id="home">
 
                 <div class="balance-section">
@@ -1662,7 +1719,7 @@
 
                 </div>
 
-                <div class="card">
+                <div class="card" >
                     <div class="card-header">
                         <h4>Investment Period</h4>
                         <div class="dropdown">6 Month ▾</div>
@@ -1695,7 +1752,7 @@
                 </div>
 
 
-                <!-- ================= WALLET ACTIONS ================= -->
+                <!--=================WALLET ACTIONS=================-->
                 <div class="wallet-actions">
 
                     <button class="action-btn deposit" data-action="deposit">
@@ -1716,7 +1773,7 @@
                 </div>
 
 
-                <!-- ================= TOP ASSETS ================= -->
+                <!--=================TOP ASSETS=================-->
                 <div class="section-title">Top Assets</div>
 
                 <div class="filters" id="assetFilters">
@@ -1752,7 +1809,7 @@
                 </div>
 
 
-                <!-- ================= CAMPAIGN SLIDER ================= -->
+                <!--=================CAMPAIGN SLIDER=================-->
                 <div class="campaign-slider">
 
                     <div class="campaign-track" id="campaignTrack">
@@ -1842,20 +1899,20 @@
 
             </div>
 
-            <!-- ================= MARKET PAGE ================= -->
+            <!--=================MARKET PAGE=================-->
             <div class="page" id="market">
                 <h2 style="color:white;">Market Page</h2>
             </div>
 
-            <!-- ================= ANALYTICS PAGE ================= -->
+            <!--=================ANALYTICS PAGE=================-->
             <div class="page" id="analytics">
 
-                <div class="section-title" style="width: 100%;padding: 20px 0px;position: sticky;top: 0;z-index: 10;background-color: black;margin-top: 0px;">Crypto Market Analytics</div>
+                <div class="section-title" style="width: 100%;padding: 20px 0px;position: sticky;top: 0;z-index: 10;background-color: black;margin-top: 0px;">Crypto Market Signals</div>
                 
 
                 <div class="market-analytics-wrapper">
 
-                    <!-- ===================== TOP BULLISH ===================== -->
+                    <!--=====================TOP BULLISH=====================-->
                     <div class="asset-section">
                         <h4>Top Bullish</h4>
                         <div class="asset-scroll-wrapper">
@@ -1863,7 +1920,7 @@
                         </div>
                     </div>
 
-                    <!-- ===================== MID BULLISH ===================== -->
+                    <!--=====================MID BULLISH=====================-->
                     <div class="asset-section">
                         <h4>Mid Bullish</h4>
                         <div class="asset-scroll-wrapper">
@@ -1871,7 +1928,7 @@
                         </div>
                     </div>
 
-                    <!-- ===================== POTENTIAL ===================== -->
+                    <!--=====================POTENTIAL=====================-->
                     <div class="asset-section">
                         <h4>Potential</h4>
                         <div class="asset-scroll-wrapper">
@@ -1879,7 +1936,7 @@
                         </div>
                     </div>
 
-                    <!-- ===================== TOP BEARISH ===================== -->
+                    <!--=====================TOP BEARISH=====================-->
                     <div class="asset-section">
                         <h4>Top Bearish</h4>
                         <div class="asset-scroll-wrapper">
@@ -1887,7 +1944,7 @@
                         </div>
                     </div>
 
-                    <!-- ===================== GROK PICKS ===================== -->
+                    <!--=====================GROK PICKS=====================-->
                     <div class="asset-section">
                         <h4>Special Picks by Grok AI</h4>
                         <div class="asset-scroll-wrapper">
@@ -1895,7 +1952,7 @@
                         </div>
                     </div>
 
-                    <!-- ===================== LONG TRADE ===================== -->
+                    <!--=====================LONG TRADE=====================-->
                     <div class="asset-section">
                         <h4>Top Recommendation (Long)</h4>
                         <div class="asset-scroll-wrapper">
@@ -1903,7 +1960,7 @@
                         </div>
                     </div>
 
-                    <!-- ===================== SHORT TRADE ===================== -->
+                    <!--=====================SHORT TRADE=====================-->
                     <div class="asset-section">
                         <h4>Top Recommendation (Short)</h4>
                         <div class="asset-scroll-wrapper">
@@ -1915,7 +1972,7 @@
 
             </div>
 
-            <!-- ================= PORTFOLIO PAGE ================= -->
+            <!--=================PORTFOLIO PAGE=================-->
             <div class="page" id="portfolio">
                 <div id="portfolioView" class="portfolio-section">
 
@@ -1965,7 +2022,7 @@
                 </div>            
             </div>
 
-            <!-- ================= Transactionsp  PAGE ================= -->
+            <!--=================Transactionsp  PAGE=================-->
             <div class="page" id="transaction">
                 <div class="transactions-section">
                     <h3 class="section-title">Recent Transactions</h3>
@@ -1975,7 +2032,7 @@
 
         </div>
 
-        <!-- ================= BOTTOM NAV ================= -->
+        <!--=================BOTTOM NAV=================-->
         <div class="bottom-nav">
 
             <div class="nav-item" data-page="market" data-active="icons/grok_icon.png"
@@ -2006,7 +2063,7 @@
 
     </div>
 
-    <!-- ================= NOTIFICATION PAGE VIEW ================= -->
+    <!--=================NOTIFICATION PAGE VIEW=================-->
     <div id="notificationView" class="notification-view" style="display:none;">
 
         <div class="notification-header">
@@ -2020,7 +2077,7 @@
 
 
 
-    <!-- ================= MODAL ACTION PANEL ================= -->
+    <!--=================MODAL ACTION PANEL=================-->
     <div class="trade-panel-overlay" id="tradePanelOverlay">
 
         <div class="trade-panel">
@@ -2031,7 +2088,7 @@
             </div>
 
 
-            <!-- ================= NOTIFICATION DETAILS VIEW ================= -->
+            <!--=================NOTIFICATION DETAILS VIEW=================-->
             <div id="notificationDetailsView" class="trade-view" style="display:none;">
                 <div style="padding:15px;">
                     <h3 id="notifModalTitle"></h3>
@@ -2114,7 +2171,7 @@
             </div>
 
         
-            <!-- ================= DEPOSIT VIEW ================= -->
+            <!--=================DEPOSIT VIEW=================-->
             <div id="depositView" class="trade-view">
 
                 <div class="qr-box"><img class="qr-img" id="walletQR" /> </div>
@@ -2132,7 +2189,7 @@
             </div>
 
 
-            <!-- ================= WITHDRAW VIEW ================= -->
+            <!--=================WITHDRAW VIEW=================-->
             <div id="withdrawView" class="trade-view" style="display:none;">
 
                 <div class="trade-section">
@@ -2189,7 +2246,7 @@
             </div>
 
 
-            <!-- ================= TRANSFER VIEW ================= -->
+            <!--=================TRANSFER VIEW=================-->
             <div id="transferView" class="trade-view" style="display:none;">
 
                 <div class="trade-section">
@@ -2231,11 +2288,11 @@
 
 
 
-    <!-- ================= TOAST CONTAINER ================= -->
+    <!--=================TOAST CONTAINER=================-->
     <div id="toastBox" class="toast-box"></div>
 
 
-<!-- ================= BOTTOM NAV BAR JAVASCRIPT NAVIGATION =================-->
+<!--=================BOTTOM NAV BAR JAVASCRIPT NAVIGATION=================-->
     <script>
 
         const navItems = document.querySelectorAll('.nav-item');
@@ -2272,7 +2329,7 @@
     <!--========================TOP ASSETS========================-->
     <script>
 
-        /* ================= DATASET ================= */
+        /*=================DATASET=================*/
 
         const assets = [
             {
@@ -2326,7 +2383,7 @@
         ];
 
 
-        /* ================= RENDER FUNCTION ================= */
+        /*=================RENDER FUNCTION=================*/
 
         const assetContainer = document.getElementById("assetContainer");
 
@@ -2342,10 +2399,13 @@
                 card.classList.add("asset");
 
                 card.innerHTML = `
-      <h5>Proof of Stake<br><strong>${asset.name} (${asset.symbol})</strong></h5>
-      <div class="rate">${asset.rate}</div>
-      <div class="green">${asset.change}</div>
-      <div class="small-pill">${asset.profit}</div>
+        <h5>Proof of Stake<br><strong>${asset.name} (${asset.symbol})</strong></h5>
+        <div class="rate">${asset.rate}</div>
+        <div style="display:flex; justify-content:space-between;align-items:center;width:100%">
+            <div class="green">${asset.change}</div>
+            <div class="small-pill">${asset.profit}</div>
+        </div>
+
     `;
 
                 assetContainer.appendChild(card);
@@ -2354,7 +2414,7 @@
         }
 
 
-        /* ================= FILTER SYSTEM ================= */
+        /*=================FILTER SYSTEM=================*/
 
         const filters = document.querySelectorAll(".filter");
 
@@ -2377,7 +2437,7 @@
         });
 
 
-        /* ================= INITIAL LOAD ================= */
+        /*=================INITIAL LOAD=================*/
 
         renderAssets("today");
 
@@ -2533,9 +2593,9 @@
 
     const API = "https://script.google.com/macros/s/AKfycbyo6uGNQ_IDRTkm5AEzPPRLkdzarH8BUzETivaZ8pFl1eq82j6FwYwj_vK8AfeGBKmX-Q/exec";
 
-    /* ===========================
+    /*===========================
     SESSION CHECK
-    =========================== */
+   ===========================*/
 
     const UID = localStorage.getItem("uid");
 
@@ -2544,9 +2604,9 @@
     }
 
 
-    /* ===========================
+    /*===========================
     GLOBAL STATE
-    =========================== */
+   ===========================*/
 
     window.USER_NAME            = "";
     window.USER_EMAIL           = "";
@@ -2562,9 +2622,9 @@
     window.USER_COUNTRY         = "";
 
 
-    /* ===========================
+    /*===========================
     HELPERS
-    =========================== */
+   ===========================*/
 
     function num(val){
         return Number(val) || 0;
@@ -2588,9 +2648,9 @@
     }
 
 
-    /* ===========================
+    /*===========================
     SAFE FETCH
-    =========================== */
+   ===========================*/
 
     async function safeFetch(payload){
 
@@ -2614,9 +2674,9 @@
     }
 
 
-    /* ===========================
+    /*===========================
     FETCH + STORE
-    =========================== */
+   ===========================*/
 
     async function fetchUser(){
 
@@ -2657,9 +2717,9 @@
 
 
 
-    /* ===========================
+    /*===========================
     FETCH TRANSACTIONS
-    =========================== */
+   ===========================*/
 
     async function fetchTransactions(){
 
@@ -2678,9 +2738,9 @@
 
 
 
-    /* ===========================
+    /*===========================
     FETCH NOTIFICATIONS
-    =========================== */
+   ===========================*/
 
     async function fetchNotifications(){
 
@@ -2698,9 +2758,9 @@
     }
 
 
-    /* ===========================
+    /*===========================
     RENDER TRANSACTIONS
-    =========================== */
+   ===========================*/
 
     function renderTransactions(transactions){
 
@@ -2772,9 +2832,9 @@
 
 
 
-    /* ===========================
+    /*===========================
     RENDER DASHBOARD
-    =========================== */
+   ===========================*/
 
     function renderDashboard(){
 
@@ -2828,9 +2888,9 @@
 
 
 
-    /* ===========================
+    /*===========================
     RENDER NOTIFICATIONS
-    =========================== */
+   ===========================*/
 
     function renderNotifications(notifications){
 
@@ -2888,9 +2948,9 @@
 
 
 
-    /* ===========================
+    /*===========================
     AUTO REFRESH (5s)
-    =========================== */
+   ===========================*/
 
     let refreshInterval = null;
 
@@ -2926,9 +2986,9 @@
         });
     }
 
-    /* ===========================
+    /*===========================
     START
-    =========================== */
+   ===========================*/
 
     window.addEventListener("DOMContentLoaded", startAutoRefresh);
 
@@ -2940,16 +3000,16 @@
     <!--===================TRANSFER HANDER CODES===================-->
     <script>
 
-    /* =====================================================
+    /*=====================================================
     TRADE PANEL LOGIC (COPY + WITHDRAW + TRANSFER)
-    ===================================================== */
+   =====================================================*/
 
     let VERIFIED_RECEIVER_UID = null;
 
 
-    /* ===========================
+    /*===========================
     COPY WALLET
-    =========================== */
+   ===========================*/
 
     function copyWallet(){
 
@@ -2968,9 +3028,9 @@
     }
 
 
-    /* ===========================
+    /*===========================
     WITHDRAW
-    =========================== */
+   ===========================*/
 
     async function handleWithdraw(){
 
@@ -3030,9 +3090,9 @@
     }
         
 
-/* ===========================
+/*===========================
     VERIFY RECEIVER EMAIL
-    =========================== */
+   ===========================*/
 
     async function verifyReceiver(){
 
@@ -3073,9 +3133,9 @@
     }
 
 
-    /* ===========================
+    /*===========================
     ENABLE / DISABLE TRANSFER BUTTON
-    =========================== */
+   ===========================*/
 
     function validateTransferForm(){
 
@@ -3091,9 +3151,9 @@
     }
 
 
-    /* ===========================
+    /*===========================
     INTERNAL TRANSFER
-    =========================== */
+   ===========================*/
 
     async function handleTransfer(){
 
@@ -3158,9 +3218,9 @@
         btn.disabled = false;
     }
 
-    /* ===========================
+    /*===========================
     WIRE EVENTS
-    =========================== */
+   ===========================*/
 
         window.addEventListener("DOMContentLoaded", function(){
 
@@ -3243,7 +3303,7 @@
 
     <script>
 
-    /* ================= CAMPAIGN SLIDER ================= */
+    /*=================CAMPAIGN SLIDER=================*/
 
     let campaignIndex = 0;
 
@@ -3306,14 +3366,14 @@
 
             const action = this.dataset.action;
 
-            /* =========================
+            /*=========================
             OPEN PANEL UI
-            ========================= */
+           =========================*/
             openTradePanel(action);
 
-            /* =========================
+            /*=========================
             INITIALIZE REQUIRED DATA
-            ========================= */
+           =========================*/
 
             if(action === "deposit"){
             }
@@ -3329,7 +3389,7 @@
                 
         closeTradePanel.onclick = () => tradeOverlay.style.display = "none";
 
-        /* ================= RENDER FUNCTION ================= */
+        /*=================RENDER FUNCTION=================*/
 
         function openTradePanel(type) {
 
@@ -3636,7 +3696,7 @@ document.addEventListener("DOMContentLoaded", loadNotifications);
 </script>
 
 
-<!-- ===================== MARKET ANALYTICS ===================== -->
+<!--=====================MARKET ANALYTICS=====================-->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -3653,7 +3713,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let analyticsLoaded = false;
     let refreshAnalyticsInterval = null;
 
-    /* ================= CREATE SKELETON CARDS ================= */
+    /*=================CREATE SKELETON CARDS=================*/
 
     function createSkeletons() {
 
@@ -3683,7 +3743,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    /* ================= FETCH TOP 100 ================= */
+    /*=================FETCH TOP 100=================*/
 
     async function fetchMarketData() {
 
@@ -3703,7 +3763,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }));
     }
 
-    /* ================= CATEGORIZE ================= */
+    /*=================CATEGORIZE=================*/
 
     function categorize(data) {
 
@@ -3743,9 +3803,9 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     }
 
-    /* ================= RENDER ================= */
+    /*=================RENDER=================*/
 
-function render(container, list) {
+function render(container, list, userPortfolioBalance = 1000) {
 
     if (!container) return;
 
@@ -3760,23 +3820,35 @@ function render(container, list) {
 
         const card = document.createElement("div");
         card.classList.add("asset");
+        card.style.position = "relative"; // for AI badge top-right
 
         const isPositive = asset.change >= 0;
         const changeClass = isPositive ? "green" : "red";
 
-        /* ================= ESTIMATED ROI =================
-           Example logic:
-           If user buys $100 worth at current price,
-           ROI estimate = 24h % change projection
-        */
-        const investmentAmount = 100;
-        const estimatedROI = (investmentAmount * (asset.change / 100)).toFixed(2);
+        /*=================DYNAMIC ROI=================*/
+        const investmentAmount = userPortfolioBalance; 
+        const estimatedROI = investmentAmount * (asset.change / 100);
+
+        /*=================CONFIDENCE %=================*/
+        const confidence = Math.min(Math.max(Math.round(Math.random() * 100), 40), 95);
+
+        /*=================TP / SL=================*/
+        const tpPercent = 5; 
+        const slPercent = 3; 
+        const targetPrice = (asset.price * (1 + tpPercent / 100)).toFixed(2);
+        const stopLoss = (asset.price * (1 - slPercent / 100)).toFixed(2);
+
+        /*=================AI SCORE BADGE=================*/
+        const aiScore = Math.round(confidence / 10) * 10;
 
         const iconSrc = isPositive
             ? "icons/arrow-trend-up.png"
             : "icons/arrow-trend-down.png";
 
         card.innerHTML = `
+            <!-- AI SCORE TOP-RIGHT -->
+            <span class="ai-badge top-right">AI Score: ${aiScore}</span>
+
             <h5>
                 Market Asset<br>
                 <strong>${asset.name} (${asset.symbol})</strong>
@@ -3784,22 +3856,61 @@ function render(container, list) {
 
             <div class="rate">$${asset.price.toLocaleString()}</div>
 
-            <div class="${changeClass}">
-                ${isPositive ? "+" : ""}${asset.change.toFixed(2)}%
+            <!-- CHANGE + MOMENTUM PILL IN SAME ROW -->
+            <div  style="display:flex; justify-content:space-between; align-items:center;width:100%;margin-bottom:10px;">
+                <div class="${changeClass}">
+                    ${isPositive ? "+" : ""}${asset.change.toFixed(2)}%
+                </div>
+                <div class="small-pill momentum-pill">
+                    <img src="${iconSrc}" class="momentum-icon" />
+                    <span class="animated-roi" data-roi="${estimatedROI}">$0.00</span>
+                </div>
             </div>
 
-            <div class="small-pill momentum-pill">
-                <img src="${iconSrc}" class="momentum-icon" />
-                <span>
-                    Est. ROI: ${isPositive ? "+" : ""}$${estimatedROI}
-                </span>
+            <div class="info-pill">
+                <span>Confidence: ${confidence}%</span>
+                <span>TP: $${targetPrice}</span>
+                <span>SL: $${stopLoss}</span>
             </div>
         `;
 
         container.appendChild(card);
+
+        /*=================ANIMATE ROI=================*/
+        const roiElem = card.querySelector(".animated-roi");
+        animateNumber(roiElem, 0, estimatedROI, 1000);
     });
 }
-    /* ================= INITIALIZE ================= */
+/*=====================NUMBER ANIMATION=====================*/
+function animateNumber(el, start, end, duration) {
+    let startTime = null;
+    function animate(time) {
+        if (!startTime) startTime = time;
+        const progress = Math.min((time - startTime) / duration, 1);
+        const value = start + (end - start) * progress;
+        el.textContent = `${end >= 0 ? "+" : ""}$${value.toFixed(2)}`;
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+    requestAnimationFrame(animate);
+}
+/*=====================NUMBER ANIMATION=====================*/
+function animateNumber(el, start, end, duration) {
+    let startTime = null;
+    function animate(time) {
+        if (!startTime) startTime = time;
+        const progress = Math.min((time - startTime) / duration, 1);
+        const value = start + (end - start) * progress;
+        el.textContent = `${end >= 0 ? "+" : ""}$${value.toFixed(2)}`;
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+    requestAnimationFrame(animate);
+} 
+
+/*=================INITIALIZE=================*/
 
     async function initAnalyticsCard() {
 
@@ -3825,7 +3936,7 @@ function render(container, list) {
         }
     }
 
-    /* ================= NAV TRIGGER ================= */
+    /*=================NAV TRIGGER=================*/
 
     document.querySelectorAll('.nav-item').forEach(item => {
 
