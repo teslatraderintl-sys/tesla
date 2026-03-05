@@ -169,12 +169,7 @@
             background: var(--bg-card);
         }
 
-        .verified {
-            background: var(--accent-verified-bg);
-            color: var(--accent-verified-text);
-        }
-
-        .engine-mode, .pro {
+        .engine-mode, .pro, .verified {
             background-color: var(--accent-primary);
             color: white;
         }
@@ -1512,7 +1507,7 @@
 }
 
 .notification-card.unread{
-    border-left:4px solid white;
+    border-left:4px solid var(--accent-primary);
     background:#151515;
 }
 
@@ -1571,8 +1566,8 @@
 }
 
 .badge-unread{
-    background: white; /* green */
-    color: black;
+    background: var(--accent-primary); /* green */
+    color: white;
 }
 
 .badge-read{
@@ -1629,7 +1624,7 @@
         justify-content: space-between;
         flex-wrap: wrap;
         font-size: 12px;
-        gap: 8px;
+        gap: 18px;
     }
 
     .ai-badge {
@@ -1666,6 +1661,50 @@
         z-index: 2;
         font-size: 12px;
     }
+    </style>
+
+
+    <style>
+    /* ================= SEARCH BAR ================= */
+
+    .analytics-search-wrapper {
+        position: relative;
+        width: 100%;
+        margin-bottom: 20px;
+        top: 0;
+        position: sticky;
+        z-index: 20;
+        padding: 15px 0px;
+        background-color: black;
+    }
+
+    #analyticsSearchInput {
+        width: 100%;
+        padding: 14px 45px 14px 16px;
+        border-radius: 12px;
+        border: 1px solid #2a2a2a;
+        background: #111;
+        color: #fff;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.2s ease;
+    }
+
+    #analyticsSearchInput:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.5;
+        font-size: 14px;
+        pointer-events: none;
+        height: 40px;width: 40px;padding: 8px;
+    }    
     </style>
 
 </head>
@@ -1909,67 +1948,19 @@
                 <div class="page-header" style="padding: 10px 0px;">
                     <h2>Crypto Market Signals</h2>
                     <p>Capital distribution & return analysis</p>
-                </div>                
+                </div> 
+                  <!-- ================= SEARCH BAR ================= -->
+                <div class="analytics-search-wrapper">
+                    <input 
+                        type="text" 
+                        id="analyticsSearchInput" 
+                        placeholder="Search market (e.g. Bitcoin, ETH, SOL)..."
+                        autocomplete="off"
+                    />
+                    <img  class="search-icon" src="icons/search-icon.png" alt="">
+                </div>             
 
-                <div class="market-analytics-wrapper">
-
-                    <!--=====================TOP BULLISH=====================-->
-                    <div class="asset-section">
-                        <h4>Top Bullish</h4>
-                        <div class="asset-scroll-wrapper">
-                            <div class="asset-row" id="topBullishContainer"></div>
-                        </div>
-                    </div>
-
-                    <!--=====================MID BULLISH=====================-->
-                    <div class="asset-section">
-                        <h4>Mid Bullish</h4>
-                        <div class="asset-scroll-wrapper">
-                            <div class="asset-row" id="midBullishContainer"></div>
-                        </div>
-                    </div>
-
-                    <!--=====================POTENTIAL=====================-->
-                    <div class="asset-section">
-                        <h4>Potential</h4>
-                        <div class="asset-scroll-wrapper">
-                            <div class="asset-row" id="potentialContainer"></div>
-                        </div>
-                    </div>
-
-                    <!--=====================TOP BEARISH=====================-->
-                    <div class="asset-section">
-                        <h4>Top Bearish</h4>
-                        <div class="asset-scroll-wrapper">
-                            <div class="asset-row" id="topBearishContainer"></div>
-                        </div>
-                    </div>
-
-                    <!--=====================GROK PICKS=====================-->
-                    <div class="asset-section">
-                        <h4>Special Picks by Grok AI</h4>
-                        <div class="asset-scroll-wrapper">
-                            <div class="asset-row" id="grokContainer"></div>
-                        </div>
-                    </div>
-
-                    <!--=====================LONG TRADE=====================-->
-                    <div class="asset-section">
-                        <h4>Top Recommendation (Long)</h4>
-                        <div class="asset-scroll-wrapper">
-                            <div class="asset-row" id="longContainer"></div>
-                        </div>
-                    </div>
-
-                    <!--=====================SHORT TRADE=====================-->
-                    <div class="asset-section">
-                        <h4>Top Recommendation (Short)</h4>
-                        <div class="asset-scroll-wrapper">
-                            <div class="asset-row" id="shortContainer"></div>
-                        </div>
-                    </div>          
-
-                </div>          
+                <div class="market-analytics-wrapper" id="marketAnalyticsWrapper"></div>     
 
             </div>
 
@@ -2026,7 +2017,7 @@
             <!--=================Transactionsp  PAGE=================-->
             <div class="page" id="transaction">
                 <div class="transactions-section">
-                    <h3 class="section-title">Recent Transactions</h3>
+                    <h3 class="section-title" style="top: 0;position: sticky;background-color: black;padding: 20px 0px;margin-top: 0px;z-index: 20;">Recent Transactions</h3>
                     <div id="transactionList" class="transaction-list"></div>
                 </div>
             </div>
@@ -3701,50 +3692,49 @@ document.addEventListener("DOMContentLoaded", loadNotifications);
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    const containers = {
-        topBullish: document.getElementById("topBullishContainer"),
-        midBullish: document.getElementById("midBullishContainer"),
-        potential: document.getElementById("potentialContainer"),
-        topBearish: document.getElementById("topBearishContainer"),
-        grok: document.getElementById("grokContainer"),
-        long: document.getElementById("longContainer"),
-        short: document.getElementById("shortContainer")
-    };
+    const wrapper = document.getElementById("marketAnalyticsWrapper");
+    const searchInput = document.getElementById("analyticsSearchInput");
 
     let analyticsLoaded = false;
     let refreshAnalyticsInterval = null;
+    let allMarketData = []; // STORE FULL DATASET
 
-    /*=================CREATE SKELETON CARDS=================*/
+    const categoryConfig = [
+        { key: "topBullish", title: "Top Bullish" },
+        { key: "midBullish", title: "Mid Bullish" },
+        { key: "potential", title: "Potential" },
+        { key: "topBearish", title: "Top Bearish" },
+        { key: "grok", title: "Special Picks by Grok AI" },
+        { key: "long", title: "Top Recommendation (Long)" },
+        { key: "short", title: "Top Recommendation (Short)" }
+    ];
 
-    function createSkeletons() {
+    const containers = {};
 
-        Object.values(containers).forEach(container => {
+    /*=================BUILD SECTIONS=================*/
 
-            if (!container) return;
+    function buildSections() {
 
-            container.innerHTML = "";
+        wrapper.innerHTML = "";
 
-            for (let i = 0; i < 12; i++) {
+        categoryConfig.forEach(category => {
 
-                const card = document.createElement("div");
-                card.classList.add("asset", "loading");
+            const section = document.createElement("div");
+            section.classList.add("asset-section");
 
-                card.innerHTML = `
-                    <h5>
-                        Market Asset<br>
-                        <strong>Loading...</strong>
-                    </h5>
-                    <div class="rate">----</div>
-                    <div class="green">----</div>
-                    <div class="small-pill">----</div>
-                `;
+            section.innerHTML = `
+                <h4>${category.title}</h4>
+                <div class="asset-scroll-wrapper">
+                    <div class="asset-row" id="${category.key}Container"></div>
+                </div>
+            `;
 
-                container.appendChild(card);
-            }
+            wrapper.appendChild(section);
+            containers[category.key] = document.getElementById(`${category.key}Container`);
         });
     }
 
-    /*=================FETCH TOP 100=================*/
+    /*=================FETCH=================*/
 
     async function fetchMarketData() {
 
@@ -3772,170 +3762,177 @@ document.addEventListener("DOMContentLoaded", function () {
         const bearishSorted = [...data].sort((a, b) => a.change - b.change);
 
         return {
-
-            // Top 15 strongest gainers
             topBullish: sorted.slice(0, 15),
-
-            // Mid range gainers
             midBullish: sorted.slice(15, 30),
-
-            // Near neutral movers
-            potential: sorted
-                .filter(c => c.change > -2 && c.change <= 3)
-                .slice(0, 15),
-
-            // Worst 15 performers
+            potential: sorted.filter(c => c.change > -2 && c.change <= 3).slice(0, 15),
             topBearish: bearishSorted.slice(0, 15),
-
-            // High volume movers
-            grok: sorted
-                .filter(c => c.volume > 200000000)
-                .slice(0, 12),
-
-            // Strong long momentum
-            long: sorted
-                .filter(c => c.change > 4)
-                .slice(0, 20),
-
-            // Strong short momentum (GUARANTEED CARDS)
-            short: bearishSorted
-                .filter(c => c.change < -4)
-                .slice(0, 20)
+            grok: sorted.filter(c => c.volume > 200000000).slice(0, 12),
+            long: sorted.filter(c => c.change > 4).slice(0, 20),
+            short: bearishSorted.filter(c => c.change < -4).slice(0, 20)
         };
+    }
+
+    /*=================FILTER + RENDER=================*/
+
+    function filterAndRender(query = "") {
+
+        const filteredData = allMarketData.filter(asset =>
+            asset.name.toLowerCase().includes(query) ||
+            asset.symbol.toLowerCase().includes(query)
+        );
+
+        const categories = categorize(filteredData);
+
+        Object.keys(categories).forEach(key => {
+            render(containers[key], categories[key]);
+        });
     }
 
     /*=================RENDER=================*/
 
-function render(container, list, userPortfolioBalance = 1000) {
+    function render(container, list, userPortfolioBalance = 1000) {
 
-    if (!container) return;
+        container.innerHTML = "";
 
-    container.innerHTML = "";
+        if (!list || list.length === 0) {
+            container.innerHTML = "<div class='asset'>No results</div>";
+            return;
+        }
 
-    if (!list || list.length === 0) {
-        container.innerHTML = "<div class='asset'>No strong signals detected</div>";
-        return;
+        list.forEach(asset => {
+
+            const card = document.createElement("div");
+            card.classList.add("asset");
+            card.style.position = "relative";
+
+            const isPositive = asset.change >= 0;
+            const changeClass = isPositive ? "green" : "red";
+
+            const estimatedROI = userPortfolioBalance * (asset.change / 100);
+            const confidence = Math.floor(Math.random() * 40) + 60;
+            const tpPercent = 5;
+            const slPercent = 3;
+            const targetPrice = (asset.price * (1 + tpPercent / 100)).toFixed(2);
+            const stopLoss = (asset.price * (1 - slPercent / 100)).toFixed(2);
+            const aiScore = Math.round(confidence / 10) * 10;
+
+            const iconSrc = isPositive
+                ? "icons/arrow-trend-up.png"
+                : "icons/arrow-trend-down.png";
+
+            card.innerHTML = `
+                <span class="ai-badge top-right">Grok AI ${aiScore}</span>
+
+                <h5>${asset.name} (${asset.symbol})</h5>
+
+                <div class="rate">$${asset.price.toLocaleString()}</div>
+
+                <div class="change-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <div class="${changeClass}">
+                        ${isPositive ? "+" : ""}${asset.change.toFixed(2)}%
+                    </div>
+
+                    <div class="small-pill momentum-pill">
+                        <img src="${iconSrc}" class="momentum-icon" />
+                        <span class="animated-roi">$0.00</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center; width:100%; font-size: 14px; padding: 8px 0px; border-bottom: 1px solid var(--bg-border-line);margin-bottom:8px;">
+                    <img src="icons/grok_icon.png" style="height: 30px;" />
+                    <p>Grok Strategy</p>
+                </div>
+                <div class="info-pill">
+                    
+                    <span>AI Confidence ${confidence}%</span>
+                    <span>TP $${targetPrice}</span>
+                    <span>SL $${stopLoss}</span>
+                </div>
+            `;
+
+            container.appendChild(card);
+
+            const roiElem = card.querySelector(".animated-roi");
+            animateNumber(roiElem, 0, estimatedROI, 800);
+        });
     }
 
-    list.forEach(asset => {
+    /*=================ROI ANIMATION=================*/
 
-        const card = document.createElement("div");
-        card.classList.add("asset");
-        card.style.position = "relative"; // for AI badge top-right
+    function animateNumber(el, start, end, duration) {
 
-        const isPositive = asset.change >= 0;
-        const changeClass = isPositive ? "green" : "red";
+        let startTime = null;
 
-        /*=================DYNAMIC ROI=================*/
-        const investmentAmount = userPortfolioBalance; 
-        const estimatedROI = investmentAmount * (asset.change / 100);
+        function animate(time) {
 
-        /*=================CONFIDENCE %=================*/
-        const confidence = Math.min(Math.max(Math.round(Math.random() * 100), 40), 95);
+            if (!startTime) startTime = time;
 
-        /*=================TP / SL=================*/
-        const tpPercent = 5; 
-        const slPercent = 3; 
-        const targetPrice = (asset.price * (1 + tpPercent / 100)).toFixed(2);
-        const stopLoss = (asset.price * (1 - slPercent / 100)).toFixed(2);
+            const progress = Math.min((time - startTime) / duration, 1);
+            const value = start + (end - start) * progress;
 
-        /*=================AI SCORE BADGE=================*/
-        const aiScore = Math.round(confidence / 10) * 10;
+            el.textContent = `${end >= 0 ? "+" : ""}$${value.toFixed(2)}`;
 
-        const iconSrc = isPositive
-            ? "icons/arrow-trend-up.png"
-            : "icons/arrow-trend-down.png";
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        }
 
-        card.innerHTML = `
-            <!-- AI SCORE TOP-RIGHT -->
-            <span class="ai-badge top-right">AI Score: ${aiScore}</span>
+        requestAnimationFrame(animate);
+    }
 
-            <h5>
-                Market Asset<br>
-                <strong>${asset.name} (${asset.symbol})</strong>
-            </h5>
+    /*=================INIT=================*/
 
-            <div class="rate">$${asset.price.toLocaleString()}</div>
+async function initAnalyticsCard() {
 
-            <!-- CHANGE + MOMENTUM PILL IN SAME ROW -->
-            <div  style="display:flex; justify-content:space-between; align-items:center;width:100%;margin-bottom:10px;">
-                <div class="${changeClass}">
-                    ${isPositive ? "+" : ""}${asset.change.toFixed(2)}%
-                </div>
-                <div class="small-pill momentum-pill">
-                    <img src="${iconSrc}" class="momentum-icon" />
-                    <span class="animated-roi" data-roi="${estimatedROI}">$0.00</span>
-                </div>
-            </div>
+    buildSections();        // build layout
+    createSkeletons();      // 🔥 RESTORE SWEEP / LOADING PHASE
 
-            <div class="info-pill">
-                <span>Confidence: ${confidence}%</span>
-                <span>TP: $${targetPrice}</span>
-                <span>SL: $${stopLoss}</span>
-            </div>
-        `;
+    try {
+        allMarketData = await fetchMarketData();
 
-        container.appendChild(card);
+        // keep current search query active during refresh
+        const currentQuery = searchInput.value.trim().toLowerCase();
+        filterAndRender(currentQuery);
 
-        /*=================ANIMATE ROI=================*/
-        const roiElem = card.querySelector(".animated-roi");
-        animateNumber(roiElem, 0, estimatedROI, 1000);
+        analyticsLoaded = true;
+
+    } catch (error) {
+        console.error("CoinGecko fetch error:", error);
+    }
+}
+
+
+/*=================CREATE SKELETONS=================*/
+
+function createSkeletons() {
+
+    Object.values(containers).forEach(container => {
+
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        for (let i = 0; i < 12; i++) {
+
+            const card = document.createElement("div");
+            card.classList.add("asset", "loading");
+
+            card.innerHTML = `
+                <h5>Loading...</h5>
+                <div class="rate">----</div>
+                <div>----</div>
+            `;
+
+            container.appendChild(card);
+        }
     });
 }
-/*=====================NUMBER ANIMATION=====================*/
-function animateNumber(el, start, end, duration) {
-    let startTime = null;
-    function animate(time) {
-        if (!startTime) startTime = time;
-        const progress = Math.min((time - startTime) / duration, 1);
-        const value = start + (end - start) * progress;
-        el.textContent = `${end >= 0 ? "+" : ""}$${value.toFixed(2)}`;
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        }
-    }
-    requestAnimationFrame(animate);
-}
-/*=====================NUMBER ANIMATION=====================*/
-function animateNumber(el, start, end, duration) {
-    let startTime = null;
-    function animate(time) {
-        if (!startTime) startTime = time;
-        const progress = Math.min((time - startTime) / duration, 1);
-        const value = start + (end - start) * progress;
-        el.textContent = `${end >= 0 ? "+" : ""}$${value.toFixed(2)}`;
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        }
-    }
-    requestAnimationFrame(animate);
-} 
 
-/*=================INITIALIZE=================*/
+    /*=================SEARCH LISTENER=================*/
 
-    async function initAnalyticsCard() {
-
-        createSkeletons();
-
-        try {
-
-            const data = await fetchMarketData();
-            const categories = categorize(data);
-
-            render(containers.topBullish, categories.topBullish);
-            render(containers.midBullish, categories.midBullish);
-            render(containers.potential, categories.potential);
-            render(containers.topBearish, categories.topBearish);
-            render(containers.grok, categories.grok);
-            render(containers.long, categories.long);
-            render(containers.short, categories.short);
-
-            analyticsLoaded = true;
-
-        } catch (error) {
-            console.error("CoinGecko fetch error:", error);
-        }
-    }
+    searchInput.addEventListener("input", function () {
+        const query = this.value.trim().toLowerCase();
+        filterAndRender(query);
+    });
 
     /*=================NAV TRIGGER=================*/
 
