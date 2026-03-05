@@ -800,7 +800,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: yellow;
             height: 100px;
             width: 100px;
         }
@@ -1707,6 +1706,86 @@
     }    
     </style>
 
+
+    <style>
+    .analytics-trade-view {
+        padding: 20px;
+    }
+
+    .trade-wrap{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .trade-asset-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .trade-direction {
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .trade-direction.long { color: #00c853; }
+    .trade-direction.short { color: #ff3d00; }
+
+    .trade-price {
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .trade-strategy-box {
+        background: #0f0f0f;
+        border-radius: 14px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .strategy-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+    }
+
+    .trade-input-section input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid var(--bg-border-line);
+        background: #121212;
+        color: white;
+        margin-top: 6px;
+    }
+
+    .trade-units-box {
+        text-align: center;
+        background: #141414;
+        padding: 15px;
+        border-radius: 14px;
+    }
+
+    .execute-trade-btn {
+        width: 100%;
+        padding: 15px;
+        border-radius: 10px;
+        background: var(--accent-primary);
+        color: white;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .execute-trade-btn:hover {
+        opacity: 0.85;
+    }   
+    </style>
+
 </head>
 
 <body>
@@ -1755,6 +1834,7 @@
                     </div>
 
                 </div>
+
 
                 <div class="card" >
                     <div class="card-header">
@@ -1808,7 +1888,6 @@
                     </button>
 
                 </div>
-
 
                 <!--=================TOP ASSETS=================-->
                 <div class="section-title">Top Assets</div>
@@ -2162,6 +2241,56 @@
 
             </div>
 
+            
+            <!--================== GROK TRADE VIEW ================== -->
+                <div  id="grokTradeView" style="display:none;">
+                <div class="trade-wrap">
+                    <div class="trade-asset-header">
+                        <div>
+                            <h3 id="tradeAssetName">BTC / USDT</h3>
+                            <p id="tradeDirection" class="trade-direction long">LONG</p>
+                        </div>
+                        <div class="trade-price">
+                            $<span id="tradeEntryPrice">0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="trade-strategy-box">
+                        <div class="strategy-row">
+                            <span>Take Profit</span>
+                            <span id="tradeTP">$0.00</span>
+                        </div>
+                        <div class="strategy-row">
+                            <span>Stop Loss</span>
+                            <span id="tradeSL">$0.00</span>
+                        </div>
+                        <div class="strategy-row">
+                            <span>Predicted ROI</span>
+                            <span id="tradeROI">0%</span>
+                        </div>
+                    </div>
+
+                    <div class="trade-input-section">
+                        <label>Amount to Invest</label>
+                        <input type="number" id="tradeAmountInput" placeholder="Enter amount" />
+                        <small>Available Balance: <span id="availableBalance">$0.00</span></small>
+                    </div>
+
+                    <div class="trade-units-box">
+                        <strong><span id="tradeUnits">0.0000</span> Units</strong>
+                    </div>
+
+                    <button id="executeTradeBtn" class="execute-trade-btn">
+                        Execute Trade
+                    </button>    
+                </div>
+
+
+                </div>
+            <!--===================GROK TRADE VIEW===================-->
+
+         
+
         
             <!--=================DEPOSIT VIEW=================-->
             <div id="depositView" class="trade-view">
@@ -2319,6 +2448,7 @@
 
 
     <!--========================TOP ASSETS========================-->
+    
     <script>
 
         /*=================DATASET=================*/
@@ -2435,6 +2565,7 @@
 
     </script>
     <!--===========================================================-->
+
 
 
 
@@ -2750,193 +2881,12 @@
     }
 
 
-    /*===========================
-    RENDER TRANSACTIONS
-   ===========================*/
-
-    function renderTransactions(transactions){
-
-        const container = document.getElementById("transactionList");
-        if(!container) return;
-
-        container.innerHTML = "";
-
-        if(transactions.length === 0){
-            container.innerHTML = "<p style='opacity:.6'>No transactions yet.</p>";
-            return;
-        }
-
-        transactions.forEach(tx => {
-
-            let icon = "icons/transfer.png";
-            let amountPrefix = "";
-
-            if(tx.type === "Withdrawal"){
-                icon = "icons/withdraw.png";
-                amountPrefix = "- ";
-            }
-
-            if(tx.type === "Credit"){
-                icon = "icons/transfer.png";
-                amountPrefix = "+ ";
-            }
-
-            if(tx.type === "Debit"){
-                icon = "icons/transfer.png";
-                amountPrefix = "- ";
-            }
-
-            const statusClass = 
-                tx.status === "Completed" ? "status-completed" :
-                tx.status === "Pending" ? "status-pending" :
-                "status-failed";
-
-            const card = document.createElement("div");
-            card.className = "transaction-card";
-            card.innerHTML = `
-                <div class="tx-left">
-                    <div class="tx-icon">
-                        <img src="${icon}">
-                    </div>
-                    <div class="tx-info">
-                        <div class="tx-type">${tx.type}</div>
-                        <div class="tx-date">${tx.date}</div>
-                    </div>
-                </div>
-
-                <div class="tx-right">
-                    <div class="tx-amount">${amountPrefix}${money(tx.amount)}</div>
-                    <div class="tx-network">${tx.method}</div>
-                    <div class="tx-status ${statusClass}">${tx.status}</div>
-                </div>
-            `;
-
-            /* CLICK → OPEN RECEIPT MODAL */
-            card.addEventListener("click",()=>{
-                openTransactionReceipt(tx);
-            });
-
-            container.appendChild(card);
-        });
-    }
 
 
 
 
 
-    /*===========================
-    RENDER DASHBOARD
-   ===========================*/
 
-    function renderDashboard(){
-
-        /* PROFILE */
-        setText("userName", USER_NAME);
-        setText("userEmail", USER_EMAIL);
-        setText("accountStatus", USER_STATUS);
-        setText("profitPercentage", USER_PROFIT_PERCENT)
-        setText("verifiedStatus", (USER_VERIFIED === true || USER_VERIFIED === "true" || USER_VERIFIED == 1) ? "Verified" : "Unverified");
-        setText("country", USER_COUNTRY);
-
-        /* BALANCES */
-        setText("balance", money(USER_TOTAL_BALANCE));
-        setText("profit", money(USER_PROFIT));
-        setText("equity", money(USER_EQUITY));
-        setText("volume", money(USER_VOLUME));
-        setText("capital", money(USER_CAPITAL));
-
-        /* WALLET */
-        setText("walletAddress", USER_WALLET);
-
-        const qr = document.getElementById("walletQR");
-        if(qr){
-            qr.src =
-            "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data="
-            + encodeURIComponent(USER_WALLET);
-        }
-
-        /* DEPOSIT */
-        setInput("depositWallet", USER_WALLET);
-
-        /* WITHDRAW */
-
-        setText("withdrawBalance", money(USER_CAPITAL));
-
-        /* TRANSFER */
-        setInput("transferSenderEmail", USER_EMAIL);
-        setText("transferBalance", money(USER_CAPITAL));
-
-        /* PORTFOLIO CHART */
-        if (typeof renderPortfolioChart === "function") {
-            renderPortfolioChart(USER_PROFIT);
-        }
-
-        if (typeof renderPortfolioDoughnut === "function") {
-            renderPortfolioDoughnut();
-        } 
-        
-    }
-
-
-
-
-    /*===========================
-    RENDER NOTIFICATIONS
-   ===========================*/
-
-    function renderNotifications(notifications){
-
-        const container = document.getElementById("notificationList");
-        if(!container) return;
-
-        container.innerHTML = "";
-
-        if(!notifications || notifications.length === 0){
-            container.innerHTML = "<p style='opacity:.6'>No notifications yet.</p>";
-            updateNotificationBadge(0);
-            return;
-        }
-
-        let unreadCount = 0;
-
-        notifications.forEach(notif => {
-
-            const statusNormalized = notif.status
-                ? notif.status.toString().trim().toLowerCase()
-                : "";
-
-            const isUnread = statusNormalized === "unread";
-
-            if(isUnread) unreadCount++;
-
-            const card = document.createElement("div");
-            card.className = "notification-card " + (isUnread ? "unread" : "");
-
-            card.innerHTML = `
-                <div class="notif-header">
-                    <div class="notif-title">${notif.title}</div>
-                    <div class="read-status-badge ${isUnread ? "badge-unread" : "badge-read"}">
-                        ${isUnread ? "Unread" : "Read"}
-                    </div>
-                </div>
-
-                <div class="notif-message">${notif.message}</div>
-
-                <div class="notification-bottom">
-                    <p class="notif-date">${notif.date}</p>
-                    <p style="color:white;">View</p>
-                </div>
-            `;
-
-            card.addEventListener("click", function(){
-                openNotification(notif, card);
-            });
-
-            container.appendChild(card);
-        });
-
-        updateNotificationBadge(unreadCount);
-    }
 
 
 
@@ -2986,6 +2936,206 @@
 
     </script>
     <!--===============DANGER ZONE BACKEND CODES===============-->
+
+
+
+
+
+    <!--===============RENDER DASHBOARD===============-->    
+    <script>
+
+        function renderDashboard(){
+
+            /* PROFILE */
+            setText("userName", USER_NAME);
+            setText("userEmail", USER_EMAIL);
+            setText("accountStatus", USER_STATUS);
+            setText("profitPercentage", USER_PROFIT_PERCENT)
+            setText("verifiedStatus", (USER_VERIFIED === true || USER_VERIFIED === "true" || USER_VERIFIED == 1) ? "Verified" : "Unverified");
+            setText("country", USER_COUNTRY);
+
+            /* BALANCES */
+            setText("balance", money(USER_TOTAL_BALANCE));
+            setText("profit", money(USER_PROFIT));
+            setText("equity", money(USER_EQUITY));
+            setText("volume", money(USER_VOLUME));
+            setText("capital", money(USER_CAPITAL));
+
+            /* WALLET */
+            setText("walletAddress", USER_WALLET);
+
+            const qr = document.getElementById("walletQR");
+            if(qr){
+                qr.src =
+                "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data="
+                + encodeURIComponent(USER_WALLET);
+            }
+
+            /* DEPOSIT */
+            setInput("depositWallet", USER_WALLET);
+
+            /* WITHDRAW */
+
+            setText("withdrawBalance", money(USER_CAPITAL));
+
+            /* TRANSFER */
+            setInput("transferSenderEmail", USER_EMAIL);
+            setText("transferBalance", money(USER_CAPITAL));
+
+            /* PORTFOLIO CHART */
+            if (typeof renderPortfolioChart === "function") {
+                renderPortfolioChart(USER_PROFIT);
+            }
+
+            if (typeof renderPortfolioDoughnut === "function") {
+                renderPortfolioDoughnut();
+            } 
+            
+        }
+
+    
+    </script>
+    <!--===============================================-->
+
+
+
+
+    <!--==============RENDER NOTIFICATIONS=================--> 
+    <script>
+
+        function renderNotifications(notifications){
+
+            const container = document.getElementById("notificationList");
+            if(!container) return;
+
+            container.innerHTML = "";
+
+            if(!notifications || notifications.length === 0){
+                container.innerHTML = "<p style='opacity:.6'>No notifications yet.</p>";
+                updateNotificationBadge(0);
+                return;
+            }
+
+            let unreadCount = 0;
+
+            notifications.forEach(notif => {
+
+                const statusNormalized = notif.status
+                    ? notif.status.toString().trim().toLowerCase()
+                    : "";
+
+                const isUnread = statusNormalized === "unread";
+
+                if(isUnread) unreadCount++;
+
+                const card = document.createElement("div");
+                card.className = "notification-card " + (isUnread ? "unread" : "");
+
+                card.innerHTML = `
+                    <div class="notif-header">
+                        <div class="notif-title">${notif.title}</div>
+                        <div class="read-status-badge ${isUnread ? "badge-unread" : "badge-read"}">
+                            ${isUnread ? "Unread" : "Read"}
+                        </div>
+                    </div>
+
+                    <div class="notif-message">${notif.message}</div>
+
+                    <div class="notification-bottom">
+                        <p class="notif-date">${notif.date}</p>
+                        <p style="color:white;">View</p>
+                    </div>
+                `;
+
+                card.addEventListener("click", function(){
+                    openNotification(notif, card);
+                });
+
+                container.appendChild(card);
+            });
+
+            updateNotificationBadge(unreadCount);
+        }
+
+    </script>
+    <!--====================================================-->
+
+
+
+
+    <!--============RENDER TRANSACTIONS HISTORY LIST=============== -->
+    <script>
+
+        function renderTransactions(transactions){
+
+            const container = document.getElementById("transactionList");
+            if(!container) return;
+
+            container.innerHTML = "";
+
+            if(transactions.length === 0){
+                container.innerHTML = "<p style='opacity:.6'>No transactions yet.</p>";
+                return;
+            }
+
+            transactions.forEach(tx => {
+
+                let icon = "icons/transfer.png";
+                let amountPrefix = "";
+
+                if(tx.type === "Withdrawal"){
+                    icon = "icons/withdraw.png";
+                    amountPrefix = "- ";
+                }
+
+                if(tx.type === "Credit"){
+                    icon = "icons/transfer.png";
+                    amountPrefix = "+ ";
+                }
+
+                if(tx.type === "Debit"){
+                    icon = "icons/transfer.png";
+                    amountPrefix = "- ";
+                }
+
+                const statusClass = 
+                    tx.status === "Completed" ? "status-completed" :
+                    tx.status === "Pending" ? "status-pending" :
+                    "status-failed";
+
+                const card = document.createElement("div");
+                card.className = "transaction-card";
+                card.innerHTML = `
+                    <div class="tx-left">
+                        <div class="tx-icon">
+                            <img src="${icon}">
+                        </div>
+                        <div class="tx-info">
+                            <div class="tx-type">${tx.type}</div>
+                            <div class="tx-date">${tx.date}</div>
+                        </div>
+                    </div>
+
+                    <div class="tx-right">
+                        <div class="tx-amount">${amountPrefix}${money(tx.amount)}</div>
+                        <div class="tx-network">${tx.method}</div>
+                        <div class="tx-status ${statusClass}">${tx.status}</div>
+                    </div>
+                `;
+
+                /* CLICK → OPEN RECEIPT MODAL */
+                card.addEventListener("click",()=>{
+                    openTransactionReceipt(tx);
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+
+    </script>
+    <!--============RENDER TRANSACTIONS HISTORY LIST=============== -->    
+
 
 
 
@@ -3245,6 +3395,7 @@
 
 
 
+
     <!--==============TOAST EXECUTION/HANDLER CODES==============-->
     <script>
         function showToast(message, type="info"){
@@ -3394,6 +3545,7 @@
             document.getElementById("analyticsModalView").style.display = "none";
             document.getElementById("transactionReceiptView").style.display = "none";
             document.getElementById("notificationDetailsView").style.display = "none";
+            document.getElementById("grokTradeView").style.display = "none";
 
 
             if (type === "notificationDetails") {
@@ -3427,6 +3579,12 @@
                 tradeTitle.innerText = "Transaction Receipt";
                 document.getElementById("transactionReceiptView").style.display = "block";
             }
+
+            if (type === "grokInvest") {
+                tradeTitle.innerText = "Trade Overview";
+                document.getElementById("grokTradeView").style.display = "block";
+            }
+
         }
                 
     </script>
@@ -3558,134 +3716,132 @@
     </script>
 
 
+    <script>
+    function openNotification(notif, card){
 
+        openTradePanel("notificationDetails");
 
+        document.getElementById("notifModalTitle").innerText = notif.title;
+        document.getElementById("notifModalDate").innerText = notif.date;
+        document.getElementById("notifModalMessage").innerText = notif.message;
 
-<script>
-function openNotification(notif, card){
+        const statusNormalized = notif.status
+            ? notif.status.toString().trim().toLowerCase()
+            : "";
 
-    openTradePanel("notificationDetails");
+        if(statusNormalized === "unread"){
 
-    document.getElementById("notifModalTitle").innerText = notif.title;
-    document.getElementById("notifModalDate").innerText = notif.date;
-    document.getElementById("notifModalMessage").innerText = notif.message;
+            // Remove unread styling
+            card.classList.remove("unread");
 
-    const statusNormalized = notif.status
-        ? notif.status.toString().trim().toLowerCase()
-        : "";
+            // Update status badge visually
+            const badge = card.querySelector(".read-status-badge");
+            if(badge){
+                badge.classList.remove("badge-unread");
+                badge.classList.add("badge-read");
+                badge.innerText = "Read";
+            }
 
-    if(statusNormalized === "unread"){
+            // Decrease top notification count
+            decreaseBadge();
 
-        // Remove unread styling
-        card.classList.remove("unread");
+            // Prevent double triggering
+            notif.status = "Read";
 
-        // Update status badge visually
-        const badge = card.querySelector(".read-status-badge");
-        if(badge){
-            badge.classList.remove("badge-unread");
-            badge.classList.add("badge-read");
-            badge.innerText = "Read";
+            // Sync backend
+            markNotificationAsRead(notif.id);
         }
-
-        // Decrease top notification count
-        decreaseBadge();
-
-        // Prevent double triggering
-        notif.status = "Read";
-
-        // Sync backend
-        markNotificationAsRead(notif.id);
     }
-}
-</script>
+    </script>
 
 
-<script>
-function updateNotificationBadge(count){
+    <script>
+    function updateNotificationBadge(count){
 
-    const badge = document.getElementById("notifyCount");
-    if(!badge) return;
+        const badge = document.getElementById("notifyCount");
+        if(!badge) return;
 
-    if(count > 0){
-        badge.style.display = "flex";
-        badge.innerText = count > 99 ? "99+" : count;
-    }else{
-        badge.style.display = "none";
-        badge.innerText = "0";
-    }
-}
-
-function decreaseBadge(){
-
-    const badge = document.getElementById("notifyCount");
-    if(!badge || badge.style.display === "none") return;
-
-    let current = parseInt(badge.innerText) || 0;
-
-    if(current > 1){
-        badge.innerText = current - 1;
-    }else{
-        badge.style.display = "none";
-        badge.innerText = "0";
-    }
-}
-</script>
-
-<script>
-function markNotificationAsRead(notificationId){
-
-    const uid = localStorage.getItem("uid");
-    if(!uid || !notificationId) return;
-
-    fetch(API,{
-        method:"POST",
-        body:JSON.stringify({
-            action:"markNotificationRead",
-            id:notificationId,
-            uid:uid
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        // Optional: you can log success if needed
-    })
-    .catch(err => {
-        console.error("Mark read failed", err);
-    });
-}
-</script>
-
-<script>
-function loadNotifications(){
-
-    const uid = localStorage.getItem("uid");
-    if(!uid) return;
-
-    fetch(API,{
-        method:"POST",
-        body:JSON.stringify({
-            action:"getNotifications",
-            uid:uid
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-
-        if(data.status){
-            renderNotifications(data.notifications);
+        if(count > 0){
+            badge.style.display = "flex";
+            badge.innerText = count > 99 ? "99+" : count;
         }else{
-            updateNotificationBadge(0);
+            badge.style.display = "none";
+            badge.innerText = "0";
         }
+    }
 
-    })
-    .catch(err => {
-        console.error("Notification load error", err);
-        updateNotificationBadge(0);
-    });
-}
+    function decreaseBadge(){
 
-document.addEventListener("DOMContentLoaded", loadNotifications);
-</script>
+        const badge = document.getElementById("notifyCount");
+        if(!badge || badge.style.display === "none") return;
+
+        let current = parseInt(badge.innerText) || 0;
+
+        if(current > 1){
+            badge.innerText = current - 1;
+        }else{
+            badge.style.display = "none";
+            badge.innerText = "0";
+        }
+    }
+    </script>
+
+
+    <script>
+    function markNotificationAsRead(notificationId){
+
+        const uid = localStorage.getItem("uid");
+        if(!uid || !notificationId) return;
+
+        fetch(API,{
+            method:"POST",
+            body:JSON.stringify({
+                action:"markNotificationRead",
+                id:notificationId,
+                uid:uid
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            // Optional: you can log success if needed
+        })
+        .catch(err => {
+            console.error("Mark read failed", err);
+        });
+    }
+    </script>
+
+    <script>
+    function loadNotifications(){
+
+        const uid = localStorage.getItem("uid");
+        if(!uid) return;
+
+        fetch(API,{
+            method:"POST",
+            body:JSON.stringify({
+                action:"getNotifications",
+                uid:uid
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            if(data.status){
+                renderNotifications(data.notifications);
+            }else{
+                updateNotificationBadge(0);
+            }
+
+        })
+        .catch(err => {
+            console.error("Notification load error", err);
+            updateNotificationBadge(0);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", loadNotifications);
+    </script>
 
 
 <!--=====================MARKET ANALYTICS=====================-->
@@ -3849,6 +4005,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `;
 
+            /* CLICK → OPEN RECEIPT MODAL */
+                card.addEventListener("click", () => {
+
+                    const direction = asset.change >= 0 ? "LONG" : "SHORT";
+
+                    populateTradeView({
+                        name: `${asset.symbol} / USDT`,
+                        direction: direction,
+                        entry: asset.price,
+                        tp: targetPrice,
+                        sl: stopLoss,
+                        roi: asset.change
+                    });
+
+                    openTradePanel("grokInvest");
+                });
+
+
             container.appendChild(card);
 
             const roiElem = card.querySelector(".animated-roi");
@@ -3967,7 +4141,54 @@ function createSkeletons() {
 </script>
 <!--=============================================================-->
 
-    
+<script>
+ function populateTradeView(data){
+
+    document.getElementById("tradeAssetName").textContent = data.name;
+
+    const directionElem = document.getElementById("tradeDirection");
+    directionElem.textContent = data.direction;
+
+    directionElem.classList.remove("long","short");
+    directionElem.classList.add(data.direction.toLowerCase());
+
+    document.getElementById("tradeEntryPrice").textContent =
+        Number(data.entry).toLocaleString();
+
+    document.getElementById("tradeTP").textContent =
+        "$" + Number(data.tp).toLocaleString();
+
+    document.getElementById("tradeSL").textContent =
+        "$" + Number(data.sl).toLocaleString();
+
+    document.getElementById("tradeROI").textContent =
+        data.roi.toFixed(2) + "%";
+
+}   
+</script>
+
+<script>
+ document.getElementById("tradeAmountInput").addEventListener("input", function(){
+
+    const amount = parseFloat(this.value) || 0;
+    const entryPrice = parseFloat(
+        document.getElementById("tradeEntryPrice").textContent.replace(/,/g,"")
+    );
+
+    const units = entryPrice ? amount / entryPrice : 0;
+
+    document.getElementById("tradeUnits").textContent = units.toFixed(6);
+
+});   
+</script>
+
+<script>
+ function setAvailableBalance(balance){
+    document.getElementById("availableBalance").textContent =
+        "$" + Number(balance).toLocaleString();
+}   
+</script>
+
 </body>
 
 </html>
