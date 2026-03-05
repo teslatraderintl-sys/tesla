@@ -536,7 +536,8 @@
         }
 
         .action-btn .icon {
-            font-size: 20px;
+            height: 30px;
+            padding: 5px;
         }
 
         .action-btn:hover {
@@ -1412,12 +1413,12 @@
         color:white;
     }
 
-    .portfolio-header h2{
+    .page-header h2{
         font-size:32px;
         font-weight:600;
     }
 
-    .portfolio-header p{
+    .page-header p{
         opacity:.5;
         margin-top:6px;
     }
@@ -1756,17 +1757,17 @@
                 <div class="wallet-actions">
 
                     <button class="action-btn deposit" data-action="deposit">
-                        <span class="icon">⬇</span>
+                        <img class="icon" src="icons/deposit-icon.png" alt="">
                         <span>Deposit</span>
                     </button>
 
                     <button class="action-btn withdraw" data-action="withdraw">
-                        <span class="icon">⬆</span>
+                        <img class="icon" src="icons/withdraw-icon.png" alt="">
                         <span>Withdraw</span>
                     </button>
 
                     <button class="action-btn transfer" data-action="transfer">
-                        <span class="icon">⇄</span>
+                        <img class="icon" src="icons/transfer-icon.png" alt="">
                         <span>Transfer</span>
                     </button>
 
@@ -1907,8 +1908,11 @@
             <!--=================ANALYTICS PAGE=================-->
             <div class="page" id="analytics">
 
-                <div class="section-title" style="width: 100%;padding: 20px 0px;position: sticky;top: 0;z-index: 10;background-color: black;margin-top: 0px;">Crypto Market Signals</div>
-                
+
+                <div class="page-header" style="padding: 10px 0px;">
+                    <h2>Crypto Market Signals</h2>
+                    <p>Capital distribution & return analysis</p>
+                </div>                
 
                 <div class="market-analytics-wrapper">
 
@@ -1976,7 +1980,7 @@
             <div class="page" id="portfolio">
                 <div id="portfolioView" class="portfolio-section">
 
-                    <div class="portfolio-header">
+                    <div class="page-header">
                         <h2>Portfolio Performance</h2>
                         <p>Capital distribution & return analysis</p>
                     </div>
