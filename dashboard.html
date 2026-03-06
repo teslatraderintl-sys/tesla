@@ -1740,10 +1740,11 @@
     .trade-strategy-box {
         background: #0f0f0f;
         border-radius: 14px;
-        padding: 15px;
+        padding: 15px 0px;
         display: flex;
         flex-direction: column;
         gap: 10px;
+        border-bottom: 1px solid var(--bg-border-line);
     }
 
     .strategy-row {
@@ -1764,6 +1765,9 @@
 
     .trade-units-box {
         text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         background: #141414;
         padding: 15px;
         border-radius: 14px;
@@ -1844,21 +1848,21 @@
 
                     <div class="invest-info-wrap">
                         <div class="invest-info-seg">
-                            <p class="invest-info-seg-header">Domant Cap.</p>
+                            <p class="invest-info-seg-header">Cap. Balance</p>
                             <p class="invest-info-value" id="capital">$0.00</p>
                             <div class="invest-info-bar">
                                 <div class="invest-info-bar-1"></div>
                             </div>
                         </div>
                         <div class="invest-info-seg">
-                            <p class="invest-info-seg-header">Active Cap.</p>
+                            <p class="invest-info-seg-header">Staked Cap.</p>
                             <p class="invest-info-value" id="equity">$0.00</p>
                             <div class="invest-info-bar">
                                 <div class="invest-info-bar-2"></div>
                             </div>
                         </div>
                         <div class="invest-info-seg">
-                            <p class="invest-info-seg-header">Profit (RIO)</p>
+                            <p class="invest-info-seg-header"> Total ROI</p>
                             <p class="invest-info-value" id="profit">$0.00</p>
                             <div class="invest-info-bar">
                                 <div class="invest-info-bar-3"></div>
@@ -1978,7 +1982,7 @@
                     <div class="grok-header">
                         <div class="grok-title">
                             <img src="icons/grok_icon.png" alt="" style="height: 40px;">
-                            <span>Grok AI Trade</span>
+                            <span>Grok AI Special Pick</span>
                         </div>
                         <div class="grok-badge">AI Powered</div>
                     </div>
@@ -2024,9 +2028,9 @@
             <div class="page" id="analytics">
 
 
-                <div class="page-header" style="padding: 10px 0px;">
+                <div class="page-header" style="padding: 20px 0px;">
                     <h2>Crypto Market Signals</h2>
-                    <p>Capital distribution & return analysis</p>
+                    <p style="margin-top: 20px;">Grok Ai reads the chart for you in real time and gives you the best strategy to make maximum profit with minimal to no risk.</p>
                 </div> 
                   <!-- ================= SEARCH BAR ================= -->
                 <div class="analytics-search-wrapper">
@@ -2106,9 +2110,9 @@
         <!--=================BOTTOM NAV=================-->
         <div class="bottom-nav">
 
-            <div class="nav-item" data-page="market" data-active="icons/grok_icon.png"
-                data-inactive="icons/grok_icon.png">
-                <img src="icons/grok_icon.png">
+            <div class="nav-item" data-page="market" data-active="icons/tesla_icon.png"
+                data-inactive="icons/tesla_icon.png">
+                <img src="icons/tesla_icon.png" style="height: 35px;width: 35px;">
             </div>
 
             <div class="nav-item" data-page="analytics" data-active="icons/chart-histogram.png"
@@ -2154,7 +2158,7 @@
         <div class="trade-panel">
 
             <div class="trade-header">
-                <h2 id="tradeTitle">Trade</h2>
+                <h2><span id="tradeTitle">Trade</span><span id="tradeTitleSmall" style="color: var(--muted); font-size: 12px;"></span> </h2>
                 <span id="closeTradePanel" style="cursor: pointer;">✕</span>
             </div>
 
@@ -2256,6 +2260,10 @@
                     </div>
 
                     <div class="trade-strategy-box">
+                        <div style="display: flex;gap: 5px;align-items: center;width: 100%;padding: 10px 0px;border-bottom: 1px solid var(--bg-border-line);">
+                            <img src="icons/grok_icon.png" alt="" style="height: 30px;">
+                            <h4>Grok Strategy</h4>  
+                        </div>                
                         <div class="strategy-row">
                             <span>Take Profit</span>
                             <span id="tradeTP">$0.00</span>
@@ -2265,20 +2273,29 @@
                             <span id="tradeSL">$0.00</span>
                         </div>
                         <div class="strategy-row">
-                            <span>Predicted ROI</span>
+                            <span>Price Change</span>
                             <span id="tradeROI">0%</span>
                         </div>
+                        <div class="strategy-row">
+                            <span>Trade Decision</span>
+                            <span id="tradeDecision"></span>
+                        </div>                        
                     </div>
 
                     <div class="trade-input-section">
                         <label>Amount to Invest</label>
                         <input type="number" id="tradeAmountInput" placeholder="Enter amount" />
-                        <small>Available Balance: <span id="availableBalance">$0.00</span></small>
+                    </div>
+
+                    <small>Available Capital Balance: <span id="availableBalance">$0.00</span></small>
+
+                    <div class="trade-units-box">
+                        <strong>Units</strong><strong id="tradeUnits">0.0000</strong>
                     </div>
 
                     <div class="trade-units-box">
-                        <strong><span id="tradeUnits">0.0000</span> Units</strong>
-                    </div>
+                        <strong>Estimated Profit</strong><strong id="estimatedTradeProfit">0.0000</strong>
+                    </div>                    
 
                     <button id="executeTradeBtn" class="execute-trade-btn">
                         Execute Trade
@@ -3500,6 +3517,7 @@
         const tradeOverlay = document.getElementById("tradePanelOverlay");
         const tradeBody = document.getElementById("tradeBody");
         const tradeTitle = document.getElementById("tradeTitle");
+        const tradeTitleSmall = document.getElementById("tradeTitleSmall");
         const closeTradePanel = document.getElementById("closeTradePanel");
 
 
@@ -3530,7 +3548,19 @@
         });
         });
                 
-        closeTradePanel.onclick = () => tradeOverlay.style.display = "none";
+        closeTradePanel.onclick = () => {
+
+            // clear trade amount input
+            document.getElementById("tradeAmountInput").value = "";
+            document.getElementById("tradeTitleSmall").textContent = "";            
+
+            // optionally reset calculated fields
+            document.getElementById("tradeUnits").textContent = "0.000000";
+            document.getElementById("estimatedTradeProfit").textContent = "$0.00";
+
+            // close panel
+            tradeOverlay.style.display = "none";
+        };
 
         /*=================RENDER FUNCTION=================*/
 
@@ -3581,7 +3611,8 @@
             }
 
             if (type === "grokInvest") {
-                tradeTitle.innerText = "Trade Overview";
+                tradeTitle.innerText = "Tesla Trade |";
+                tradeTitleSmall.innerText = " Powered by Grok AI";                
                 document.getElementById("grokTradeView").style.display = "block";
             }
 
@@ -3946,7 +3977,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /*=================RENDER=================*/
 
-    function render(container, list, userPortfolioBalance = 1000) {
+    function render(container, list, userPortfolioBalance = USER_CAPITAL) {
 
         container.innerHTML = "";
 
@@ -4159,28 +4190,85 @@ function createSkeletons() {
         "$" + Number(data.tp).toLocaleString();
 
     document.getElementById("tradeSL").textContent =
-        "$" + Number(data.sl).toLocaleString();
+        "$" + Number(data.sl).toLocaleString(); 
 
     document.getElementById("tradeROI").textContent =
         data.roi.toFixed(2) + "%";
 
+    document.getElementById("availableBalance").textContent =
+       "$" + USER_CAPITAL;   
+
+    /* =========================
+       TRADE DECISION
+    ========================== */
+
+    const decisionElem = document.getElementById("tradeDecision");
+
+    if(data.direction === "LONG"){
+        decisionElem.textContent = "Buy";
+        decisionElem.style.color = "#00e676";
+    } 
+    else if(data.direction === "SHORT"){
+        decisionElem.textContent = "Sell";
+        decisionElem.style.color = "#ff5252";
+    } 
+    else{
+        decisionElem.textContent = "Buy";
+    }       
+
 }   
 </script>
 
+
+
 <script>
- document.getElementById("tradeAmountInput").addEventListener("input", function(){
+document.getElementById("tradeAmountInput").addEventListener("input", function(){
 
     const amount = parseFloat(this.value) || 0;
+
     const entryPrice = parseFloat(
         document.getElementById("tradeEntryPrice").textContent.replace(/,/g,"")
     );
 
+    const roiPercent = parseFloat(
+        document.getElementById("tradeROI").textContent.replace("%","")
+    ) || 0;
+
+    const direction = document.getElementById("tradeDirection").textContent;
+
+    /* =========================
+       CALCULATE UNITS
+    ========================== */
+
     const units = entryPrice ? amount / entryPrice : 0;
 
-    document.getElementById("tradeUnits").textContent = units.toFixed(6);
+    document.getElementById("tradeUnits").textContent =
+        units.toFixed(6);
 
-});   
+
+    /* =========================
+       TRADE DECISION
+    ========================== */
+
+    const decision = direction === "SHORT" ? "Sell" : "Buy";
+    document.getElementById("tradeDecision").textContent = decision;
+
+
+    /* =========================
+       ESTIMATED PROFIT
+       always profit based on recommendation
+    ========================== */
+
+    const predictedProfit = amount * (Math.abs(roiPercent) / 100);
+
+    document.getElementById("estimatedTradeProfit").textContent =
+        "+$" + predictedProfit.toFixed(2);
+
+});
 </script>
+
+
+
 
 <script>
  function setAvailableBalance(balance){
