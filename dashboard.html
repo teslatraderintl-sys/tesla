@@ -124,7 +124,7 @@
             display: flex;
             justify-content: space-between;
             gap: 5px;
-            border: 1px solid var(--border-soft);
+            border: 1px solid var(--bg-border-line);
             margin: 0px 10px;
             border-radius: 100px;
             margin-bottom: 10px;
@@ -2831,38 +2831,6 @@ OPEN TRADES LIST
 
 
 
-
-<!--FETCH MARKET PRICE JSON GLOBAL-->
-<script>
-/*===========================
-GLOBAL MARKET DATA - AUTO REFRESH
-===========================*/
-
-window.allMarketData = {}; // Global object to store live CoinGecko prices
-
-async function fetchMarketData(symbols = []) {
-    if (!symbols.length) return;
-
-    const uniqueSymbols = [...new Set(symbols.map(s => s.toLowerCase()))];
-
-    try {
-        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${uniqueSymbols.join(",")}&vs_currencies=usd`);
-        const data = await res.json();
-        window.allMarketData = data; // store globally for reuse
-    } catch (err) {
-        console.error("Failed to fetch market data:", err);
-    }
-}
-
-// Auto-refresh every 5 seconds
-function startMarketDataAutoRefresh(symbols = []) {
-    fetchMarketData(symbols); // initial fetch
-    setInterval(() => fetchMarketData(symbols), 4000);
-}
-</script>
-<!--==============================-->
-
-
     
 
     <!--==============DANGER ZONE BACKEND CODES=================-->    
@@ -3035,58 +3003,58 @@ function startMarketDataAutoRefresh(symbols = []) {
 
 
 
-/*===========================
-RENDER OPEN TRADES
-===========================*/
+    /*===========================
+    RENDER OPEN TRADES
+    ===========================*/
 
-function renderTrades(trades) {
-    const container = document.getElementById("tradesList");
-    if (!container) return;
+    function renderTrades(trades) {
+        const container = document.getElementById("tradesList");
+        if (!container) return;
 
-    container.innerHTML = "";
+        container.innerHTML = "";
 
-    const openTrades = trades.filter(t => t.status === "Open");
-    if (openTrades.length === 0) {
-        container.innerHTML = `<div class="history-empty">No open trades</div>`;
-        return;
-    }
+        const openTrades = trades.filter(t => t.status === "Open");
+        if (openTrades.length === 0) {
+            container.innerHTML = `<div class="history-empty">No open trades</div>`;
+            return;
+        }
 
-    openTrades.forEach(trade => {
-        const entry = Number(trade.entry);
-        const amount = Number(trade.amount) || 0;             // fetched from backend
-        const estimatedProfit = Number(trade.estimatedProfit) || 0; // fetched from backend
+        openTrades.forEach(trade => {
+            const entry = Number(trade.entry);
+            const amount = Number(trade.amount) || 0;             // fetched from backend
+            const estimatedProfit = Number(trade.estimatedProfit) || 0; // fetched from backend
 
-        const position = trade.direction;
-        const profitColor = estimatedProfit >= 0 ? "#22c55e" : "#ef4444";
+            const position = trade.direction;
+            const profitColor = estimatedProfit >= 0 ? "#22c55e" : "#ef4444";
 
-        const item = document.createElement("div");
-        item.className = "trade-row";
-        item.innerHTML = `
-        <div class="trade-row-up">
-            <div class="trade-left" style="gap: 8px">
-                <div class="trade-asset">${trade.asset}</div>
-                <div class="trade-entry">Price: ${entry.toLocaleString()}</div>
+            const item = document.createElement("div");
+            item.className = "trade-row";
+            item.innerHTML = `
+            <div class="trade-row-up">
+                <div class="trade-left" style="gap: 8px">
+                    <div class="trade-asset">${trade.asset}</div>
+                    <div class="trade-entry">Price: ${entry.toLocaleString()}</div>
+                </div>
+
+                <div class="trade-right" style="display:flex; flex-direction: column; gap: 8px">
+                    <div class="trade-position">${position}</div>
+                    <div class="trade-amount">Invest. $${amount.toLocaleString()}</div>               
+                </div>
+            </div>
+            <div style="width:100%; padding-top: 10px; margin-top: 5px; border-top: 1px solid var(--bg-border-line);display:flex; justify-content: space-between;">
+                <div class="trade-time">${trade.date}</div>            
+                <div class="trade-profit"> <span style="font-size:12px">Est. Profit: </span> <span style="color:${profitColor}; font-size: 17px"> $${estimatedProfit.toLocaleString()}</span>
+                    
+                </div>         
             </div>
 
-            <div class="trade-right" style="display:flex; flex-direction: column; gap: 8px">
-                <div class="trade-position">${position}</div>
-                 <div class="trade-amount">Invest. $${amount.toLocaleString()}</div>               
-            </div>
-        </div>
-        <div style="width:100%; padding-top: 10px; margin-top: 5px; border-top: 1px solid var(--bg-border-line);display:flex; justify-content: space-between;">
-            <div class="trade-time">${trade.date}</div>            
-            <div class="trade-profit"> <span style="font-size:12px">Est. Profit: </span> <span style="color:${profitColor}; font-size: 17px"> $${estimatedProfit.toLocaleString()}</span>
+
+
                 
-            </div>         
-        </div>
-
-
-
-            
-        `;
-        container.appendChild(item);
-    });
-}
+            `;
+            container.appendChild(item);
+        });
+    }
 
 
 
@@ -3132,14 +3100,12 @@ function renderTrades(trades) {
         fetchTransactions();
         fetchNotifications(); // 👈 add this
         fetchTrades();
-        fetchMarketData(symbols);
 
         refreshInterval = setInterval(()=>{
             fetchUser();
             fetchTransactions();
             fetchNotifications(); // 👈 add this
             fetchTrades();
-            fetchMarketData(symbols);
 
         },5000);
     }
