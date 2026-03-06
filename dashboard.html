@@ -142,6 +142,8 @@
         }
 
         .avatar {
+            background-color: #1a1a1a;
+            border: 1px solid var(--bg-border-line);
             width: 45px;
             height: 45px;
             border-radius: 50%;
@@ -170,7 +172,7 @@
         }
 
         .engine-mode, .pro, .verified {
-            background-color: var(--bg-card);
+            background-color: var(--accent-primary);
             border: 1px solid var(--bg-border-line);
             color: white;
         }
@@ -1791,6 +1793,88 @@
     }   
     </style>
 
+<style>
+/*===========================
+OPEN TRADES LIST
+===========================*/
+
+#tradesList{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+/* card row */
+.trade-row{
+    display: flex;
+    flex-direction: column;
+    padding:14px 16px;
+    background:#0f0f0f;
+    border:1px solid rgba(255,255,255,0.05);
+    border-radius:12px;        
+}
+
+.trade-row-up{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* left */
+.trade-left{
+    display:flex;
+    flex-direction:column;
+}
+
+.trade-asset{
+    font-weight:600;
+    font-size:14px;
+}
+
+.trade-time{
+    font-size:12px;
+    color:#888;
+}
+
+/* middle */
+.trade-middle{
+    text-align:center;
+    font-size:12px;
+    color:#aaa;
+}
+
+.trade-entry{
+    margin-bottom:3px;
+}
+
+.trade-current{
+    font-weight:500;
+}
+
+/* right */
+.trade-right{
+    text-align:right;
+}
+
+.trade-position{
+    font-size:12px;
+    color:#999;
+}
+
+.trade-profit{
+    font-size:14px;
+    font-weight:600;
+}
+
+/* empty state */
+
+.history-empty{
+    text-align:center;
+    opacity:.6;
+    padding:20px;
+}    
+</style>
+
 </head>
 
 <body>
@@ -1810,10 +1894,10 @@
                 <div class="avatar"></div>
                 <div class="profile-info">
                     <div style="width: 100%;gap: 10px;display: flex;align-items: center;">
-                        <h3 id="userName">User</h3><img src="icons/verified_icon.png" alt="" style="height: 15px;" id="verifiedStatus">
+                        <h3 id="userName">User</h3><img src="icons/verified_icon.png" alt="" style="height: 15px; display: none;" id="verifiedStatus" >
                     </div>
                     <div class="badges">
-                        <div class="badge engine-mode" id="accountStatus"></div>
+                        <div class="badge engine-mode" id="accountStatus" style="display: none;"></div>
                     </div>
                 </div>
             </div>
@@ -2095,12 +2179,26 @@
                             </div>
 
                             <div style="width: 100%;display: flex; align-items: center; gap: 10px;">
-                                <div style="height: 10px;width: 10px;background: rgba(255,0,0,0.4);"></div><p>Proft (ROI)</p>
+                                <div style="height: 10px;width: 10px;background: rgba(255,0,0,0.4);"></div><p>Profit (ROI)</p>
                             </div>
 
                         </div>
 
                     </div>
+
+                    <div class="history-card">
+
+                        <div class="history-title" style=" width: 100%;padding: 20px 0px;position: sticky;top: 0;background-color: black;z-index: 20; margin-top: 20px;">
+                           Active Trades
+                        </div>
+
+                        <div id="tradesList" class="history-list">
+                            <div class="history-empty">
+                            No trades yet
+                            </div>
+                        </div>
+
+                    </div>                    
 
                 </div>            
             </div>
@@ -2305,7 +2403,7 @@
                         <strong>Estimated Profit</strong><strong id="estimatedTradeProfit">0.0000</strong>
                     </div>                    
 
-                    <button id="executeTradeBtn" class="execute-trade-btn">
+                    <button id="executeTradeBtn" class="execute-trade-btn" onclick="executeTrade()" >
                         Execute Trade
                     </button>    
                 </div>
@@ -2734,6 +2832,37 @@
 
 
 
+<!--FETCH MARKET PRICE JSON GLOBAL-->
+<script>
+/*===========================
+GLOBAL MARKET DATA - AUTO REFRESH
+===========================*/
+
+window.allMarketData = {}; // Global object to store live CoinGecko prices
+
+async function fetchMarketData(symbols = []) {
+    if (!symbols.length) return;
+
+    const uniqueSymbols = [...new Set(symbols.map(s => s.toLowerCase()))];
+
+    try {
+        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${uniqueSymbols.join(",")}&vs_currencies=usd`);
+        const data = await res.json();
+        window.allMarketData = data; // store globally for reuse
+    } catch (err) {
+        console.error("Failed to fetch market data:", err);
+    }
+}
+
+// Auto-refresh every 5 seconds
+function startMarketDataAutoRefresh(symbols = []) {
+    fetchMarketData(symbols); // initial fetch
+    setInterval(() => fetchMarketData(symbols), 4000);
+}
+</script>
+<!--==============================-->
+
+
     
 
     <!--==============DANGER ZONE BACKEND CODES=================-->    
@@ -2885,6 +3014,81 @@
     }
 
 
+    /*===========================
+    FETCH TRADES
+    ===========================*/
+
+    async function fetchTrades(){
+
+        const data = await safeFetch({
+            action:"getTrades",
+            uid:UID
+        });
+
+        if(!data || !data.status){
+            console.error("Failed to fetch trades");
+            return;
+        }
+
+        renderTrades(data.trades || []);
+    }    
+
+
+
+/*===========================
+RENDER OPEN TRADES
+===========================*/
+
+function renderTrades(trades) {
+    const container = document.getElementById("tradesList");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    const openTrades = trades.filter(t => t.status === "Open");
+    if (openTrades.length === 0) {
+        container.innerHTML = `<div class="history-empty">No open trades</div>`;
+        return;
+    }
+
+    openTrades.forEach(trade => {
+        const entry = Number(trade.entry);
+        const amount = Number(trade.amount) || 0;             // fetched from backend
+        const estimatedProfit = Number(trade.estimatedProfit) || 0; // fetched from backend
+
+        const position = trade.direction;
+        const profitColor = estimatedProfit >= 0 ? "#22c55e" : "#ef4444";
+
+        const item = document.createElement("div");
+        item.className = "trade-row";
+        item.innerHTML = `
+        <div class="trade-row-up">
+            <div class="trade-left" style="gap: 8px">
+                <div class="trade-asset">${trade.asset}</div>
+                <div class="trade-entry">Price: ${entry.toLocaleString()}</div>
+            </div>
+
+            <div class="trade-right" style="display:flex; flex-direction: column; gap: 8px">
+                <div class="trade-position">${position}</div>
+                 <div class="trade-amount">Invest. $${amount.toLocaleString()}</div>               
+            </div>
+        </div>
+        <div style="width:100%; padding-top: 10px; margin-top: 5px; border-top: 1px solid var(--bg-border-line);display:flex; justify-content: space-between;">
+            <div class="trade-time">${trade.date}</div>            
+            <div class="trade-profit"> <span style="font-size:12px">Est. Profit: </span> <span style="color:${profitColor}; font-size: 17px"> $${estimatedProfit.toLocaleString()}</span>
+                
+            </div>         
+        </div>
+
+
+
+            
+        `;
+        container.appendChild(item);
+    });
+}
+
+
 
     /*===========================
     FETCH NOTIFICATIONS
@@ -2927,11 +3131,15 @@
         fetchUser();
         fetchTransactions();
         fetchNotifications(); // 👈 add this
+        fetchTrades();
+        fetchMarketData(symbols);
 
         refreshInterval = setInterval(()=>{
             fetchUser();
             fetchTransactions();
             fetchNotifications(); // 👈 add this
+            fetchTrades();
+            fetchMarketData(symbols);
 
         },5000);
     }
@@ -2974,9 +3182,12 @@
             /* PROFILE */
             setText("userName", USER_NAME);
             setText("userEmail", USER_EMAIL);
+            // Assuming USER_STATUS contains the verification status
             setText("accountStatus", USER_STATUS);
-            setText("profitPercentage", USER_PROFIT_PERCENT)
-            setText("verifiedStatus", (USER_VERIFIED === true || USER_VERIFIED === "true" || USER_VERIFIED == 1) ? "Verified" : "Unverified");
+
+            document.getElementById("verifiedStatus").style.display = ((USER_VERIFIED === true || USER_VERIFIED === "true" || USER_VERIFIED == 1) ? "block" : "none");           
+            document.getElementById("accountStatus").style.display = "block";            
+            setText("profitPercentage", USER_PROFIT_PERCENT);
             setText("country", USER_COUNTRY);
 
             /* BALANCES */
@@ -3883,7 +4094,7 @@
     </script>
 
 
-<!--=====================MARKET ANALYTICS=====================-->
+<!--=====================MARKET ANALYTICS LIST POPULATOR=====================-->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -4230,8 +4441,6 @@ function createSkeletons() {
 }   
 </script>
 
-
-
 <script>
 document.getElementById("tradeAmountInput").addEventListener("input", function(){
 
@@ -4276,6 +4485,195 @@ document.getElementById("tradeAmountInput").addEventListener("input", function()
         "+$" + predictedProfit.toFixed(2);
 
 });
+</script>
+
+<script>
+async function executeTrade(){
+
+try{
+
+/* ================================
+   COLLECT ALL MODAL DATA FIRST
+================================ */
+
+const uid = localStorage.getItem("uid") || "";
+
+/* Asset */
+
+const assetName =
+document.getElementById("tradeAssetName").textContent.trim();
+
+/* Direction */
+
+const directionText =
+document.getElementById("tradeDirection").textContent;
+
+const direction = directionText.includes("SHORT")
+? "SHORT"
+: "LONG";
+
+/* Decision */
+
+const decision =
+document.getElementById("tradeDecision").textContent.trim();
+
+/* Entry Price */
+
+const entryPriceText =
+document.getElementById("tradeEntryPrice").textContent;
+
+const entryPrice =
+parseFloat(entryPriceText.replace(/[^0-9.]/g,"")) || 0;
+
+/* Take Profit */
+
+const tpText =
+document.getElementById("tradeTP").textContent;
+
+const takeProfit =
+parseFloat(tpText.replace(/[^0-9.]/g,"")) || 0;
+
+/* Stop Loss */
+
+const slText =
+document.getElementById("tradeSL").textContent;
+
+const stopLoss =
+parseFloat(slText.replace(/[^0-9.]/g,"")) || 0;
+
+/* Amount */
+
+const amountInput =
+document.getElementById("tradeAmountInput").value;
+
+const amount =
+parseFloat(amountInput) || 0;
+
+/* Units */
+
+const unitsText =
+document.getElementById("tradeUnits").textContent;
+
+const units =
+parseFloat(unitsText) || 0;
+
+/* Estimated Profit */
+
+const profitText =
+document.getElementById("estimatedTradeProfit").textContent;
+
+const estimatedProfit =
+parseFloat(profitText.replace(/[^0-9.]/g,"")) || 0;
+
+/* ROI */
+
+const roiText =
+document.getElementById("tradeROI").textContent;
+
+const roi =
+parseFloat(roiText.replace(/[^0-9.-]/g,"")) || 0;
+
+
+/* ================================
+   BUILD CLEAN TRADE OBJECT
+================================ */
+
+const tradeData = {
+
+action:"createTrade",
+
+uid:uid,
+
+asset:assetName,
+
+decision:decision,
+
+direction:direction,
+
+entry:entryPrice,
+
+tp:takeProfit,
+
+sl:stopLoss,
+
+amount:amount,
+
+units:units,
+
+estimatedProfit:estimatedProfit,
+
+roi:roi
+
+};
+
+
+/* ================================
+   VALIDATION
+================================ */
+
+if(!uid){
+alert("User session missing");
+return;
+}
+
+if(!amount || amount <= 0){
+alert("Enter trade amount");
+return;
+}
+
+// NEW: Check if trade amount exceeds user balance
+if(amount > USER_CAPITAL){
+alert("Trade amount cannot exceed your available balance of $" + USER_CAPITAL.toLocaleString());
+return;
+}
+
+
+/* ================================
+   SEND TO GOOGLE APPS SCRIPT
+================================ */
+
+const response = await fetch(API,{
+method:"POST",
+body:JSON.stringify(tradeData)
+});
+
+
+const result = await response.json();
+
+
+/* ================================
+   RESPONSE
+================================ */
+
+if(result.status){
+
+alert("Trade opened successfully");
+
+tradeOverlay.style.display = "none";
+
+/* clear input */
+
+document.getElementById("tradeAmountInput").value="";
+document.getElementById("tradeUnits").textContent="0.000000";
+document.getElementById("estimatedTradeProfit").textContent="$0.00";
+
+}
+else{
+
+console.error(result);
+
+alert("Trade failed");
+
+}
+
+}catch(err){
+
+console.error("Trade Error:",err);
+alert("Trade execution error");
+
+}
+
+}
 </script>
 
 
