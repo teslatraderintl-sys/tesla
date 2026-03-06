@@ -170,12 +170,13 @@
         }
 
         .engine-mode, .pro, .verified {
-            background-color: var(--accent-primary);
+            background-color: var(--bg-card);
+            border: 1px solid var(--bg-border-line);
             color: white;
         }
 
         /*=================NOTIFICATION=================*/
-        .notification {
+        .top-bar-button {
             position: relative;
             width: 42px;
             height: 42px;
@@ -1808,18 +1809,25 @@
             <div class="profile">
                 <div class="avatar"></div>
                 <div class="profile-info">
-                    <h3 id="userName">User</h3>
+                    <div style="width: 100%;gap: 10px;display: flex;align-items: center;">
+                        <h3 id="userName">User</h3><img src="icons/verified_icon.png" alt="" style="height: 15px;" id="verifiedStatus">
+                    </div>
                     <div class="badges">
-                        <div class="badge verified" id="verifiedStatus">--</div>
-                        <div class="badge pro">PRO</div>
-                        <div class="badge engine-mode" id="accountStatus">AI Trading Engine</div>
+                        <div class="badge engine-mode" id="accountStatus"></div>
                     </div>
                 </div>
             </div>
-            <div class="notification" id="notificationBtn">
-                <img src="icons/bell_1.png" alt="" style="height: 20px;">
-                <div class="notify-count" id="notifyCount" style="display: none;"></div>
+            <div style="display: flex;gap: 10px;align-items: center;">
+                <div class="top-bar-button">
+                    <img src="icons/support_icon.png" alt="" style="height: 20px;">
+                    <div class="notify-count" id="supportChartCount" style="display: none;"></div>
+                </div>
+                <div class="top-bar-button" id="notificationBtn">
+                    <img src="icons/bell_1.png" alt="" style="height: 20px;">
+                    <div class="notify-count" id="notifyCount" style="display: none;"></div>
+                </div>      
             </div>
+      
         </div>
 
         <!-- SCROLLABLE CONTENT -->
@@ -4174,11 +4182,12 @@ function createSkeletons() {
 
 <script>
  function populateTradeView(data){
+    const direction = data.direction === "SHORT" ? "Bearish Market" : "Bullish Market";
 
     document.getElementById("tradeAssetName").textContent = data.name;
 
     const directionElem = document.getElementById("tradeDirection");
-    directionElem.textContent = data.direction;
+    directionElem.textContent = data.direction + " (" + direction+ ")";
 
     directionElem.classList.remove("long","short");
     directionElem.classList.add(data.direction.toLowerCase());
@@ -4201,6 +4210,8 @@ function createSkeletons() {
     /* =========================
        TRADE DECISION
     ========================== */
+
+
 
     const decisionElem = document.getElementById("tradeDecision");
 
