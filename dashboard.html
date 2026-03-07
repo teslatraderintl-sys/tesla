@@ -783,800 +783,800 @@
 }
 
 
-        @keyframes sweep {
-            0% {
-                transform: translateX(-60%) translateY(-60%);
+            @keyframes sweep {
+                0% {
+                    transform: translateX(-60%) translateY(-60%);
+                }
+
+                40% {
+                    transform: translateX(60%) translateY(60%);
+                }
+
+                100% {
+                    transform: translateX(60%) translateY(60%);
+                }
+            }
+        </style>
+
+        <style>
+            .qr-image {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100px;
+                width: 100px;
             }
 
-            40% {
-                transform: translateX(60%) translateY(60%);
+
+            .user-portfolio-card {
+                background: var(--card);
+                border-radius: 22px;
+                padding: 22px;
+                margin-top: 10px;
+                border: 1px solid var(--bg-border-line);
             }
 
-            100% {
-                transform: translateX(60%) translateY(60%);
+            .portfolioChart-title-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
             }
+
+            .portfolioChart-box {
+                position: relative;
+                height: 260px;
+            }
+
+            /* Axis */
+            .user-porfolio-axis {
+                position: absolute;
+                right: 0;
+                top: 0;
+                height: 90%;
+                width: 65px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                font-size: 11px;
+                color: #8a8f98;
+                text-align: right;
+                z-index: 1;
+                margin-left: 70px;
+            }
+
+            /* High line limited to portfolioChart area only */
+            .high-line {
+                position: absolute;
+                left: 0;
+                width: calc(100% - 65px);
+                border-top: 1px dashed var(--accent-green);
+                opacity: .5;
+                z-index: 1;
+            }
+
+            .high-label {
+                position: absolute;
+                font-size: 12px;
+                color: #9aa0a6;
+                z-index: 2;
+            }
+
+            /* Blue profit badge ABOVE axis */
+            .high-badge {
+                position: absolute;
+                right: 0;
+                /* overlap onto axis */
+                background: var(--accent-green);
+                padding: 6px 10px;
+                border-radius: 8px;
+                font-size: 11px;
+                font-weight: 600;
+                z-index: 5;
+                /* ensure above scale */
+            }
+
+            #portfolioChart {
+                width: 100%;
+                height: 100%;
+            }
+
+            button:disabled{
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+        </style>
+
+        <style>
+        .toast-container{
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast{
+            padding: 12px 18px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            min-width: 220px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.success{ background:#16a34a; }
+        .toast.error{ background:#dc2626; }
+        .toast.info{ background:#2563eb; }
+
+        @keyframes slideIn{
+            from{ opacity:0; transform:translateX(20px); }
+            to{ opacity:1; transform:translateX(0); }
+        }
+        </style>
+
+        <style>
+        .grok-trade-card{
+            margin-top: 20px;
+            background: var(--card);
+            border: 1px solid var(--bg-border-line);
+            border-radius: 14px;
+            padding: 20px;
+            width: 100%;
+            max-width: 380px;
+            transition: 0.3s ease;
+        }
+
+        .grok-trade-card:hover{
+            border-color: #ff131373;
+            box-shadow: 0 10px 30px #ff3d3d3b;
+        }
+
+        .grok-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .grok-title{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .grok-dot{
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #2563eb;
+            box-shadow: 0 0 10px #2563eb;
+        }
+
+        .grok-badge{
+            font-size: 11px;
+            padding: 4px 8px;
+            background: var(--bg-soft);
+            color: var(--muted);
+            border-radius: 20px;
+        }
+
+        .grok-body{
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .grok-stat{
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .grok-stat span:last-child{
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .bullish{
+            color: #16a34a;
+        }
+
+        .bearish{
+            color: #dc2626;
+        }
+
+        .profit{
+            color: #22c55e;
+        }
+
+        .grok-btn{
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            background: var(--bg-soft);
+            border: var(--bg-border-line) 1px solid;
+            color: #fff;
+            transition: 0.3s ease;
+            position: relative;
+            /* IMPORTANT */           
+            overflow: hidden;
+            /* clips sweep */
+            isolation: isolate;
+            /* prevents bleed stacking issues */
+        }
+
+        .grok-btn:hover{
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .grok-btn:active{
+            transform: translateY(0);
+        }    
+        </style>
+
+        <style>
+
+        /*=================SLIDER CONTAINER=================*/
+
+        .campaign-slider{
+            width:100%;
+            overflow:hidden;
+            position:relative;
+            margin-top:20px;
+        }
+
+        /*=================TRACK=================*/
+
+        .campaign-track{
+            display:flex;
+            transition:transform 0.5s ease;
+        }
+
+        /*=================CARD=================*/
+
+        .campaign-card{
+            min-width:100%;
+            height:180px;
+            background: black;
+            border-radius:14px;
+            border:1px solid rgba(255,255,255,0.06);
+            box-shadow:0 4px 20px rgba(0,0,0,0.35),
+        }
+
+        /*=================DOTS=================*/
+
+        .campaign-dots{
+
+            display:flex;
+            justify-content:center;
+            gap:8px;
+            margin-top:12px;
+
+        }
+
+        .campaign-dot{
+
+            width:6px;
+            height:6px;
+
+            border-radius:50%;
+
+            background:#494949;
+
+            transition:all 0.3s ease;
+        }
+
+        .campaign-dot.active{
+
+            background:#ffffff;
+            width:18px;
+            border-radius:10px;
+
+        }
+
+        /*FIRST CARD (GROK ADD)*/
+            .grok-campaign-card{
+
+            position:relative;
+            height:180px;
+            border-radius:16px;
+            overflow:hidden; /* CLIP EVERYTHING */
+            background:#000; /* FULL BLACK CARD */
+            border:1px solid #777777;
+
+            /* ELON IMAGE BACKGROUND */
+            background-image: url("icons/grok_icon.png"); /* replace later */
+            background-size: cover;
+            background-position: left center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+        }
+
+        /* DARK OVERLAY FOR TEXT VISIBILITY */
+        .grok-campaign-card::before{
+            content:"";
+            position:absolute;
+            inset:0;
+            background:linear-gradient(
+                to right,
+                rgba(0,0,0,0.2) 0%,
+                rgba(0,0,0,0.6) 35%,
+                rgba(0,0,0,0.95) 65%,
+                #000 100%
+            );
+            z-index:1;
+        }
+
+        /* CONTENT WRAPPER */
+        .grok-content{
+            position:relative;
+            z-index:2;
+            height:100%;
+            padding:20px;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items: end;
+            gap:5px;
+            width:100%; 
+            box-sizing:border-box;
+        }
+
+        /* LOGO PLACEHOLDER */
+        .grok-logo-placeholder{
+            width:120px;
+            height:28px;
+            background:#0f0f0f;
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:6px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:12px;
+            color:#666;
+        }
+
+        /* TITLE */
+        .grok-title{
+            font-size:15px;
+            font-weight:600;
+            color:#fff;
+            line-height:1.3;
+            margin:0;
+        }
+
+        /* DESCRIPTION */
+        .grok-description{
+            text-align: right;
+            font-size:12px;
+            color:#b0b0b0;
+            line-height:1.5;
+            margin:0;
+            width: 100%;
+        }
+
+        /* CTA BUTTON */
+        .grok-cta-btn{
+            margin-top:6px;
+            padding:9px 14px;
+            border:none;
+            border-radius:100px;
+            font-size:13px;
+            font-weight:600;
+            cursor:pointer;
+            background: var(--text);
+            color:black;
+            transition:0.3s ease;
+            width: fit-content;
+        }
+
+        .grok-cta-btn:hover{
+            transform:translateY(-2px);
+            box-shadow:0 8px 20px #ff000049;
+        }
+
+        .grok-cta-btn:active{
+            transform:translateY(0);
+        }
+
+        </style>
+
+
+    <style>
+        .transaction-list{
+            display:flex;
+            flex-direction:column;
+            gap:14px;
+            margin-top:15px;
+        }
+
+        .transaction-card{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:14px 16px;
+            border-radius:16px;
+            background: var(--card); /* match your crypto asset card background */
+            border: 1px solid var(--bg-border-line);
+            cursor:pointer;
+            transition:all .2s ease;
+        }
+
+        .transaction-card:hover{
+            transform:translateY(-2px);
+            background:#1f2937;
+        }
+
+        .tx-left{
+            display:flex;
+            align-items:center;
+            gap:14px;
+        }
+
+        .tx-icon{
+            width:48px;
+            height:48px;
+            border-radius:50%;
+            background: var(--bg-soft);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .tx-icon img{
+            width:22px;
+        }
+
+        .tx-info{
+            display:flex;
+            flex-direction:column;
+        }
+
+        .tx-type{
+            font-weight:600;
+            font-size:14px;
+        }
+
+        .tx-date{
+            font-size:12px;
+            opacity:.6;
+        }
+
+        .tx-right{
+            text-align:right;
+            display:flex;
+            flex-direction:column;
+        }
+
+        .tx-amount{
+            font-weight:600;
+            font-size:14px;
+        }
+
+        .tx-network{
+            font-size:12px;
+            opacity:.6;
+        }
+
+        .tx-status{
+            font-size:12px;
+            margin-top:2px;
+        }
+
+        .status-completed{
+            color:#10b981;
+        }
+
+        .status-pending{
+            color:#f59e0b;
+        }
+
+        .status-failed{
+            color:#ef4444;
         }
     </style>
 
     <style>
-        .qr-image {
+        /*=====================================
+        TESLA STYLE FX RECEIPT
+        =====================================*/
+
+        .receipt-box{
+            width:100%;
+            background:none;
+            padding:0;
+            font-family: "Inter", sans-serif;
+        }
+
+        /* HEADER */
+
+        .receipt-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+        }
+
+        .receipt-title{
+            font-size:12px;
+            letter-spacing:2px;
+            opacity:.6;
+        }
+
+        .receipt-id{
+            font-size:13px;
+            margin-top:6px;
+            font-weight:500;
+        }
+
+        /* STATUS BADGE */
+
+        .receipt-status{
+            font-size:12px;
+            font-weight:600;
+            padding:6px 12px;
+            border-radius:20px;
+            letter-spacing:1px;
+        }
+
+        /* dynamic status colors */
+        .status-completed{
+            color:#10b981;
+        }
+                                                                                
+        .status-pending{
+            background:rgba(245,158,11,0.12);
+            color:#f59e0b;
+        }
+
+        .status-failed{
+            background:rgba(239,68,68,0.12);
+            color:#ef4444;
+        }
+
+        /* DIVIDER */
+
+        .receipt-divider{
+            height:1px;
+            background:rgba(255,255,255,0.08);
+            margin:22px 0;
+        }
+
+        /* AMOUNT SECTION */
+
+        .receipt-amount-section{
+            text-align:left;
+        }
+
+        .receipt-amount{
+            font-size:28px;
+            font-weight:600;
+            letter-spacing:1px;
+        }
+
+        .receipt-type{
+            margin-top:6px;
+            font-size:13px;
+            opacity:.6;
+        }
+
+        /* GRID */
+
+        .receipt-grid{
+            display:flex;
+            flex-direction:column;
+            gap:18px;
+        }
+
+        .receipt-row{
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+            font-size:14px;
+        }
+
+        .receipt-row span:first-child{
+            opacity:.5;
+        }
+
+        .receipt-row span:last-child{
+            text-align:right;
+            max-width:60%;
+            word-break:break-word;
+        }
+        </style>
+
+
+        
+        <style>
+        .portfolio-section{
+            padding: 20px 0px;
+            color:white;
+        }
+
+        .page-header h2{
+            font-size:32px;
+            font-weight:600;
+        }
+
+        .page-header p{
+            opacity:.5;
+            margin-top:6px;
+        }
+
+        .portfolio-stats{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:20px;
+            margin-top:40px;
+        }
+
+        .portfolio-card{
+            border:1px solid var(--bg-border-line);
+            border-radius:14px;
+            padding:26px;
+            background:var(--card);
+            transition:.3s ease;
+        }
+
+        .portfolio-card:hover{
+            border-color:rgba(255,0,0,.4);
+        }
+
+        .stat-label{
+            font-size:13px;
+            opacity:.5;
+        }
+
+        .stat-value{
+            display:block;
+            margin-top:10px;
+            font-size:26px;
+            font-weight:600;
+        }
+
+        .profit-value{
+            color: var(--accent-primary);
+        }
+
+        .portfolio-chart-wrap{
+            margin-top:20px;
+            width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100px;
-            width: 100px;
-        }
-
-
-        .user-portfolio-card {
-            background: var(--card);
-            border-radius: 22px;
-            padding: 22px;
-            margin-top: 10px;
             border: 1px solid var(--bg-border-line);
-        }
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            padding: 20px;
+        }   
 
-        .portfolioChart-title-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .portfolioChart-box {
-            position: relative;
-            height: 260px;
-        }
-
-        /* Axis */
-        .user-porfolio-axis {
-            position: absolute;
-            right: 0;
-            top: 0;
-            height: 90%;
-            width: 65px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            font-size: 11px;
-            color: #8a8f98;
-            text-align: right;
-            z-index: 1;
-            margin-left: 70px;
-        }
-
-        /* High line limited to portfolioChart area only */
-        .high-line {
-            position: absolute;
-            left: 0;
-            width: calc(100% - 65px);
-            border-top: 1px dashed var(--accent-green);
-            opacity: .5;
-            z-index: 1;
-        }
-
-        .high-label {
-            position: absolute;
-            font-size: 12px;
-            color: #9aa0a6;
-            z-index: 2;
-        }
-
-        /* Blue profit badge ABOVE axis */
-        .high-badge {
-            position: absolute;
-            right: 0;
-            /* overlap onto axis */
-            background: var(--accent-green);
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 600;
-            z-index: 5;
-            /* ensure above scale */
-        }
-
-        #portfolioChart {
-            width: 100%;
-            height: 100%;
-        }
-
-        button:disabled{
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-    </style>
+        </style>
 
     <style>
-    .toast-container{
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 9999;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .toast{
-        padding: 12px 18px;
-        border-radius: 8px;
-        color: #fff;
-        font-size: 14px;
-        min-width: 220px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        animation: slideIn 0.3s ease;
-    }
-
-    .toast.success{ background:#16a34a; }
-    .toast.error{ background:#dc2626; }
-    .toast.info{ background:#2563eb; }
-
-    @keyframes slideIn{
-        from{ opacity:0; transform:translateX(20px); }
-        to{ opacity:1; transform:translateX(0); }
-    }
-    </style>
-
-    <style>
-    .grok-trade-card{
-        margin-top: 20px;
-        background: var(--card);
-        border: 1px solid var(--bg-border-line);
-        border-radius: 14px;
-        padding: 20px;
-        width: 100%;
-        max-width: 380px;
-        transition: 0.3s ease;
-    }
-
-    .grok-trade-card:hover{
-        border-color: #ff131373;
-        box-shadow: 0 10px 30px #ff3d3d3b;
-    }
-
-    .grok-header{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 18px;
-    }
-
-    .grok-title{
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 600;
-        font-size: 16px;
-        color: #fff;
-    }
-
-    .grok-dot{
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #2563eb;
-        box-shadow: 0 0 10px #2563eb;
-    }
-
-    .grok-badge{
-        font-size: 11px;
-        padding: 4px 8px;
-        background: var(--bg-soft);
-        color: var(--muted);
-        border-radius: 20px;
-    }
-
-    .grok-body{
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-    }
-
-    .grok-stat{
-        display: flex;
-        justify-content: space-between;
-        font-size: 14px;
-        color: #9ca3af;
-    }
-
-    .grok-stat span:last-child{
-        color: #fff;
-        font-weight: 500;
-    }
-
-    .bullish{
-        color: #16a34a;
-    }
-
-    .bearish{
-        color: #dc2626;
-    }
-
-    .profit{
-        color: #22c55e;
-    }
-
-    .grok-btn{
-        margin-top: 10px;
-        padding: 12px;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        font-weight: 600;
-        background: var(--bg-soft);
-        border: var(--bg-border-line) 1px solid;
-        color: #fff;
-        transition: 0.3s ease;
-        position: relative;
-        /* IMPORTANT */           
-        overflow: hidden;
-        /* clips sweep */
-        isolation: isolate;
-        /* prevents bleed stacking issues */
-    }
-
-    .grok-btn:hover{
-        opacity: 0.9;
-        transform: translateY(-2px);
-    }
-
-    .grok-btn:active{
-        transform: translateY(0);
-    }    
-    </style>
-
-    <style>
-
-    /*=================SLIDER CONTAINER=================*/
-
-    .campaign-slider{
-        width:100%;
-        overflow:hidden;
-        position:relative;
-        margin-top:20px;
-    }
-
-    /*=================TRACK=================*/
-
-    .campaign-track{
-        display:flex;
-        transition:transform 0.5s ease;
-    }
-
-    /*=================CARD=================*/
-
-    .campaign-card{
-        min-width:100%;
-        height:180px;
-        background: black;
-        border-radius:14px;
-        border:1px solid rgba(255,255,255,0.06);
-        box-shadow:0 4px 20px rgba(0,0,0,0.35),
-    }
-
-    /*=================DOTS=================*/
-
-    .campaign-dots{
-
-        display:flex;
-        justify-content:center;
-        gap:8px;
-        margin-top:12px;
-
-    }
-
-    .campaign-dot{
-
-        width:6px;
-        height:6px;
-
-        border-radius:50%;
-
-        background:#494949;
-
-        transition:all 0.3s ease;
-    }
-
-    .campaign-dot.active{
-
-        background:#ffffff;
-        width:18px;
-        border-radius:10px;
-
-    }
-
-    /*FIRST CARD (GROK ADD)*/
-        .grok-campaign-card{
-
-        position:relative;
-        height:180px;
-        border-radius:16px;
-        overflow:hidden; /* CLIP EVERYTHING */
-        background:#000; /* FULL BLACK CARD */
-        border:1px solid #777777;
-
-        /* ELON IMAGE BACKGROUND */
-        background-image: url("icons/grok_icon.png"); /* replace later */
-        background-size: cover;
-        background-position: left center;
-        background-repeat: no-repeat;
-        display: flex;
-        flex-direction: column;
-        align-items: end;
-    }
-
-    /* DARK OVERLAY FOR TEXT VISIBILITY */
-    .grok-campaign-card::before{
-        content:"";
-        position:absolute;
-        inset:0;
-        background:linear-gradient(
-            to right,
-            rgba(0,0,0,0.2) 0%,
-            rgba(0,0,0,0.6) 35%,
-            rgba(0,0,0,0.95) 65%,
-            #000 100%
-        );
-        z-index:1;
-    }
-
-    /* CONTENT WRAPPER */
-    .grok-content{
-        position:relative;
-        z-index:2;
-        height:100%;
-        padding:20px;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items: end;
-        gap:5px;
-        width:100%; 
-        box-sizing:border-box;
-    }
-
-    /* LOGO PLACEHOLDER */
-    .grok-logo-placeholder{
-        width:120px;
-        height:28px;
-        background:#0f0f0f;
-        border:1px solid rgba(255,255,255,0.08);
-        border-radius:6px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:12px;
-        color:#666;
-    }
-
-    /* TITLE */
-    .grok-title{
-        font-size:15px;
-        font-weight:600;
-        color:#fff;
-        line-height:1.3;
-        margin:0;
-    }
-
-    /* DESCRIPTION */
-    .grok-description{
-        text-align: right;
-        font-size:12px;
-        color:#b0b0b0;
-        line-height:1.5;
-        margin:0;
-        width: 100%;
-    }
-
-    /* CTA BUTTON */
-    .grok-cta-btn{
-        margin-top:6px;
-        padding:9px 14px;
-        border:none;
-        border-radius:100px;
-        font-size:13px;
-        font-weight:600;
-        cursor:pointer;
-        background: var(--text);
-        color:black;
-        transition:0.3s ease;
-        width: fit-content;
-    }
-
-    .grok-cta-btn:hover{
-        transform:translateY(-2px);
-        box-shadow:0 8px 20px #ff000049;
-    }
-
-    .grok-cta-btn:active{
-        transform:translateY(0);
-    }
-
-    </style>
-
-
-    <style>
-            .transaction-list{
-        display:flex;
-        flex-direction:column;
-        gap:14px;
-        margin-top:15px;
-    }
-
-    .transaction-card{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        padding:14px 16px;
-        border-radius:16px;
-        background: var(--card); /* match your crypto asset card background */
-        border: 1px solid var(--bg-border-line);
-        cursor:pointer;
-        transition:all .2s ease;
-    }
-
-    .transaction-card:hover{
-        transform:translateY(-2px);
-        background:#1f2937;
-    }
-
-    .tx-left{
-        display:flex;
-        align-items:center;
-        gap:14px;
-    }
-
-    .tx-icon{
-        width:48px;
-        height:48px;
-        border-radius:50%;
-        background: var(--bg-soft);
-        display:flex;
-        align-items:center;
-        justify-content:center;
-    }
-
-    .tx-icon img{
-        width:22px;
-    }
-
-    .tx-info{
-        display:flex;
-        flex-direction:column;
-    }
-
-    .tx-type{
-        font-weight:600;
-        font-size:14px;
-    }
-
-    .tx-date{
-        font-size:12px;
-        opacity:.6;
-    }
-
-    .tx-right{
-        text-align:right;
-        display:flex;
-        flex-direction:column;
-    }
-
-    .tx-amount{
-        font-weight:600;
-        font-size:14px;
-    }
-
-    .tx-network{
-        font-size:12px;
-        opacity:.6;
-    }
-
-    .tx-status{
-        font-size:12px;
-        margin-top:2px;
-    }
-
-    .status-completed{
-        color:#10b981;
-    }
-
-    .status-pending{
-        color:#f59e0b;
-    }
-
-    .status-failed{
-        color:#ef4444;
-    }
-    </style>
-
-    <style>
-    /*=====================================
-    TESLA STYLE FX RECEIPT
-   =====================================*/
-
-    .receipt-box{
-        width:100%;
-        background:none;
-        padding:0;
-        font-family: "Inter", sans-serif;
-    }
-
-    /* HEADER */
-
-    .receipt-header{
-        display:flex;
-        justify-content:space-between;
-        align-items:flex-start;
-    }
-
-    .receipt-title{
-        font-size:12px;
-        letter-spacing:2px;
-        opacity:.6;
-    }
-
-    .receipt-id{
-        font-size:13px;
-        margin-top:6px;
-        font-weight:500;
-    }
-
-    /* STATUS BADGE */
-
-    .receipt-status{
-        font-size:12px;
-        font-weight:600;
-        padding:6px 12px;
-        border-radius:20px;
-        letter-spacing:1px;
-    }
-
-    /* dynamic status colors */
-    .status-completed{
-        color:#10b981;
-    }
-                                                                             
-    .status-pending{
-        background:rgba(245,158,11,0.12);
-        color:#f59e0b;
-    }
-
-    .status-failed{
-        background:rgba(239,68,68,0.12);
-        color:#ef4444;
-    }
-
-    /* DIVIDER */
-
-    .receipt-divider{
-        height:1px;
-        background:rgba(255,255,255,0.08);
-        margin:22px 0;
-    }
-
-    /* AMOUNT SECTION */
-
-    .receipt-amount-section{
-        text-align:left;
-    }
-
-    .receipt-amount{
-        font-size:28px;
-        font-weight:600;
-        letter-spacing:1px;
-    }
-
-    .receipt-type{
-        margin-top:6px;
-        font-size:13px;
-        opacity:.6;
-    }
-
-    /* GRID */
-
-    .receipt-grid{
-        display:flex;
-        flex-direction:column;
-        gap:18px;
-    }
-
-    .receipt-row{
-        display:flex;
-        justify-content:space-between;
-        align-items:flex-start;
-        font-size:14px;
-    }
-
-    .receipt-row span:first-child{
-        opacity:.5;
-    }
-
-    .receipt-row span:last-child{
-        text-align:right;
-        max-width:60%;
-        word-break:break-word;
-    }
-    </style>
-
-
-    
-    <style>
-    .portfolio-section{
-        padding: 20px 0px;
-        color:white;
-    }
-
-    .page-header h2{
-        font-size:32px;
-        font-weight:600;
-    }
-
-    .page-header p{
-        opacity:.5;
-        margin-top:6px;
-    }
-
-    .portfolio-stats{
-        display:grid;
-        grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-        gap:20px;
-        margin-top:40px;
-    }
-
-    .portfolio-card{
-        border:1px solid var(--bg-border-line);
-        border-radius:14px;
-        padding:26px;
-        background:var(--card);
-        transition:.3s ease;
-    }
-
-    .portfolio-card:hover{
-        border-color:rgba(255,0,0,.4);
-    }
-
-    .stat-label{
-        font-size:13px;
-        opacity:.5;
-    }
-
-    .stat-value{
-        display:block;
-        margin-top:10px;
-        font-size:26px;
-        font-weight:600;
-    }
-
-    .profit-value{
-        color: var(--accent-primary);
-    }
-
-    .portfolio-chart-wrap{
-        margin-top:20px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid var(--bg-border-line);
-        background-color: var(--bg-card);
-        border-radius: 20px;
-        padding: 20px;
-    }   
-
-    </style>
-
-    <style>
-    .notification-view{
-        height:100dvh;
-        width:100%;
-        max-width:500px;
-        margin:auto;
-        background:var(--bg);
-        display:flex;
-        flex-direction:column;
-        overflow:hidden;
-    }
-
-    .notification-header{
-        padding:15px;
-        display:flex;
-        align-items:center;
-        gap:15px;
-        border-bottom:1px solid rgba(255,255,255,0.05);
-    }
-
-    .notification-header span{
-        cursor:pointer;
-        font-weight:600;
-    }
-
-
- .notification-list{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-    padding: 20px;
-}
-
-.notification-card{
-    background:var(--bg-card);
-    padding:18px;
-    border-radius:12px;
-    border:1px solid #1e1e1e;
-    transition:0.3s;
-    cursor: pointer;
-}
-
-.notification-card.unread{
-    border-left:4px solid var(--accent-primary);
-    background:#151515;
-}
-
-.notification-card:hover{
-    transform:translateY(-3px);
-}
-
-.notif-header{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:8px;
-}
-
-.notif-title{
-    font-weight:600;
-    color:#fff;
-}
-
-.notif-date{
-    font-size:12px;
-    opacity:.6;
-}
-
-.notif-message{
-    font-size:14px;
-    opacity:.5;
-}
-
-.notif-message{
-  display:-webkit-box;
-  -webkit-line-clamp:1;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.notification-bottom{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    border-top: 1px solid var(--bg-border-line);
-    margin-top: 20px;
-    font-size: 12px;
-    padding: 10px 0px 0px 0px;
-}
-
-.read-status-badge{
-    padding: 4px 12px;
-    font-size: 12px;
-    border-radius: 50px; /* pill shape */
-    font-weight: 600;
-    display: inline-block;
-    min-width: 70px;
-    text-align: center;
-}
-
-.badge-unread{
-    background: var(--accent-primary); /* green */
-    color: white;
-}
-
-.badge-read{
-    background: var(--card); /* gray */
-    color: var(--text-muted);
-    border: 1px solid var(--bg-soft);
-}
+                .notification-view{
+                    height:100dvh;
+                    width:100%;
+                    max-width:500px;
+                    margin:auto;
+                    background:var(--bg);
+                    display:flex;
+                    flex-direction:column;
+                    overflow:hidden;
+                }
+
+                .notification-header{
+                    padding:15px;
+                    display:flex;
+                    align-items:center;
+                    gap:15px;
+                    border-bottom:1px solid rgba(255,255,255,0.05);
+                }
+
+                .notification-header span{
+                    cursor:pointer;
+                    font-weight:600;
+                }
+
+
+            .notification-list{
+                display:flex;
+                flex-direction:column;
+                gap:15px;
+                padding: 20px;
+            }
+
+            .notification-card{
+                background:var(--bg-card);
+                padding:18px;
+                border-radius:12px;
+                border:1px solid #1e1e1e;
+                transition:0.3s;
+                cursor: pointer;
+            }
+
+            .notification-card.unread{
+                border-left:4px solid var(--accent-primary);
+                background:#151515;
+            }
+
+            .notification-card:hover{
+                transform:translateY(-3px);
+            }
+
+            .notif-header{
+                display:flex;
+                justify-content:space-between;
+                margin-bottom:8px;
+            }
+
+            .notif-title{
+                font-weight:600;
+                color:#fff;
+            }
+
+            .notif-date{
+                font-size:12px;
+                opacity:.6;
+            }
+
+            .notif-message{
+                font-size:14px;
+                opacity:.5;
+            }
+
+            .notif-message{
+            display:-webkit-box;
+            -webkit-line-clamp:1;
+            -webkit-box-orient:vertical;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            }
+
+            .notification-bottom{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                border-top: 1px solid var(--bg-border-line);
+                margin-top: 20px;
+                font-size: 12px;
+                padding: 10px 0px 0px 0px;
+            }
+
+            .read-status-badge{
+                padding: 4px 12px;
+                font-size: 12px;
+                border-radius: 50px; /* pill shape */
+                font-weight: 600;
+                display: inline-block;
+                min-width: 70px;
+                text-align: center;
+            }
+
+            .badge-unread{
+                background: var(--accent-primary); /* green */
+                color: white;
+            }
+
+            .badge-read{
+                background: var(--card); /* gray */
+                color: var(--text-muted);
+                border: 1px solid var(--bg-soft);
+            }
     </style>
 
     <style>
@@ -1742,7 +1742,6 @@
 
     .trade-strategy-box {
         background: #0f0f0f;
-        border-radius: 14px;
         padding: 15px 0px;
         display: flex;
         flex-direction: column;
@@ -1793,87 +1792,177 @@
     }   
     </style>
 
+    <style>
+    /*===========================
+    OPEN TRADES LIST
+    ===========================*/
+
+    #tradesList{
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+    }
+
+    /* card row */
+    .trade-row{
+        display: flex;
+        flex-direction: column;
+        padding:14px 16px;
+        background:#0f0f0f;
+        border:1px solid rgba(255,255,255,0.05);
+        border-radius:12px;        
+    }
+
+    .trade-row-up{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    /* left */
+    .trade-left{
+        display:flex;
+        flex-direction:column;
+    }
+
+    .trade-asset{
+        font-weight:600;
+        font-size:14px;
+    }
+
+    .trade-time{
+        font-size:12px;
+        color:#888;
+    }
+
+    /* middle */
+    .trade-middle{
+        text-align:center;
+        font-size:12px;
+        color:#aaa;
+    }
+
+    .trade-entry{
+        margin-bottom:3px;
+    }
+
+    .trade-current{
+        font-weight:500;
+    }
+
+    /* right */
+    .trade-right{
+        text-align:right;
+    }
+
+    .trade-position{
+        font-size:12px;
+        color:#999;
+    }
+
+    .trade-profit{
+        font-size:14px;
+        font-weight:600;
+    }
+
+    /* empty state */
+
+    .history-empty{
+        text-align:center;
+        opacity:.6;
+        padding:20px;
+    }    
+    </style>
+
+
 <style>
-/*===========================
-OPEN TRADES LIST
-===========================*/
+    .feed-cards-sections-wrapper{
+        display:flex;
+        flex-direction: column;
+        gap: 80px;
+        padding: 30px 0px;
+    }
 
-#tradesList{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
+    .feed-cards-section{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }   
 
-/* card row */
-.trade-row{
-    display: flex;
-    flex-direction: column;
-    padding:14px 16px;
-    background:#0f0f0f;
-    border:1px solid rgba(255,255,255,0.05);
-    border-radius:12px;        
-}
+      .feed-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
 
-.trade-row-up{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
+    .feed-card {
+      background: #111;
+      padding: 20px;
+      border-radius: 18px;
+      gap:20px
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-/* left */
-.trade-left{
-    display:flex;
-    flex-direction:column;
-}
 
-.trade-asset{
-    font-weight:600;
-    font-size:14px;
-}
+    .feed-card:hover {
+      transform: translateY(-10px);
+    }
 
-.trade-time{
-    font-size:12px;
-    color:#888;
-}
+    /* IMAGE HOLDER */
 
-/* middle */
-.trade-middle{
-    text-align:center;
-    font-size:12px;
-    color:#aaa;
-}
+    .feed-card-img {
+      width: 100%;
+      height: 200px;
+      border-radius: 30px;
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 20px;
+    }
 
-.trade-entry{
-    margin-bottom:3px;
-}
+    /* TEXT */
 
-.trade-current{
-    font-weight:500;
-}
+    .feed-card h3 {
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
 
-/* right */
-.trade-right{
-    text-align:right;
-}
+    .feed-card p {
+      opacity: 0.7;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
 
-.trade-position{
-    font-size:12px;
-    color:#999;
-}
+    /* CTA */
 
-.trade-profit{
-    font-size:14px;
-    font-weight:600;
-}
+    .feed-card-btn {
+      margin-top: auto;
+      padding: 15px;
+      background: #e82127;
+      border: none;
+      color: white;
+      cursor: pointer;
+      width: 100%;
+      font-size: 15px;
+      border-radius: 10px;
 
-/* empty state */
+    }
 
-.history-empty{
-    text-align:center;
-    opacity:.6;
-    padding:20px;
-}    
+    .feed-card-btn:hover {
+      background: white;
+      color: black;
+    }  
 </style>
+
+
+
+
+
+
+
 
 </head>
 
@@ -1902,7 +1991,7 @@ OPEN TRADES LIST
                 </div>
             </div>
             <div style="display: flex;gap: 10px;align-items: center;">
-                <div class="top-bar-button">
+                <div class="top-bar-button"   onclick="window.location.href='support.html'">
                     <img src="icons/support_icon.png" alt="" style="height: 20px;">
                     <div class="notify-count" id="supportChartCount" style="display: none;"></div>
                 </div>
@@ -1917,6 +2006,7 @@ OPEN TRADES LIST
         <!-- SCROLLABLE CONTENT -->
         <div class="content">
 
+            
             <!--=================HOME PAGE=================-->
             <div class="page active" id="home">
 
@@ -2110,11 +2200,137 @@ OPEN TRADES LIST
 
 
             </div>
+            <!--============================================-->
+
+
+
 
             <!--=================MARKET PAGE=================-->
             <div class="page" id="market">
-                <h2 style="color:white;">Market Page</h2>
+                <div class="feed-cards-sections-wrapper">
+                    <div class ="feed-cards-section">
+                        <h2>Smart Investment Solutions</h2>
+                        <div class="feed-cards">
+
+                        <div class="feed-card">
+                            <div class="feed-card-img"
+                            style="background-image:url('https://images.unsplash.com/photo-1621761191319-c6fb62004040')"></div>
+                            <h3>Crypto Trading</h3>
+                            <p>Access next-generation digital asset trading powered by AI analytics. Our system identifies volatility
+                            patterns and executes optimized entries across major crypto markets.</p>
+                            <button class="feed-card-btn">Explore Crypto</button>
+                        </div>
+
+                        <div class="feed-card">
+                            <div class="feed-card-img"
+                            style="background-image:url('https://i.pinimg.com/1200x/9d/64/49/9d6449bc4bd4c6b8dcd04fb785994e0b.jpg')"></div>
+                            <h3>Foreign Exhange Markets</h3>
+                            <p>Trade global currency pairs using predictive Tesla-grade machine intelligence designed to react faster than
+                            traditional institutional strategies.</p>
+                            <button class="feed-card-btn">Start FX Trading</button>
+                        </div>
+
+                        <div class="feed-card">
+                            <div class="feed-card-img"
+                            style="background-image:url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3')"></div>
+                            <h3>Stock Investment</h3>
+                            <p>Invest in high-performance equities with automated risk modeling and portfolio balancing to maximize
+                            long-term growth potential.</p>
+                            <button class="feed-card-btn">View Stocks</button>
+                        </div>
+
+                        <div class="feed-card">
+                            <div class="feed-card-img"
+                            style="background-image:url('https://images.unsplash.com/photo-1677442136019-21780ecad995')"></div>
+                            <h3>AI Automation</h3>
+                            <p>Our AI monitors market sentiment, liquidity flow and macro trends to execute smart trades without emotional
+                            bias.</p>
+                            <button class="feed-card-btn">Activate AI</button>
+                        </div>
+
+                        </div>
+                    </div>                
+
+                    <div class ="feed-cards-section">
+                        <h2>Investment Plans</h2>
+                        <div class="feed-cards">
+
+                        <div class="feed-card animate-feed-card">
+                            <div class="feed-card-img" style="background-image:url('https://images.unsplash.com/photo-1559526324-593bc073d938')">
+                            </div>
+                            <h3>Starter Plan</h3>
+                            <p>Perfect for new investors. Begin your journey with automated AI trading and stable growth strategies.</p>
+                            <button class="feed-card-btn">Get Started</button>
+                        </div>
+
+                        <div class="feed-card animate-feed-card">
+                            <div class="feed-card-img"
+                            style="background-image:url('https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9')"></div>
+                            <h3>Professional Plan</h3>
+                            <p>Advanced portfolio tools, diversified market exposure and enhanced AI trading logic.</p>
+                            <button class="feed-card-btn">Upgrade Now</button>
+                        </div>
+
+                        <div class="feed-card animate-feed-card">
+                            <div class="feed-card-img"
+                            style="background-image:url('https://images.unsplash.com/photo-1573164713988-8665fc963095')"></div>
+                            <h3>Elite Plan</h3>
+                            <p>Institutional-grade trading automation with priority AI intelligence and premium performance insights.</p>
+                            <button class="feed-card-btn">Go Elite</button>
+                        </div>
+
+                        </div>                    
+                    </div> 
+
+                    <div class ="feed-cards-section">
+                        <h2>Tesla Vehicle Investment</h2>
+
+                        <div class="feed-cards">
+
+                        <div class="feed-card">
+                            <div class="feed-card-img"
+                            style="background-image:url('https://images.unsplash.com/photo-1617788138017-80ad40651399')"></div>
+                            <h3>Model 3 Growth Fund</h3>
+                            <p>Invest in the world's most adopted electric sedan driving global EV transition. This portfolio tracks
+                            mass-market expansion and production scalability.</p>
+                            <button class="feed-card-btn">Invest in Model 3</button>
+                        </div>
+
+                        <div class="feed-card">
+                            <div class="feed-card-img"
+                            style="background-image:url('https://i.pinimg.com/736x/34/66/3f/34663f039350b56847ecaa2a833b04f7.jpg')"></div>
+                            <h3>Model Y Expansion</h3>
+                            <p>Back the fastest-growing electric SUV dominating global markets through demand-driven production and
+                            logistics intelligence.</p>
+                            <button class="feed-card-btn">Invest in Model Y</button>
+                        </div>
+
+                        <div class="feed-card">
+                            <div class="feed-card-img"
+                            style="background-image:url('https://i.pinimg.com/736x/3e/eb/92/3eeb921534e29b70178359fd3496d5d2.jpg')"></div>
+                            <h3>Autonomous Fleet</h3>
+                            <p>Gain exposure to Tesla’s future autonomous vehicle network powering AI-driven mobility and next-gen transport
+                            economics.</p>
+                            <button class="feed-card-btn">Invest in Autonomy</button>
+                        </div>
+
+                        <div class="feed-card">
+                            <div class="feed-card-img"
+                            style="background-image:url('https://i.pinimg.com/736x/68/44/cf/6844cf1840f435eff37652cd385a668f.jpg')"></div>
+                            <h3>Cybertruck Vision</h3>
+                            <p>Participate in the disruptive utility EV segment redefining industrial transport and commercial electric
+                            mobility.</p>
+                            <button class="feed-card-btn">Invest in Cybertruck</button>
+                        </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!--============================================-->
+
+
+
 
             <!--=================ANALYTICS PAGE=================-->
             <div class="page" id="analytics">
@@ -2283,249 +2499,249 @@ OPEN TRADES LIST
             <!--=================TRANSACTION RECEIPT VIEW=================-->
             <div id="transactionReceiptView" style="display:none;">
 
-                <div class="receipt-box">
-                    <div style="display: flex; width: 100%;justify-content: center; margin-bottom: 20px;">
-                        <img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="" style="height: 30px;">
-                    </div>
-
-                    <div class="receipt-header">
-                        <div>
-                            <div class="receipt-title">TESLA TRANSACTION RECEIPT</div>
-                            <div class="receipt-id" id="r_txId"></div>
-                        </div>
-                        <div class="receipt-status" id="r_status"></div>
-                    </div>
-
-                    <div class="receipt-divider"></div>
-
-                    <div class="receipt-amount-section">
-                        <div class="receipt-amount" id="r_amount"></div>
-                        <div class="receipt-type" id="r_type"></div>
-                    </div>
-
-                    <div class="receipt-divider"></div>
-
-                    <div class="receipt-grid">
-
-                        <div class="receipt-row">
-                            <span>Network / Method</span>
-                            <span id="r_method"></span>
+                    <div class="receipt-box">
+                        <div style="display: flex; width: 100%;justify-content: center; margin-bottom: 20px;">
+                            <img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="" style="height: 30px;">
                         </div>
 
-                        <div class="receipt-row">
-                            <span>Transaction Details</span>
-                            <span id="r_details"></span>
+                        <div class="receipt-header">
+                            <div>
+                                <div class="receipt-title">TESLA TRANSACTION RECEIPT</div>
+                                <div class="receipt-id" id="r_txId"></div>
+                            </div>
+                            <div class="receipt-status" id="r_status"></div>
                         </div>
 
-                        <div class="receipt-row">
-                            <span>Balance Before</span>
-                            <span id="r_before"></span>
+                        <div class="receipt-divider"></div>
+
+                        <div class="receipt-amount-section">
+                            <div class="receipt-amount" id="r_amount"></div>
+                            <div class="receipt-type" id="r_type"></div>
                         </div>
 
-                        <div class="receipt-row">
-                            <span>Balance After</span>
-                            <span id="r_after"></span>
-                        </div>
+                        <div class="receipt-divider"></div>
 
-                        <div class="receipt-row">
-                            <span>Execution Date</span>
-                            <span id="r_date"></span>
+                        <div class="receipt-grid">
+
+                            <div class="receipt-row">
+                                <span>Network / Method</span>
+                                <span id="r_method"></span>
+                            </div>
+
+                            <div class="receipt-row">
+                                <span>Transaction Details</span>
+                                <span id="r_details"></span>
+                            </div>
+
+                            <div class="receipt-row">
+                                <span>Balance Before</span>
+                                <span id="r_before"></span>
+                            </div>
+
+                            <div class="receipt-row">
+                                <span>Balance After</span>
+                                <span id="r_after"></span>
+                            </div>
+
+                            <div class="receipt-row">
+                                <span>Execution Date</span>
+                                <span id="r_date"></span>
+                            </div>
+
                         </div>
 
                     </div>
 
                 </div>
 
-            </div>
 
+                <!--===============ANALYTIS MODAL VIEW===============-->
+                <div id="analyticsModalView" class="trade-view" style="display:none;">
 
-            <!--===============ANALYTIS MODAL VIEW===============-->
-            <div id="analyticsModalView" class="trade-view" style="display:none;">
+                    <div class="overview-header">
+                        <h3 id="modalAssetName">Bitcoin</h3>
+                        <p id="modalCurrentPrice">$0.00</p>
+                    </div>
 
-                <div class="overview-header">
-                    <h3 id="modalAssetName">Bitcoin</h3>
-                    <p id="modalCurrentPrice">$0.00</p>
+                    <div id="candleChart" style="height:400px; width:100%;"></div>
+
                 </div>
 
-                <div id="candleChart" style="height:400px; width:100%;"></div>
+                
+                <!--================== GROK TRADE VIEW ================== -->
+                <div  id="grokTradeView" style="display:none;">
+                    <div class="trade-wrap">
+                        <div class="trade-asset-header">
+                            <div>
+                                <h3 id="tradeAssetName">BTC / USDT</h3>
+                                <p id="tradeDirection" class="trade-direction long">LONG</p>
+                            </div>
+                            <div class="trade-price">
+                                $<span id="tradeEntryPrice">0.00</span>
+                            </div>
+                        </div>
 
-            </div>
+                        <div class="trade-strategy-box">
+                            <div style="display: flex;gap: 5px;align-items: center;width: 100%;padding: 10px 0px;border-bottom: 1px solid var(--bg-border-line);">
+                                <img src="icons/grok_icon.png" alt="" style="height: 30px;">
+                                <h4>Grok Strategy</h4>  
+                            </div>                
+                            <div class="strategy-row">
+                                <span>Take Profit</span>
+                                <span id="tradeTP">$0.00</span>
+                            </div>
+                            <div class="strategy-row">
+                                <span>Stop Loss</span>
+                                <span id="tradeSL">$0.00</span>
+                            </div>
+                            <div class="strategy-row">
+                                <span>Price Change</span>
+                                <span id="tradeROI">0%</span>
+                            </div>
+                            <div class="strategy-row">
+                                <span>Trade Decision</span>
+                                <span id="tradeDecision"></span>
+                            </div>                        
+                        </div>
+
+                        <div class="trade-input-section">
+                            <label>Amount to Invest</label>
+                            <input type="number" id="tradeAmountInput" placeholder="Enter amount" />
+                        </div>
+
+                        <small>Available Capital Balance: <span id="availableBalance">$0.00</span></small>
+
+                        <div class="trade-units-box">
+                            <strong>Units</strong><strong id="tradeUnits">0.0000</strong>
+                        </div>
+
+                        <div class="trade-units-box">
+                            <strong>Estimated Profit</strong><strong id="estimatedTradeProfit">0.0000</strong>
+                        </div>                    
+
+                        <button id="executeTradeBtn" class="execute-trade-btn" onclick="executeTrade()" >
+                            Execute Trade
+                        </button>    
+                    </div>
+
+
+                </div>
+                <!--===================GROK TRADE VIEW===================-->
 
             
-            <!--================== GROK TRADE VIEW ================== -->
-                <div  id="grokTradeView" style="display:none;">
-                <div class="trade-wrap">
-                    <div class="trade-asset-header">
-                        <div>
-                            <h3 id="tradeAssetName">BTC / USDT</h3>
-                            <p id="tradeDirection" class="trade-direction long">LONG</p>
-                        </div>
-                        <div class="trade-price">
-                            $<span id="tradeEntryPrice">0.00</span>
-                        </div>
+
+            
+                <!--=================DEPOSIT VIEW=================-->
+                <div id="depositView" class="trade-view">
+
+                    <div class="qr-box"><img class="qr-img" id="walletQR" /> </div>
+
+                    <div class="wallet-box"><p id="walletAddress">Loading...</p></div>
+
+                    <button class="copy-btn" onclick="copyWallet()">
+                        Copy Address
+                    </button>
+
+                    <div class="trade-info">
+                        Send only USDT to this address. Deposits are credited after network confirmation.
                     </div>
 
-                    <div class="trade-strategy-box">
-                        <div style="display: flex;gap: 5px;align-items: center;width: 100%;padding: 10px 0px;border-bottom: 1px solid var(--bg-border-line);">
-                            <img src="icons/grok_icon.png" alt="" style="height: 30px;">
-                            <h4>Grok Strategy</h4>  
-                        </div>                
-                        <div class="strategy-row">
-                            <span>Take Profit</span>
-                            <span id="tradeTP">$0.00</span>
-                        </div>
-                        <div class="strategy-row">
-                            <span>Stop Loss</span>
-                            <span id="tradeSL">$0.00</span>
-                        </div>
-                        <div class="strategy-row">
-                            <span>Price Change</span>
-                            <span id="tradeROI">0%</span>
-                        </div>
-                        <div class="strategy-row">
-                            <span>Trade Decision</span>
-                            <span id="tradeDecision"></span>
-                        </div>                        
+                </div>
+
+
+                <!--=================WITHDRAW VIEW=================-->
+                <div id="withdrawView" class="trade-view" style="display:none;">
+
+                    <div class="trade-section">
+                        <label class="trade-label">Asset</label>
+                        <select class="trade-input" id="asset">
+                        <option value="BTC">Bitcoin (BTC)</option>
+                        <option value="ETH">Ethereum (ETH)</option>
+                        <option value="USDT">USDT</option>
+                        </select>
                     </div>
 
-                    <div class="trade-input-section">
-                        <label>Amount to Invest</label>
-                        <input type="number" id="tradeAmountInput" placeholder="Enter amount" />
+                    <div class="trade-section">
+                        <label class="trade-label">Network</label>
+                        <select class="trade-input" id="network">
+                        <option>BTC</option>
+                        <option>ERC20</option>
+                        <option>TRC20</option>
+                        </select>
                     </div>
 
-                    <small>Available Capital Balance: <span id="availableBalance">$0.00</span></small>
-
-                    <div class="trade-units-box">
-                        <strong>Units</strong><strong id="tradeUnits">0.0000</strong>
+                    <div class="trade-section">
+                        <label class="trade-label">Withdrawal Address</label>
+                        <input class="trade-input" id="withdrawAddress" placeholder="Enter wallet address" />
                     </div>
 
-                    <div class="trade-units-box">
-                        <strong>Estimated Profit</strong><strong id="estimatedTradeProfit">0.0000</strong>
-                    </div>                    
+                    <div class="trade-section">
+                        <label class="trade-label">Memo / Tag (Optional)</label>
+                        <input class="trade-input" id="withdrawMemo" placeholder="Enter memo or tag" />
+                    </div>
 
-                    <button id="executeTradeBtn" class="execute-trade-btn" onclick="executeTrade()" >
-                        Execute Trade
-                    </button>    
-                </div>
+                    <div class="trade-section">
+                        <label class="trade-label">Amount (USD)</label>
+                        <div style="width: 100%;display: flex;align-items: center; gap: 20px;">
+                            <input class="trade-input" type="number" id="withdrawAmount" placeholder="0.00" />
+                            <button id="maxWithdraw" type="button" class="max">MAX</button>                    
+                        </div>
 
+                        <div class="trade-info">
+                            Available Balance:
+                            <span id="withdrawBalance">0.00 USD</span>
 
-                </div>
-            <!--===================GROK TRADE VIEW===================-->
-
-         
-
-        
-            <!--=================DEPOSIT VIEW=================-->
-            <div id="depositView" class="trade-view">
-
-                <div class="qr-box"><img class="qr-img" id="walletQR" /> </div>
-
-                <div class="wallet-box"><p id="walletAddress">Loading...</p></div>
-
-                <button class="copy-btn" onclick="copyWallet()">
-                    Copy Address
-                </button>
-
-                <div class="trade-info">
-                    Send only USDT to this address. Deposits are credited after network confirmation.
-                </div>
-
-            </div>
-
-
-            <!--=================WITHDRAW VIEW=================-->
-            <div id="withdrawView" class="trade-view" style="display:none;">
-
-                <div class="trade-section">
-                    <label class="trade-label">Asset</label>
-                    <select class="trade-input" id="asset">
-                    <option value="BTC">Bitcoin (BTC)</option>
-                    <option value="ETH">Ethereum (ETH)</option>
-                    <option value="USDT">USDT</option>
-                    </select>
-                </div>
-
-                <div class="trade-section">
-                    <label class="trade-label">Network</label>
-                    <select class="trade-input" id="network">
-                    <option>BTC</option>
-                    <option>ERC20</option>
-                    <option>TRC20</option>
-                    </select>
-                </div>
-
-                <div class="trade-section">
-                    <label class="trade-label">Withdrawal Address</label>
-                    <input class="trade-input" id="withdrawAddress" placeholder="Enter wallet address" />
-                </div>
-
-                <div class="trade-section">
-                    <label class="trade-label">Memo / Tag (Optional)</label>
-                    <input class="trade-input" id="withdrawMemo" placeholder="Enter memo or tag" />
-                </div>
-
-                <div class="trade-section">
-                    <label class="trade-label">Amount (USD)</label>
-                    <div style="width: 100%;display: flex;align-items: center; gap: 20px;">
-                        <input class="trade-input" type="number" id="withdrawAmount" placeholder="0.00" />
-                        <button id="maxWithdraw" type="button" class="max">MAX</button>                    
+                        </div>
                     </div>
 
                     <div class="trade-info">
-                        Available Balance:
-                        <span id="withdrawBalance">0.00 USD</span>
-
+                        Network Fee: <span id="networkFee">0.00</span><br>
+                        You will receive: <span id="receiveAmount">0.00</span>
                     </div>
+
+                    <button class="trade-confirm" id="withdrawBtn">
+                        Withdraw
+                    </button>
+
                 </div>
 
-                <div class="trade-info">
-                    Network Fee: <span id="networkFee">0.00</span><br>
-                    You will receive: <span id="receiveAmount">0.00</span>
-                </div>
 
-                <button class="trade-confirm" id="withdrawBtn">
-                    Withdraw
-                </button>
+                <!--=================TRANSFER VIEW=================-->
+                <div id="transferView" class="trade-view" style="display:none;">
+
+                    <div class="trade-section">
+                        <label class="trade-label">Your Email</label>
+                        <input class="trade-input"  id="transferSenderEmail" />
+                    </div>
+
+                    <div class="trade-section">
+                        <label class="trade-label">Recipient Email</label>
+                        <input class="trade-input" id="receiverEmail" placeholder="Enter recipient email" />
+                        <div id="receiverStatus" class="status"></div>
+                    </div>
+
+                    <div class="trade-section">
+                        <label class="trade-label">Transfer Amount (USD)</label>
+                        <input class="trade-input" type="number" id="transferAmount" placeholder="0.00" />
+
+                        <div class="trade-info">
+                            Available Balance:
+                            <span id="transferBalance">$0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="trade-section">
+                        <label class="trade-label">Password</label>
+                        <input type="password" class="trade-input" id="transferPassword" placeholder="Enter account password" />
+                    </div>
+
+                    <button type="button" class="trade-confirm" id="transferBtn">
+                        Send Transfer
+                    </button>
+
+                </div>
 
             </div>
-
-
-            <!--=================TRANSFER VIEW=================-->
-            <div id="transferView" class="trade-view" style="display:none;">
-
-                <div class="trade-section">
-                    <label class="trade-label">Your Email</label>
-                    <input class="trade-input"  id="transferSenderEmail" />
-                </div>
-
-                <div class="trade-section">
-                    <label class="trade-label">Recipient Email</label>
-                    <input class="trade-input" id="receiverEmail" placeholder="Enter recipient email" />
-                    <div id="receiverStatus" class="status"></div>
-                </div>
-
-                <div class="trade-section">
-                    <label class="trade-label">Transfer Amount (USD)</label>
-                    <input class="trade-input" type="number" id="transferAmount" placeholder="0.00" />
-
-                    <div class="trade-info">
-                        Available Balance:
-                        <span id="transferBalance">$0.00</span>
-                    </div>
-                </div>
-
-                <div class="trade-section">
-                    <label class="trade-label">Password</label>
-                    <input type="password" class="trade-input" id="transferPassword" placeholder="Enter account password" />
-                </div>
-
-                <button type="button" class="trade-confirm" id="transferBtn">
-                    Send Transfer
-                </button>
-
-            </div>
-
-        </div>
 
     </div>
     <!--=========================================================-->
@@ -3342,7 +3558,7 @@ OPEN TRADES LIST
 
 
     <!--===================TRANSFER HANDER CODES===================-->
-    <script>
+<script>
 
     /*=====================================================
     TRADE PANEL LOGIC (COPY + WITHDRAW + TRANSFER)
@@ -3433,6 +3649,8 @@ OPEN TRADES LIST
         }
     }
         
+
+
 
 /*===========================
     VERIFY RECEIVER EMAIL
@@ -3592,7 +3810,7 @@ OPEN TRADES LIST
 
         });
             
-    </script>
+</script>
     <!--========================================================-->
 
 
@@ -4454,9 +4672,20 @@ document.getElementById("tradeAmountInput").addEventListener("input", function()
 </script>
 
 <script>
+
 async function executeTrade(){
 
+const executeBtn = document.getElementById("executeTradeBtn");
+
 try{
+
+/* ================================
+   BUTTON STATE
+================================ */
+
+executeBtn.disabled = true;
+executeBtn.textContent = "Processing Trade...";
+
 
 /* ================================
    COLLECT ALL MODAL DATA FIRST
@@ -4464,12 +4693,8 @@ try{
 
 const uid = localStorage.getItem("uid") || "";
 
-/* Asset */
-
 const assetName =
 document.getElementById("tradeAssetName").textContent.trim();
-
-/* Direction */
 
 const directionText =
 document.getElementById("tradeDirection").textContent;
@@ -4478,12 +4703,8 @@ const direction = directionText.includes("SHORT")
 ? "SHORT"
 : "LONG";
 
-/* Decision */
-
 const decision =
 document.getElementById("tradeDecision").textContent.trim();
-
-/* Entry Price */
 
 const entryPriceText =
 document.getElementById("tradeEntryPrice").textContent;
@@ -4491,15 +4712,11 @@ document.getElementById("tradeEntryPrice").textContent;
 const entryPrice =
 parseFloat(entryPriceText.replace(/[^0-9.]/g,"")) || 0;
 
-/* Take Profit */
-
 const tpText =
 document.getElementById("tradeTP").textContent;
 
 const takeProfit =
 parseFloat(tpText.replace(/[^0-9.]/g,"")) || 0;
-
-/* Stop Loss */
 
 const slText =
 document.getElementById("tradeSL").textContent;
@@ -4507,15 +4724,11 @@ document.getElementById("tradeSL").textContent;
 const stopLoss =
 parseFloat(slText.replace(/[^0-9.]/g,"")) || 0;
 
-/* Amount */
-
 const amountInput =
 document.getElementById("tradeAmountInput").value;
 
 const amount =
 parseFloat(amountInput) || 0;
-
-/* Units */
 
 const unitsText =
 document.getElementById("tradeUnits").textContent;
@@ -4523,15 +4736,11 @@ document.getElementById("tradeUnits").textContent;
 const units =
 parseFloat(unitsText) || 0;
 
-/* Estimated Profit */
-
 const profitText =
 document.getElementById("estimatedTradeProfit").textContent;
 
 const estimatedProfit =
 parseFloat(profitText.replace(/[^0-9.]/g,"")) || 0;
-
-/* ROI */
 
 const roiText =
 document.getElementById("tradeROI").textContent;
@@ -4541,7 +4750,30 @@ parseFloat(roiText.replace(/[^0-9.-]/g,"")) || 0;
 
 
 /* ================================
-   BUILD CLEAN TRADE OBJECT
+   VALIDATION
+================================ */
+
+if(!uid){
+showToast("User session missing","error");
+resetTradeButton();
+return;
+}
+
+if(!amount || amount <= 0){
+showToast("Enter trade amount","warning");
+resetTradeButton();
+return;
+}
+
+if(amount > USER_CAPITAL){
+showToast("Amount exceeds available balance","error");
+resetTradeButton();
+return;
+}
+
+
+/* ================================
+   BUILD TRADE OBJECT
 ================================ */
 
 const tradeData = {
@@ -4574,35 +4806,13 @@ roi:roi
 
 
 /* ================================
-   VALIDATION
-================================ */
-
-if(!uid){
-alert("User session missing");
-return;
-}
-
-if(!amount || amount <= 0){
-alert("Enter trade amount");
-return;
-}
-
-// NEW: Check if trade amount exceeds user balance
-if(amount > USER_CAPITAL){
-alert("Trade amount cannot exceed your available balance of $" + USER_CAPITAL.toLocaleString());
-return;
-}
-
-
-/* ================================
-   SEND TO GOOGLE APPS SCRIPT
+   SEND API REQUEST
 ================================ */
 
 const response = await fetch(API,{
 method:"POST",
 body:JSON.stringify(tradeData)
 });
-
 
 const result = await response.json();
 
@@ -4613,11 +4823,9 @@ const result = await response.json();
 
 if(result.status){
 
-alert("Trade opened successfully");
+showToast("Trade opened successfully","success");
 
 tradeOverlay.style.display = "none";
-
-/* clear input */
 
 document.getElementById("tradeAmountInput").value="";
 document.getElementById("tradeUnits").textContent="0.000000";
@@ -4626,23 +4834,42 @@ document.getElementById("estimatedTradeProfit").textContent="$0.00";
 }
 else{
 
-console.error(result);
+showToast("Trade failed","error");
 
-alert("Trade failed");
+console.error(result);
 
 }
 
 }catch(err){
 
 console.error("Trade Error:",err);
-alert("Trade execution error");
+
+showToast("Trade execution error","error");
 
 }
+
+/* ================================
+   RESET BUTTON
+================================ */
+
+resetTradeButton();
+
+}
+
+
+/* ================================
+   BUTTON RESET
+================================ */
+
+function resetTradeButton(){
+
+const executeBtn = document.getElementById("executeTradeBtn");
+
+executeBtn.disabled = false;
+executeBtn.textContent = "Execute Trade";
 
 }
 </script>
-
-
 
 
 <script>
@@ -4651,6 +4878,92 @@ alert("Trade execution error");
         "$" + Number(balance).toLocaleString();
 }   
 </script>
+
+
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+
+    entries.forEach(entry => {
+
+    if(entry.isIntersecting){
+
+    const animatedItems = entry.target.querySelectorAll(".animate-feedCard");
+
+    animatedItems.forEach((item, i) => {
+    setTimeout(() => {
+    item.classList.add("show");
+    }, i * 120);
+    });
+
+    }
+
+    });
+
+    },{
+    threshold:0.2
+    });
+
+    document.querySelectorAll("div").forEach(div => {
+    observer.observe(div);
+    });
+  </script>  
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+
+    const ctx = document.getElementById('feedReturnsChart').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [
+          '2012', '2013', '2014', '2015', '2016', '2017',
+          '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'
+        ],
+        datasets: [{
+          label: 'Tesla Growth Index',
+          data: [
+            5, 12, 18, 22, 30, 45,
+            60, 90, 220, 400, 520, 610, 680, 780
+          ],
+          borderColor: '#e50914',
+          backgroundColor: 'rgba(229,9,20,0.1)',
+          borderWidth: 3,
+          tension: 0.4,
+          fill: true,
+          pointRadius: 4,
+          pointBackgroundColor: '#fff'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: { color: 'white' }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#bbb' },
+            grid: { color: 'rgba(255,255,255,0.05)' }
+          },
+          y: {
+            ticks: { color: '#bbb' },
+            grid: { color: 'rgba(255,255,255,0.05)' }
+          }
+        },
+        animation: {
+          duration: 2000,
+          easing: 'easeOutQuart'
+        }
+      }
+    });
+  </script>
+
+
+
 
 </body>
 
