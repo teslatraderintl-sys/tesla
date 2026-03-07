@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -771,7 +770,7 @@
     }
   </style>
 
-  <style>
+<style>
     .record-section{
   padding:120px 8%;
   }
@@ -874,38 +873,37 @@
   }
 
   
-.plan-card.featured::before{
-content:"";
-position:absolute;
-top:-30%;
-left:-30%;
-width:250%;
-height:200%;
-background:linear-gradient(
-135deg,
-rgba(255,255,255,0) 0%,
-rgba(255,255,255,0) 35%,
-rgba(255,255,255,0.18) 50%,
-rgba(255,255,255,0) 65%,
-rgba(255,255,255,0) 100%
-);
-animation:cardSweep 4s ease-in-out infinite;
-pointer-events:none;
-}
+  .plan-card.featured::before{
+  content:"";
+  position:absolute;
+  top:-30%;
+  left:-30%;
+  width:250%;
+  height:200%;
+  background:linear-gradient(
+  135deg,
+  rgba(255,255,255,0) 0%,
+  rgba(255,255,255,0) 35%,
+  rgba(255,255,255,0.18) 50%,
+  rgba(255,255,255,0) 65%,
+  rgba(255,255,255,0) 100%
+  );
+  animation:cardSweep 4s ease-in-out infinite;
+  pointer-events:none;
+  }
 
-@keyframes cardSweep{
-0%{
-transform:translateX(-60%) translateY(-60%) rotate(0deg);
-}
-50%{
-transform:translateX(60%) translateY(60%) rotate(0deg);
-}
-100%{
-transform:translateX(60%) translateY(60%) rotate(0deg);
-}
-}
-
-  </style>
+  @keyframes cardSweep{
+  0%{
+  transform:translateX(-60%) translateY(-60%) rotate(0deg);
+  }
+  50%{
+  transform:translateX(60%) translateY(60%) rotate(0deg);
+  }
+  100%{
+  transform:translateX(60%) translateY(60%) rotate(0deg);
+  }
+  }
+</style>
 
 </head>
 
@@ -940,7 +938,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
     <a href="#" onclick="toggleDrawer()">Plans</a>
     <a href="#" onclick="toggleDrawer()">contact</a>
     <a href="login.html" onclick="toggleDrawer()">Login</a>
-    <a href="#" onclick="toggleDrawer()">Register</a>    
+    <a href="register.html" onclick="toggleDrawer()">Register</a>    
   </div>
 
   <section class="hero">
@@ -966,7 +964,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
         Trade Stocks, Crypto & Forex with Tesla-grade Intelligence
       </p>
 
-      <button class="btn">Start Investing</button>
+      <button class="btn"    onclick="window.location.href='register.html'">Start Investing</button>
 
     </div>
 
@@ -983,7 +981,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
         <h3>Crypto Trading</h3>
         <p>Access next-generation digital asset trading powered by AI analytics. Our system identifies volatility
           patterns and executes optimized entries across major crypto markets.</p>
-        <button class="card-btn">Explore Crypto</button>
+        <button class="card-btn"     onclick="window.location.href='register.html'">Explore Crypto</button>
       </div>
 
       <div class="card animate-card">
@@ -992,7 +990,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
         <h3>Foreign Exhange Markets</h3>
         <p>Trade global currency pairs using predictive Tesla-grade machine intelligence designed to react faster than
           traditional institutional strategies.</p>
-        <button class="card-btn">Start FX Trading</button>
+        <button class="card-btn"     onclick="window.location.href='register.html'">Start FX Trading</button>
       </div>
 
       <div class="card animate-card">
@@ -1001,7 +999,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
         <h3>Stock Investment</h3>
         <p>Invest in high-performance equities with automated risk modeling and portfolio balancing to maximize
           long-term growth potential.</p>
-        <button class="card-btn">View Stocks</button>
+        <button class="card-btn"     onclick="window.location.href='register.html'">View Stocks</button>
       </div>
 
       <div class="card animate-card">
@@ -1010,7 +1008,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
         <h3>AI Automation</h3>
         <p>Our AI monitors market sentiment, liquidity flow and macro trends to execute smart trades without emotional
           bias.</p>
-        <button class="card-btn">Activate AI</button>
+        <button class="card-btn"     onclick="window.location.href='register.html'">Activate AI</button>
       </div>
 
     </div>
@@ -1026,7 +1024,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
         </div>
         <h3>Starter Plan</h3>
         <p>Perfect for new investors. Begin your journey with automated AI trading and stable growth strategies.</p>
-        <button class="card-btn">Get Started</button>
+        <button class="card-btn"     onclick="window.location.href='register.html'">Get Started</button>
       </div>
 
       <div class="card animate-card">
@@ -1034,7 +1032,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
           style="background-image:url('https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9')"></div>
         <h3>Professional Plan</h3>
         <p>Advanced portfolio tools, diversified market exposure and enhanced AI trading logic.</p>
-        <button class="card-btn">Upgrade Now</button>
+        <button class="card-btn"     onclick="window.location.href='register.html'">Upgrade Now</button>
       </div>
 
       <div class="card animate-card">
@@ -1042,7 +1040,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
           style="background-image:url('https://images.unsplash.com/photo-1573164713988-8665fc963095')"></div>
         <h3>Elite Plan</h3>
         <p>Institutional-grade trading automation with priority AI intelligence and premium performance insights.</p>
-        <button class="card-btn">Go Elite</button>
+        <button class="card-btn"     onclick="window.location.href='register.html'">Go Elite</button>
       </div>
 
     </div>
@@ -1059,7 +1057,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
         <h3>Model 3 Growth Fund</h3>
         <p>Invest in the world's most adopted electric sedan driving global EV transition. This portfolio tracks
           mass-market expansion and production scalability.</p>
-        <button class="card-btn">Invest in Model 3</button>
+        <button class="card-btn"     onclick="window.location.href='register.html'">Invest in Model 3</button>
       </div>
 
       <div class="card animate-card">
@@ -1068,7 +1066,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
         <h3>Model Y Expansion</h3>
         <p>Back the fastest-growing electric SUV dominating global markets through demand-driven production and
           logistics intelligence.</p>
-        <button class="card-btn">Invest in Model Y</button>
+        <button class="card-btn"     onclick="window.location.href='register.html'">Invest in Model Y</button>
       </div>
 
       <div class="card animate-card">
@@ -1077,7 +1075,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
         <h3>Autonomous Fleet</h3>
         <p>Gain exposure to Tesla’s future autonomous vehicle network powering AI-driven mobility and next-gen transport
           economics.</p>
-        <button class="card-btn">Invest in Autonomy</button>
+        <button class="card-btn"     onclick="window.location.href='register.html'">Invest in Autonomy</button>
       </div>
 
       <div class="card animate-card">
@@ -1086,13 +1084,13 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
         <h3>Cybertruck Vision</h3>
         <p>Participate in the disruptive utility EV segment redefining industrial transport and commercial electric
           mobility.</p>
-        <button class="card-btn">Invest in Cybertruck</button>
+        <button class="card-btn"     onclick="window.location.href='register.html'">Invest in Cybertruck</button>
       </div>
 
     </div>
   </section>
 
-  <section class="record-section">
+<section class="record-section">
 
   <div class="record-article">
 
@@ -1147,7 +1145,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
 
   </div>
 
-  </section>
+</section>
 
 
   <section class="board">
@@ -1727,7 +1725,7 @@ transform:translateX(60%) translateY(60%) rotate(0deg);
   </script>
 
 
-</body>
 
+</body>
 
 </html>
