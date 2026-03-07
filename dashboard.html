@@ -657,17 +657,33 @@
             word-break: break-all;
             margin-bottom: 10px;
             color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .copy-btn {
-            width: 100%;
+            width: fit-content;
             padding: 10px;
             border-radius: 12px;
-            background: #e82127;
+            background: var(--accent-primary);
             border: none;
             color: white;
             font-weight: 600;
+            word-break: keep-all;
             cursor: pointer;
+        }
+
+        .execute-deposit-btn{
+            margin-top:15px;
+            width:100%;
+            padding:14px;
+            background: var(--accent-primary);
+            border:none;
+            border-radius:8px;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
         }
 
         /* Info Text */
@@ -1466,6 +1482,7 @@
 
         </style>
 
+    
     <style>
                 .notification-view{
                     height:100dvh;
@@ -2634,13 +2651,39 @@
                 <!--=================DEPOSIT VIEW=================-->
                 <div id="depositView" class="trade-view">
 
-                    <div class="qr-box"><img class="qr-img" id="walletQR" /> </div>
+                    <div class="qr-box">
+                        <img class="qr-img" id="walletQR"/>
+                    </div>
 
-                    <div class="wallet-box"><p id="walletAddress">Loading...</p></div>
+                    <div class="wallet-box">
+                        <p id="walletAddress" style="flex:1;text-align: center">Loading...</p>
+                        <button class="copy-btn" onclick="copyWallet()">
+                            Copy Address
+                        </button>                        
+                    </div>
 
-                    <button class="copy-btn" onclick="copyWallet()">
-                        Copy Address
-                    </button>
+
+
+                    <!-- DEPOSIT AMOUNT -->
+                    <div style="margin-top:20px">
+                        <input 
+                            id="depositAmount"
+                            type="number"
+                            placeholder="Enter deposit amount (USDT)"
+                            style="
+                            width:100%;
+                            padding:12px;
+                            border-radius:8px;
+                            border:1px solid #333;
+                            background:#111;
+                            color:#fff;
+                            font-size:16px;
+                            "
+                        >
+                    </div>
+
+                    <!-- EXECUTE DEPOSIT -->
+                    <button onclick="executeDeposit()" class="execute-deposit-btn" id="depositBtn">Execute Deposit Order</button>
 
                     <div class="trade-info">
                         Send only USDT to this address. Deposits are credited after network confirmation.
@@ -3352,6 +3395,51 @@
     </script>
     <!--===============DANGER ZONE BACKEND CODES===============-->
 
+    <script>
+        /*===========================
+        EXECUTE DEPOSIT
+        ===========================*/
+
+        async function executeDeposit(){
+
+            const btn = document.getElementById("depositBtn");
+            const amount = Number(document.getElementById("depositAmount").value);
+
+            if(!amount || amount <= 0){
+                showToast("Enter valid deposit amount","error");
+                return;
+            }
+
+            // show processing
+            if(btn){
+                btn.disabled = true;
+                btn.textContent = "Processing...";
+            }
+
+            const data = await safeFetch({
+                action:"createDepositOrder",
+                uid:UID,
+                amount:amount
+            });
+
+            // restore button
+            if(btn){
+                btn.disabled = false;
+                btn.textContent = "Execute Deposit Order";
+            }
+
+            if(!data || !data.status){
+                showToast("Deposit order failed","error");
+                return;
+            }
+
+            showToast("Deposit order submitted","success");
+
+            document.getElementById("depositAmount").value = "";
+        }
+
+    </script>
+
 
 
 
@@ -3652,7 +3740,7 @@
 
 
 
-/*===========================
+    /*===========================
     VERIFY RECEIVER EMAIL
    ===========================*/
 
@@ -3811,7 +3899,7 @@
         });
             
 </script>
-    <!--========================================================-->
+   <!--========================================================-->
 
 
 
@@ -4576,53 +4664,53 @@ function createSkeletons() {
 <!--=============================================================-->
 
 <script>
- function populateTradeView(data){
-    const direction = data.direction === "SHORT" ? "Bearish Market" : "Bullish Market";
+    function populateTradeView(data){
+        const direction = data.direction === "SHORT" ? "Bearish Market" : "Bullish Market";
 
-    document.getElementById("tradeAssetName").textContent = data.name;
+        document.getElementById("tradeAssetName").textContent = data.name;
 
-    const directionElem = document.getElementById("tradeDirection");
-    directionElem.textContent = data.direction + " (" + direction+ ")";
+        const directionElem = document.getElementById("tradeDirection");
+        directionElem.textContent = data.direction + " (" + direction+ ")";
 
-    directionElem.classList.remove("long","short");
-    directionElem.classList.add(data.direction.toLowerCase());
+        directionElem.classList.remove("long","short");
+        directionElem.classList.add(data.direction.toLowerCase());
 
-    document.getElementById("tradeEntryPrice").textContent =
-        Number(data.entry).toLocaleString();
+        document.getElementById("tradeEntryPrice").textContent =
+            Number(data.entry).toLocaleString();
 
-    document.getElementById("tradeTP").textContent =
-        "$" + Number(data.tp).toLocaleString();
+        document.getElementById("tradeTP").textContent =
+            "$" + Number(data.tp).toLocaleString();
 
-    document.getElementById("tradeSL").textContent =
-        "$" + Number(data.sl).toLocaleString(); 
+        document.getElementById("tradeSL").textContent =
+            "$" + Number(data.sl).toLocaleString(); 
 
-    document.getElementById("tradeROI").textContent =
-        data.roi.toFixed(2) + "%";
+        document.getElementById("tradeROI").textContent =
+            data.roi.toFixed(2) + "%";
 
-    document.getElementById("availableBalance").textContent =
-       "$" + USER_CAPITAL;   
+        document.getElementById("availableBalance").textContent =
+        "$" + USER_CAPITAL;   
 
-    /* =========================
-       TRADE DECISION
-    ========================== */
+        /* =========================
+        TRADE DECISION
+        ========================== */
 
 
 
-    const decisionElem = document.getElementById("tradeDecision");
+        const decisionElem = document.getElementById("tradeDecision");
 
-    if(data.direction === "LONG"){
-        decisionElem.textContent = "Buy";
-        decisionElem.style.color = "#00e676";
-    } 
-    else if(data.direction === "SHORT"){
-        decisionElem.textContent = "Sell";
-        decisionElem.style.color = "#ff5252";
-    } 
-    else{
-        decisionElem.textContent = "Buy";
-    }       
+        if(data.direction === "LONG"){
+            decisionElem.textContent = "Buy";
+            decisionElem.style.color = "#00e676";
+        } 
+        else if(data.direction === "SHORT"){
+            decisionElem.textContent = "Sell";
+            decisionElem.style.color = "#ff5252";
+        } 
+        else{
+            decisionElem.textContent = "Buy";
+        }       
 
-}   
+    }   
 </script>
 
 <script>
@@ -4673,202 +4761,202 @@ document.getElementById("tradeAmountInput").addEventListener("input", function()
 
 <script>
 
-async function executeTrade(){
+    async function executeTrade(){
 
-const executeBtn = document.getElementById("executeTradeBtn");
+    const executeBtn = document.getElementById("executeTradeBtn");
 
-try{
+    try{
 
-/* ================================
-   BUTTON STATE
-================================ */
+    /* ================================
+    BUTTON STATE
+    ================================ */
 
-executeBtn.disabled = true;
-executeBtn.textContent = "Processing Trade...";
+    executeBtn.disabled = true;
+    executeBtn.textContent = "Processing Trade...";
 
 
-/* ================================
-   COLLECT ALL MODAL DATA FIRST
-================================ */
+    /* ================================
+    COLLECT ALL MODAL DATA FIRST
+    ================================ */
 
-const uid = localStorage.getItem("uid") || "";
+    const uid = localStorage.getItem("uid") || "";
 
-const assetName =
-document.getElementById("tradeAssetName").textContent.trim();
+    const assetName =
+    document.getElementById("tradeAssetName").textContent.trim();
 
-const directionText =
-document.getElementById("tradeDirection").textContent;
+    const directionText =
+    document.getElementById("tradeDirection").textContent;
 
-const direction = directionText.includes("SHORT")
-? "SHORT"
-: "LONG";
+    const direction = directionText.includes("SHORT")
+    ? "SHORT"
+    : "LONG";
 
-const decision =
-document.getElementById("tradeDecision").textContent.trim();
+    const decision =
+    document.getElementById("tradeDecision").textContent.trim();
 
-const entryPriceText =
-document.getElementById("tradeEntryPrice").textContent;
+    const entryPriceText =
+    document.getElementById("tradeEntryPrice").textContent;
 
-const entryPrice =
-parseFloat(entryPriceText.replace(/[^0-9.]/g,"")) || 0;
+    const entryPrice =
+    parseFloat(entryPriceText.replace(/[^0-9.]/g,"")) || 0;
 
-const tpText =
-document.getElementById("tradeTP").textContent;
+    const tpText =
+    document.getElementById("tradeTP").textContent;
 
-const takeProfit =
-parseFloat(tpText.replace(/[^0-9.]/g,"")) || 0;
+    const takeProfit =
+    parseFloat(tpText.replace(/[^0-9.]/g,"")) || 0;
 
-const slText =
-document.getElementById("tradeSL").textContent;
+    const slText =
+    document.getElementById("tradeSL").textContent;
 
-const stopLoss =
-parseFloat(slText.replace(/[^0-9.]/g,"")) || 0;
+    const stopLoss =
+    parseFloat(slText.replace(/[^0-9.]/g,"")) || 0;
 
-const amountInput =
-document.getElementById("tradeAmountInput").value;
+    const amountInput =
+    document.getElementById("tradeAmountInput").value;
 
-const amount =
-parseFloat(amountInput) || 0;
+    const amount =
+    parseFloat(amountInput) || 0;
 
-const unitsText =
-document.getElementById("tradeUnits").textContent;
+    const unitsText =
+    document.getElementById("tradeUnits").textContent;
 
-const units =
-parseFloat(unitsText) || 0;
+    const units =
+    parseFloat(unitsText) || 0;
 
-const profitText =
-document.getElementById("estimatedTradeProfit").textContent;
+    const profitText =
+    document.getElementById("estimatedTradeProfit").textContent;
 
-const estimatedProfit =
-parseFloat(profitText.replace(/[^0-9.]/g,"")) || 0;
+    const estimatedProfit =
+    parseFloat(profitText.replace(/[^0-9.]/g,"")) || 0;
 
-const roiText =
-document.getElementById("tradeROI").textContent;
+    const roiText =
+    document.getElementById("tradeROI").textContent;
 
-const roi =
-parseFloat(roiText.replace(/[^0-9.-]/g,"")) || 0;
+    const roi =
+    parseFloat(roiText.replace(/[^0-9.-]/g,"")) || 0;
 
 
-/* ================================
-   VALIDATION
-================================ */
+    /* ================================
+    VALIDATION
+    ================================ */
 
-if(!uid){
-showToast("User session missing","error");
-resetTradeButton();
-return;
-}
+    if(!uid){
+    showToast("User session missing","error");
+    resetTradeButton();
+    return;
+    }
 
-if(!amount || amount <= 0){
-showToast("Enter trade amount","warning");
-resetTradeButton();
-return;
-}
+    if(!amount || amount <= 0){
+    showToast("Enter trade amount","warning");
+    resetTradeButton();
+    return;
+    }
 
-if(amount > USER_CAPITAL){
-showToast("Amount exceeds available balance","error");
-resetTradeButton();
-return;
-}
+    if(amount > USER_CAPITAL){
+    showToast("Amount exceeds available balance","error");
+    resetTradeButton();
+    return;
+    }
 
 
-/* ================================
-   BUILD TRADE OBJECT
-================================ */
+    /* ================================
+    BUILD TRADE OBJECT
+    ================================ */
 
-const tradeData = {
+    const tradeData = {
 
-action:"createTrade",
+    action:"createTrade",
 
-uid:uid,
+    uid:uid,
 
-asset:assetName,
+    asset:assetName,
 
-decision:decision,
+    decision:decision,
 
-direction:direction,
+    direction:direction,
 
-entry:entryPrice,
+    entry:entryPrice,
 
-tp:takeProfit,
+    tp:takeProfit,
 
-sl:stopLoss,
+    sl:stopLoss,
 
-amount:amount,
+    amount:amount,
 
-units:units,
+    units:units,
 
-estimatedProfit:estimatedProfit,
+    estimatedProfit:estimatedProfit,
 
-roi:roi
+    roi:roi
 
-};
+    };
 
 
-/* ================================
-   SEND API REQUEST
-================================ */
+    /* ================================
+    SEND API REQUEST
+    ================================ */
 
-const response = await fetch(API,{
-method:"POST",
-body:JSON.stringify(tradeData)
-});
+    const response = await fetch(API,{
+    method:"POST",
+    body:JSON.stringify(tradeData)
+    });
 
-const result = await response.json();
+    const result = await response.json();
 
 
-/* ================================
-   RESPONSE
-================================ */
+    /* ================================
+    RESPONSE
+    ================================ */
 
-if(result.status){
+    if(result.status){
 
-showToast("Trade opened successfully","success");
+    showToast("Trade opened successfully","success");
 
-tradeOverlay.style.display = "none";
+    tradeOverlay.style.display = "none";
 
-document.getElementById("tradeAmountInput").value="";
-document.getElementById("tradeUnits").textContent="0.000000";
-document.getElementById("estimatedTradeProfit").textContent="$0.00";
+    document.getElementById("tradeAmountInput").value="";
+    document.getElementById("tradeUnits").textContent="0.000000";
+    document.getElementById("estimatedTradeProfit").textContent="$0.00";
 
-}
-else{
+    }
+    else{
 
-showToast("Trade failed","error");
+    showToast("Trade failed","error");
 
-console.error(result);
+    console.error(result);
 
-}
+    }
 
-}catch(err){
+    }catch(err){
 
-console.error("Trade Error:",err);
+    console.error("Trade Error:",err);
 
-showToast("Trade execution error","error");
+    showToast("Trade execution error","error");
 
-}
+    }
 
-/* ================================
-   RESET BUTTON
-================================ */
+    /* ================================
+    RESET BUTTON
+    ================================ */
 
-resetTradeButton();
+    resetTradeButton();
 
-}
+    }
 
 
-/* ================================
-   BUTTON RESET
-================================ */
+    /* ================================
+    BUTTON RESET
+    ================================ */
 
-function resetTradeButton(){
+    function resetTradeButton(){
 
-const executeBtn = document.getElementById("executeTradeBtn");
+    const executeBtn = document.getElementById("executeTradeBtn");
 
-executeBtn.disabled = false;
-executeBtn.textContent = "Execute Trade";
+    executeBtn.disabled = false;
+    executeBtn.textContent = "Execute Trade";
 
-}
+    }
 </script>
 
 
@@ -4876,7 +4964,7 @@ executeBtn.textContent = "Execute Trade";
  function setAvailableBalance(balance){
     document.getElementById("availableBalance").textContent =
         "$" + Number(balance).toLocaleString();
-}   
+    }   
 </script>
 
 
