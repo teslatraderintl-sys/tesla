@@ -4,1727 +4,384 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tesla Investment & Stocks</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>Create Account</title>
 
   <style>
+    :root {
+      --bg: #000;
+      --card: #0a0a0a;
+      --border: rgba(255, 255, 255, .08);
+      --text: #fff;
+      --muted: #aaa;
+      --red: #e82127;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+      font-family: "Segoe UI", Arial, sans-serif;
     }
 
     body {
-      background: #0a0a0a;
-      color: white;
-      overflow-x: hidden;
-    }
-
-    header {
-      position: fixed;
-      width: 100%;
-      top: 0;
-      left: 0;
+      background: var(--bg);
+      color: var(--text);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 60px;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(10px);
-      z-index: 999;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      color: white;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    nav a {
-      color: white;
-      margin-left: 25px;
-      text-decoration: none;
-      font-size: 14px;
-      transition: 0.3s;
-    }
-
-    nav a:hover {
-      color: #e82127;
-    }
-
-    .hero {
-      height: 100vh;
-      position: relative;
-      display: flex;
-      align-items: center;
       justify-content: center;
-      text-align: center;
-      overflow: hidden;
+      align-items: center;
+      min-height: 100dvh;
     }
 
-    .slide {
-      position: absolute;
+    /* CONTAINER */
+    .wrapper {
       width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      opacity: 0;
-      transition: 1s ease-in-out;
-    }
-
-    .slide.active {
-      opacity: 1;
-    }
-
-    .overlay {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), #0a0a0a);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 900px;
-    }
-
-    .hero h1 {
-      font-size: 52px;
-      margin-bottom: 20px;
-      animation: fadeUp 1s ease forwards;
-    }
-
-    .hero p {
-      opacity: 0.8;
-      margin-bottom: 30px;
-    }
-
-    .btn {
-      padding: 14px 30px;
-      background: #e82127;
-      border: none;
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: white;
-      color: black;
-    }
-
-    section {
-      padding: 120px 60px;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 40px;
-      margin-top: 60px;
-    }
-
-    .card {
-      background: #111;
+      max-width: 420px;
       padding: 20px;
+    }
+
+    /* CARD */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 18px;
-      height: 480px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-
-      .animate-card{
-      opacity:0;
-      transform:translateY(60px) scale(0.95);
-      transition:0.8s cubic-bezier(.2,.8,.2,1);
-      }
-
-      .animate-card.show{
-      opacity:1;
-      transform:translateY(0) scale(1);
-      }
-
-    .card:hover {
-      transform: translateY(-10px);
-    }
-
-    /* IMAGE HOLDER */
-
-    .card-img {
-      width: 100%;
-      height: 200px;
-      border-radius: 30px;
-      background-size: cover;
-      background-position: center;
-      margin-bottom: 20px;
-    }
-
-    /* TEXT */
-
-    .card h3 {
-      margin-bottom: 10px;
-      font-size: 20px;
-    }
-
-    .card p {
-      opacity: 0.7;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    /* CTA */
-
-    .card-btn {
-      margin-top: auto;
-      padding: 12px;
-      background: #e82127;
-      border: none;
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .card-btn:hover {
-      background: white;
-      color: black;
-    }
-
-    footer {
-      background: #000;
-      padding: 60px;
-      text-align: center;
-      opacity: 0.7;
-    }
-
-    @keyframes fadeUp {
-      from {
-        transform: translateY(40px);
-        opacity: 0
-      }
-
-      to {
-        transform: translateY(0);
-        opacity: 1
-      }
-    }
-
-
-    /* MOBILE NAV */
-
-    .menu-btn {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-    }
-
-    .menu-btn span {
-      width: 25px;
-      height: 2px;
-      background: white;
-      margin: 5px 0;
-      transition: 0.4s;
-    }
-
-    /* Drawer */
-
-    .mobile-drawer {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 80%;
-      height: 100%;
-      background: rgba(10, 10, 10, 0.95);
+      padding: 28px;
       backdrop-filter: blur(20px);
-      padding: 80px 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-      transition: 0.5s;
-      z-index: 1000;
-    }
-
-    .mobile-drawer a {
-      color: white;
-      text-decoration: none;
-      font-size: 18px;
-      opacity: 0;
-      transform: translateX(30px);
-      transition: 0.4s;
-    }
-
-    .mobile-drawer.open {
-      right: 0;
-    }
-
-    .mobile-drawer.open a {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    /* Overlay */
-
-    .drawer-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.4s;
-      z-index: 999;
-    }
-
-    .drawer-overlay.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    /* Responsive */
-
-    @media(max-width:900px) {
-
-      nav {
-        display: none;
-      }
-
-      .menu-btn {
-        display: flex;
-      }
-
-      header {
-        padding: 20px;
-      }
-
-      section {
-        padding: 100px 25px;
-      }
-
-      .hero h1 {
-        font-size: 34px;
-      }
-
-    }
-
-
-    .hero-content h1,
-    .hero-content p {
-      transition: 0.6s ease;
-    }
-
-    .fade-out {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    .fade-in {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-
-    .hero-content h1 {
-      transition: 0.8s cubic-bezier(.2, .8, .2, 1);
-    }
-
-    .hero-content p {
-      transition: 1s cubic-bezier(.2, .8, .2, 1);
-    }
-  </style>
-
-  <style>
-    .btn {
-      position: relative;
       overflow: hidden;
-      transition: 0.4s;
-      animation: btnPulse 3s infinite ease-in-out;
     }
 
-    /* Pulse Glow */
-
-    @keyframes btnPulse {
-      0% {
-        box-shadow: 0 0 0px #e82127;
-        transform: scale(1);
-      }
-
-      50% {
-        box-shadow: 0 0 25px #e82127;
-        transform: scale(1.05);
-      }
-
-      100% {
-        box-shadow: 0 0 0px #e82127;
-        transform: scale(1);
-      }
+    /* TITLE */
+    h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
     }
 
-    /* Energy Sweep */
+    .sub {
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
 
-    .btn::before {
-      content: "";
+    /* FIELD */
+    .field {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 12px;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .helper {
+      font-size: 13px;
+      color: #e11d48;
+      min-height: 18px;
+      margin-bottom: 10px;
+    }
+
+    /* PASSWORD WRAP */
+    .pass-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .eye {
       position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-      animation: btnSweep 3s infinite;
-    }
-
-    @keyframes btnSweep {
-      0% {
-        left: -100%;
-      }
-
-      50% {
-        left: 100%;
-      }
-
-      100% {
-        left: 100%;
-      }
-    }
-
-    /* Slide Reaction Animation */
-
-    .btn.launch {
-      animation: btnLaunch 0.6s ease;
-    }
-
-    @keyframes btnLaunch {
-      0% {
-        transform: scale(0.8) rotate(-2deg);
-        opacity: 0.6;
-      }
-
-      50% {
-        transform: scale(1.15) rotate(2deg);
-        opacity: 1;
-      }
-
-      100% {
-        transform: scale(1);
-      }
-    }
-  </style>
-
-
-  <style>
-    .footer {
-      background: #050505;
-      padding: 80px 60px 40px;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 40px;
-      margin-bottom: 40px;
-    }
-
-    .footer-col h3 {
-      margin-bottom: 15px;
-      font-size: 16px;
-    }
-
-    .footer-logo {
-      letter-spacing: 3px;
-      margin-bottom: 10px;
-    }
-
-    .footer-col p {
-      opacity: 0.6;
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
-    .footer-col a {
-      display: block;
-      color: white;
-      opacity: 0.6;
-      text-decoration: none;
-      margin-bottom: 8px;
-      font-size: 14px;
-      transition: 0.3s;
-    }
-
-    .footer-col a:hover {
-      opacity: 1;
-      color: #e82127;
-    }
-
-    .footer-col input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      border: none;
-      background: #111;
-      color: white;
-    }
-
-    .footer-btn {
-      width: 100%;
-      padding: 10px;
-      background: #e82127;
-      border: none;
-      color: white;
+      right: 14px;
+      top: 45%;
+      transform: translateY(-50%);
+      width: 20px;
       cursor: pointer;
-      transition: 0.3s;
     }
 
-    .footer-btn:hover {
-      background: white;
-      color: black;
+    /* SELECT */
+    select.field {
+      appearance: none;
     }
 
-    .footer-bottom {
-      border-top: 1px solid #222;
-      padding-top: 20px;
-      text-align: center;
-      opacity: 0.5;
-      font-size: 13px;
-    }
-
-    /* MOBILE */
-
-    @media(max-width:900px) {
-
-      .footer {
-        padding: 60px 25px 30px;
-      }
-
-    }
-  </style>
-
-
-  <style>
-    .social-proof {
-      padding: 100px 0;
-      overflow: hidden;
-    }
-
-    .social-proof h2 {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .testimonial-wrapper {
-      overflow: hidden;
-      position: relative;
-    }
-
-    .testimonial-track {
+    /* CHECKBOX */
+    .check {
       display: flex;
-      gap: 30px;
-      animation: scrollLeft 8s linear infinite;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
     }
 
-    @keyframes scrollLeft {
-      0% {
-        transform: translateX(0);
-      }
-
-      100% {
-        transform: translateX(-50%);
-      }
-    }
-
-    .testimonial-card {
-      min-width: 320px;
-      background: #111;
-      padding: 30px;
-      border-radius: 18px;
-      position: relative;
-    }
-
-    .testimonial-card p {
-      opacity: 0.8;
-      font-size: 14px;
-      line-height: 1.6;
-      margin: 20px 0;
-    }
-
-    .testimonial-card h4 {
-      opacity: 0.6;
-      font-size: 13px;
-    }
-
-    .quote {
-      position: absolute;
-      font-size: 60px;
-      color: #e82127;
-      font-weight: bold;
-    }
-
-    .quote.top {
-      top: 5px;
-      left: 15px;
-    }
-
-    .quote.bottom {
-      bottom: 5px;
-      right: 15px;
-    }
-
-    /* MOBILE */
-
-    @media(max-width:900px) {
-
-      .testimonial-card {
-        min-width: 260px;
-      }
-
-    }
-  </style>
-
-
-
-  <style>
-    .board {
-      padding: 120px 60px;
-      text-align: center;
-    }
-
-    .board-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 40px;
-      margin-top: 60px;
-    }
-
-    .board-card {
-      background: #111;
-      border-radius: 20px;
-      overflow: hidden;
-      transition: 0.5s;
-      position: relative;
-    }
-
-    .board-card:hover {
-      transform: translateY(-10px) scale(1.02);
-    }
-
-    .board-img {
-      height: 320px;
-      background-size: cover;
-      background-position: center;
-    }
-
-    .board-info {
-      background: #e82127;
+    /* BUTTON */
+    .btn {
+      width: 100%;
       padding: 15px;
-      color: white;
-    }
-
-    .board-info h3 {
-      margin-bottom: 5px;
-    }
-
-    .board-info span {
-      opacity: 0.8;
-      font-size: 14px;
-    }
-
-    /* MOBILE */
-
-    @media(max-width:900px) {
-
-      .board {
-        padding: 80px 25px;
-      }
-
-      .board-img {
-        height: 260px;
-      }
-
-    }
-  </style>
-
-
-  <style>
-    .core-features {
-      padding: 120px 60px;
-    }
-
-    .core-article {
-      max-width: 800px;
-      margin: auto;
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .core-article p {
-      opacity: 0.7;
-      margin-bottom: 15px;
-      line-height: 1.7;
-    }
-
-    .core-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-    }
-
-    .core-card {
-      background: #111;
-      border-radius: 18px;
-      overflow: hidden;
-      padding-bottom: 20px;
-      transition: 0.4s;
-    }
-
-    .core-card:hover {
-      transform: translateY(-8px);
-    }
-
-    .core-img {
-      height: 180px;
-      background-size: cover;
-      background-position: center;
-      margin-bottom: 15px;
-    }
-
-    .core-card h3 {
-      margin: 0 15px 10px;
-    }
-
-    .core-card p {
-      margin: 0 15px;
-      opacity: 0.7;
-      font-size: 14px;
-    }
-
-    /* MOBILE */
-
-    @media(max-width:900px) {
-
-      .core-features {
-        padding: 80px 25px;
-      }
-
-    }
-  </style>
-
-
-  <style>
-    .profit-section {
-      padding: 100px 8%;
-      background: #0a0a0a;
-      text-align: center;
-    }
-
-    .profit-title {
-      font-size: 38px;
-      color: white;
-      margin-bottom: 20px;
-    }
-
-    .profit-text {
-      max-width: 800px;
-      margin: auto;
-      color: #bbb;
-      line-height: 1.7;
-      margin-bottom: 60px;
-    }
-
-    .graph-container {
-      background: #111;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 0 40px rgba(255, 0, 0, 0.15);
-    }
-
-    .growth-stat {
-      margin-top: 30px;
-      font-size: 26px;
+      background: var(--red);
+      border: none;
+      border-radius: 14px;
+      color: #fff;
       font-weight: 600;
-      color: #e50914;
-      animation: pulseGrowth 2s infinite;
+      cursor: pointer;
+      margin-top: 16px;
+      position: relative;
+      overflow: hidden;
     }
 
-    @keyframes pulseGrowth {
-      0% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.1);
-      }
-
-      100% {
-        transform: scale(1);
-      }
+    .btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
     }
+
+
+
+    .sub a {
+      color: #e82127;
+      text-decoration: none;
+    }
+
+
+    /* ENERGY SWEEP */
+
+    .card::before{
+    content:"";
+    position:absolute;
+    top:-50%;
+    left:-150%;
+    width:300%;
+    height:250%;
+    background:linear-gradient(
+    135deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0) 35%,
+    rgba(255,255,255,0.12) 50%,
+    rgba(255,255,255,0) 65%,
+    rgba(255,255,255,0) 100%
+    );
+    animation:sweep 8s infinite;
+    pointer-events:none;
+    }
+
+    @keyframes sweep{
+    0%{transform:translateX(-60%) translateY(-60%);}
+    40%{transform:translateX(60%) translateY(60%);}
+    100%{transform:translateX(60%) translateY(60%);}
+    }   
+
   </style>
-
-<style>
-    .record-section{
-  padding:120px 8%;
-  }
-
-  .record-article{
-  max-width:800px;
-  margin:auto;
-  text-align:center;
-  margin-bottom:60px;
-  }
-
-  .record-article p{
-  opacity:0.7;
-  margin-bottom:15px;
-  line-height:1.7;
-  }
-
-  .record-cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:30px;
-  }
-
-  .record-card{
-  background:#111;
-  padding:30px;
-  border-radius:16px;
-  transition:0.3s;
-  }
-
-  .record-card:hover{
-  transform:translateY(-8px);
-  }
-  </style>
-
-  <style>
-    .plans-section{
-  padding:120px 8%;
-  text-align:center;
-  }
-
-  .plans-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:30px;
-  margin-top:50px;
-  }
-
-  .plan-card{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  background:#111;
-  padding:40px;
-  border-radius:18px;
-  transition:0.4s;
-  height: 400px;
-  cursor: pointer;
-  }
-
-  .plan-card:hover{
-  transform:translateY(-10px);
-  }
-
-  .plan-card h4{
-  color:#e82127;
-  margin:15px 0;
-  }
-
-  .plan-card ul{
-  list-style:none;
-  margin:20px 0;
-  padding:0;
-  }
-
-  .plan-card ul li{
-  margin-bottom:10px;
-  opacity:0.7;
-  }
-
-  .plan-btn{
-  padding:12px 20px;
-  background:#e82127;
-  border:none;
-  color:white;
-  cursor:pointer;
-  transition:0.3s;
-  }
-
-  .plan-btn:hover{
-  background:white;
-  color:black;
-  }
-
-  .featured{
-  border:2px solid #e82127;
-  transform:scale(1.05);
-  overflow: hidden;
-  }
-
-  
-  .plan-card.featured::before{
-  content:"";
-  position:absolute;
-  top:-30%;
-  left:-30%;
-  width:250%;
-  height:200%;
-  background:linear-gradient(
-  135deg,
-  rgba(255,255,255,0) 0%,
-  rgba(255,255,255,0) 35%,
-  rgba(255,255,255,0.18) 50%,
-  rgba(255,255,255,0) 65%,
-  rgba(255,255,255,0) 100%
-  );
-  animation:cardSweep 4s ease-in-out infinite;
-  pointer-events:none;
-  }
-
-  @keyframes cardSweep{
-  0%{
-  transform:translateX(-60%) translateY(-60%) rotate(0deg);
-  }
-  50%{
-  transform:translateX(60%) translateY(60%) rotate(0deg);
-  }
-  100%{
-  transform:translateX(60%) translateY(60%) rotate(0deg);
-  }
-  }
-</style>
-
 </head>
 
 <body>
 
-  <header>
+  <div class="wrapper">
+    <div class="card">
+      <img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="" style="height: 40px;margin-bottom: 20px;">
+      <h1>Create Account</h1>
+      <div class="sub">Join Tesla Investment Platform</div>
+      <div class="sub">Already an investor? <a href="login.html">Log in</a></div>
 
-    <div class="logo"> <img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="" style="height: 40px;"></div>
+      <input id="fullname" class="field" placeholder="Full Name">
+      <div id="nameHelper" class="helper"></div>
 
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Our Company</a>
-      <a href="#">Plans</a>
-      <a href="#">Contact</a>
-      <a href="login.html">Login</a>
-      <a href="#">Register</a>
-    </nav>
+      <input id="email" class="field" placeholder="Email">
+      <div id="emailHelper" class="helper"></div>
 
-    <div class="menu-btn" onclick="toggleDrawer()">
-      <span></span>
-      <span></span>
-      <span></span>
+      <div class="pass-wrap">
+        <input id="password" type="password" class="field" placeholder="Password">
+        <img id="passIcon" class="eye" src="icons/eye_closed.png" onclick="togglePass()">
+      </div>
+      <div id="passHelper" class="helper"></div>
+
+      <div class="pass-wrap">
+        <input id="confirmPassword" type="password" class="field" placeholder="Confirm Password">
+        <img id="confirmIcon" class="eye" src="icon/eye_closed.png" onclick="toggleConfirmPass()">
+      </div>
+      <div id="confirmHelper" class="helper"></div>
+
+      <select id="country" class="field">
+        <option value="">Select Country</option>
+      </select>
+      <div id="countryHelper" class="helper"></div>
+
+      <div class="check" onclick="">
+        <input type="checkbox" id="consent">
+        <label>I agree to platform terms</label>
+      </div>
+      <div id="consentHelper" class="helper"></div>
+
+      <button id="registerBtn" class="btn" disabled>Create Account</button>
+
     </div>
-
-  </header>
-
-  <div class="drawer-overlay" onclick="toggleDrawer()"></div>
-
-  <div class="mobile-drawer" id="drawer">
-    <a href="#" onclick="toggleDrawer()">Home</a>
-    <a href="#" onclick="toggleDrawer()">Our Company</a>
-    <a href="#" onclick="toggleDrawer()">Plans</a>
-    <a href="#" onclick="toggleDrawer()">contact</a>
-    <a href="login.html" onclick="toggleDrawer()">Login</a>
-    <a href="register.html" onclick="toggleDrawer()">Register</a>    
   </div>
-
-  <section class="hero">
-
-    <div class="slide active" style="background-image:url('https://images.unsplash.com/photo-1549921296-3ecf9a4c2a95')"></div>
-    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3')"></div>
-    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1639322537228-f710d846310a')"></div>
-    <div class="slide" style="background-image:url('https://i.pinimg.com/736x/7a/01/56/7a01565573d66e87ef5f7be8b111f944.jpg')"></div>
-    <div class="slide" style="background-image:url('https://i.pinimg.com/1200x/ca/d9/29/cad92920257faaba7c0b31e4eaa8472e.jpg')"></div>
-    <div class="slide" style="background-image:url('https://i.pinimg.com/736x/66/93/b3/6693b3c90990a231b66591d26d33d39a.jpg')"></div>
-    <div class="slide" style="background-image:url('https://i.pinimg.com/736x/8e/9e/ba/8e9ebaca1e610a64e55db3f6d81d8cd0.jpg')"></div>
-    <div class="slide" style="background-image:url('https://i.pinimg.com/736x/69/1f/9d/691f9df43977c520d68cf4e5850f8139.jpg')"></div>
-    <div class="slide" style="background-image:url('https://i.pinimg.com/1200x/4c/0e/60/4c0e605143e6dcf0befb74bcc02ff6c8.jpg')"></div>
-
-
-    <div class="overlay"></div>
-
-    <div class="hero-content">
-
-      <h1 id="hero-title">AI Powered Investment Platform</h1>
-
-      <p id="hero-text">
-        Trade Stocks, Crypto & Forex with Tesla-grade Intelligence
-      </p>
-
-      <button class="btn"    onclick="window.location.href='register.html'">Start Investing</button>
-
-    </div>
-
-  </section>
-
-  <section>
-    <h2>Smart Investment Solutions</h2>
-
-    <div class="cards">
-
-      <div class="card animate-card">
-        <div class="card-img"
-          style="background-image:url('https://images.unsplash.com/photo-1621761191319-c6fb62004040')"></div>
-        <h3>Crypto Trading</h3>
-        <p>Access next-generation digital asset trading powered by AI analytics. Our system identifies volatility
-          patterns and executes optimized entries across major crypto markets.</p>
-        <button class="card-btn"     onclick="window.location.href='register.html'">Explore Crypto</button>
-      </div>
-
-      <div class="card animate-card">
-        <div class="card-img"
-          style="background-image:url('https://i.pinimg.com/1200x/9d/64/49/9d6449bc4bd4c6b8dcd04fb785994e0b.jpg')"></div>
-        <h3>Foreign Exhange Markets</h3>
-        <p>Trade global currency pairs using predictive Tesla-grade machine intelligence designed to react faster than
-          traditional institutional strategies.</p>
-        <button class="card-btn"     onclick="window.location.href='register.html'">Start FX Trading</button>
-      </div>
-
-      <div class="card animate-card">
-        <div class="card-img"
-          style="background-image:url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3')"></div>
-        <h3>Stock Investment</h3>
-        <p>Invest in high-performance equities with automated risk modeling and portfolio balancing to maximize
-          long-term growth potential.</p>
-        <button class="card-btn"     onclick="window.location.href='register.html'">View Stocks</button>
-      </div>
-
-      <div class="card animate-card">
-        <div class="card-img"
-          style="background-image:url('https://images.unsplash.com/photo-1677442136019-21780ecad995')"></div>
-        <h3>AI Automation</h3>
-        <p>Our AI monitors market sentiment, liquidity flow and macro trends to execute smart trades without emotional
-          bias.</p>
-        <button class="card-btn"     onclick="window.location.href='register.html'">Activate AI</button>
-      </div>
-
-    </div>
-  </section>
-
-  <section>
-    <h2>Investment Plans</h2>
-
-    <div class="cards">
-
-      <div class="card animate-card">
-        <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1559526324-593bc073d938')">
-        </div>
-        <h3>Starter Plan</h3>
-        <p>Perfect for new investors. Begin your journey with automated AI trading and stable growth strategies.</p>
-        <button class="card-btn"     onclick="window.location.href='register.html'">Get Started</button>
-      </div>
-
-      <div class="card animate-card">
-        <div class="card-img"
-          style="background-image:url('https://images.unsplash.com/photo-1569025743873-ea3a9ade89f9')"></div>
-        <h3>Professional Plan</h3>
-        <p>Advanced portfolio tools, diversified market exposure and enhanced AI trading logic.</p>
-        <button class="card-btn"     onclick="window.location.href='register.html'">Upgrade Now</button>
-      </div>
-
-      <div class="card animate-card">
-        <div class="card-img"
-          style="background-image:url('https://images.unsplash.com/photo-1573164713988-8665fc963095')"></div>
-        <h3>Elite Plan</h3>
-        <p>Institutional-grade trading automation with priority AI intelligence and premium performance insights.</p>
-        <button class="card-btn"     onclick="window.location.href='register.html'">Go Elite</button>
-      </div>
-
-    </div>
-  </section>
-
-  <section>
-    <h2>Tesla Vehicle Investment</h2>
-
-    <div class="cards">
-
-      <div class="card animate-card">
-        <div class="card-img"
-          style="background-image:url('https://images.unsplash.com/photo-1617788138017-80ad40651399')"></div>
-        <h3>Model 3 Growth Fund</h3>
-        <p>Invest in the world's most adopted electric sedan driving global EV transition. This portfolio tracks
-          mass-market expansion and production scalability.</p>
-        <button class="card-btn"     onclick="window.location.href='register.html'">Invest in Model 3</button>
-      </div>
-
-      <div class="card animate-card">
-        <div class="card-img"
-          style="background-image:url('https://i.pinimg.com/736x/34/66/3f/34663f039350b56847ecaa2a833b04f7.jpg')"></div>
-        <h3>Model Y Expansion</h3>
-        <p>Back the fastest-growing electric SUV dominating global markets through demand-driven production and
-          logistics intelligence.</p>
-        <button class="card-btn"     onclick="window.location.href='register.html'">Invest in Model Y</button>
-      </div>
-
-      <div class="card animate-card">
-        <div class="card-img"
-          style="background-image:url('https://i.pinimg.com/736x/3e/eb/92/3eeb921534e29b70178359fd3496d5d2.jpg')"></div>
-        <h3>Autonomous Fleet</h3>
-        <p>Gain exposure to Tesla’s future autonomous vehicle network powering AI-driven mobility and next-gen transport
-          economics.</p>
-        <button class="card-btn"     onclick="window.location.href='register.html'">Invest in Autonomy</button>
-      </div>
-
-      <div class="card animate-card">
-        <div class="card-img"
-          style="background-image:url('https://i.pinimg.com/736x/68/44/cf/6844cf1840f435eff37652cd385a668f.jpg')"></div>
-        <h3>Cybertruck Vision</h3>
-        <p>Participate in the disruptive utility EV segment redefining industrial transport and commercial electric
-          mobility.</p>
-        <button class="card-btn"     onclick="window.location.href='register.html'">Invest in Cybertruck</button>
-      </div>
-
-    </div>
-  </section>
-
-<section class="record-section">
-
-  <div class="record-article">
-
-  <h2>Our Proven Investment Record</h2>
-
-  <p>
-  Over the years, Tesla-aligned investment strategies have consistently delivered strong
-  market performance through innovation-driven growth cycles.
-  </p>
-
-  <p>
-  From early technological disruption to global expansion across automotive, AI and
-  energy infrastructure, the ecosystem has demonstrated resilience,
-  adaptability and long-term value creation.
-  </p>
-
-  <p>
-  This record reflects not just financial advancement but operational integrity —
-  ensuring transparency, sustainable performance and strategic dominance
-  across evolving global markets.
-  </p>
-
-  <p>
-  Today, Tesla-backed investment portfolios represent a powerful combination
-  of technological leadership, institutional confidence and worldwide
-  market influence.
-  </p>
-
-  </div>
-
-  <div class="record-cards">
-
-  <div class="record-card animate-card">
-  <h3>Integrity</h3>
-  <p>Transparent operations and responsible growth strategies.</p>
-  </div>
-
-  <div class="record-card animate-card">
-  <h3>Advancement</h3>
-  <p>Continuous evolution through AI and innovation.</p>
-  </div>
-
-  <div class="record-card animate-card">
-  <h3>Global Impact</h3>
-  <p>Market influence across continents and industries.</p>
-  </div>
-
-  <div class="record-card animate-card">
-  <h3>Dominance</h3>
-  <p>Leadership across EV, AI and energy sectors.</p>
-  </div>
-
-  </div>
-
-</section>
-
-
-  <section class="board">
-
-    <h2>Our Leadership Board</h2>
-
-    <div class="board-grid">
-
-      <div class="board-card animate-card">
-        <div class="board-img"
-          style="background-image:url('tesla_images/tesla_manager.jpeg')"></div>
-        <div class="board-info">
-          <h3>Jared Birchall</h3>
-          <span>Manager</span>
-        </div>
-      </div>
-
-      <div class="board-card animate-card">
-        <div class="board-img"
-          style="background-image:url('tesla_images/tesla_chairman.jpeg')"></div>
-        <div class="board-info">
-          <h3>Arete Musk</h3>
-          <span>Board Chairman</span>
-        </div>
-      </div>
-
-      <div class="board-card animate-card">
-        <div class="board-img"
-          style="background-image:url('tesla_images/tesla_ceo.jpeg')">
-        </div>
-        <div class="board-info">
-          <h3>Elon Musk</h3>
-          <span>CEO</span>
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section class="core-features">
-
-    <div class="core-article">
-
-      <h2>Inside Our Intelligent Investment Engine</h2>
-
-      <p>
-        Modern investing demands more than manual execution. Our platform integrates predictive analytics,
-        AI automation and market intelligence to create a seamless wealth-building ecosystem.
-      </p>
-
-      <p>
-        From real-time sentiment tracking to autonomous trade execution, every system component is designed
-        to reduce emotional bias while maximizing strategic opportunity across global financial markets.
-      </p>
-
-      <p>
-        We don't just provide tools — we provide an adaptive investment infrastructure that evolves
-        with market dynamics.
-      </p>
-
-    </div>
-
-
-
-    <div class="core-cards">
-
-      <div class="core-card animate-card">
-        <div class="core-img" style="background-image:url('tesla_images/grok_logo.png')"></div>
-        <h3>AI Market Prediction - Grok AI</h3>
-        <p>Machine learning identifies high-probability trading opportunities. Powered By Grok AI
-        </p>
-      </div>
-
-      <div class="core-card animate-card">
-        <div class="core-img"
-          style="background-image:url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3')"></div>
-        <h3>Automated Execution</h3>
-        <p>Trades are executed instantly without emotional hesitation.</p>
-      </div>
-
-      <div class="core-card animate-card">
-        <div class="core-img" style="background-image:url('https://images.unsplash.com/photo-1559526324-593bc073d938')">
-        </div>
-        <h3>Portfolio Balancing</h3>
-        <p>Risk is dynamically adjusted for market stability.</p>
-      </div>
-
-      <div class="core-card animate-card">
-        <div class="core-img"
-          style="background-image:url('https://images.unsplash.com/photo-1677442136019-21780ecad995')"></div>
-        <h3>Real-Time Analytics</h3>
-        <p>Track performance with live intelligence dashboards.</p>
-      </div>
-
-      <div class="core-card animate-card">
-        <div class="core-img" style="background-image:url('https://images.unsplash.com/photo-1555949963-aa79dcee981c')">
-        </div>
-        <h3>Strong Security</h3>
-        <p>End-to-end encrypted systems with advanced threat monitoring.</p>
-      </div>
-
-      <div class="core-card animate-card">
-        <div class="core-img"
-          style="background-image:url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f')"></div>
-        <h3>Legal Compliance</h3>
-        <p>Aligned with global financial regulations and governance standards.</p>
-      </div>
-
-      <div class="core-card animate-card">
-        <div class="core-img"
-          style="background-image:url('https://i.pinimg.com/1200x/d7/7b/fa/d77bfad58c87dc1ab2d777510d4bdfc5.jpg')">
-        </div>
-        <h3>Cross-Platform Access</h3>
-        <p>Seamless experience across web, mobile and desktop environments.</p>
-      </div>
-
-      <div class="core-card animate-card">
-        <div class="core-img"
-          style="background-image:url('https://images.unsplash.com/photo-1460472178825-e5240623afd5')"></div>
-        <h3>Global Market Coverage</h3>
-        <p>Trade across international markets with real-time intelligence.</p>
-      </div>
-
-      <div class="core-card animate-card">
-        <div class="core-img" style="background-image:url('https://images.unsplash.com/photo-1551288049-bebda4e38f71')">
-        </div>
-        <h3>Advanced Reporting</h3>
-        <p>Deep performance insights with institutional-grade analytics.</p>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section class="plans-section">
-
-    <div class="plans-article">
-
-    <h2>Investment Plans</h2>
-
-    <p>
-    Our plans are structured to match different levels of investment ambition —
-    from entry-level growth to advanced institutional exposure.
-    </p>
-
-    </div>
-
-    <div class="plans-grid">
-
-    <!-- BASIC -->
-    <div class="plan-card animate-card">
-    <h3>Basic</h3>
-    <h4>$250 Minimum</h4>
-    <ul>
-    <li>AI Market Access</li>
-    <li>Automated Trades</li>
-    <li>Portfolio Monitoring</li>
-    <li>Basic Reporting</li>
-    </ul>
-    <button class="plan-btn">Start Basic</button>
-    </div>
-
-    <!-- STANDARD -->
-    <div class="plan-card animate-card">
-    <h3>Standard</h3>
-    <h4>$1,000 Minimum</h4>
-    <ul>
-    <li>Everything in Basic</li>
-    <li>Advanced Analytics</li>
-    <li>Risk Optimization</li>
-    <li>Priority Execution</li>
-    </ul>
-    <button class="plan-btn">Go Standard</button>
-    </div>
-
-    <!-- PREMIUM -->
-    <div class="plan-card featured animate card">
-    <h3>Premium</h3>
-    <h4>$5,000 Minimum</h4>
-    <ul>
-    <li>Everything in Standard</li>
-    <li>AI Strategy Boost</li>
-    <li>Advanced Reporting</li>
-    <li>Tesla Vehicle Funds</li>
-    </ul>
-    <button class="plan-btn">Choose Premium</button>
-    </div>
-
-    <!-- GOLD -->
-    <div class="plan-card animate-card">
-    <h3>Gold</h3>
-    <h4>$10,000 Minimum</h4>
-    <ul>
-    <li>Everything in Premium</li>
-    <li>Institutional AI Access</li>
-    <li>Global Portfolio Coverage</li>
-    <li>Executive Insights</li>
-    </ul>
-    <button class="plan-btn">Go Gold</button>
-    </div>
-
-    </div>
-
-  </section>
-
-  <section class="profit-section">
-
-    <h2 class="profit-title">Tesla Investment Growth Engine</h2>
-
-    <p class="profit-text">
-      Over the past decade, Tesla has transformed from a disruptive EV startup into one of the
-      most powerful financial growth assets in global markets.
-
-      Tesla-backed investment portfolios provide users exposure to innovation-driven
-      performance, leveraging automotive dominance, AI systems, robotics and energy
-      infrastructure expansion.
-
-      This consistent innovation cycle has historically delivered exponential market confidence
-      and strong equity growth — positioning Tesla-linked investments as a forward-looking
-      financial solution for long-term wealth builders.
-    </p>
-
-    <div class="graph-container">
-      <canvas id="profitChart"></canvas>
-    </div>
-
-    <div class="growth-stat">
-      <span>+3,900% Growth Since 2012</span>
-    </div>
-
-  </section>
-
-
-  <section class="social-proof">
-
-    <h2>What Investors Are Saying</h2>
-
-    <div class="testimonial-wrapper">
-      <div class="testimonial-track">
-
-        <div class="testimonial-card">
-          <span class="quote top">“</span>
-          <p>I didnt expect it to actually work this smooth. The AI closed trades faster than i even saw the signal.</p>
-          <h4>— Michael R.</h4>
-          <span class="quote bottom">”</span>
-        </div>
-
-        <div class="testimonial-card">
-          <span class="quote top">“</span>
-          <p>Honestly thought it was hype at first but my portfolio has been growing steady since joining.</p>
-          <h4>— Sandra K.</h4>
-          <span class="quote bottom">”</span>
-        </div>
-
-        <div class="testimonial-card">
-          <span class="quote top">“</span>
-          <p>The automation removes emotions, thats the biggest win for me.</p>
-          <h4>— Daniel O.</h4>
-          <span class="quote bottom">”</span>
-        </div>
-
-        <div class="testimonial-card">
-          <span class="quote top">“</span>
-          <p>I like how it balances risk automatically. Makes investing less stressful.</p>
-          <h4>— Chloe M.</h4>
-          <span class="quote bottom">”</span>
-        </div>
-
-        <div class="testimonial-card">
-          <span class="quote top">“</span>
-          <p>Joined 2 months ago and already seeing better results than my manual trading.</p>
-          <h4>— Ibrahim T.</h4>
-          <span class="quote bottom">”</span>
-        </div>
-
-        <div class="testimonial-card">
-          <span class="quote top">“</span>
-          <p>The Tesla vehicle investment part is what got me interested. Smart move.</p>
-          <h4>— Jason L.</h4>
-          <span class="quote bottom">”</span>
-        </div>
-
-        <!-- DUPLICATE FOR LOOP EFFECT -->
-
-        <div class="testimonial-card">
-          <span class="quote top">“</span>
-          <p>I didnt expect it to actually work this smooth. The AI closed trades faster than i even saw the signal.</p>
-          <h4>— Michael R.</h4>
-          <span class="quote bottom">”</span>
-        </div>
-
-        <div class="testimonial-card">
-          <span class="quote top">“</span>
-          <p>Honestly thought it was hype at first but my portfolio has been growing steady since joining.</p>
-          <h4>— Sandra K.</h4>
-          <span class="quote bottom">”</span>
-        </div>
-
-        <div class="testimonial-card">
-          <span class="quote top">“</span>
-          <p>The automation removes emotions, thats the biggest win for me.</p>
-          <h4>— Daniel O.</h4>
-          <span class="quote bottom">”</span>
-        </div>
-
-        <div class="testimonial-card">
-          <span class="quote top">“</span>
-          <p>I like how it balances risk automatically. Makes investing less stressful.</p>
-          <h4>— Chloe M.</h4>
-          <span class="quote bottom">”</span>
-        </div>
-
-        <div class="testimonial-card">
-          <span class="quote top">“</span>
-          <p>Joined 2 months ago and already seeing better results than my manual trading.</p>
-          <h4>— Ibrahim T.</h4>
-          <span class="quote bottom">”</span>
-        </div>
-
-        <div class="testimonial-card">
-          <span class="quote top">“</span>
-          <p>The Tesla vehicle investment part is what got me interested. Smart move.</p>
-          <h4>— Jason L.</h4>
-          <span class="quote bottom">”</span>
-        </div>
-
-      </div>
-    </div>
-
-  </section>
-
-
-  <footer class="footer">
-
-    <img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="" style="height: 50px; margin-bottom: 50px;">
-
-    <div class="footer-grid">
-
-      <!-- BRAND -->
-      <div class="footer-col">
-        <h2 class="footer-logo">TESLA INVEST</h2>
-        <p>
-          AI-powered investment platform designed for the future of finance.
-          Trade Stocks, Crypto & Forex with intelligent automation.
-        </p>
-      </div>
-
-      <!-- NAV -->
-      <div class="footer-col">
-        <h3>Platform</h3>
-        <a href="#">Home</a>
-        <a href="#">Markets</a>
-        <a href="#">AI Trading</a>
-        <a href="#">Plans</a>
-        <a href="#">Tesla Vehicles</a>
-      </div>
-
-      <!-- INVEST -->
-      <div class="footer-col">
-        <h3>Investments</h3>
-        <a href="#">Crypto</a>
-        <a href="#">Forex</a>
-        <a href="#">Stocks</a>
-        <a href="#">EV Funds</a>
-        <a href="#">Autonomous AI</a>
-      </div>
-
-      <!-- SUPPORT -->
-      <div class="footer-col">
-        <h3>Support</h3>
-        <a href="#">Contact</a>
-        <a href="#">Help Center</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms</a>
-        <a href="#">Security</a>
-      </div>
-
-      <!-- NEWSLETTER -->
-      <div class="footer-col">
-        <h3>Stay Updated</h3>
-        <p>Get AI market insights & investment updates</p>
-        <input type="email" placeholder="Enter your email">
-        <button class="footer-btn">Subscribe</button>
-      </div>
-
-    </div>
-
-    <div class="footer-bottom">
-      <p>© 2026 Tesla Investment Platform. All Rights Reserved.</p>
-    </div>
-
-  </footer>
 
   <script>
+    const API = "https://script.google.com/macros/s/AKfycbyo6uGNQ_IDRTkm5AEzPPRLkdzarH8BUzETivaZ8pFl1eq82j6FwYwj_vK8AfeGBKmX-Q/exec";
 
-    let slides = document.querySelectorAll(".slide");
-    let index = 0;
+    const eyeOpen = "icons/eye_open.png";
+    const eyeClosed = "icons/eye_closed.png";
 
-    setInterval(() => {
-      slides[index].classList.remove("active");
-      index = (index + 1) % slides.length;
-      slides[index].classList.add("active");
-    }, 4000);
-  </script>
+    const passIcon = document.getElementById("passIcon");
+    const confirmIcon = document.getElementById("confirmIcon");
 
-  <script>
-    const observer = new IntersectionObserver((entries) => {
-
-    entries.forEach(entry => {
-
-    if(entry.isIntersecting){
-
-    const animatedItems = entry.target.querySelectorAll(".animate-card");
-
-    animatedItems.forEach((item, i) => {
-    setTimeout(() => {
-    item.classList.add("show");
-    }, i * 120);
-    });
-
+    function togglePass() {
+      const p = document.getElementById("password");
+      p.type = p.type === "password" ? "text" : "password";
+      if (passIcon) passIcon.src = p.type === "password" ? eyeOpen : eyeClosed;
     }
 
-    });
-
-    },{
-    threshold:0.2
-    });
-
-    document.querySelectorAll("div").forEach(div => {
-    observer.observe(div);
-    });
-  </script>  
-
-  <script>
-    function toggleDrawer() {
-      document.getElementById("drawer").classList.toggle("open");
-      document.querySelector(".drawer-overlay").classList.toggle("show");
+    function toggleConfirmPass() {
+      const p = document.getElementById("confirmPassword");
+      p.type = p.type === "password" ? "text" : "password";
+      if (confirmIcon) confirmIcon.src = p.type === "password" ? eyeOpen : eyeClosed;
     }
-  </script>
 
-
-  <script>
-
-    const titles = [
-      "Invest Like The Future",
-      "AI That Trades Faster",
-      "Dominate Global Markets",
-      "Own The EV Economy",
-      "Predict. Execute. Win.",
-      "Autonomous Wealth Engine",
-      "Trade Without Emotion",
-      "Build Smart Portfolios",
-      "Welcome To Intelligent Finance"
+    /* COUNTRY DATASET */
+    const countries = [
+      "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina", "Armenia",
+      "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Belgium",
+      "Benin", "Bolivia", "Botswana", "Brazil", "Bulgaria", "Burkina Faso", "Cambodia",
+      "Cameroon", "Canada", "Chile", "China", "Colombia", "Costa Rica", "Croatia", "Cyprus",
+      "Czech Republic", "Denmark", "Dominican Republic", "Ecuador", "Egypt", "Estonia",
+      "Ethiopia", "Finland", "France", "Georgia", "Germany", "Ghana", "Greece", "Guatemala",
+      "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Ireland", "Israel",
+      "Italy", "Jamaica", "Japan", "Jordan", "Kenya", "Kuwait", "Latvia", "Lebanon", "Lithuania",
+      "Luxembourg", "Malaysia", "Malta", "Mexico", "Morocco", "Netherlands", "New Zealand",
+      "Nigeria", "Norway", "Pakistan", "Peru", "Philippines", "Poland", "Portugal", "Qatar",
+      "Romania", "Saudi Arabia", "Senegal", "Singapore", "Slovakia", "Slovenia", "South Africa",
+      "South Korea", "Spain", "Sri Lanka", "Sweden", "Switzerland", "Thailand", "Turkey",
+      "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Vietnam", "Zambia",
+      "Zimbabwe"
     ];
 
-    const texts = [
-      "Experience Tesla-grade intelligence across Stocks, Crypto & Forex",
-      "Machine learning executes precision trades in real time",
-      "From Wall Street to Web3 — all markets unified",
-      "Tap into the electric mobility revolution",
-      "AI reads sentiment before the market reacts",
-      "Automation designed for exponential growth",
-      "No fear. No bias. Just data-driven execution",
-      "Balance growth with adaptive intelligence",
-      "The next evolution of investing starts here"
-    ];
+    const country = document.getElementById("country");
+    countries.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c;
+      opt.textContent = c;
+      country.appendChild(opt);
+    });
 
-    const title = document.getElementById("hero-title");
-    const text = document.getElementById("hero-text");
-    const btn = document.querySelector(".btn");
+    const fullname = document.getElementById("fullname");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+    const consent = document.getElementById("consent");
+    const btn = document.getElementById("registerBtn");
 
-    function animateTextOut() {
-      title.style.transform = "translateY(-60px) scale(0.9)";
-      title.style.opacity = "0";
-      title.style.filter = "blur(10px)";
+    const nameHelper = document.getElementById("nameHelper");
+    const emailHelper = document.getElementById("emailHelper");
+    const passHelper = document.getElementById("passHelper");
+    const confirmHelper = document.getElementById("confirmHelper");
+    const countryHelper = document.getElementById("countryHelper");
+    const consentHelper = document.getElementById("consentHelper");
 
-      text.style.transform = "translateY(60px) scale(0.9)";
-      text.style.opacity = "0";
-      text.style.filter = "blur(10px)";
+    function validEmail(e) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
     }
 
-    function animateTextIn() {
-      title.style.transform = "translateY(0) scale(1)";
-      title.style.opacity = "1";
-      title.style.filter = "blur(0px)";
-
-      text.style.transform = "translateY(0) scale(1)";
-      text.style.opacity = "1";
-      text.style.filter = "blur(0px)";
+    function capitalizeName(name) {
+      return name.toLowerCase().split(" ").filter(Boolean)
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
     }
 
-    function changeSlide() {
-
-      slides[index].classList.remove("active");
-
-      animateTextOut();
-
-      setTimeout(() => {
-
-        index = (index + 1) % slides.length;
-
-        slides[index].classList.add("active");
-
-        title.innerText = titles[index];
-        text.innerText = texts[index];
-
-        animateTextIn();
-
-        btn.classList.remove("launch");
-        void btn.offsetWidth;
-        btn.classList.add("launch");
-
-      }, 600);
-
-    }
-
-    setInterval(changeSlide, 4000);
-
-  </script>
-
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-  <script>
-
-    const ctx = document.getElementById('profitChart').getContext('2d');
-
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: [
-          '2012', '2013', '2014', '2015', '2016', '2017',
-          '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'
-        ],
-        datasets: [{
-          label: 'Tesla Growth Index',
-          data: [
-            5, 12, 18, 22, 30, 45,
-            60, 90, 220, 400, 520, 610, 680, 780
-          ],
-          borderColor: '#e50914',
-          backgroundColor: 'rgba(229,9,20,0.1)',
-          borderWidth: 3,
-          tension: 0.4,
-          fill: true,
-          pointRadius: 4,
-          pointBackgroundColor: '#fff'
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            labels: { color: 'white' }
-          }
-        },
-        scales: {
-          x: {
-            ticks: { color: '#bbb' },
-            grid: { color: 'rgba(255,255,255,0.05)' }
-          },
-          y: {
-            ticks: { color: '#bbb' },
-            grid: { color: 'rgba(255,255,255,0.05)' }
-          }
-        },
-        animation: {
-          duration: 2000,
-          easing: 'easeOutQuart'
-        }
+    function setError(field, helper, message) {
+      if (message) {
+        field.style.borderColor = "#e11d48";
+        helper.textContent = message;
+      } else {
+        field.style.borderColor = "";
+        helper.textContent = "";
       }
-    });
+    }
+
+    function validate() {
+
+      let ok = true;
+
+      if (fullname.value.trim().length < 3) {
+        setError(fullname, nameHelper, "Enter your full name");
+        ok = false;
+      } else setError(fullname, nameHelper, "");
+
+      if (!validEmail(email.value)) {
+        setError(email, emailHelper, "Enter a valid email");
+        ok = false;
+      } else setError(email, emailHelper, "");
+
+      if (password.value.length < 6) {
+        setError(password, passHelper, "Minimum 6 characters");
+        ok = false;
+      } else setError(password, passHelper, "");
+
+      if (confirmPassword.value !== password.value) {
+        setError(confirmPassword, confirmHelper, "Passwords do not match");
+        ok = false;
+      } else setError(confirmPassword, confirmHelper, "");
+
+      if (!country.value) {
+        countryHelper.textContent = "Select your country";
+        ok = false;
+      } else countryHelper.textContent = "";
+
+      if (!consent.checked) {
+        consentHelper.textContent = "You must agree before continuing";
+        ok = false;
+      } else consentHelper.textContent = "";
+
+      btn.disabled = !ok;
+    }
+
+    [fullname, email, password, confirmPassword, country, consent]
+      .forEach(el => el.addEventListener("input", validate));
+
+    let creating = false;
+
+    btn.onclick = async () => {
+
+      if (btn.disabled || creating) return;
+
+      creating = true;
+      btn.textContent = "Creating...";
+      btn.disabled = true;
+
+      try {
+
+        const payload = {
+          action: "register",
+          name: capitalizeName(fullname.value.trim()),
+          email: email.value.trim().toLowerCase(),
+          password: password.value,
+          balance: 0,
+          equity: 0,
+          profit: 0,
+          volume: 0,
+          country: country.value,
+        };
+
+        const res = await fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await res.text();
+        if (!text.startsWith("{")) throw new Error();
+
+        const data = JSON.parse(text);
+
+        if (data.status) {
+          localStorage.setItem("uid", data.uid);
+          window.location.href = "dashboard.html";
+        } else {
+          alert(data.message || "Registration failed");
+          btn.disabled = false;
+          btn.textContent = "Create Account";
+          creating = false;
+        }
+
+      } catch {
+        alert("Connection error");
+        btn.disabled = false;
+        btn.textContent = "Create Account";
+        creating = false;
+      }
+
+    };
   </script>
-
-
 
 </body>
 
