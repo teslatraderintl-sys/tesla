@@ -8,15 +8,14 @@
 
     <style>
         /*=================THEME VARIABLES=================*/
-        :root {
-
+        
+         :root {
             /* Scrollbar */
             --scrollbar-size: 8px;
             --scrollbar-track: rgba(255, 255, 255, 0.05);
             --scrollbar-thumb: rgba(255, 255, 255, 0.25);
             --scrollbar-thumb-hover: var(--accent-primary);
             --scrollbar-radius: 20px;
-
             --bg: #000;
             --card: #0a0a0a;
             --border: rgba(255, 255, 255, .08);
@@ -24,7 +23,6 @@
             --muted: #aaa;
             --red: #e82127;
             --bg-border-line: #ffffff21;
-
             /* Backgrounds */
             --bg-main-start: #1e2235;
             --bg-main-end: #0e0f1a;
@@ -34,7 +32,6 @@
             --bg-soft: #ffffff0c;
             --bg-nav: #0a0a0a;
             --bg-filter: #0a0a0a;
-
             /* Accent Colors */
             --accent-primary: #e82127;
             --accent-notification: #7b5cff;
@@ -44,15 +41,12 @@
             --accent-verified-text: #4df5c2;
             --accent-pro-bg: #2d223f;
             --accent-pro-text: #ffd369;
-
             /* Text Colors */
             --text-primary: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.6);
             --text-muted: rgba(255, 255, 255, 0.4);
-
             /* Borders */
             --border-soft: rgba(255, 255, 255, 0.05);
-
             /* Investment Bar Gradients */
             --bar1-start: #ff7a7a;
             --bar1-end: #ff9fa0;
@@ -61,19 +55,19 @@
             --bar3-start: #ff9fa0;
             --bar3-end: #ffc1c1;
         }
-
+        
         .border-line {
             border: 1px solid var(--bg-border-line);
         }
-
         /*=================RESET=================*/
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             color: var(--text);
         }
-
+        
         html,
         body {
             height: 100%;
@@ -81,8 +75,8 @@
             background: var(--bg);
             overflow: hidden;
         }
-
         /*=================APP LAYOUT=================*/
+        
         .app {
             height: 100dvh;
             width: 100%;
@@ -93,8 +87,8 @@
             flex-direction: column;
             overflow: hidden;
         }
-
         /*=================HEADER=================*/
+        
         .header {
             flex-shrink: 0;
             padding: 20px;
@@ -103,20 +97,20 @@
             align-items: center;
             border-bottom: 2px solid #ffffff31;
         }
-
         /*=================CONTENT=================*/
+        
         .content {
             flex: 1;
             overflow-y: auto;
             padding: 0 20px 20px;
             scrollbar-width: none;
         }
-
+        
         .content::-webkit-scrollbar {
             display: none;
         }
-
         /*=================BOTTOM NAV=================*/
+        
         .bottom-nav {
             flex-shrink: 0;
             padding: 10px;
@@ -129,19 +123,19 @@
             border-radius: 100px;
             margin-bottom: 10px;
         }
-
+        
         .card-border {
             border: 1px solid var(--bg-border-line);
         }
-
         /*=================PROFILE=================*/
+        
         .profile {
             display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
         }
-
+        
         .avatar {
             background-color: #1a1a1a;
             border: 1px solid var(--bg-border-line);
@@ -150,19 +144,19 @@
             border-radius: 50%;
             background: url('https://i.pravatar.cc/100') center/cover;
         }
-
+        
         .profile-info h3 {
             font-size: 16px;
             font-weight: 600;
             color: var(--text-primary);
         }
-
+        
         .badges {
             display: flex;
             gap: 6px;
             margin-top: 4px;
         }
-
+        
         .badge {
             font-size: 10px;
             padding: 4px 8px;
@@ -171,7 +165,7 @@
             color: var(--text);
             background: var(--bg-card);
         }
-
+        
         .engine-mode,
         .pro,
         .verified {
@@ -179,8 +173,8 @@
             border: 1px solid var(--bg-border-line);
             color: white;
         }
-
         /*=================NOTIFICATION=================*/
+        
         .top-bar-button {
             position: relative;
             width: 42px;
@@ -193,8 +187,7 @@
             justify-content: center;
             cursor: pointer;
         }
-
-
+        
         .notify-count {
             position: absolute;
             top: -4px;
@@ -210,8 +203,8 @@
             font-weight: 700;
             color: var(--text-primary);
         }
-
         /*=================BALANCE=================*/
+        
         .balance-section {
             display: flex;
             flex-direction: column;
@@ -220,18 +213,18 @@
             color: var(--text-secondary);
             margin-top: 20px;
         }
-
+        
         .balance {
             font-size: 32px;
             font-weight: 800;
             color: var(--text-primary);
         }
-
+        
         .eth {
             font-size: 16px;
             color: var(--text-secondary);
         }
-
+        
         .change-pill {
             display: inline-flex;
             align-items: center;
@@ -243,8 +236,8 @@
             font-size: 12px;
             font-weight: 600;
         }
-
         /*=================CARD=================*/
+        
         .card {
             background: var(--bg-card);
             border: 1px solid var(--bg-border-line);
@@ -254,14 +247,14 @@
             display: flex;
             flex-direction: column;
         }
-
+        
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             color: var(--text-primary);
         }
-
+        
         .dropdown {
             background: var(--bg-soft);
             padding: 6px 10px;
@@ -269,39 +262,39 @@
             font-size: 12px;
             color: var(--text-secondary);
         }
-
+        
         .invest-info-wrap {
             display: flex;
             gap: 8px;
             margin-top: 10px;
         }
-
+        
         .invest-info-seg {
             display: flex;
             flex-direction: column;
             flex: 1;
             width: 100%;
         }
-
+        
         .invest-info-seg-header {
             font-size: 12px;
             color: #ff4d4d;
         }
-
+        
         .invest-info-bar {
             width: 100%;
             height: 10px;
             border-radius: 20px;
             background-color: var(--bg-soft);
         }
-
+        
         .invest-info-bar-1 {
             width: 20%;
             height: 10px;
             border-radius: 20px;
             background: linear-gradient(90deg, var(--bar1-start), var(--bar1-end));
         }
-
+        
         .invest-info-bar-2 {
             width: 450%;
             height: 10px;
@@ -309,34 +302,34 @@
             background: linear-gradient(90deg, var(--bar1-start), var(--bar1-end));
             width: 45%;
         }
-
+        
         .invest-info-bar-3 {
             width: 60%;
             height: 10px;
             border-radius: 20px;
             background: linear-gradient(90deg, var(--bar1-start), var(--bar1-end));
         }
-
+        
         .invest-info-value {
             font-size: 14px;
             color: var(--text);
         }
-
         /*=================TOP ASSETS=================*/
+        
         .section-title {
             margin-top: 25px;
             font-size: 18px;
             font-weight: 600;
             color: var(--text-primary);
         }
-
+        
         .filters {
             display: flex;
             gap: 10px;
             margin: 12px 0 18px;
             flex-wrap: wrap;
         }
-
+        
         .filter {
             padding: 8px 14px;
             border-radius: 20px;
@@ -345,25 +338,25 @@
             color: var(--text-secondary);
             cursor: pointer;
         }
-
+        
         .filter.active {
             background: var(--accent-primary);
             color: var(--text-primary);
         }
-
         /*=================ASSETS=================*/
+        
         .asset-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
-
+        
         @media(max-width:420px) {
             .asset-grid {
                 grid-template-columns: 1fr;
             }
         }
-
+        
         .asset {
             background: var(--bg-card);
             border-radius: 20px;
@@ -371,26 +364,26 @@
             position: relative;
             color: var(--text-primary);
         }
-
+        
         .rate {
             font-size: 22px;
             font-weight: 700;
             margin: 8px 0;
         }
-
+        
         .green {
             color: var(--accent-green);
             font-size: 12px;
         }
-
+        
         .small-pill {
             font-size: 11px;
             padding: 6px 10px;
             border-radius: 12px;
             background: var(--bg-soft);
         }
-
         /*=================NAV=================*/
+        
         .nav-item {
             width: 60px;
             height: 60px;
@@ -403,35 +396,34 @@
             opacity: .6;
             color: var(--text-primary);
         }
-
+        
         .nav-item.active {
             background: var(--accent-primary);
             opacity: 1;
         }
-
         /*=================PAGE SYSTEM=================*/
+        
         .page {
             display: none;
             animation: fadeIn .25s ease;
         }
-
+        
         .page.active {
             display: block;
         }
-
+        
         @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(10px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
         /*=================NAV ICON IMAGE=================*/
+        
         .nav-item img {
             width: 26px;
             height: 26px;
@@ -441,57 +433,55 @@
 
     <style>
         /*=================GLOBAL SCROLLBAR STYLING=================*/
-
         /* Firefox */
+        
         * {
             scrollbar-width: thin;
             scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
         }
-
         /* Webkit Browsers */
+        
         *::-webkit-scrollbar {
             width: var(--scrollbar-size);
             height: var(--scrollbar-size);
         }
-
+        
         *::-webkit-scrollbar-track {
             background: var(--scrollbar-track);
             border-radius: var(--scrollbar-radius);
         }
-
+        
         *::-webkit-scrollbar-thumb {
             background: var(--scrollbar-thumb);
             border-radius: var(--scrollbar-radius);
             transition: .2s ease;
         }
-
+        
         *::-webkit-scrollbar-thumb:hover {
             background: var(--scrollbar-thumb-hover);
         }
-
+        
         *::-webkit-scrollbar-corner {
             background: transparent;
         }
-
-
-
         /*=================HORIZONTAL ASSET ROW=================*/
+        
         .asset-scroll-wrapper {
             overflow-x: auto;
             padding-bottom: 10px;
             scrollbar-width: none;
         }
-
+        
         .asset-scroll-wrapper::-webkit-scrollbar {
             display: none;
         }
-
+        
         .asset-row {
             display: flex;
             gap: 15px;
             min-width: 100%;
         }
-
+        
         .asset {
             min-width: 220px;
             flex-shrink: 0;
@@ -503,20 +493,19 @@
             border: 1px solid var(--bg-border-line);
             transition: .2s ease;
         }
-
+        
         .asset:hover {
             transform: translateY(-4px);
         }
-
         /*=================WALLET ACTION BUTTONS=================*/
-
+        
         .wallet-actions {
             display: flex;
             justify-content: space-between;
             gap: 12px;
             margin-top: 20px;
         }
-
+        
         .action-btn {
             flex: 1;
             background: var(--bg-card);
@@ -532,17 +521,17 @@
             cursor: pointer;
             transition: .2s ease;
         }
-
+        
         .action-btn .icon {
             height: 30px;
             padding: 5px;
         }
-
+        
         .action-btn:hover {
             transform: translateY(-3px);
             background: var(--accent-primary);
         }
-
+        
         .action-btn:active {
             transform: scale(.95);
         }
@@ -550,7 +539,7 @@
 
     <style>
         /*=================TRADE PANEL=================*/
-
+        
         .trade-panel-overlay {
             position: fixed;
             inset: 0;
@@ -560,7 +549,7 @@
             justify-content: center;
             z-index: 2000;
         }
-
+        
         .trade-panel {
             width: 95%;
             max-width: 520px;
@@ -577,7 +566,7 @@
             isolation: isolate;
             /* prevents bleed stacking issues */
         }
-
+        
         .trade-header {
             display: flex;
             justify-content: space-between;
@@ -585,35 +574,34 @@
             margin-bottom: 25px;
             color: var(--text);
         }
-
+        
         .trade-header h2 {
             font-weight: 600;
             font-size: 20px;
         }
-
+        
         .trade-close {
             cursor: pointer;
             font-size: 18px;
             color: #888;
         }
-
+        
         .trade-close:hover {
             color: white;
         }
-
         /* FORM ELEMENTS */
-
+        
         .trade-section {
             margin-bottom: 20px;
         }
-
+        
         .trade-label {
             font-size: 13px;
             color: #aaa;
             margin-bottom: 6px;
             display: block;
         }
-
+        
         .trade-input,
         .trade-select {
             width: 100%;
@@ -625,14 +613,13 @@
             outline: none;
             font-size: 14px;
         }
-
+        
         .trade-input:focus,
         .trade-select:focus {
             border-color: #e82127;
         }
-
         /* QR BOX */
-
+        
         .qr-box {
             height: 180px;
             background: #111;
@@ -645,7 +632,7 @@
             font-size: 13px;
             color: #777;
         }
-
+        
         .qr-img {
             height: 150px;
             width: 150px;
@@ -653,9 +640,8 @@
             padding: 15px;
             background-color: white;
         }
-
         /* Wallet Address Box */
-
+        
         .wallet-box {
             background: #181818;
             padding: 12px;
@@ -668,7 +654,7 @@
             align-items: center;
             gap: 8px;
         }
-
+        
         .copy-btn {
             width: fit-content;
             padding: 10px;
@@ -680,7 +666,7 @@
             word-break: keep-all;
             cursor: pointer;
         }
-
+        
         .execute-deposit-btn {
             margin-top: 15px;
             width: 100%;
@@ -692,17 +678,15 @@
             font-size: 16px;
             cursor: pointer;
         }
-
         /* Info Text */
-
+        
         .trade-info {
             font-size: 12px;
             color: #999;
             margin-top: 8px;
         }
-
         /* Confirm Button */
-
+        
         .trade-confirm {
             width: 100%;
             padding: 14px;
@@ -715,11 +699,11 @@
             cursor: pointer;
             transition: .2s;
         }
-
+        
         .trade-confirm:hover {
             background: #ff2a31;
         }
-
+        
         .max {
             background: var(--accent-primary);
             padding: 5px 8px;
@@ -739,10 +723,7 @@
             position: absolute;
             inset: 0;
             /* matches card radius */
-            background: linear-gradient(115deg,
-                    transparent 40%,
-                    rgba(255, 255, 255, 0.08) 50%,
-                    transparent 60%);
+            background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%);
             transform: translateX(-100%);
             animation: sweep 6s infinite ease-in-out;
             pointer-events: none;
@@ -753,16 +734,13 @@
             z-index: 0;
             /* behind content */
         }
-
+        
         .trade-panel::before {
             content: "";
             position: absolute;
             inset: 0;
             /* matches card radius */
-            background: linear-gradient(115deg,
-                    transparent 40%,
-                    rgba(255, 255, 255, 0.08) 50%,
-                    transparent 60%);
+            background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%);
             transform: translateX(-100%);
             animation: sweep 6s infinite ease-in-out;
             pointer-events: none;
@@ -773,26 +751,22 @@
             z-index: 0;
             /* behind content */
         }
-
         /*=================ANALYTICS LOADING SWEEP=================*/
-
+        
         .asset.loading {
             position: relative;
             overflow: hidden;
         }
-
+        
         .asset.loading>* {
             visibility: hidden;
         }
-
+        
         .asset.loading::before {
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(115deg,
-                    transparent 40%,
-                    rgba(255, 255, 255, 0.08) 50%,
-                    transparent 60%);
+            background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%);
             transform: translateX(-100%);
             animation: sweep 6s infinite ease-in-out;
             pointer-events: none;
@@ -802,17 +776,14 @@
             height: 250%;
             z-index: 1;
         }
-
-
+        
         @keyframes sweep {
             0% {
                 transform: translateX(-60%) translateY(-60%);
             }
-
             40% {
                 transform: translateX(60%) translateY(60%);
             }
-
             100% {
                 transform: translateX(60%) translateY(60%);
             }
@@ -827,8 +798,7 @@
             height: 100px;
             width: 100px;
         }
-
-
+        
         .user-portfolio-card {
             background: var(--card);
             border-radius: 22px;
@@ -836,20 +806,20 @@
             margin-top: 10px;
             border: 1px solid var(--bg-border-line);
         }
-
+        
         .portfolioChart-title-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
         }
-
+        
         .portfolioChart-box {
             position: relative;
             height: 260px;
         }
-
         /* Axis */
+        
         .user-porfolio-axis {
             position: absolute;
             right: 0;
@@ -865,8 +835,8 @@
             z-index: 1;
             margin-left: 70px;
         }
-
         /* High line limited to portfolioChart area only */
+        
         .high-line {
             position: absolute;
             left: 0;
@@ -875,15 +845,15 @@
             opacity: .5;
             z-index: 1;
         }
-
+        
         .high-label {
             position: absolute;
             font-size: 12px;
             color: #9aa0a6;
             z-index: 2;
         }
-
         /* Blue profit badge ABOVE axis */
+        
         .high-badge {
             position: absolute;
             right: 0;
@@ -896,12 +866,12 @@
             z-index: 5;
             /* ensure above scale */
         }
-
+        
         #portfolioChart {
             width: 100%;
             height: 100%;
         }
-
+        
         button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
@@ -918,7 +888,7 @@
             flex-direction: column;
             gap: 10px;
         }
-
+        
         .toast {
             padding: 12px 18px;
             border-radius: 8px;
@@ -928,25 +898,24 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             animation: slideIn 0.3s ease;
         }
-
+        
         .toast.success {
             background: #16a34a;
         }
-
+        
         .toast.error {
             background: #dc2626;
         }
-
+        
         .toast.info {
             background: #2563eb;
         }
-
+        
         @keyframes slideIn {
             from {
                 opacity: 0;
                 transform: translateX(20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -965,19 +934,19 @@
             max-width: 380px;
             transition: 0.3s ease;
         }
-
+        
         .grok-trade-card:hover {
             border-color: #ff131373;
             box-shadow: 0 10px 30px #ff3d3d3b;
         }
-
+        
         .grok-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 18px;
         }
-
+        
         .grok-title {
             display: flex;
             align-items: center;
@@ -986,7 +955,7 @@
             font-size: 16px;
             color: #fff;
         }
-
+        
         .grok-dot {
             width: 10px;
             height: 10px;
@@ -994,7 +963,7 @@
             background: #2563eb;
             box-shadow: 0 0 10px #2563eb;
         }
-
+        
         .grok-badge {
             font-size: 11px;
             padding: 4px 8px;
@@ -1002,37 +971,37 @@
             color: var(--muted);
             border-radius: 20px;
         }
-
+        
         .grok-body {
             display: flex;
             flex-direction: column;
             gap: 14px;
         }
-
+        
         .grok-stat {
             display: flex;
             justify-content: space-between;
             font-size: 14px;
             color: #9ca3af;
         }
-
+        
         .grok-stat span:last-child {
             color: #fff;
             font-weight: 500;
         }
-
+        
         .bullish {
             color: #16a34a;
         }
-
+        
         .bearish {
             color: #dc2626;
         }
-
+        
         .profit {
             color: #22c55e;
         }
-
+        
         .grok-btn {
             margin-top: 10px;
             padding: 12px;
@@ -1051,12 +1020,12 @@
             isolation: isolate;
             /* prevents bleed stacking issues */
         }
-
+        
         .grok-btn:hover {
             opacity: 0.9;
             transform: translateY(-2px);
         }
-
+        
         .grok-btn:active {
             transform: translateY(0);
         }
@@ -1064,23 +1033,21 @@
 
     <style>
         /*=================SLIDER CONTAINER=================*/
-
+        
         .campaign-slider {
             width: 100%;
             overflow: hidden;
             position: relative;
             margin-top: 20px;
         }
-
         /*=================TRACK=================*/
-
+        
         .campaign-track {
             display: flex;
             transition: transform 0.5s ease;
         }
-
         /*=================CARD=================*/
-
+        
         .campaign-card {
             min-width: 100%;
             height: 180px;
@@ -1089,41 +1056,31 @@
             border: 1px solid rgba(255, 255, 255, 0.06);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35),
         }
-
         /*=================DOTS=================*/
-
+        
         .campaign-dots {
-
             display: flex;
             justify-content: center;
             gap: 8px;
             margin-top: 12px;
-
         }
-
+        
         .campaign-dot {
-
             width: 6px;
             height: 6px;
-
             border-radius: 50%;
-
             background: #494949;
-
             transition: all 0.3s ease;
         }
-
+        
         .campaign-dot.active {
-
             background: #ffffff;
             width: 18px;
             border-radius: 10px;
-
         }
-
         /*FIRST CARD (GROK ADD)*/
+        
         .grok-campaign-card {
-
             position: relative;
             height: 180px;
             border-radius: 16px;
@@ -1132,7 +1089,6 @@
             background: #000;
             /* FULL BLACK CARD */
             border: 1px solid #777777;
-
             /* ELON IMAGE BACKGROUND */
             background-image: url("icons/grok_icon.png");
             /* replace later */
@@ -1143,21 +1099,17 @@
             flex-direction: column;
             align-items: end;
         }
-
         /* DARK OVERLAY FOR TEXT VISIBILITY */
+        
         .grok-campaign-card::before {
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(to right,
-                    rgba(0, 0, 0, 0.2) 0%,
-                    rgba(0, 0, 0, 0.6) 35%,
-                    rgba(0, 0, 0, 0.95) 65%,
-                    #000 100%);
+            background: linear-gradient( to right, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 35%, rgba(0, 0, 0, 0.95) 65%, #000 100%);
             z-index: 1;
         }
-
         /* CONTENT WRAPPER */
+        
         .grok-content {
             position: relative;
             z-index: 2;
@@ -1171,8 +1123,8 @@
             width: 100%;
             box-sizing: border-box;
         }
-
         /* LOGO PLACEHOLDER */
+        
         .grok-logo-placeholder {
             width: 120px;
             height: 28px;
@@ -1185,8 +1137,8 @@
             font-size: 12px;
             color: #666;
         }
-
         /* TITLE */
+        
         .grok-title {
             font-size: 15px;
             font-weight: 600;
@@ -1194,8 +1146,8 @@
             line-height: 1.3;
             margin: 0;
         }
-
         /* DESCRIPTION */
+        
         .grok-description {
             text-align: right;
             font-size: 12px;
@@ -1204,8 +1156,8 @@
             margin: 0;
             width: 100%;
         }
-
         /* CTA BUTTON */
+        
         .grok-cta-btn {
             margin-top: 6px;
             padding: 9px 14px;
@@ -1219,12 +1171,12 @@
             transition: 0.3s ease;
             width: fit-content;
         }
-
+        
         .grok-cta-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px #ff000049;
         }
-
+        
         .grok-cta-btn:active {
             transform: translateY(0);
         }
@@ -1238,7 +1190,7 @@
             gap: 14px;
             margin-top: 15px;
         }
-
+        
         .transaction-card {
             display: flex;
             align-items: center;
@@ -1251,18 +1203,18 @@
             cursor: pointer;
             transition: all .2s ease;
         }
-
+        
         .transaction-card:hover {
             transform: translateY(-2px);
             background: #1f2937;
         }
-
+        
         .tx-left {
             display: flex;
             align-items: center;
             gap: 14px;
         }
-
+        
         .tx-icon {
             width: 48px;
             height: 48px;
@@ -1272,55 +1224,55 @@
             align-items: center;
             justify-content: center;
         }
-
+        
         .tx-icon img {
             width: 22px;
         }
-
+        
         .tx-info {
             display: flex;
             flex-direction: column;
         }
-
+        
         .tx-type {
             font-weight: 600;
             font-size: 14px;
         }
-
+        
         .tx-date {
             font-size: 12px;
             opacity: .6;
         }
-
+        
         .tx-right {
             text-align: right;
             display: flex;
             flex-direction: column;
         }
-
+        
         .tx-amount {
             font-weight: 600;
             font-size: 14px;
         }
-
+        
         .tx-network {
             font-size: 12px;
             opacity: .6;
         }
-
+        
         .tx-status {
             font-size: 12px;
             margin-top: 2px;
         }
-
+        
         .status-completed {
             color: #10b981;
         }
-
+        
         .status-pending {
             color: #f59e0b;
         }
-
+        
         .status-failed {
             color: #ef4444;
         }
@@ -1330,36 +1282,34 @@
         /*=====================================
         TESLA STYLE FX RECEIPT
         =====================================*/
-
+        
         .receipt-box {
             width: 100%;
             background: none;
             padding: 0;
             font-family: "Inter", sans-serif;
         }
-
         /* HEADER */
-
+        
         .receipt-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
         }
-
+        
         .receipt-title {
             font-size: 12px;
             letter-spacing: 2px;
             opacity: .6;
         }
-
+        
         .receipt-id {
             font-size: 13px;
             margin-top: 6px;
             font-weight: 500;
         }
-
         /* STATUS BADGE */
-
+        
         .receipt-status {
             font-size: 12px;
             font-weight: 600;
@@ -1367,67 +1317,64 @@
             border-radius: 20px;
             letter-spacing: 1px;
         }
-
         /* dynamic status colors */
+        
         .status-completed {
             color: #10b981;
         }
-
+        
         .status-pending {
             background: rgba(245, 158, 11, 0.12);
             color: #f59e0b;
         }
-
+        
         .status-failed {
             background: rgba(239, 68, 68, 0.12);
             color: #ef4444;
         }
-
         /* DIVIDER */
-
+        
         .receipt-divider {
             height: 1px;
             background: rgba(255, 255, 255, 0.08);
             margin: 22px 0;
         }
-
         /* AMOUNT SECTION */
-
+        
         .receipt-amount-section {
             text-align: left;
         }
-
+        
         .receipt-amount {
             font-size: 28px;
             font-weight: 600;
             letter-spacing: 1px;
         }
-
+        
         .receipt-type {
             margin-top: 6px;
             font-size: 13px;
             opacity: .6;
         }
-
         /* GRID */
-
+        
         .receipt-grid {
             display: flex;
             flex-direction: column;
             gap: 18px;
         }
-
+        
         .receipt-row {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             font-size: 14px;
         }
-
+        
         .receipt-row span:first-child {
             opacity: .5;
         }
-
+        
         .receipt-row span:last-child {
             text-align: right;
             max-width: 60%;
@@ -1442,24 +1389,24 @@
             padding: 20px 0px;
             color: white;
         }
-
+        
         .page-header h2 {
             font-size: 32px;
             font-weight: 600;
         }
-
+        
         .page-header p {
             opacity: .5;
             margin-top: 6px;
         }
-
+        
         .portfolio-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
             margin-top: 40px;
         }
-
+        
         .portfolio-card {
             border: 1px solid var(--bg-border-line);
             border-radius: 14px;
@@ -1467,27 +1414,27 @@
             background: var(--card);
             transition: .3s ease;
         }
-
+        
         .portfolio-card:hover {
             border-color: rgba(255, 0, 0, .4);
         }
-
+        
         .stat-label {
             font-size: 13px;
             opacity: .5;
         }
-
+        
         .stat-value {
             display: block;
             margin-top: 10px;
             font-size: 26px;
             font-weight: 600;
         }
-
+        
         .profit-value {
             color: var(--accent-primary);
         }
-
+        
         .portfolio-chart-wrap {
             margin-top: 20px;
             width: 100%;
@@ -1513,7 +1460,7 @@
             flex-direction: column;
             overflow: hidden;
         }
-
+        
         .notification-header {
             padding: 15px;
             display: flex;
@@ -1521,20 +1468,21 @@
             gap: 15px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-
+        
         .notification-header span {
             cursor: pointer;
             font-weight: 600;
         }
-
-
+        
         .notification-list {
             display: flex;
             flex-direction: column;
             gap: 15px;
             padding: 20px;
+            overflow-y: auto;
+            height: 100%;
         }
-
+        
         .notification-card {
             background: var(--bg-card);
             padding: 18px;
@@ -1543,37 +1491,37 @@
             transition: 0.3s;
             cursor: pointer;
         }
-
+        
         .notification-card.unread {
             border-left: 4px solid var(--accent-primary);
             background: #151515;
         }
-
+        
         .notification-card:hover {
             transform: translateY(-3px);
         }
-
+        
         .notif-header {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
         }
-
+        
         .notif-title {
             font-weight: 600;
             color: #fff;
         }
-
+        
         .notif-date {
             font-size: 12px;
             opacity: .6;
         }
-
+        
         .notif-message {
             font-size: 14px;
             opacity: .5;
         }
-
+        
         .notif-message {
             display: -webkit-box;
             --webkit-line-clamp: 1;
@@ -1581,7 +1529,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
+        
         .notification-bottom {
             display: flex;
             justify-content: space-between;
@@ -1592,7 +1540,7 @@
             font-size: 12px;
             padding: 10px 0px 0px 0px;
         }
-
+        
         .read-status-badge {
             padding: 4px 12px;
             font-size: 12px;
@@ -1603,13 +1551,13 @@
             min-width: 70px;
             text-align: center;
         }
-
+        
         .badge-unread {
             background: var(--accent-primary);
             /* green */
             color: white;
         }
-
+        
         .badge-read {
             background: var(--card);
             /* gray */
@@ -1634,18 +1582,18 @@
             gap: 6px;
             width: fit-content;
         }
-
+        
         .momentum-icon {
             width: 16px;
             height: 16px;
             object-fit: contain;
         }
-
+        
         .green {
             color: #00ff88;
             font-weight: 600;
         }
-
+        
         .red {
             color: #ff4d4d;
             font-weight: 600;
@@ -1658,7 +1606,7 @@
             height: 16px;
             object-fit: contain;
         }
-
+        
         .info-pill {
             display: flex;
             justify-content: space-between;
@@ -1666,7 +1614,7 @@
             font-size: 12px;
             gap: 18px;
         }
-
+        
         .ai-badge {
             background-color: var(--accent-primary);
             color: #fff;
@@ -1674,12 +1622,12 @@
             padding: 2px 6px;
             border-radius: 4px;
         }
-
+        
         .green {
             color: #00ff88;
             font-weight: 600;
         }
-
+        
         .red {
             color: #ff4d4d;
             font-weight: 600;
@@ -1692,12 +1640,12 @@
             flex-direction: column;
             gap: 10px;
         }
-
+        
         .asset {
             position: relative;
             /* Ensure badge can be positioned */
         }
-
+        
         .ai-badge.top-right {
             position: absolute;
             top: 8px;
@@ -1715,7 +1663,7 @@
 
     <style>
         /* ================= SEARCH BAR ================= */
-
+        
         .analytics-search-wrapper {
             position: relative;
             width: 100%;
@@ -1726,7 +1674,7 @@
             padding: 15px 0px;
             background-color: black;
         }
-
+        
         #analyticsSearchInput {
             width: 100%;
             padding: 14px 45px 14px 16px;
@@ -1738,12 +1686,12 @@
             outline: none;
             transition: all 0.2s ease;
         }
-
+        
         #analyticsSearchInput:focus {
             border-color: #3b82f6;
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
-
+        
         .search-icon {
             position: absolute;
             right: 15px;
@@ -1763,37 +1711,37 @@
         .analytics-trade-view {
             padding: 20px;
         }
-
+        
         .trade-wrap {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-
+        
         .trade-asset-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
+        
         .trade-direction {
             font-size: 13px;
             font-weight: 600;
         }
-
+        
         .trade-direction.long {
             color: #00c853;
         }
-
+        
         .trade-direction.short {
             color: #ff3d00;
         }
-
+        
         .trade-price {
             font-size: 22px;
             font-weight: bold;
         }
-
+        
         .trade-strategy-box {
             background: #0f0f0f;
             padding: 15px 0px;
@@ -1802,13 +1750,13 @@
             gap: 10px;
             border-bottom: 1px solid var(--bg-border-line);
         }
-
+        
         .strategy-row {
             display: flex;
             justify-content: space-between;
             font-size: 14px;
         }
-
+        
         .trade-input-section input {
             width: 100%;
             padding: 12px;
@@ -1818,7 +1766,7 @@
             color: white;
             margin-top: 6px;
         }
-
+        
         .trade-units-box {
             text-align: center;
             display: flex;
@@ -1828,7 +1776,7 @@
             padding: 15px;
             border-radius: 14px;
         }
-
+        
         .execute-trade-btn {
             width: 100%;
             padding: 15px;
@@ -1840,7 +1788,7 @@
             cursor: pointer;
             transition: 0.2s;
         }
-
+        
         .execute-trade-btn:hover {
             opacity: 0.85;
         }
@@ -1850,14 +1798,14 @@
         /*===========================
     OPEN TRADES LIST
     ===========================*/
-
+        
         #tradesList {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-
         /* card row */
+        
         .trade-row {
             display: flex;
             flex-direction: column;
@@ -1866,61 +1814,60 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 12px;
         }
-
+        
         .trade-row-up {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         /* left */
+        
         .trade-left {
             display: flex;
             flex-direction: column;
         }
-
+        
         .trade-asset {
             font-weight: 600;
             font-size: 14px;
         }
-
+        
         .trade-time {
             font-size: 12px;
             color: #888;
         }
-
         /* middle */
+        
         .trade-middle {
             text-align: center;
             font-size: 12px;
             color: #aaa;
         }
-
+        
         .trade-entry {
             margin-bottom: 3px;
         }
-
+        
         .trade-current {
             font-weight: 500;
         }
-
         /* right */
+        
         .trade-right {
             text-align: right;
         }
-
+        
         .trade-position {
             font-size: 12px;
             color: #999;
         }
-
+        
         .trade-profit {
             font-size: 14px;
             font-weight: 600;
         }
-
         /* empty state */
-
+        
         .history-empty {
             text-align: center;
             opacity: .6;
@@ -1936,20 +1883,20 @@
             gap: 80px;
             padding: 30px 0px;
         }
-
+        
         .feed-cards-section {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-
+        
         .feed-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
-
+        
         .feed-card {
             background: #111;
             padding: 20px;
@@ -1959,14 +1906,12 @@
             flex-direction: column;
             justify-content: space-between;
         }
-
-
+        
         .feed-card:hover {
             transform: translateY(-10px);
         }
-
         /* IMAGE HOLDER */
-
+        
         .feed-card-img {
             width: 100%;
             height: 200px;
@@ -1975,23 +1920,21 @@
             background-position: center;
             margin-bottom: 20px;
         }
-
         /* TEXT */
-
+        
         .feed-card h3 {
             margin-bottom: 10px;
             font-size: 20px;
         }
-
+        
         .feed-card p {
             opacity: 0.7;
             font-size: 14px;
             line-height: 1.6;
             margin-bottom: 20px;
         }
-
         /* CTA */
-
+        
         .feed-card-btn {
             margin-top: auto;
             padding: 15px;
@@ -2002,9 +1945,8 @@
             width: 100%;
             font-size: 15px;
             border-radius: 10px;
-
         }
-
+        
         .feed-card-btn:hover {
             background: white;
             color: black;
@@ -2111,6 +2053,9 @@
             background: #ff2a31;
         }
     </style>
+
+
+
 
 
 
@@ -3693,7 +3638,8 @@
             setText("profileEmail", USER_EMAIL);            
             setText("profileName", USER_NAME);
             setText("profileStatus", USER_STATUS);
-            setText("verifiedStatus", USER_VERIFIED);            
+            const verified = document.getElementById("verifiedStatus").style.display !== "none";
+            document.getElementById("profileVerified").innerText = verified ? "Verified" : "Not Verified";          
             setText("profileCountry", USER_COUNTRY);
 
 
