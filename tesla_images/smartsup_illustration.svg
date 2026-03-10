@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="90.104" height="88.644" viewBox="0 0 90.104 88.644">
+  <g id="Group_6507" data-name="Group 6507" transform="translate(-444.948 -709)">
+    <g id="Group_6500" data-name="Group 6500" transform="translate(267 -62)">
+      <g id="Group_6492" data-name="Group 6492" transform="translate(-455.013 338.346)">
+        <path id="Rectangle_3288" data-name="Rectangle 3288" d="M0,0H90.1a0,0,0,0,1,0,0V82.644a6,6,0,0,1-6,6H6a6,6,0,0,1-6-6V0A0,0,0,0,1,0,0Z" transform="translate(632.961 432.654)" fill="#7e8991"/>
+        <path id="Rectangle_3290" data-name="Rectangle 3290" d="M0,0H80.1a0,0,0,0,1,0,0V78.646a4,4,0,0,1-4,4H4a4,4,0,0,1-4-4V0A0,0,0,0,1,0,0Z" transform="translate(638 432.654)" fill="#fff"/>
+      </g>
+      <g id="Group_6497" data-name="Group 6497" transform="translate(-2.5 -49.348)">
+        <rect id="Rectangle_3303" data-name="Rectangle 3303" width="21.761" height="21.761" rx="10.88" transform="translate(234.5 860.003)" fill="#408fec"/>
+        <g id="Group_6498" data-name="Group 6498" transform="translate(249.131 856.918)">
+          <circle id="Ellipse_1066" data-name="Ellipse 1066" cx="5.085" cy="5.085" r="5.085" fill="#ff3029"/>
+        </g>
+        <path id="Path_6797" data-name="Path 6797" d="M21.049,18.055l0-.02C20.679,16.533,18.588,16,16.908,16s-3.771.533-4.142,2.059a8.786,8.786,0,0,0,0,2.717,2.386,2.386,0,0,0,1.51,1.511l-.528.66a.46.46,0,0,0,.359.748.465.465,0,0,0,.191-.041l1.932-.878c.237.024.464.036.673.036,1.464,0,3.773-.542,4.141-2.055A8.061,8.061,0,0,0,21.049,18.055Z" transform="translate(228.732 850.7)" fill="#fff"/>
+        <text id="_1" data-name="1" transform="translate(252.5 864.348)" fill="#fff" font-size="7" font-family="SF Pro" font-weight="600"><tspan x="0" y="0">1</tspan></text>
+      </g>
+      <path id="Rectangle_3307" data-name="Rectangle 3307" d="M0,0H82a0,0,0,0,1,0,0V14a5,5,0,0,1-5,5H5a5,5,0,0,1-5-5V0A0,0,0,0,1,0,0Z" transform="translate(182 836)" fill="#7e8991"/>
+      <circle id="Ellipse_1069" data-name="Ellipse 1069" cx="6" cy="6" r="6" transform="translate(217 842)" fill="#fff"/>
+    </g>
+    <g id="Rectangle_3308" data-name="Rectangle 3308" transform="translate(457.541 719.102)" fill="#408fec" stroke="#408fec" stroke-width="1">
+      <rect width="64.917" height="20.815" rx="3" stroke="none"/>
+      <rect x="0.5" y="0.5" width="63.917" height="19.815" rx="2.5" fill="none"/>
+    </g>
+    <rect id="Rectangle_3316" data-name="Rectangle 3316" width="49" height="4" rx="2" transform="translate(466 724)" fill="#fff" opacity="0.298"/>
+    <rect id="Rectangle_3317" data-name="Rectangle 3317" width="24" height="4" rx="2" transform="translate(466 731)" fill="#fff" opacity="0.512"/>
+  </g>
+</svg>
