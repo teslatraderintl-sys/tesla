@@ -2989,7 +2989,6 @@
 
 
     <!--========================TOP ASSETS========================-->
-
     <script>
 
         /*=================DATASET=================*/
@@ -4111,7 +4110,7 @@
     <!--=========================================================-->
 
 
-
+    <!--START GROK TRADE HANDLER-->
     <script>
         document.getElementById("startGrokTrade").addEventListener("click", function () {
 
@@ -4313,7 +4312,7 @@
 
 
 
-
+    <!--PORTFOLIO DOUGHNUT CHART-->
     <script>
         let portfolioDoughnutInitialized = false;
 
@@ -4417,7 +4416,7 @@
 
     </script>
 
-
+    <!--OPEN NOTIFICATION HANDLER-->
     <script>
         function openNotification(notif, card) {
 
@@ -4456,7 +4455,7 @@
         }
     </script>
 
-
+    <!--NOTIFICATION BADGE COUNT-->
     <script>
         function updateNotificationBadge(count) {
 
@@ -4488,7 +4487,7 @@
         }
     </script>
 
-
+    <!--MARK NOTIFICATION READ HANDLER-->
     <script>
         function markNotificationAsRead(notificationId) {
 
@@ -4515,7 +4514,7 @@
 
 
 
-
+    <!--LOAD NOTIFICATION-->
     <script>
         function loadNotifications() {
 
@@ -4848,7 +4847,7 @@
 
 
 
-
+    <!--POPULATE TRADE VIEW MODAL-->
     <script>
         function populateTradeView(data) {
             const direction = data.direction === "SHORT" ? "Bearish Market" : "Bullish Market";
@@ -4901,7 +4900,7 @@
 
 
 
-
+    <!--TRADE CALCULATOR-->
     <script>
         document.getElementById("tradeAmountInput").addEventListener("input", function () {
 
@@ -4948,6 +4947,9 @@
         });
     </script>
 
+
+
+    <!--EXECUTE TRADE HANDLER-->
     <script>
 
         async function executeTrade() {
@@ -5037,7 +5039,7 @@
                 }
 
                 if (!amount || amount <= 0) {
-                    showToast("Enter trade amount", "warning");
+                    showToast("Enter trade amount", "error");
                     resetTradeButton();
                     return;
                 }
