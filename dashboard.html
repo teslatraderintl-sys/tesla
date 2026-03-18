@@ -830,6 +830,7 @@
             padding: 22px;
             margin-top: 10px;
             border: 1px solid var(--bg-border-line);
+            max-width: 380px;
         }
 
         .portfolioChart-title-row {
@@ -1065,6 +1066,7 @@
 
         .campaign-slider {
             width: 100%;
+            max-width: 400px;
             overflow: hidden;
             position: relative;
             margin-top: 20px;
@@ -2513,6 +2515,14 @@ font-weight:600;
     .transactions-section{
         padding: 20px 0px;
     }
+
+    .flex-1{
+        flex: 1;
+    }
+
+    .flex-2{
+        flex: 2;
+    }
 </style>
 
 
@@ -2610,52 +2620,95 @@ font-weight:600;
                         
                         <div class="tesla-widget-grid" id="teslaCars"></div>
 
-                    <!--=================CAMPAIGN SLIDER=================-->
-                    <div class="campaign-slider">
+                        <div class="responsive-wrap">
+                            <div class="grok-trade-card">
+                                <div class="grok-header">
+                                    <div class="grok-title">
+                                        <img src="icons/grok_icon.png" alt="" style="height: 40px;">
+                                        <span>Grok AI Special Pick</span>
+                                    </div>
+                                    <div class="grok-badge">AI Powered</div>
+                                </div>
 
-                        <div class="campaign-track" id="campaignTrack">
+                                <div class="grok-body">
 
-                            <div class="campaign-card">
+                                    <div class="grok-stat">
+                                        <span>AI Confidence</span>
+                                        <span id="grokConfidence">87%</span>
+                                    </div>
 
-                                <div class="grok-campaign-card">
+                                    <div class="grok-stat">
+                                        <span>Market Direction</span>
+                                        <span class="bullish">Bullish <img src="icons/arrow-trend-up.png" alt=""
+                                                style="height: 20px;"></span>
+                                    </div>
 
-                                    <div class="grok-content">
+                                    <div class="grok-stat">
+                                        <span>Recommended Asset</span>
+                                        <span>BTC/USDT</span>
+                                    </div>
 
-                                        <img src="icons/grok_icon.png" alt="" style="height: 30px;">
+                                    <div class="grok-stat">
+                                        <span>Expected ROI</span>
+                                        <span class="profit">+12.45%</span>
+                                    </div>
 
-                                        <h2 class="grok-title">
-                                            Trade with Elon's Trading Expert <br>Grok Model 2.0
-                                        </h2>
+                                    <button id="startGrokTrade" class="grok-btn">
+                                        Start AI Trade
+                                    </button>
 
-                                        <p class="grok-description">
-                                            Powered by Elon’s AI core.
-                                            <br>Up to 48% daily ROI low risk.
-                                        </p>
+                                </div>
+                            </div>                        
 
-                                        <button class="grok-cta-btn">
-                                            Activate Grok 2.0
-                                        </button>
+                            <!--=================CAMPAIGN SLIDER=================-->
+                            <div class="campaign-slider">
+
+                                <div class="campaign-track" id="campaignTrack">
+
+                                    <div class="campaign-card">
+
+                                        <div class="grok-campaign-card">
+
+                                            <div class="grok-content">
+
+                                                <img src="icons/grok_icon.png" alt="" style="height: 30px;">
+
+                                                <h2 class="grok-title">
+                                                    Trade with Elon's Trading Expert <br>Grok Model 2.0
+                                                </h2>
+
+                                                <p class="grok-description">
+                                                    Powered by Elon’s AI core.
+                                                    <br>Up to 48% daily ROI low risk.
+                                                </p>
+
+                                                <button class="grok-cta-btn">
+                                                    Activate Grok 2.0
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
 
                                     </div>
+                                    <div class="campaign-card"></div>
+                                    <div class="campaign-card"></div>
+                                    <div class="campaign-card"></div>
 
                                 </div>
 
+                                <div class="campaign-dots" id="campaignDots">
+                                    <span class="campaign-dot active"></span>
+                                    <span class="campaign-dot"></span>
+                                    <span class="campaign-dot"></span>
+                                    <span class="campaign-dot"></span>
+                                </div>
 
-                            </div>
-                            <div class="campaign-card"></div>
-                            <div class="campaign-card"></div>
-                            <div class="campaign-card"></div>
-
+                            </div>                            
                         </div>
 
-                        <div class="campaign-dots" id="campaignDots">
-                            <span class="campaign-dot active"></span>
-                            <span class="campaign-dot"></span>
-                            <span class="campaign-dot"></span>
-                            <span class="campaign-dot"></span>
-                        </div>
 
-                    </div>
 
                     </div>
 
@@ -2711,45 +2764,7 @@ font-weight:600;
                         <div class="asset-row" id="assetContainer"></div>
                     </div>
 
-
-                    <div class="grok-trade-card">
-                        <div class="grok-header">
-                            <div class="grok-title">
-                                <img src="icons/grok_icon.png" alt="" style="height: 40px;">
-                                <span>Grok AI Special Pick</span>
-                            </div>
-                            <div class="grok-badge">AI Powered</div>
-                        </div>
-
-                        <div class="grok-body">
-
-                            <div class="grok-stat">
-                                <span>AI Confidence</span>
-                                <span id="grokConfidence">87%</span>
-                            </div>
-
-                            <div class="grok-stat">
-                                <span>Market Direction</span>
-                                <span class="bullish">Bullish <img src="icons/arrow-trend-up.png" alt=""
-                                        style="height: 20px;"></span>
-                            </div>
-
-                            <div class="grok-stat">
-                                <span>Recommended Asset</span>
-                                <span>BTC/USDT</span>
-                            </div>
-
-                            <div class="grok-stat">
-                                <span>Expected ROI</span>
-                                <span class="profit">+12.45%</span>
-                            </div>
-
-                            <button id="startGrokTrade" class="grok-btn">
-                                Start AI Trade
-                            </button>
-
-                        </div>
-                    </div>                    
+                
 
 
                     <div class="page-header">
@@ -3548,12 +3563,12 @@ font-weight:600;
 
             let stop1 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
             stop1.setAttribute("offset", "0%");
-            stop1.setAttribute("stop-color", "#2563eb");
+            stop1.setAttribute("stop-color", "#39e7b0b0");
             stop1.setAttribute("stop-opacity", "0.25");
 
             let stop2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
             stop2.setAttribute("offset", "100%");
-            stop2.setAttribute("stop-color", "#2563eb");
+            stop2.setAttribute("stop-color", "#39e7b049");
             stop2.setAttribute("stop-opacity", "0");
 
             gradient.appendChild(stop1);
@@ -3571,7 +3586,7 @@ font-weight:600;
             const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
             line.setAttribute("d", path);
             line.setAttribute("fill", "none");
-            line.setAttribute("stroke", "#3b82f6");
+            line.setAttribute("stroke", "#39e7b0");
             line.setAttribute("stroke-width", "1.4");
             userPortfolioSVG.appendChild(line);
 
