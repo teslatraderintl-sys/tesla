@@ -1,365 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Tesla Investment – Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tesla Investment – Login</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-<style>
-    :root {
-      --bg: #000;
-      --card: #0a0a0a;
-      --border: rgba(255, 255, 255, .08);
-      --text: #fff;
-      --muted: #aaa;
-      --red: #e82127;
-    }
+    <style>
+         :root {
+            --bg: #000;
+            --card: #0a0a0a;
+            --border: rgba(255, 255, 255, .08);
+            --text: #fff;
+            --muted: #aaa;
+            --red: #e82127;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+        }
+        /* CONTAINER */
+        
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            background: #111;
+            border-radius: 18px;
+            padding: 40px;
+            position: relative;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        /* LOGO */
+        
+        .logo {
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-size: 22px;
+            margin-bottom: 30px;
+        }
+        /* HEAD */
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        
+        .sub {
+            text-align: center;
+            opacity: 0.7;
+            margin-bottom: 30px;
+        }
+        
+        .sub a {
+            color: #e82127;
+            text-decoration: none;
+        }
+        /* INPUTS */
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 18px;
+        }
+        
+        .field {
+            width: 100%;
+            background: #0a0a0a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+        }
+        
+        .field:focus {
+            border-color: #e82127;
+        }
+        /* PASSWORD EYE */
+        
+        .eye {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            opacity: 0.6;
+        }
+        /* FORGOT */
+        
+        .forgot {
+            display: block;
+            margin: 10px 0 25px;
+            color: #e82127;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        /* BUTTON */
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: #e82127;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .btn:hover {
+            background: white;
+            color: black;
+        }
+        /* ERROR */
+        
+        .error {
+            display: none;
+            color: #ff6b6b;
+            margin-top: 15px;
+            text-align: center;
+        }
+        /* ENERGY SWEEP */
+        
+        .login-container::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -150%;
+            width: 250%;
+            height: 200%;
+            background: linear-gradient( 135deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0) 65%, rgba(255, 255, 255, 0) 100%);
+            animation: sweep 8s infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes sweep {
+            0% {
+                transform: translateX(-60%) translateY(-60%);
+            }
+            40% {
+                transform: translateX(60%) translateY(60%);
+            }
+            100% {
+                transform: translateX(60%) translateY(60%);
+            }
+        }
+    </style>
 
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-background:#0a0a0a;
-height:100dvh;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-padding: 20px;
-}
-
-/* CONTAINER */
-
-.login-container{
-width:100%;
-max-width:420px;
-background:#111;
-border-radius:18px;
-padding:40px;
-position:relative;
-border: 1px solid var(--border);
-overflow:hidden;
-}
-
-/* LOGO */
-
-.logo{
-text-align:center;
-font-weight:700;
-letter-spacing:3px;
-font-size:22px;
-margin-bottom:30px;
-}
-
-/* HEAD */
-
-h1{
-text-align:center;
-margin-bottom:8px;
-}
-
-.sub{
-text-align:center;
-opacity:0.7;
-margin-bottom:30px;
-}
-
-.sub a{
-color:#e82127;
-text-decoration:none;
-}
-
-/* INPUTS */
-
-.input-group{
-position:relative;
-margin-bottom:18px;
-}
-
-.field{
-width:100%;
-background:#0a0a0a;
-border:1px solid rgba(255,255,255,0.08);
-border-radius:12px;
-padding:14px;
-color:white;
-outline:none;
-transition:0.3s;
-}
-
-.field:focus{
-border-color:#e82127;
-}
-
-/* PASSWORD EYE */
-
-.eye{
-position:absolute;
-right:14px;
-top:50%;
-transform:translateY(-50%);
-cursor:pointer;
-opacity:0.6;
-}
-
-/* FORGOT */
-
-.forgot{
-display:block;
-margin:10px 0 25px;
-color:#e82127;
-font-size:14px;
-text-decoration:none;
-}
-
-/* BUTTON */
-
-.btn{
-width:100%;
-padding:14px;
-border:none;
-border-radius:12px;
-background:#e82127;
-color:white;
-font-weight:600;
-cursor:pointer;
-transition:0.3s;
-}
-
-.btn:hover{
-background:white;
-color:black;
-}
-
-/* ERROR */
-
-.error{
-display:none;
-color:#ff6b6b;
-margin-top:15px;
-text-align:center;
-}
-
-/* ENERGY SWEEP */
-
-.login-container::before{
-content:"";
-position:absolute;
-top:-50%;
-left:-150%;
-width:250%;
-height:200%;
-background:linear-gradient(
-135deg,
-rgba(255,255,255,0) 0%,
-rgba(255,255,255,0) 35%,
-rgba(255,255,255,0.12) 50%,
-rgba(255,255,255,0) 65%,
-rgba(255,255,255,0) 100%
-);
-animation:sweep 8s infinite;
-pointer-events:none;
-}
-
-@keyframes sweep{
-0%{transform:translateX(-60%) translateY(-60%);}
-40%{transform:translateX(60%) translateY(60%);}
-100%{transform:translateX(60%) translateY(60%);}
-}
-
-</style>
-
-<!-- Smartsupp Live Chat script -->
-<script type="text/javascript">
-var _smartsupp = _smartsupp || {};
-_smartsupp.key = '810e04ef0881d351408ee8b2e5aa3b7e7477fdec';
-window.smartsupp||(function(d) {
-  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-  s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-  c.type='text/javascript';c.charset='utf-8';c.async=true;
-  c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
-})(document);
-</script>
-<noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
+    <!-- Smartsupp Live Chat script -->
+    <script type="text/javascript">
+        var _smartsupp = _smartsupp || {};
+        _smartsupp.key = '810e04ef0881d351408ee8b2e5aa3b7e7477fdec';
+        window.smartsupp || (function(d) {
+            var s, c, o = smartsupp = function() {
+                o._.push(arguments)
+            };
+            o._ = [];
+            s = d.getElementsByTagName('script')[0];
+            c = d.createElement('script');
+            c.type = 'text/javascript';
+            c.charset = 'utf-8';
+            c.async = true;
+            c.src = 'https://www.smartsuppchat.com/loader.js?';
+            s.parentNode.insertBefore(c, s);
+        })(document);
+    </script>
+    <noscript>Powered by <a href="https://www.smartsupp.com" target="_blank">Smartsupp</a></noscript>
 
 
 </head>
 
 <body>
 
-<div class="login-container">
+    <div class="login-container">
 
-<div class="logo"><img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="" style="height: 40px;"></div>
+        <div class="logo"><img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="" style="height: 40px;"></div>
 
-<h1>Login</h1>
-<div class="sub">New investor? <a href="register.html">Open account</a></div>
+        <h1>Login</h1>
+        <div class="sub">New investor? <a href="register.html">Open account</a></div>
 
-<div class="input-group">
-<input id="email" class="field" type="email" placeholder="Email">
-</div>
+        <div class="input-group">
+            <input id="email" class="field" type="email" placeholder="Email">
+        </div>
 
-<div class="input-group">
-<input id="password" class="field" type="password" placeholder="Password">
-<span class="eye" onclick="togglePassword()">👁</span>
-</div>
+        <div class="input-group">
+            <input id="password" class="field" type="password" placeholder="Password">
+            <span class="eye" onclick="togglePassword()">👁</span>
+        </div>
 
-<a class="forgot" href="#">Forgot password?</a>
+        <a class="forgot" href="#">Forgot password?</a>
 
-<button class="btn" onclick="login()">Login</button>
+        <button class="btn" onclick="login()">Login</button>
 
-<div id="errorMsg" class="error">
-No account matches these login credentials
-</div>
+        <div id="errorMsg" class="error">
+            No account matches these login credentials
+        </div>
 
-</div>
+    </div>
 
-<script>
+    <script>
+        /* =====================================
+           GOOGLE API
+        ===================================== */
+        const API = "https://script.google.com/macros/s/AKfycbzBcWKZnDw7uI79OincI4TRhaQy1BeEmVCGpNQaOEqclRyxPktTUmt0agQCY9td9RtaKw/exec";
 
-/* =====================================
-   GOOGLE API
-===================================== */
-const API = "https://script.google.com/macros/s/AKfycbyo6uGNQ_IDRTkm5AEzPPRLkdzarH8BUzETivaZ8pFl1eq82j6FwYwj_vK8AfeGBKmX-Q/exec";
+        /* =====================================
+           VERIFY EXISTING SESSION
+        ===================================== */
+        window.addEventListener("load", async() => {
 
-/* =====================================
-   VERIFY EXISTING SESSION
-===================================== */
-window.addEventListener("load", async ()=>{
+            const uid = localStorage.getItem("uid");
+            if (!uid) return;
 
-  const uid = localStorage.getItem("uid");
-  if(!uid) return;
+            try {
 
-  try{
+                const res = await fetch(API, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "getUser",
+                        uid: uid
+                    })
+                });
 
-    const res = await fetch(API,{
-      method:"POST",
-      headers:{
-        "Content-Type":"text/plain;charset=utf-8"
-      },
-      body: JSON.stringify({
-        action:"getUser",
-        uid: uid
-      })
-    });
+                const text = await res.text();
+                if (!text.startsWith("{")) return;
 
-    const text = await res.text();
-    if(!text.startsWith("{")) return;
+                const data = JSON.parse(text);
 
-    const data = JSON.parse(text);
+                if (data.status) {
+                    window.location.replace("dashboard.html");
+                } else {
+                    localStorage.removeItem("uid");
+                }
 
-    if(data.status){
-      window.location.replace("dashboard.html");
-    }else{
-      localStorage.removeItem("uid");
-    }
+            } catch {}
 
-  }catch{}
+        });
 
-});
+        /* PASSWORD TOGGLE */
 
-/* PASSWORD TOGGLE */
+        let passVisible = false;
 
-let passVisible=false;
+        function togglePassword() {
+            const pass = document.getElementById("password");
+            passVisible = !passVisible;
+            pass.type = passVisible ? "text" : "password";
+        }
 
-function togglePassword(){
-const pass=document.getElementById("password");
-passVisible=!passVisible;
-pass.type=passVisible?"text":"password";
-}
+        /* LOGIN */
 
-/* LOGIN */
+        let loggingIn = false;
 
-let loggingIn=false;
+        async function login() {
 
-async function login(){
+            if (loggingIn) return;
+            loggingIn = true;
 
-if(loggingIn)return;
-loggingIn=true;
+            const btn = document.querySelector(".btn");
+            const error = document.getElementById("errorMsg");
 
-const btn=document.querySelector(".btn");
-const error=document.getElementById("errorMsg");
+            btn.textContent = "Logging in...";
+            btn.disabled = true;
 
-btn.textContent="Logging in...";
-btn.disabled=true;
+            if (error) error.style.display = "none";
 
-if(error)error.style.display="none";
+            const email = document.getElementById("email").value.trim().toLowerCase();
+            const password = document.getElementById("password").value.trim();
 
-const email=document.getElementById("email").value.trim().toLowerCase();
-const password=document.getElementById("password").value.trim();
+            if (!email || !password) {
+                showError("Enter email and password");
+                resetBtn();
+                return;
+            }
 
-if(!email||!password){
-showError("Enter email and password");
-resetBtn();
-return;
-}
+            try {
 
-try{
+                const payload = {
+                    action: "login",
+                    email,
+                    password
+                };
 
-const payload={action:"login",email,password};
+                const res = await fetch(API, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify(payload)
+                });
 
-const res=await fetch(API,{
-method:"POST",
-headers:{
-"Content-Type":"text/plain;charset=utf-8"
-},
-body:JSON.stringify(payload)
-});
+                const text = await res.text();
 
-const text=await res.text();
+                if (!text.startsWith("{")) {
+                    throw new Error("Invalid server response");
+                }
 
-if(!text.startsWith("{")){
-throw new Error("Invalid server response");
-}
+                const data = JSON.parse(text);
 
-const data=JSON.parse(text);
+                if (!data.status) {
+                    showError("Invalid login credentials");
+                    resetBtn();
+                    return;
+                }
 
-if(!data.status){
-showError("Invalid login credentials");
-resetBtn();
-return;
-}
+                localStorage.setItem("uid", data.user.uid);
+                window.location.replace("dashboard.html");
 
-localStorage.setItem("uid",data.user.uid);
-window.location.replace("dashboard.html");
+            } catch (err) {
+                console.error(err);
+                showError("Connection error — try again");
+                resetBtn();
+            }
+        }
 
-}catch(err){
-console.error(err);
-showError("Connection error — try again");
-resetBtn();
-}
-}
+        /* HELPERS */
 
-/* HELPERS */
+        function showError(msg) {
+            const error = document.getElementById("errorMsg");
+            if (!error) return;
+            error.textContent = msg;
+            error.style.display = "block";
+        }
 
-function showError(msg){
-const error=document.getElementById("errorMsg");
-if(!error)return;
-error.textContent=msg;
-error.style.display="block";
-}
+        function resetBtn() {
+            loggingIn = false;
+            const btn = document.querySelector(".btn");
+            btn.textContent = "Login";
+            btn.disabled = false;
+        }
 
-function resetBtn(){
-loggingIn=false;
-const btn=document.querySelector(".btn");
-btn.textContent="Login";
-btn.disabled=false;
-}
+        /* ENTER KEY */
 
-/* ENTER KEY */
-
-document.addEventListener("keydown",e=>{
-if(e.key==="Enter"){
-login();
-}
-});
-
-</script>
+        document.addEventListener("keydown", e => {
+            if (e.key === "Enter") {
+                login();
+            }
+        });
+    </script>
 
 </body>
+
 </html>
