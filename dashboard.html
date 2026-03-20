@@ -2045,6 +2045,13 @@
             gap: 15px;
             border-bottom: 1px solid var(--bg-border-line);
             width: 100%;
+            justify-content: space-between;
+        }
+
+        .profile-header div{
+            display: flex;
+            gap: 15px;
+            align-items: center;
         }
 
         .profile-back-btn {
@@ -2114,7 +2121,6 @@
         /* logout button */
 
         .logout-btn {
-            margin-top: 20px;
             padding: 15px;
             border: none;
             border-radius: 12px;
@@ -2443,6 +2449,11 @@
             color: white;
             cursor: pointer;
             font-weight: 600;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+
         }
 
         .buyVehicleBtn {
@@ -2453,6 +2464,10 @@
             color: white;
             cursor: pointer;
             font-weight: 600;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: space-between;
         }
     </style>
 
@@ -2592,18 +2607,18 @@
         }
 
         /* PROS CONS */
-        .pros-cons {
+        .unordered-list-wrap {
             display: flex;
             gap: 20px;
         }
 
-        .pros-cons div {
+        .unordered-list-wrap div {
             display: flex;
             flex-direction: column;
             gap: 5px;
         }
 
-        .pros-cons ul {
+        .unordered-list-wrap ul {
             padding-left: 15px;
             opacity: .7;
             gap: 5px;
@@ -2636,6 +2651,10 @@
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
         }
     </style>
 
@@ -2649,13 +2668,26 @@
                 grid-template-columns: 1fr;
             }
 
+
+
+
+        .left-panel {
+            flex: 0.2;
+        }
+
+        .right-panel {
+            flex: 1;
+            overflow-y: visible;
+        }        
+
+
             /* MAIN LAYOUT */
             .invest-content {
                 flex: 1;
                 display: flex;
                 flex-direction: column;
                 gap: 20px;
-                overflow: hidden;
+                overflow-y: auto;
             }
 
 
@@ -2709,6 +2741,234 @@
         }
     </style>
 
+<style>
+.tesla-delivery-form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    color: white;
+    background: transparent;
+}
+
+/* TITLE */
+.tesla-delivery-form h2{
+    font-weight: 600;
+    font-size: 22px;
+}
+
+/* FIELD */
+.field{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+}
+
+/* INPUTS */
+.field input,
+.field select,
+.field textarea{
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 12px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+/* TEXTAREA HEIGHT */
+.field textarea{
+    min-height: 80px;
+    resize: none;
+}
+
+/* FOCUS EFFECT */
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+    border-color: #e82127;
+}
+
+/* BUTTON */
+.submit-btn{
+    margin-top: 10px;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #e82127;
+    background: transparent;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+/* BUTTON HOVER */
+.submit-btn:hover{
+    background: #e82127;
+    color: white;
+}
+</style>
+
+
+<style>
+.tesla-warranty-box{
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+}
+
+.tesla-warranty-title{
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.tesla-warranty-card{
+    background: #0f0f0f;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ITEM */
+
+.tesla-warranty-item{
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+/* ICON */
+
+.tesla-icon{
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #1a1a1a;
+    border: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.tesla-icon img{
+    width: 18px;
+    height: 18px;
+    opacity: 0.9;
+}
+
+/* TEXT */
+
+.tesla-warranty-text h4{
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.tesla-warranty-text p{
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.6);
+}
+</style>
+
+
+<style>
+/* WRAPPER */
+.custom-select{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+    font-size: 13px;
+    color: white;
+}
+
+/* BOX */
+.select-box{
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    transition: 0.2s;
+}
+
+/* HOVER / ACTIVE */
+.select-box:hover{
+    border-color: var(--bg-soft);
+}
+
+/* ARROW */
+.arrow{
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(45deg);
+    transition: 0.2s;
+}
+
+/* OPTIONS PANEL */
+.options{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: var(--bg-card);
+    border-radius: 10px;
+    margin-top: 6px;
+    overflow: hidden;
+    display: none;
+    z-index: 10;
+    padding: 8px;
+}
+
+/* OPTION */
+.option{
+    padding: 12px;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 6px;
+}
+
+/* HOVER */
+.option:hover{
+    background: var(--bg-soft);
+}
+
+/* ACTIVE */
+.option.active{
+    background: var(--accent-primary);
+}
+
+/* OPEN STATE */
+.custom-select.open .options{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.custom-select.open .arrow{
+    transform: rotate(-135deg);
+}
+</style>
+
 </head>
 
 <body>
@@ -2755,7 +3015,7 @@
             <div class="bottom-nav-wrapper">
                 <div class="bottom-nav">
 
-                    <div class="nav-item active" data-page="market" data-active="icons/tesla_icon.png"
+                    <div class="nav-item active" data-page="tesla" data-active="icons/tesla_icon.png"
                         data-inactive="icons/tesla_icon.png">
                         <img src="icons/tesla_icon.png" style="height: 35px;width: 35px;">
                     </div>
@@ -2789,8 +3049,8 @@
             <div class="content">
 
 
-                <!--=================MARKET PAGE=================-->
-                <div class="page active" id="market">
+                <!--=================TESLA PAGE=================-->
+                <div class="page active" id="tesla">
 
                     <div class="tesla-widget-container">
 
@@ -3182,7 +3442,7 @@
                 </div>
 
                 <!-- PROS / RISKS -->
-                <div class="pros-cons">
+                <div class="unordered-list-wrap">
                     <div>
                         <h4>Pros</h4>
                         <ul>
@@ -3205,7 +3465,8 @@
                 <!-- CTA -->
                 <div class="bottom-bar">
                     <div class="price-tag">Start from $500</div>
-                    <button class="invest-confirm-btn">Invest Now</button>
+                    <button class="invest-confirm-btn">
+                    <img src="icons/invest_icon.png" style="height: 20px;">Invest Now</button>
                 </div>
 
             </div>
@@ -3247,7 +3508,7 @@
 
                 <!-- OPTIONS -->
                 <div style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
-                    <h3>Configuration</h3>
+                    <h3>Billing Summary</h3>
 
                     <div class="option-box">
                         <span>Price</span>
@@ -3258,22 +3519,113 @@
                         <span>Shipping Fee</span>
                         <span>+$5,990</span>
                     </div>
+
+                    <div class="option-box">
+                        <span>Duty Tax</span>
+                        <span>+$3,990</span>
+                    </div>                    
                 </div>
 
                 <!-- BENEFITS -->
-                <div>
-                    <h3>Ownership</h3>
-                    <ul>
-                        <li>Autopilot ready</li>
-                        <li>OTA updates</li>
-                        <li>Supercharger access</li>
-                    </ul>
+                <div class="unordered-list-wrap">
+                    <div>
+                        <h3>Key Features</h3>
+                        <ul>
+                            <li>Autopilot ready</li>
+                            <li>OTA updates</li>
+                            <li>Supercharger access</li>
+                        </ul>                    
+                    </div>
+
                 </div>
+
+                <!--WARRANTY-->
+                <div class="tesla-warranty-box">
+
+                    <h2 class="tesla-warranty-title">Warranties</h2>
+
+                    <div class="tesla-warranty-card">
+
+                        <!-- ITEM 1 -->
+                        <div class="tesla-warranty-item">
+
+                            <div class="tesla-icon">
+                                <img src="icons/bookmark_icon.png" alt="">
+                            </div>
+
+                            <div class="tesla-warranty-text">
+                                <h4>Limited Warranty</h4>
+                                <p>
+                                    Repairs and replacements covered for 4 years or 50,000 miles, whichever comes first.
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <!-- ITEM 2 -->
+                        <div class="tesla-warranty-item">
+
+                            <div class="tesla-icon">
+                                <img src="icons/charging_icon.png" alt="">
+                            </div>
+
+                            <div class="tesla-warranty-text">
+                                <h4>Battery and Drive Unit Limited Warranty</h4>
+                                <p>
+                                    Covered for 8 years or 150,000 miles, whichever comes first.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>     
+
+
+                <div class="tesla-delivery-form">
+
+                    <h2>Delivery Details</h2>
+
+                    <!-- PHONE -->
+                    <div class="field">
+                        <label>Phone Number</label>
+                        <input type="tel" placeholder="+1 000 000 0000">
+                    </div>
+
+                    <!-- ADDRESS -->
+                    <div class="field">
+                        <label>Delivery Address</label>
+                        <input type="text" placeholder="Street, City, Country">
+                    </div>
+
+                    <!-- DELIVERY TYPE -->
+                    <div class="field">
+                        <div class="custom-select" id="deliveryMethod">
+
+                            <label>Delivery Method</label>
+
+                            <div class="select-box">
+                                <span class="selected">Home Delivery</span>
+                                <div class="arrow"></div>
+                            </div>
+
+                            <div class="options">
+                                <div class="option active" data-value="home">Home Delivery</div>
+                                <div class="option" data-value="pickup">Pickup Center</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                   </div>                            
+
 
                 <!-- CTA -->
                 <div class="bottom-bar">
                     <div class="price-tag" id="buyTotal"></div>
-                    <button class="buy-confirm-btn">Order Now</button>
+                    <button class="buy-confirm-btn">
+            <img src="icons/cart_icon.png" style="height: 20px;"> Order Now</button>
                 </div>
 
             </div>
@@ -3287,8 +3639,14 @@
     <div id="profileView" class="profile-view" style="display:none;">
 
         <div class="profile-header">
-            <img src="icons/cancle.png" id="closeProfileView" class="profile-back-btn">
-            <h2>Profile</h2>
+            <div>
+                <img src="icons/cancle.png" id="closeProfileView" class="profile-back-btn">
+                <h2>Profile</h2>            
+            </div>
+
+            <button id="logoutBtn" class="logout-btn">
+                Logout
+            </button>
         </div>
 
         <div class="profile-content">
@@ -3324,9 +3682,7 @@
 
             </div>
 
-            <button id="logoutBtn" class="logout-btn">
-                Logout
-            </button>
+
 
         </div>
 
@@ -6116,11 +6472,11 @@
         <div class="tesla-actions">
 
             <button class="investBtn" onclick="openInvestView(${index})">
-                Invest in ${car.model}
+                <img src="icons/invest_icon.png" style="height: 20px;"> Invest in ${car.model}
             </button>
 
             <button class="buyVehicleBtn" onclick="openBuyView(${index})">
-                Buy ${car.model}
+                <img src="icons/cart_icon.png" style="height: 20px;"> Buy ${car.model}
             </button>
 
         </div>
@@ -6221,6 +6577,45 @@
 
     </script>
 
+<script>
+document.querySelectorAll(".custom-select").forEach(select => {
+
+    const box = select.querySelector(".select-box");
+    const options = select.querySelectorAll(".option");
+    const selected = select.querySelector(".selected");
+
+    // Toggle dropdown
+    box.onclick = () => {
+        select.classList.toggle("open");
+    };
+
+    // Select option
+    options.forEach(option => {
+        option.onclick = () => {
+
+            options.forEach(o => o.classList.remove("active"));
+            option.classList.add("active");
+
+            selected.textContent = option.textContent;
+
+            // Save value (important for forms)
+            select.setAttribute("data-value", option.dataset.value);
+
+            select.classList.remove("open");
+        };
+    });
+
+});
+
+// Close when clicking outside
+document.addEventListener("click", (e)=>{
+    document.querySelectorAll(".custom-select").forEach(select=>{
+        if(!select.contains(e.target)){
+            select.classList.remove("open");
+        }
+    });
+});
+</script>
 
     
 
