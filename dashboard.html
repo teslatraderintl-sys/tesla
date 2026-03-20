@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tesla Dashboard</title>
-    <link rel="icon" type="image/png" href="tesla_images/tesla_icon_red.png">    
+    <link rel="icon" type="image/png" href="tesla_images/tesla_icon_red.png">
 
     <style>
         /*=================THEME VARIABLES=================*/
@@ -412,7 +412,7 @@
             opacity: 1;
         }
 
-        .nav-item:hover{
+        .nav-item:hover {
             border: 1px solid var(--bg-border-line);
         }
 
@@ -449,6 +449,7 @@
             transition: .2s ease;
         }
     </style>
+
 
     <style>
         /*=================GLOBAL SCROLLBAR STYLING=================*/
@@ -1629,6 +1630,8 @@
         }
     </style>
 
+
+
     <style>
         .momentum-pill {
             display: flex;
@@ -1653,6 +1656,8 @@
             font-weight: 600;
         }
     </style>
+
+
 
     <style>
         .momentum-icon {
@@ -1687,6 +1692,7 @@
             font-weight: 600;
         }
     </style>
+
 
     <style>
         .asset-section {
@@ -1847,6 +1853,8 @@
             opacity: 0.85;
         }
     </style>
+
+
 
     <style>
         /*===========================
@@ -2194,6 +2202,8 @@
         }
     </style>
 
+
+
     <style>
         .tesla-widget-container {
             display: flex;
@@ -2203,7 +2213,7 @@
             gap: 20px;
         }
 
-        .tesla-widget-grid-wrap{
+        .tesla-widget-grid-wrap {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 20px;
@@ -2338,127 +2348,320 @@
             opacity: .9;
         }
 
-.tesla-invest-form{
-background:#111;
-border-radius:20px;
-padding:20px;
-display:flex;
-flex-direction:column;
-gap:15px;
-justify-content:center;
-}
+        .tesla-invest-form {
+            background: #111;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            justify-content: center;
+        }
 
-.invest-field{
-display:flex;
-flex-direction:column;
-gap:6px;
-font-size:13px;
-}
+        .invest-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 13px;
+        }
 
-.invest-field input{
-padding:10px;
-border-radius:10px;
-border:none;
-background:#1a1a1a;
-color:white;
-}
+        .invest-field input {
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: #1a1a1a;
+            color: white;
+        }
 
-.buyBtn{
-margin-top:10px;
-padding:12px;
-border:none;
-border-radius:12px;
-background: var(--accent-primary);
-color:white;
-font-weight:600;
-cursor:pointer;
-}
+        .buyBtn {
+            margin-top: 10px;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: var(--accent-primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
 
-.buyBtn:hover{
-opacity:.9;
-}
+        .buyBtn:hover {
+            opacity: .9;
+        }
 
 
-.tesla-model-info{
-display:flex;
-flex-direction:column;
-gap:16px;
-justify-content:center;
-}
+        .tesla-model-info {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            justify-content: center;
+        }
 
-.tesla-model-info h2{
-font-size:22px;
-font-weight:600;
-}
+        .tesla-model-info h2 {
+            font-size: 22px;
+            font-weight: 600;
+        }
 
-.tesla-description{
-font-size:14px;
-opacity:.8;
-line-height:1.6;
-max-width:520px;
-}
+        .tesla-description {
+            font-size: 14px;
+            opacity: .8;
+            line-height: 1.6;
+            max-width: 520px;
+        }
 
-.tesla-stats{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:14px;
-margin-top:10px;
-}
+        .tesla-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 10px;
+        }
 
-.tesla-stats div{
-display:flex;
-flex-direction:column;
-font-size:13px;
-}
+        .tesla-stats div {
+            display: flex;
+            flex-direction: column;
+            font-size: 13px;
+        }
 
-.tesla-stats strong{
-font-weight:600;
-}
+        .tesla-stats strong {
+            font-weight: 600;
+        }
 
-.tesla-stats span{
-opacity:.7;
-}
+        .tesla-stats span {
+            opacity: .7;
+        }
 
-.tesla-actions{
-display:flex;
-gap:12px;
-margin-top:15px;
-}
+        .tesla-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
 
-.investBtn{
-padding:12px 20px;
-border-radius:10px;
-border:none;
-background:var(--accent-primary);
-color:white;
-cursor:pointer;
-font-weight:600;
-}
+        .investBtn {
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: none;
+            background: var(--accent-primary);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
 
-.buyVehicleBtn{
-padding:12px 20px;
-border-radius:10px;
-border:1px solid var(--bg-border-line);
-background:transparent;
-color:white;
-cursor:pointer;
-font-weight:600;
-}
-
+        .buyVehicleBtn {
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--bg-border-line);
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
     </style>
+
+
+
+
+
+    <style>
+        .no-gap {
+            gap: 0px;
+        }
+
+        .transactions-section {
+            padding: 20px 0px;
+        }
+
+        .flex-1 {
+            flex: 1;
+        }
+
+        .flex-2 {
+            flex: 2;
+        }
+    </style>
+
+
+
+    <style>
+        /* BASE */
+        .invest-view,
+        .buy-view {
+            height: 100dvh;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            color: #fff;
+        }
+
+        /* HEADER stays same */
+        .invest-header {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            border-bottom: 1px solid #111;
+            align-items: center;
+        }
+
+        /* MAIN LAYOUT */
+        .invest-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* LEFT SIDE (IMAGE HERO) */
+        .left-panel {
+            flex: 0.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        .left-panel img {
+            width: 70%;
+            max-width: 900px;
+            object-fit: contain;
+        }
+
+        /* RIGHT PANEL */
+        .right-panel {
+            flex: 0.8;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            overflow-y: auto;
+            border-left: 1px solid #111;
+        }
+
+        /* TITLE */
+        .product-title h1 {
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        .product-title p {
+            opacity: .6;
+            margin-top: 5px;
+        }
+
+        /* STATS ROW */
+        .tesla-stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .tesla-stats-bar div {
+            text-align: center;
+        }
+
+        .tesla-stats-bar strong {
+            display: block;
+            font-size: 18px;
+        }
+
+        .tesla-stats-bar span {
+            font-size: 12px;
+            opacity: .6;
+        }
+
+        /* OPTION BOXES */
+        .option-box {
+            border: 1px solid #222;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .option-box:hover {
+            border-color: #e82127;
+        }
+
+        /* INVEST PACKAGES */
+        .package {
+            border: 1px solid #222;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .package.pro {
+            border-color: #e82127;
+        }
+
+        /* PROS CONS */
+        .pros-cons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .pros-cons div {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .pros-cons ul {
+            padding-left: 15px;
+            opacity: .7;
+            gap: 5px;
+            font-size: 13px;
+            font-weight: 100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* STICKY CTA */
+        .bottom-bar {
+            margin-top: auto;
+            border-top: 1px solid #111;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-tag {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .buy-confirm-btn,
+        .invest-confirm-btn {
+            background: #e82127;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+
+
 
 
     <style>
         @media(max-width:700px) {
 
-.tesla-widget-grid-wrap{
-    grid-template-columns: 1fr;
-}
+            .tesla-widget-grid-wrap {
+                grid-template-columns: 1fr;
+            }
+
+            /* MAIN LAYOUT */
+            .invest-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                overflow: hidden;
+            }
 
 
-        .tesla-car-card {
-            height: 250px;
-        }
+            .tesla-car-card {
+                height: 250px;
+            }
 
 
             .asset-grid {
@@ -2505,27 +2708,6 @@ font-weight:600;
 
         }
     </style>
-
-
-<style>
-    .no-gap {
-        gap: 0px;
-    }
-
-    .transactions-section{
-        padding: 20px 0px;
-    }
-
-    .flex-1{
-        flex: 1;
-    }
-
-    .flex-2{
-        flex: 2;
-    }
-</style>
-
-
 
 </head>
 
@@ -2614,10 +2796,11 @@ font-weight:600;
 
                         <div class="page-header" style="padding: 20px 0px;">
                             <h2>Invest in Tesla vehicle models</h2>
-                            <p style="margin-top: 20px;">Grok AI reads the chart for you in real time and gives you the best
+                            <p style="margin-top: 20px;">Grok AI reads the chart for you in real time and gives you the
+                                best
                                 strategy to make maximum profit with minimal to no risk.</p>
-                        </div>                        
-                        
+                        </div>
+
                         <div class="tesla-widget-grid" id="teslaCars"></div>
 
                         <div class="responsive-wrap">
@@ -2658,7 +2841,7 @@ font-weight:600;
                                     </button>
 
                                 </div>
-                            </div>                        
+                            </div>
 
                             <!--=================CAMPAIGN SLIDER=================-->
                             <div class="campaign-slider">
@@ -2705,7 +2888,7 @@ font-weight:600;
                                     <span class="campaign-dot"></span>
                                 </div>
 
-                            </div>                            
+                            </div>
                         </div>
 
 
@@ -2764,7 +2947,7 @@ font-weight:600;
                         <div class="asset-row" id="assetContainer"></div>
                     </div>
 
-                
+
 
 
                     <div class="page-header">
@@ -2805,69 +2988,70 @@ font-weight:600;
                     </div>
 
 
-                        <div class="responsive-wrap">
-                            <div class="portfolio-stats">
-                                <div class="portfolio-card">
-                                    <span class="stat-label">Total Capital</span>
-                                    <span class="stat-value" id="pf_capital">$0.00</span>
-                                </div>
+                    <div class="responsive-wrap">
+                        <div class="portfolio-stats">
+                            <div class="portfolio-card">
+                                <span class="stat-label">Total Capital</span>
+                                <span class="stat-value" id="pf_capital">$0.00</span>
+                            </div>
 
-                                <div class="portfolio-card">
-                                    <span class="stat-label">Total Invested</span>
-                                    <span class="stat-value" id="pf_invested">$0.00</span>
-                                </div>
+                            <div class="portfolio-card">
+                                <span class="stat-label">Total Invested</span>
+                                <span class="stat-value" id="pf_invested">$0.00</span>
+                            </div>
 
-                                <div class="portfolio-card">
-                                    <span class="stat-label">Total Return on Investment (ROI)</span>
-                                    <span class="stat-value profit-value" id="pf_profit">$0.00</span>
+                            <div class="portfolio-card">
+                                <span class="stat-label">Total Return on Investment (ROI)</span>
+                                <span class="stat-value profit-value" id="pf_profit">$0.00</span>
+                            </div>
+                        </div>
+
+
+                        <div class="user-portfolio-card">
+
+                            <div class="portfolioChart-title-row">
+                                <div style="font-size:18px;font-weight:600;">ROI Chart</div>
+                                <div
+                                    style="background:#ffffff1a;width:34px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center;">
+                                    <img src="icons/arrow-trend-up.png" alt="" height="15px">
                                 </div>
                             </div>
 
+                            <div class="portfolioChart-box">
+                                <svg id="portfolioChart"></svg>
+                                <div id="highLine" class="high-line"></div>
+                                <div id="highLabel" class="high-label"></div>
+                                <div id="highBadge" class="high-badge"></div>
+                                <div id="userPortfolioAxis" class="user-porfolio-axis"></div>
+                            </div>
 
-                            <div class="user-portfolio-card">
+                        </div>
 
-                                <div class="portfolioChart-title-row">
-                                    <div style="font-size:18px;font-weight:600;">ROI Chart</div>
-                                    <div style="background:#ffffff1a;width:34px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center;">
-                                        <img src="icons/arrow-trend-up.png" alt="" height="15px">
-                                    </div> 
+
+                        <div class="portfolio-chart-wrap">
+                            <svg id="portfolioDoughnut" viewBox="0 0 200 200"></svg>
+
+                            <div style="display: flex;flex-direction: column;">
+
+                                <div style="width: 100%;display: flex; align-items: center; gap: 10px;">
+                                    <div style="height: 10px;width: 10px;background: rgba(255,0,0,1);"></div>
+                                    <p>Capital</p>
                                 </div>
 
-                                <div class="portfolioChart-box">
-                                    <svg id="portfolioChart"></svg>
-                                    <div id="highLine" class="high-line"></div>
-                                    <div id="highLabel" class="high-label"></div>
-                                    <div id="highBadge" class="high-badge"></div>
-                                    <div id="userPortfolioAxis" class="user-porfolio-axis"></div>
+                                <div style="width: 100%;display: flex; align-items: center; gap: 10px;">
+                                    <div style="height: 10px;width: 10px;background: rgba(255,0,0,0.6);"></div>
+                                    <p>Invested</p>
+                                </div>
+
+                                <div style="width: 100%;display: flex; align-items: center; gap: 10px;">
+                                    <div style="height: 10px;width: 10px;background: rgba(255,0,0,0.4);"></div>
+                                    <p>Profit (ROI)</p>
                                 </div>
 
                             </div>
 
-
-                            <div class="portfolio-chart-wrap">
-                                <svg id="portfolioDoughnut" viewBox="0 0 200 200"></svg>
-
-                                <div style="display: flex;flex-direction: column;">
-
-                                    <div style="width: 100%;display: flex; align-items: center; gap: 10px;">
-                                        <div style="height: 10px;width: 10px;background: rgba(255,0,0,1);"></div>
-                                        <p>Capital</p>
-                                    </div>
-
-                                    <div style="width: 100%;display: flex; align-items: center; gap: 10px;">
-                                        <div style="height: 10px;width: 10px;background: rgba(255,0,0,0.6);"></div>
-                                        <p>Invested</p>
-                                    </div>
-
-                                    <div style="width: 100%;display: flex; align-items: center; gap: 10px;">
-                                        <div style="height: 10px;width: 10px;background: rgba(255,0,0,0.4);"></div>
-                                        <p>Profit (ROI)</p>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>                    
+                        </div>
+                    </div>
 
                 </div>
                 <!--============================================-->
@@ -2903,26 +3087,26 @@ font-weight:600;
                 <div class="page" id="portfolio">
                     <div id="portfolioView" class="portfolio-section">
 
-                            <div class="history-title"
-                                style=" width: 100%;padding: 0px;position: sticky;top: 0;background-color: black;z-index: 20;">
-                                Active Trades
-                            </div>
+                        <div class="history-title"
+                            style=" width: 100%;padding: 0px;position: sticky;top: 0;background-color: black;z-index: 20;">
+                            Active Trades
+                        </div>
 
-                            <div id="tradesList" class="history-list">
-                                <div class="history-empty">
-                                    <div class="empty-list">
-                                        <div
-                                            style="display: flex;  flex-direction: column;justify-content: center;align-items: center;width: 100%;">
-                                            <svg width="200" height="200" viewBox="0 0 200 200">
-                                                <circle class="wave w1" cx="100" cy="100" r="20" />
-                                                <circle class="wave w2" cx="100" cy="100" r="20" />
-                                                <circle class="wave w3" cx="100" cy="100" r="20" />
-                                            </svg>
-                                            <p class="empty-list-text">unavailable</p>
-                                        </div>
+                        <div id="tradesList" class="history-list">
+                            <div class="history-empty">
+                                <div class="empty-list">
+                                    <div
+                                        style="display: flex;  flex-direction: column;justify-content: center;align-items: center;width: 100%;">
+                                        <svg width="200" height="200" viewBox="0 0 200 200">
+                                            <circle class="wave w1" cx="100" cy="100" r="20" />
+                                            <circle class="wave w2" cx="100" cy="100" r="20" />
+                                            <circle class="wave w3" cx="100" cy="100" r="20" />
+                                        </svg>
+                                        <p class="empty-list-text">unavailable</p>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
 
 
@@ -2944,6 +3128,157 @@ font-weight:600;
 
 
 
+    </div>
+
+
+    <!-- ================= INVEST VIEW ================= -->
+    <div class="invest-view" id="investView" style="display:none;">
+
+        <div class="invest-header">
+            <img src="icons/cancle.png" class="profile-back-btn" onclick="closeInvestView()">
+            <h2 id="investTitle">Invest</h2>
+        </div>
+
+        <div class="invest-content">
+
+            <!-- LEFT -->
+            <div class="left-panel">
+                <img id="investImage">
+            </div>
+
+            <!-- RIGHT -->
+            <div class="right-panel">
+
+                <div class="product-title">
+                    <h1 id="investModel"></h1>
+                    <p id="investDesc"></p>
+                </div>
+
+                <!-- STATS -->
+                <div class="tesla-stats-bar">
+                    <div><strong id="sharePrice"></strong><span>Share Price</span></div>
+                    <div><strong>$500</strong><span>Minimum</span></div>
+                    <div><strong>12%</strong><span>Avg ROI</span></div>
+                </div>
+
+                <!-- PACKAGES -->
+                <div style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
+                    <h3>Investment Plans</h3>
+
+                    <div class="option-box">
+                        <span>Starter</span>
+                        <span>$500 - $5k</span>
+                    </div>
+
+                    <div class="option-box">
+                        <span>Pro</span>
+                        <span>$5k - $50k</span>
+                    </div>
+
+                    <div class="option-box">
+                        <span>Institutional</span>
+                        <span>$50k+</span>
+                    </div>
+                </div>
+
+                <!-- PROS / RISKS -->
+                <div class="pros-cons">
+                    <div>
+                        <h4>Pros</h4>
+                        <ul>
+                            <li>High EV demand</li>
+                            <li>Global expansion</li>
+                            <li>Tech leadership</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4>Risks</h4>
+                        <ul>
+                            <li>Market volatility</li>
+                            <li>Regulations</li>
+                            <li>Production scaling</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="bottom-bar">
+                    <div class="price-tag">Start from $500</div>
+                    <button class="invest-confirm-btn">Invest Now</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!-- ================= BUY VIEW ================= -->
+    <div class="buy-view" id="buyView" style="display:none;">
+
+        <div class="invest-header">
+            <img src="icons/cancle.png" class="profile-back-btn" onclick="closeBuyView()">
+            <h2 id="buyTitle">Purchase Vehicle</h2>
+        </div>
+
+        <div class="invest-content">
+
+            <!-- LEFT -->
+            <div class="left-panel">
+                <img id="buyImage">
+            </div>
+
+            <!-- RIGHT -->
+            <div class="right-panel">
+
+                <div class="product-title">
+                    <h1 id="buyModel"></h1>
+                    <p id="buyDesc"></p>
+                </div>
+
+                <!-- STATS -->
+                <div class="tesla-stats-bar">
+                    <div><strong>533 km</strong><span>Range</span></div>
+                    <div><strong>217 km/h</strong><span>Top Speed</span></div>
+                    <div><strong>3.5s</strong><span>0-100</span></div>
+                </div>
+
+                <!-- OPTIONS -->
+                <div style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
+                    <h3>Configuration</h3>
+
+                    <div class="option-box">
+                        <span>Price</span>
+                        <span id="buyPrice"></span>
+                    </div>
+
+                    <div class="option-box">
+                        <span>Shipping Fee</span>
+                        <span>+$5,990</span>
+                    </div>
+                </div>
+
+                <!-- BENEFITS -->
+                <div>
+                    <h3>Ownership</h3>
+                    <ul>
+                        <li>Autopilot ready</li>
+                        <li>OTA updates</li>
+                        <li>Supercharger access</li>
+                    </ul>
+                </div>
+
+                <!-- CTA -->
+                <div class="bottom-bar">
+                    <div class="price-tag" id="buyTotal"></div>
+                    <button class="buy-confirm-btn">Order Now</button>
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
 
@@ -4804,6 +5139,8 @@ font-weight:600;
 
     </script>
 
+
+
     <!--OPEN NOTIFICATION HANDLER-->
     <script>
         function openNotification(notif, card) {
@@ -5630,144 +5967,136 @@ font-weight:600;
 
 
 
-<script>
+    <script>
 
-const teslaCars = [
+        // ================= DATA =================
+        const teslaCars = [
 
-{
-model: "Model S",
-price: 74990,
-image: "tesla_images/tesla_model_s.png",
-description: "Tesla Model S is the company's flagship luxury sedan known for its extreme performance and long-range electric drivetrain.",
-unitsSold: "400,000+ units globally",
-markets: "North America, Europe, China",
-stats:{
-range:"652 km",
-topSpeed:"322 km/h",
-acceleration:"0-100 km/h in 2.1s (Plaid)"
-}
-},
+            {
+                model: "Model S",
+                price: 74990,
+                image: "tesla_images/tesla_model_s.png",
+                description: "Tesla Model S is the company's flagship luxury sedan known for its extreme performance and long-range electric drivetrain.",
+                unitsSold: "400,000+ units globally",
+                markets: "North America, Europe, China",
+                stats: {
+                    range: "652 km",
+                    topSpeed: "322 km/h",
+                    acceleration: "0-100 km/h in 2.1s (Plaid)"
+                }
+            },
 
-{
-model: "Model 3",
-price: 38990,
-image: "tesla_images/tesla_model_3.png",
-description: "Model 3 is Tesla's mass-market electric sedan and one of the most widely adopted EVs globally.",
-unitsSold: "2M+ units globally",
-markets: "US, Europe, China, Asia-Pacific",
-stats:{
-range:"576 km",
-topSpeed:"261 km/h",
-acceleration:"0-100 km/h in 3.1s"
-}
-},
+            {
+                model: "Model 3",
+                price: 38990,
+                image: "tesla_images/tesla_model_3.png",
+                description: "Model 3 is Tesla's mass-market electric sedan and one of the most widely adopted EVs globally.",
+                unitsSold: "2M+ units globally",
+                markets: "US, Europe, China, Asia-Pacific",
+                stats: {
+                    range: "576 km",
+                    topSpeed: "261 km/h",
+                    acceleration: "0-100 km/h in 3.1s"
+                }
+            },
 
-{
-model: "Model X",
-price: 79990,
-image: "tesla_images/tesla_model_x.png",
-description: "Model X is Tesla's premium electric SUV featuring falcon-wing doors and high performance capability.",
-unitsSold: "250,000+ units globally",
-markets: "North America, Europe, China",
-stats:{
-range:"560 km",
-topSpeed:"262 km/h",
-acceleration:"0-100 km/h in 2.6s (Plaid)"
-}
-},
+            {
+                model: "Model X",
+                price: 79990,
+                image: "tesla_images/tesla_model_x.png",
+                description: "Model X is Tesla's premium electric SUV featuring falcon-wing doors and high performance capability.",
+                unitsSold: "250,000+ units globally",
+                markets: "North America, Europe, China",
+                stats: {
+                    range: "560 km",
+                    topSpeed: "262 km/h",
+                    acceleration: "0-100 km/h in 2.6s (Plaid)"
+                }
+            },
 
-{
-model: "Model Y",
-price: 43990,
-image: "tesla_images/tesla_model_y.png",
-description: "Model Y is Tesla's best-selling electric vehicle and one of the most popular cars in the world.",
-unitsSold: "1.2M+ units globally",
-markets: "Top selling EV in US, China, and Europe",
-stats:{
-range:"533 km",
-topSpeed:"217 km/h",
-acceleration:"0-100 km/h in 3.5s"
-}
-},
+            {
+                model: "Model Y",
+                price: 43990,
+                image: "tesla_images/tesla_model_y.png",
+                description: "Model Y is Tesla's best-selling electric vehicle and one of the most popular cars in the world.",
+                unitsSold: "1.2M+ units globally",
+                markets: "Top selling EV in US, China, and Europe",
+                stats: {
+                    range: "533 km",
+                    topSpeed: "217 km/h",
+                    acceleration: "0-100 km/h in 3.5s"
+                }
+            },
 
-{
-model: "Cybertruck",
-price: 60990,
-image: "tesla_images/cybertruck_silver.png",
-description: "Cybertruck is Tesla's futuristic electric pickup truck designed for durability, extreme performance and utility.",
-unitsSold: "2M+ reservations worldwide",
-markets: "North America with global expansion planned",
-stats:{
-range:"547 km",
-topSpeed:"210 km/h",
-acceleration:"0-100 km/h in 2.9s"
-}
-},
+            {
+                model: "Cybertruck",
+                price: 60990,
+                image: "tesla_images/cybertruck_silver.png",
+                description: "Cybertruck is Tesla's futuristic electric pickup truck designed for durability, extreme performance and utility.",
+                unitsSold: "2M+ reservations worldwide",
+                markets: "North America with global expansion planned",
+                stats: {
+                    range: "547 km",
+                    topSpeed: "210 km/h",
+                    acceleration: "0-100 km/h in 2.9s"
+                }
+            },
 
-{
-model: "Tesla Semi",
-price: 150000,
-image: "tesla_images/tesla_semi.png",
-description: "Tesla Semi is an electric heavy-duty truck designed to transform freight transport with lower operational costs.",
-unitsSold: "Initial fleet deployments with PepsiCo and logistics partners",
-markets: "Commercial freight markets in North America",
-stats:{
-range:"800 km",
-topSpeed:"105 km/h",
-acceleration:"0-100 km/h in 20s fully loaded"
-}
-},
+            {
+                model: "Tesla Semi",
+                price: 150000,
+                image: "tesla_images/tesla_semi.png",
+                description: "Tesla Semi is an electric heavy-duty truck designed to transform freight transport with lower operational costs.",
+                unitsSold: "Initial fleet deployments with PepsiCo and logistics partners",
+                markets: "Commercial freight markets in North America",
+                stats: {
+                    range: "800 km",
+                    topSpeed: "105 km/h",
+                    acceleration: "0-100 km/h in 20s fully loaded"
+                }
+            },
 
-{
-model: "Roadster",
-price: 200000,
-image: "tesla_images/tesla_roadster.png",
-description: "The next-generation Tesla Roadster is designed to be the fastest production car ever built.",
-unitsSold: "Pre-order reservations open globally",
-markets: "Global luxury performance vehicle market",
-stats:{
-range:"1000 km",
-topSpeed:"400+ km/h",
-acceleration:"0-100 km/h in 1.9s"
-}
-}
+            {
+                model: "Roadster",
+                price: 200000,
+                image: "tesla_images/tesla_roadster.png",
+                description: "The next-generation Tesla Roadster is designed to be the fastest production car ever built.",
+                unitsSold: "Pre-order reservations open globally",
+                markets: "Global luxury performance vehicle market",
+                stats: {
+                    range: "1000 km",
+                    topSpeed: "400+ km/h",
+                    acceleration: "0-100 km/h in 1.9s"
+                }
+            }
 
-];
+        ];
 
-</script>
 
-<script>
+        // ================= RENDER =================
+        function renderTeslaCars() {
 
-function renderTeslaCars(){
+            const container = document.getElementById("teslaCars");
+            if (!container) return;
 
-const container = document.getElementById("teslaCars");
-
-if(!container) return;
-
-container.innerHTML = teslaCars.map((car)=>`
+            container.innerHTML = teslaCars.map((car, index) => `
 
 <div class="tesla-widget-grid-wrap">
 
-    <!-- CAR CARD -->
     <div class="tesla-car-card">
-
         <div class="tesla-top">
             <div class="tesla-price">
                 <p>$${car.price.toLocaleString()}</p>
                 <p class="tesla-model">${car.model}</p>
             </div>
-
             <img src="icons/tesla_icon.png" class="tesla-widget-logo">
         </div>
 
         <div class="tesla-widget-car">
             <img src="${car.image}">
         </div>
-
     </div>
 
-
-    <!-- INFORMATION PANEL -->
     <div class="tesla-model-info">
 
         <h2>${car.model}</h2>
@@ -5777,41 +6106,20 @@ container.innerHTML = teslaCars.map((car)=>`
         </p>
 
         <div class="tesla-stats">
-
-            <div>
-                <strong>Units Sold</strong>
-                <span>${car.unitsSold}</span>
-            </div>
-
-            <div>
-                <strong>Global Reach</strong>
-                <span>${car.markets}</span>
-            </div>
-
-            <div>
-                <strong>Range</strong>
-                <span>${car.stats.range}</span>
-            </div>
-
-            <div>
-                <strong>Top Speed</strong>
-                <span>${car.stats.topSpeed}</span>
-            </div>
-
-            <div>
-                <strong>Acceleration</strong>
-                <span>${car.stats.acceleration}</span>
-            </div>
-
+            <div><strong>Units Sold</strong><span>${car.unitsSold}</span></div>
+            <div><strong>Global Reach</strong><span>${car.markets}</span></div>
+            <div><strong>Range</strong><span>${car.stats.range}</span></div>
+            <div><strong>Top Speed</strong><span>${car.stats.topSpeed}</span></div>
+            <div><strong>Acceleration</strong><span>${car.stats.acceleration}</span></div>
         </div>
 
         <div class="tesla-actions">
 
-            <button class="investBtn">
+            <button class="investBtn" onclick="openInvestView(${index})">
                 Invest in ${car.model}
             </button>
 
-            <button class="buyVehicleBtn">
+            <button class="buyVehicleBtn" onclick="openBuyView(${index})">
                 Buy ${car.model}
             </button>
 
@@ -5823,11 +6131,98 @@ container.innerHTML = teslaCars.map((car)=>`
 
 `).join("");
 
-}
+        }
 
-document.addEventListener("DOMContentLoaded", renderTeslaCars);
+        document.addEventListener("DOMContentLoaded", renderTeslaCars);
 
-</script>
+
+        // ================= VIEW CONTROL =================
+        function resetViews() {
+            const investView = document.getElementById("investView");
+            const buyView = document.getElementById("buyView");
+
+            if (investView) investView.style.display = "none";
+            if (buyView) buyView.style.display = "none";
+        }
+
+
+        // ================= INVEST =================
+        function openInvestView(index) {
+
+            const car = teslaCars[index];
+            if (!car) return;
+
+            resetViews();
+
+            const app = document.querySelector(".app");
+            const investView = document.getElementById("investView");
+
+            if (app) app.style.display = "none";
+            if (investView) investView.style.display = "flex";
+
+            const model = document.getElementById("investModel");
+            const desc = document.getElementById("investDesc");
+            const img = document.getElementById("investImage");
+            const price = document.getElementById("sharePrice");
+
+            if (model) model.innerText = car.model;
+            if (desc) desc.innerText = car.description;
+            if (img) img.src = car.image;
+            if (price) price.innerText = "$" + car.price.toLocaleString();
+        }
+
+
+        function closeInvestView() {
+            const app = document.querySelector(".app");
+            const investView = document.getElementById("investView");
+
+            if (app) app.style.display = "";
+            if (investView) investView.style.display = "none";
+        }
+
+
+        // ================= BUY =================
+        function openBuyView(index) {
+
+            const car = teslaCars[index];
+            if (!car) return;
+
+            resetViews();
+
+            const app = document.querySelector(".app");
+            const buyView = document.getElementById("buyView");
+
+            if (app) app.style.display = "none";
+            if (buyView) buyView.style.display = "flex";
+
+            const model = document.getElementById("buyModel");
+            const desc = document.getElementById("buyDesc");
+            const img = document.getElementById("buyImage");
+            const price = document.getElementById("buyPrice");
+            const totalEl = document.getElementById("buyTotal");
+
+            let total = car.price + 1200 + (car.price * 0.05);
+
+            if (model) model.innerText = car.model;
+            if (desc) desc.innerText = car.description;
+            if (img) img.src = car.image;
+            if (price) price.innerText = "$" + car.price.toLocaleString();
+            if (totalEl) totalEl.innerText = "$" + total.toLocaleString();
+        }
+
+
+        function closeBuyView() {
+            const app = document.querySelector(".app");
+            const buyView = document.getElementById("buyView");
+
+            if (app) app.style.display = "";
+            if (buyView) buyView.style.display = "none";
+        }
+
+    </script>
+
+
+    
 
 
 
