@@ -2442,7 +2442,7 @@
         }
 
         .investBtn {
-            padding: 12px 20px;
+            padding: 12px 10px;
             border-radius: 10px;
             border: none;
             background: var(--accent-primary);
@@ -2450,14 +2450,14 @@
             cursor: pointer;
             font-weight: 600;
             display: flex;
-            gap: 10px;
+            gap: 5px;
             align-items: center;
             justify-content: space-between;
 
         }
 
         .buyVehicleBtn {
-            padding: 12px 20px;
+            padding: 12px 10px;
             border-radius: 10px;
             border: 1px solid var(--bg-border-line);
             background: transparent;
@@ -2465,7 +2465,7 @@
             cursor: pointer;
             font-weight: 600;
             display: flex;
-            gap: 20px;
+            gap: 5px;
             align-items: center;
             justify-content: space-between;
         }
@@ -2630,12 +2630,16 @@
 
         /* STICKY CTA */
         .bottom-bar {
-            margin-top: auto;
-            border-top: 1px solid #111;
-            padding-top: 15px;
+            width: 100%;
+            border-top: 1px solid #383838;
+            padding: 15px 0px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);            
         }
 
         .price-tag {
@@ -2688,6 +2692,7 @@
                 flex-direction: column;
                 gap: 20px;
                 overflow-y: auto;
+                scrollbar-gutter: stable;
             }
 
 
@@ -2704,13 +2709,21 @@
                 flex-direction: column;
             }
 
+            .scrollable-wrap{
+            
+                overflow-y: scroll;
+            }
+
             .content {
                 order: 1;
+                overflow-y: unset;
             }
 
             .bottom-nav {
                 flex-direction: row;
                 height: fit-content;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(10px);
 
             }
 
@@ -2719,6 +2732,9 @@
                 order: 2;
                 padding-top: 0px;
                 padding-bottom: 20px;
+                position: sticky;
+                bottom: 0;
+                z-index: 100;
             }
 
             .portfolio-chart-wrap {
@@ -2969,6 +2985,62 @@
 }
 </style>
 
+
+<style>
+    /* WRAPPER */
+.tesla-benefits{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.tesla-benefits h3{
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/* CARD */
+.benefit-card{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.02);
+    transition: 0.25s ease;
+}
+
+/* HOVER EFFECT */
+.benefit-card:hover{
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    transform: translateY(-2px);
+}
+
+/* IMAGE */
+.benefit-card img{
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    filter: brightness(1.1);
+}
+
+/* TEXT */
+.benefit-text h4{
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.benefit-text p{
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.4;
+}
+</style>
+
 </head>
 
 <body>
@@ -3009,7 +3081,7 @@
 
         </div>
 
-        <div class="responsive-wrap no-gap">
+        <div class="responsive-wrap no-gap scrollable-wrap">
 
             <!--=================BOTTOM NAV=================-->
             <div class="bottom-nav-wrapper">
@@ -3396,7 +3468,7 @@
 
         <div class="invest-header">
             <img src="icons/cancle.png" class="profile-back-btn" onclick="closeInvestView()">
-            <h2 id="investTitle">Invest</h2>
+            <h3 id="investTitle">Invest</h3>
         </div>
 
         <div class="invest-content">
@@ -3410,7 +3482,7 @@
             <div class="right-panel">
 
                 <div class="product-title">
-                    <h1 id="investModel"></h1>
+                    <h2 id="investModel"></h2>
                     <p id="investDesc"></p>
                 </div>
 
@@ -3481,7 +3553,7 @@
 
         <div class="invest-header">
             <img src="icons/cancle.png" class="profile-back-btn" onclick="closeBuyView()">
-            <h2 id="buyTitle">Purchase Vehicle</h2>
+            <h3 id="buyTitle">Purchase Vehicle</h3>
         </div>
 
         <div class="invest-content">
@@ -3495,7 +3567,7 @@
             <div class="right-panel">
 
                 <div class="product-title">
-                    <h1 id="buyModel"></h1>
+                    <h2 id="buyModel"></h2>
                     <p id="buyDesc"></p>
                 </div>
 
@@ -3506,38 +3578,39 @@
                     <div><strong>3.5s</strong><span>0-100</span></div>
                 </div>
 
-                <!-- OPTIONS -->
-                <div style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
-                    <h3>Billing Summary</h3>
-
-                    <div class="option-box">
-                        <span>Price</span>
-                        <span id="buyPrice"></span>
-                    </div>
-
-                    <div class="option-box">
-                        <span>Shipping Fee</span>
-                        <span>+$5,990</span>
-                    </div>
-
-                    <div class="option-box">
-                        <span>Duty Tax</span>
-                        <span>+$3,990</span>
-                    </div>                    
-                </div>
-
                 <!-- BENEFITS -->
-                <div class="unordered-list-wrap">
-                    <div>
-                        <h3>Key Features</h3>
-                        <ul>
-                            <li>Autopilot ready</li>
-                            <li>OTA updates</li>
-                            <li>Supercharger access</li>
-                        </ul>                    
+                <div class="tesla-benefits">
+
+                    <h3>Key Features</h3>
+
+                    <div class="responsive-wrap">
+                        <div class="benefit-card">
+                            <img src="icons/wheel.png" alt="">
+                            <div class="benefit-text">
+                                <h4>Autopilot Ready</h4>
+                                <p>Advanced driver assistance system for safer and smarter driving.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-card">
+                            <img src="icons/smart_car_icon.png" alt="">
+                            <div class="benefit-text">
+                                <h4>OTA Updates</h4>
+                                <p>Receive over-the-air updates that improve performance over time.</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-card">
+                            <img src="icons/plug.png" alt="">
+                            <div class="benefit-text">
+                                <h4>Supercharger Access</h4>
+                                <p>Fast charging network available across major global routes.</p>
+                            </div>
+                        </div>
                     </div>
 
-                </div>
+                </div>   
+
 
                 <!--WARRANTY-->
                 <div class="tesla-warranty-box">
@@ -3580,7 +3653,28 @@
 
                     </div>
 
-                </div>     
+                </div> 
+                
+
+                <!-- BILLING SUMMARY -->
+                <div style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
+                    <h3>Billing Summary</h3>
+
+                    <div class="option-box">
+                        <span>Price</span>
+                        <span id="buyPrice"></span>
+                    </div>
+
+                    <div class="option-box">
+                        <span>Shipping Fee</span>
+                        <span>+$5,990</span>
+                    </div>
+
+                    <div class="option-box">
+                        <span>Duty Tax</span>
+                        <span>+$3,990</span>
+                    </div>                    
+                </div>    
 
 
                 <div class="tesla-delivery-form">
@@ -3625,7 +3719,7 @@
                 <div class="bottom-bar">
                     <div class="price-tag" id="buyTotal"></div>
                     <button class="buy-confirm-btn">
-            <img src="icons/cart_icon.png" style="height: 20px;"> Order Now</button>
+                    <img src="icons/cart_icon.png" style="height: 20px;"> Order Now</button>
                 </div>
 
             </div>
