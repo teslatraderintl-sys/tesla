@@ -2541,6 +2541,7 @@
         .right-panel {
             flex: 0.8;
             padding: 30px;
+            padding-bottom: 0px;
             display: flex;
             flex-direction: column;
             gap: 25px;
@@ -2731,7 +2732,7 @@
                 height: fit-content;
                 order: 2;
                 padding-top: 0px;
-                padding-bottom: 20px;
+                padding-bottom: 10px;
                 position: sticky;
                 bottom: 0;
                 z-index: 100;
@@ -2910,6 +2911,18 @@
     font-size: 13px;
     color: white;
 }
+
+#buyTax {
+    font-weight: 600;
+    color: #fff;
+}
+
+.tax-percent {
+    font-size: 12px;
+    color: #888;
+    margin-left: 6px;
+}
+
 
 /* BOX */
 .select-box{
@@ -3667,13 +3680,16 @@
 
                     <div class="option-box">
                         <span>Shipping Fee</span>
-                        <span>+$5,990</span>
+                        <span id="buyShipping"></span>
                     </div>
 
                     <div class="option-box">
                         <span>Duty Tax</span>
-                        <span>+$3,990</span>
-                    </div>                    
+                        <span>
+                            <span id="buyTax"></span>
+                            <span id="buyTaxPercent" class="tax-percent"></span>
+                        </span>
+                    </div>                
                 </div>    
 
 
@@ -3681,22 +3697,18 @@
 
                     <h2>Delivery Details</h2>
 
-                    <!-- PHONE -->
                     <div class="field">
                         <label>Phone Number</label>
-                        <input type="tel" placeholder="+1 000 000 0000">
+                        <input type="tel" id="deliveryPhone" placeholder="+1 000 000 0000">
                     </div>
 
-                    <!-- ADDRESS -->
                     <div class="field">
                         <label>Delivery Address</label>
-                        <input type="text" placeholder="Street, City, Country">
+                        <input type="text" id="deliveryAddress" placeholder="Street, City, Country">
                     </div>
 
-                    <!-- DELIVERY TYPE -->
                     <div class="field">
                         <div class="custom-select" id="deliveryMethod">
-
                             <label>Delivery Method</label>
 
                             <div class="select-box">
@@ -3708,18 +3720,21 @@
                                 <div class="option active" data-value="home">Home Delivery</div>
                                 <div class="option" data-value="pickup">Pickup Center</div>
                             </div>
-
                         </div>
                     </div>
 
-                   </div>                            
+                    
+
+                </div>                           
 
 
                 <!-- CTA -->
                 <div class="bottom-bar">
                     <div class="price-tag" id="buyTotal"></div>
-                    <button class="buy-confirm-btn">
-                    <img src="icons/cart_icon.png" style="height: 20px;"> Order Now</button>
+                    <button id="orderBtn" class="buy-confirm-btn" onclick="submitCarOrder()">
+                        <img src="icons/cart_icon.png"  style="height: 20px;">
+                        <span class="btn-text">Order Now</span>
+                    </button>
                 </div>
 
             </div>
@@ -6429,6 +6444,8 @@
                 description: "Tesla Model S is the company's flagship luxury sedan known for its extreme performance and long-range electric drivetrain.",
                 unitsSold: "400,000+ units globally",
                 markets: "North America, Europe, China",
+                shippingFee: 5990,
+                taxRate: 0.05, // 5%
                 stats: {
                     range: "652 km",
                     topSpeed: "322 km/h",
@@ -6443,6 +6460,8 @@
                 description: "Model 3 is Tesla's mass-market electric sedan and one of the most widely adopted EVs globally.",
                 unitsSold: "2M+ units globally",
                 markets: "US, Europe, China, Asia-Pacific",
+                shippingFee: 5990,
+                taxRate: 0.05, // 5%
                 stats: {
                     range: "576 km",
                     topSpeed: "261 km/h",
@@ -6457,6 +6476,8 @@
                 description: "Model X is Tesla's premium electric SUV featuring falcon-wing doors and high performance capability.",
                 unitsSold: "250,000+ units globally",
                 markets: "North America, Europe, China",
+                shippingFee: 5990,
+                taxRate: 0.05, // 5%                
                 stats: {
                     range: "560 km",
                     topSpeed: "262 km/h",
@@ -6471,6 +6492,8 @@
                 description: "Model Y is Tesla's best-selling electric vehicle and one of the most popular cars in the world.",
                 unitsSold: "1.2M+ units globally",
                 markets: "Top selling EV in US, China, and Europe",
+                shippingFee: 5990,
+                taxRate: 0.05, // 5%                
                 stats: {
                     range: "533 km",
                     topSpeed: "217 km/h",
@@ -6485,6 +6508,8 @@
                 description: "Cybertruck is Tesla's futuristic electric pickup truck designed for durability, extreme performance and utility.",
                 unitsSold: "2M+ reservations worldwide",
                 markets: "North America with global expansion planned",
+                shippingFee: 5990,
+                taxRate: 0.05, // 5%                
                 stats: {
                     range: "547 km",
                     topSpeed: "210 km/h",
@@ -6499,6 +6524,8 @@
                 description: "Tesla Semi is an electric heavy-duty truck designed to transform freight transport with lower operational costs.",
                 unitsSold: "Initial fleet deployments with PepsiCo and logistics partners",
                 markets: "Commercial freight markets in North America",
+                shippingFee: 5990,
+                taxRate: 0.05, // 5%                
                 stats: {
                     range: "800 km",
                     topSpeed: "105 km/h",
@@ -6513,6 +6540,8 @@
                 description: "The next-generation Tesla Roadster is designed to be the fastest production car ever built.",
                 unitsSold: "Pre-order reservations open globally",
                 markets: "Global luxury performance vehicle market",
+                shippingFee: 5990,
+                taxRate: 0.05, // 5%                
                 stats: {
                     range: "1000 km",
                     topSpeed: "400+ km/h",
@@ -6632,34 +6661,55 @@
 
 
         // ================= BUY =================
-        function openBuyView(index) {
+function openBuyView(index) {
 
-            const car = teslaCars[index];
-            if (!car) return;
+    const car = teslaCars[index];
+    if (!car) return;
 
-            resetViews();
+    resetViews();
 
-            const app = document.querySelector(".app");
-            const buyView = document.getElementById("buyView");
+    const app = document.querySelector(".app");
+    const buyView = document.getElementById("buyView");
 
-            if (app) app.style.display = "none";
-            if (buyView) buyView.style.display = "flex";
+    if (app) app.style.display = "none";
+    if (buyView) buyView.style.display = "flex";
 
-            const model = document.getElementById("buyModel");
-            const desc = document.getElementById("buyDesc");
-            const img = document.getElementById("buyImage");
-            const price = document.getElementById("buyPrice");
-            const totalEl = document.getElementById("buyTotal");
+    const model = document.getElementById("buyModel");
+    const desc = document.getElementById("buyDesc");
+    const img = document.getElementById("buyImage");
+    const price = document.getElementById("buyPrice");
+    const shippingEl = document.getElementById("buyShipping");
+    const taxEl = document.getElementById("buyTax");
+    const taxPercentEl = document.getElementById("buyTaxPercent"); // ✅ added
+    const totalEl = document.getElementById("buyTotal");
 
-            let total = car.price + 1200 + (car.price * 0.05);
+    const shipping = car.shippingFee || 0;
 
-            if (model) model.innerText = car.model;
-            if (desc) desc.innerText = car.description;
-            if (img) img.src = car.image;
-            if (price) price.innerText = "$" + car.price.toLocaleString();
-            if (totalEl) totalEl.innerText = "$" + total.toLocaleString();
-        }
+    // ✅ TAX FROM PERCENTAGE
+    const taxRate = car.taxRate || 0;
+    const tax = car.price * taxRate;
 
+    const total = car.price + shipping + tax;
+
+    // UI UPDATE
+    if (model) model.innerText = car.model;
+    if (desc) desc.innerText = car.description;
+    if (img) img.src = car.image;
+
+    if (price) price.innerText = money(car.price);
+
+    // ✅ keep "+" for consistency with billing UI
+    if (shippingEl) shippingEl.innerText = "+" + money(shipping);
+
+    // ✅ split value + percentage
+    if (taxEl) taxEl.innerText = "+" + money(tax);
+
+    if (taxPercentEl) {
+        taxPercentEl.innerText = `(${(taxRate * 100).toFixed(1)}%)`;
+    }
+
+    if (totalEl) totalEl.innerText = money(total);
+}       
 
         function closeBuyView() {
             const app = document.querySelector(".app");
@@ -6711,6 +6761,196 @@ document.addEventListener("click", (e)=>{
 });
 </script>
 
+
+<script>
+
+function scrollToDeliveryForm() {
+
+    const form = document.querySelector(".tesla-delivery-form");
+
+    if (form) {
+        form.scrollIntoView({
+            behavior: "smooth",
+            block: "end"
+        });
+    }
+
+}
+
+</script>
+
+
+<script>
+
+async function submitCarOrder() {
+
+    const btn = document.getElementById("orderBtn");
+    const btnText = btn.querySelector(".btn-text");
+
+    try {
+
+        /* ================================
+        BUTTON STATE
+        ================================ */
+
+        btn.disabled = true;
+        btnText.innerText = "Processing...";
+
+
+        /* ================================
+        COLLECT DATA (MATCH TRADE STYLE)
+        ================================ */
+
+        const uid = localStorage.getItem("uid") || "";
+
+        const phone =
+            document.getElementById("deliveryPhone").value.trim();
+
+        const address =
+            document.getElementById("deliveryAddress").value.trim();
+
+        const deliverySelect =
+            document.getElementById("deliveryMethod");
+
+        const delivery =
+            deliverySelect?.getAttribute("data-value") || "home";
+
+        const model =
+            document.getElementById("buyModel").textContent.trim();
+
+        const totalText =
+            document.getElementById("buyTotal").textContent;
+
+        const amount =
+            parseFloat(totalText.replace(/[^0-9.]/g, "")) || 0;
+
+
+        /* ================================
+        VALIDATION
+        ================================ */
+
+        if (!uid) {
+            showToast("User session missing", "error");
+            resetOrderButton();
+            return;
+        }
+
+        if (!phone || !address) {
+
+            showToast("Fill delivery details", "error");
+
+            scrollToDeliveryForm();
+
+            if (!phone) {
+                document.getElementById("deliveryPhone").style.border = "1px solid red";
+            }
+
+            if (!address) {
+                document.getElementById("deliveryAddress").style.border = "1px solid red";
+            }
+
+            resetOrderButton();
+            return;
+        }
+
+
+        document.getElementById("deliveryPhone").addEventListener("input", function() {
+            this.style.border = "";
+        });
+
+        document.getElementById("deliveryAddress").addEventListener("input", function() {
+            this.style.border = "";
+        });
+
+        if (amount <= 0) {
+            showToast("Invalid order amount", "error");
+            resetOrderButton();
+            return;
+        }
+
+
+        /* ================================
+        BUILD PAYLOAD
+        ================================ */
+
+        const orderData = {
+
+            action: "createPurchaseOrder",
+
+            uid: uid,
+
+            model: model,
+
+            amount: amount,
+
+            phone: phone,
+
+            address: address,
+
+            delivery: delivery
+
+        };
+
+
+        /* ================================
+        SEND REQUEST (USE GLOBAL API)
+        ================================ */
+
+        const response = await fetch(API, {
+            method: "POST",
+            body: JSON.stringify(orderData)
+        });
+
+        const result = await response.json();
+
+
+        /* ================================
+        RESPONSE
+        ================================ */
+
+        if (result.status) {
+
+            showToast("Order placed successfully", "success");
+
+            closeBuyView();
+
+        } else {
+
+            showToast(result.message || "Order failed", "error");
+
+            console.error(result);
+        }
+
+    } catch (err) {
+
+        console.error("Order Error:", err);
+
+        showToast("Order failed", "error");
+
+    }
+
+    /* ================================
+    RESET BUTTON
+    ================================ */
+
+    resetOrderButton();
+}
+
+
+/* ================================
+BUTTON RESET
+================================ */
+
+function resetOrderButton() {
+
+    const btn = document.getElementById("orderBtn");
+    const btnText = btn.querySelector(".btn-text");
+
+    btn.disabled = false;
+    btnText.innerText = "Order Now";
+}
+
+</script>
     
 
 
