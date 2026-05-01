@@ -238,7 +238,7 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: var(--bg-card);
+            background: #222;
             color: var(--accent-green);
             padding: 6px 12px;
             border-radius: 20px;
@@ -2121,7 +2121,7 @@
         /* logout button */
 
         .logout-btn {
-            padding: 15px;
+            padding: 10px 15px;
             border: none;
             border-radius: 12px;
             background: var(--accent-primary);
@@ -2524,18 +2524,30 @@
 
         /* LEFT SIDE (IMAGE HERO) */
         .left-panel {
+            position: relative;
             flex: 0.5;
             display: flex;
+            flex-direction: column;
+            gap: 20px;
             align-items: center;
             justify-content: center;
             background: #000;
         }
 
-        .left-panel img {
+        .left-panel .car-image {
             width: 70%;
             max-width: 900px;
             object-fit: contain;
         }
+
+        /* Tesla logo overlay */
+        .left-panel .tesla-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 150px;
+            z-index: 5;
+        }        
 
         /* RIGHT PANEL */
         .right-panel {
@@ -2673,7 +2685,10 @@
                 grid-template-columns: 1fr;
             }
 
-
+        /* Tesla logo overlay */
+        .left-panel .tesla-logo {
+            width: 80px;
+        }  
 
 
         .left-panel {
@@ -3054,6 +3069,84 @@
 }
 </style>
 
+
+<style>
+.invest-modal{
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.7);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.invest-modal-content{
+  background:#111;
+  padding:20px;
+  border-radius:12px;
+  width:320px;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+  color:#fff;
+}
+
+.quick-amounts{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.amt-btn{
+  padding:10px;
+  border:none;
+  background:#222;
+  color:#fff;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.amt-btn.active{
+  background:#e50914;
+}
+
+.manual-input input{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #333;
+  background:#000;
+  color:#fff;
+}
+
+.modal-actions{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.modal-actions button{
+  flex:1;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.modal-actions-cancel-button{
+  background-color: #222;
+}
+
+.modal-actions-invest-button{
+  background-color: var(--accent-primary);
+}
+
+</style>
+
+
 </head>
 
 <body>
@@ -3087,7 +3180,7 @@
                     <div class="notify-count" id="supportChartCount" style="display: none;"></div>
                 </div>
                 <div class="top-bar-button" id="notificationBtn">
-                    <img src="icons/bell_1.png" alt="" style="height: 20px;">
+                    <img src="icons/notification_bell.png" alt="" style="height: 20px;">
                     <div class="notify-count" id="notifyCount" style="display: none;"></div>
                 </div>
             </div>
@@ -3247,12 +3340,16 @@
                 <div class="page" id="home">
 
                     <div class="balance-section">
-                        <p>Total Wallet Value</p>
+                        <p style="color: #949494;">Total Wallet Value</p>
                         <p class="balance"> <span id="balance">$0.00</span> <span class="eth">USDT</span></p>
 
                         <div style="display: flex;align-items: center;gap: 10px;">
-                            <p class="change-pill"><span>▲</span> <span id="profitPercentage">%</span></p>
-                            <p style="color: white;">Last 24 hours </p>
+                            <p><span style="color: #949494;">Main Bal. </span> <span id="mainBalance">$0.00</span></p>
+                            <div style="display: flex;align-items: center;gap: 5px;">
+                                <p class="change-pill"><span>▲</span> <span id="profitPercentage">%</span></p>
+                                <p style="color: white; font-size: 11px;">Last 24hrs </p>                                
+                            </div>
+
                         </div>
 
                     </div>
@@ -3488,7 +3585,10 @@
 
             <!-- LEFT -->
             <div class="left-panel">
-                <img id="investImage">
+                <img id="investImage"  class="car-image">
+
+                <!-- Tesla Logo Overlay -->
+                <img src="tesla_images/tesla_text_logo.png" class="tesla-logo" alt="Tesla Logo">
             </div>
 
             <!-- RIGHT -->
@@ -3502,7 +3602,7 @@
                 <!-- STATS -->
                 <div class="tesla-stats-bar">
                     <div><strong id="sharePrice"></strong><span>Share Price</span></div>
-                    <div><strong>$500</strong><span>Minimum</span></div>
+                    <div><strong>$200</strong><span>Minimum</span></div>
                     <div><strong>12%</strong><span>Avg ROI</span></div>
                 </div>
 
@@ -3512,7 +3612,7 @@
 
                     <div class="option-box">
                         <span>Starter</span>
-                        <span>$500 - $5k</span>
+                        <span>$200 - $5k</span>
                     </div>
 
                     <div class="option-box">
@@ -3573,7 +3673,10 @@
 
             <!-- LEFT -->
             <div class="left-panel">
-                <img id="buyImage">
+                <img id="buyImage" class="car-image">
+
+                <!-- Tesla Logo Overlay -->
+                <img src="tesla_images/tesla_text_logo.png" class="tesla-logo" alt="Tesla Logo">
             </div>
 
             <!-- RIGHT -->
@@ -3752,10 +3855,7 @@
                 <img src="icons/cancle.png" id="closeProfileView" class="profile-back-btn">
                 <h2>Profile</h2>            
             </div>
-
-            <button id="logoutBtn" class="logout-btn">
-                Logout
-            </button>
+            <button id="logoutBtn" class="logout-btn">Logout</button>
         </div>
 
         <div class="profile-content">
@@ -4108,7 +4208,37 @@
         </div>
 
     </div>
+
+    <div id="investModal" class="invest-modal" style="display:none;">
+    <div class="invest-modal-content">
+
+        <h3>Enter Investment Amount</h3>
+
+        <!-- QUICK AMOUNTS -->
+        <div class="quick-amounts">
+        <button class="amt-btn" data-amount="200">$200</button>
+        <button class="amt-btn" data-amount="500">$500</button>
+        <button class="amt-btn" data-amount="1000">$1,000</button>
+        <button class="amt-btn" data-amount="2000">$2,000</button>
+        </div>
+
+        <!-- MANUAL INPUT -->
+        <div class="manual-input">
+        <input type="number" id="manualAmount" placeholder="Enter amount">
+        <small>Minimum investment is $200</small>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="modal-actions">
+        <button onclick="closeInvestModal()" class="modal-actions-cancel-button">Cancel</button>
+        <button onclick="submitInvestment()" class="modal-actions-invest-button">Confirm Investment</button>
+        </div>
+
+    </div>
+    </div>    
     <!--=========================================================-->
+
+
 
 
 
@@ -4802,6 +4932,7 @@
             setText("equity", money(USER_EQUITY));
             setText("volume", money(USER_VOLUME));
             setText("capital", money(USER_CAPITAL));
+            setText("mainBalance", money(USER_CAPITAL));
 
             /* WALLET */
             setText("walletAddress", USER_WALLET);
@@ -6647,7 +6778,7 @@
             if (model) model.innerText = car.model;
             if (desc) desc.innerText = car.description;
             if (img) img.src = car.image;
-            if (price) price.innerText = "$" + car.price.toLocaleString();
+            if (price) price.innerText = "$" + car.price*0.002.toLocaleString();
         }
 
 
@@ -6951,6 +7082,96 @@ function resetOrderButton() {
 }
 
 </script>
+
+
+
+
+    <script>
+
+    let selectedAmount = 0;
+
+    /* OPEN MODAL */
+    document.querySelector(".invest-confirm-btn").addEventListener("click", () => {
+    document.getElementById("investModal").style.display = "flex";
+    });
+
+    /* CLOSE MODAL */
+    function closeInvestModal(){
+    document.getElementById("investModal").style.display = "none";
+    selectedAmount = 0;
+    document.getElementById("manualAmount").value = "";
+    document.querySelectorAll(".amt-btn").forEach(b=>b.classList.remove("active"));
+    }
+
+    /* QUICK SELECT */
+    document.querySelectorAll(".amt-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+
+        document.querySelectorAll(".amt-btn").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+
+        selectedAmount = Number(btn.dataset.amount);
+        document.getElementById("manualAmount").value = "";
+    });
+    });
+
+    /* MANUAL INPUT */
+    document.getElementById("manualAmount").addEventListener("input", (e)=>{
+    selectedAmount = Number(e.target.value);
+    document.querySelectorAll(".amt-btn").forEach(b=>b.classList.remove("active"));
+    });
+
+    /* SUBMIT */
+    async function submitInvestment(){
+
+    const amount = Number(selectedAmount);
+
+    if(!amount || amount < 200){
+        showToast("Minimum investment is $200", "error");
+        return;
+    }
+
+    const selectedPlan = document.querySelector(".option-box.active")?.innerText || "Starter";
+
+    const payload = {
+        action: "createInvestment",
+        uid: localStorage.getItem("uid"),
+        model: document.getElementById("investModel").innerText,
+        plan: selectedPlan,
+        amount: amount
+    };
+
+    try{
+
+        showToast("Processing investment...", "info");
+
+        const res = await fetch("https://script.google.com/macros/s/AKfycbzBcWKZnDw7uI79OincI4TRhaQy1BeEmVCGpNQaOEqclRyxPktTUmt0agQCY9td9RtaKw/exec", {
+        method: "POST",
+        body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if(data.status){
+
+        showToast("Investment successful!", "success");
+
+        closeInvestModal();
+
+        // OPTIONAL: update balance UI
+        // updateBalance(data.balance);
+
+        }else{
+        showToast(data.message || "Investment failed", "error");
+        }
+
+    }catch(err){
+        showToast("Network error. Try again.", "error");
+    }
+
+    }
+
+    </script>
     
 
 
