@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tesla Trading — Control Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0e13;
+    --surface: #121823;
+    --surface-2: #1a2330;
+    --surface-3: #212c3b;
+    --border: #253040;
+    --text: #e7edf5;
+    --text-dim: #8294aa;
+    --text-faint: #4d5d72;
+    --accent: #00d9b5;
+    --accent-soft: rgba(0,217,181,0.12);
+    --accent-strong: #00f0c8;
+    --danger: #ff5470;
+    --danger-soft: rgba(255,84,112,0.12);
+    --warning: #ffb454;
+    --warning-soft: rgba(255,180,84,0.12);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection{ background: var(--accent-soft); color: var(--accent-strong); }
+
+  /* ============ SCROLLBAR ============ */
+  ::-webkit-scrollbar{ width:8px; height:8px; }
+  ::-webkit-scrollbar-thumb{ background: var(--surface-3); border-radius:4px; }
+  ::-webkit-scrollbar-track{ background: transparent; }
+
+  /* ============ LOGIN ============ */
+  .login-screen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(0,217,181,0.06), transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(0,217,181,0.04), transparent 45%),
+      var(--bg);
+  }
+  .login-card{
+    width:100%;
+    max-width:420px;
+    background: var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:36px;
+    position:relative;
+    overflow:hidden;
+  }
+  .login-card::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:3px;
+    background: linear-gradient(90deg, var(--accent), transparent 70%);
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px; margin-bottom:28px;
+  }
+  .brand-mark{
+    width:34px; height:34px; border-radius:8px;
+    background: var(--accent-soft);
+    border:1px solid var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:700; color:var(--accent-strong);
+    font-size:15px;
+  }
+  .brand-text .name{ font-family:var(--font-display); font-weight:700; font-size:16px; letter-spacing:0.02em; }
+  .brand-text .role{ font-size:11px; color:var(--text-dim); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.12em; }
+
+  .login-title{ font-family:var(--font-display); font-size:22px; font-weight:600; margin-bottom:6px; }
+  .login-sub{ color:var(--text-dim); font-size:13px; margin-bottom:28px; }
+
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block; font-size:11px; font-family:var(--font-mono); text-transform:uppercase;
+    letter-spacing:0.12em; color:var(--text-dim); margin-bottom:8px;
+  }
+  .field input{
+    width:100%; padding:11px 13px; background:var(--surface-2);
+    border:1px solid var(--border); border-radius:8px; color:var(--text);
+    font-family:var(--font-body); font-size:14px; outline:none;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .field input:focus{ border-color: var(--accent); background:var(--surface-3); }
+  .field input::placeholder{ color: var(--text-faint); }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    border:none; border-radius:8px; cursor:pointer; font-family:var(--font-body);
+    font-weight:600; font-size:13px; padding:11px 18px; transition: filter .15s ease, opacity .15s ease;
+  }
+  .btn:active{ transform: translateY(1px); }
+  .btn-primary{ background: var(--accent); color:#06241d; width:100%; }
+  .btn-primary:hover{ filter:brightness(1.08); }
+  .btn-ghost{ background: var(--surface-2); color:var(--text); border:1px solid var(--border); }
+  .btn-ghost:hover{ background:var(--surface-3); }
+  .btn-danger{ background: var(--danger-soft); color:var(--danger); border:1px solid rgba(255,84,112,0.3); }
+  .btn-danger:hover{ background: rgba(255,84,112,0.2); }
+  .btn-warning{ background: var(--warning-soft); color:var(--warning); border:1px solid rgba(255,180,84,0.3); }
+  .btn-warning:hover{ background: rgba(255,180,84,0.2); }
+  .btn-sm{ padding:6px 11px; font-size:12px; border-radius:6px; }
+  .btn:disabled{ opacity:.5; cursor:not-allowed; }
+
+  .login-error{
+    background: var(--danger-soft); border:1px solid rgba(255,84,112,0.3); color:var(--danger);
+    font-size:12.5px; padding:10px 12px; border-radius:8px; margin-bottom:16px; display:none;
+  }
+
+  .login-divider{ height:1px; background:var(--border); margin:24px 0; }
+  .login-foot{ font-size:11.5px; color:var(--text-faint); font-family:var(--font-mono); text-align:center; }
+
+  /* ============ APP SHELL ============ */
+  .app{ display:none; min-height:100vh; }
+  .app.active{ display:flex; }
+
+  .sidebar{
+    width:236px; flex-shrink:0; background:var(--surface);
+    border-right:1px solid var(--border);
+    display:flex; flex-direction:column;
+    position:fixed; top:0; left:0; bottom:0;
+  }
+  .sidebar-head{ padding:22px 20px; border-bottom:1px solid var(--border); }
+  .sidebar-nav{ flex:1; padding:14px 12px; display:flex; flex-direction:column; gap:2px; overflow-y:auto; }
+
+  .nav-item{
+    display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px;
+    color:var(--text-dim); cursor:pointer; font-size:13.5px; font-weight:500;
+    transition: background .12s ease, color .12s ease;
+    border:1px solid transparent;
+  }
+  .nav-item:hover{ background:var(--surface-2); color:var(--text); }
+  .nav-item.active{ background:var(--accent-soft); color:var(--accent-strong); border-color:rgba(0,217,181,0.25); }
+  .nav-item .ic{ width:16px; height:16px; flex-shrink:0; }
+  .nav-item .badge{
+    margin-left:auto; font-family:var(--font-mono); font-size:11px; background:var(--surface-3);
+    color:var(--text-dim); padding:2px 7px; border-radius:20px; min-width:20px; text-align:center;
+  }
+  .nav-item.active .badge{ background: rgba(0,217,181,0.2); color: var(--accent-strong); }
+
+  .sidebar-foot{ padding:14px; border-top:1px solid var(--border); }
+  .session-card{
+    background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:12px;
+  }
+  .session-email{ font-size:12.5px; font-weight:600; word-break:break-all; margin-bottom:2px; }
+  .session-role{ font-size:11px; color:var(--text-dim); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.1em; margin-bottom:10px;}
+
+  .main{ margin-left:236px; flex:1; min-width:0; }
+  .topbar{
+    height:64px; border-bottom:1px solid var(--border); display:flex; align-items:center;
+    justify-content:space-between; padding:0 28px; position:sticky; top:0; background:rgba(10,14,19,0.85);
+    backdrop-filter: blur(10px); z-index:10;
+  }
+  .page-title{ font-family:var(--font-display); font-size:19px; font-weight:600; }
+  .page-sub{ font-size:12px; color:var(--text-dim); margin-top:2px; }
+
+  .conn-pill{
+    display:flex; align-items:center; gap:8px; padding:7px 12px; border-radius:20px;
+    background:var(--surface-2); border:1px solid var(--border); font-size:12px; color:var(--text-dim);
+    font-family:var(--font-mono);
+  }
+  .conn-dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  .conn-dot.bad{ background:var(--danger); box-shadow:0 0 0 3px var(--danger-soft); }
+
+  .content{ padding:28px; max-width:1280px; }
+
+  /* ============ STAT CARDS / GAUGES (signature element) ============ */
+  .stat-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:14px; margin-bottom:28px; }
+  .stat-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 18px 16px;
+  }
+  .stat-label{
+    font-size:11px; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.12em;
+    color:var(--text-dim); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;
+  }
+  .stat-value{ font-family:var(--font-display); font-size:28px; font-weight:600; margin-bottom:14px; }
+  .stat-value .unit{ font-size:14px; color:var(--text-dim); font-weight:500; margin-left:4px; }
+
+  .gauge{ height:6px; border-radius:4px; background:var(--surface-3); overflow:hidden; display:flex; gap:2px; }
+  .gauge-seg{ flex:1; background:var(--surface-3); border-radius:2px; transition: background .3s ease; }
+  .gauge-seg.on{ background: linear-gradient(180deg, var(--accent-strong), var(--accent)); }
+  .gauge-note{ font-size:11px; color:var(--text-faint); margin-top:8px; font-family:var(--font-mono); }
+
+  /* ============ PANELS / TABLES ============ */
+  .panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:24px; }
+  .panel-head{
+    padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  .panel-head h3{ font-family:var(--font-display); font-size:15px; font-weight:600; }
+  .panel-head .panel-sub{ font-size:12px; color:var(--text-dim); margin-top:2px; }
+  .panel-actions{ display:flex; gap:8px; align-items:center; }
+
+  .table-wrap{ overflow-x:auto; }
+  table{ width:100%; border-collapse:collapse; font-size:13px; }
+  thead th{
+    text-align:left; padding:10px 18px; font-family:var(--font-mono); font-size:10.5px;
+    text-transform:uppercase; letter-spacing:.1em; color:var(--text-dim); border-bottom:1px solid var(--border);
+    background: var(--surface-2); white-space:nowrap; position:sticky; top:0;
+  }
+  tbody td{ padding:11px 18px; border-bottom:1px solid var(--border); white-space:nowrap; color:var(--text); }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover{ background: var(--surface-2); }
+  .mono{ font-family:var(--font-mono); font-size:12.5px; color:var(--text-dim); }
+  .num{ font-family:var(--font-mono); }
+  .pos{ color: var(--accent); }
+  .neg{ color: var(--danger); }
+
+  .pill{
+    display:inline-flex; align-items:center; padding:3px 9px; border-radius:20px; font-size:11px;
+    font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.06em; font-weight:600;
+  }
+  .pill-ok{ background:var(--accent-soft); color:var(--accent-strong); }
+  .pill-warn{ background:var(--warning-soft); color:var(--warning); }
+  .pill-bad{ background:var(--danger-soft); color:var(--danger); }
+  .pill-neutral{ background:var(--surface-3); color:var(--text-dim); }
+
+  .empty-state{ padding:48px 20px; text-align:center; color:var(--text-dim); }
+  .empty-state .ic{ font-size:28px; margin-bottom:10px; opacity:.6; }
+  .empty-state .title{ font-family:var(--font-display); font-size:15px; color:var(--text); margin-bottom:4px; }
+  .empty-state .sub{ font-size:12.5px; }
+
+  .row-actions{ display:flex; gap:6px; }
+  .inline-input{
+    width:90px; padding:6px 8px; background:var(--surface-2); border:1px solid var(--border);
+    border-radius:6px; color:var(--text); font-family:var(--font-mono); font-size:12px; outline:none;
+  }
+  .inline-input:focus{ border-color:var(--accent); }
+
+  /* ============ FORMS (wallet / notify) ============ */
+  .form-grid{ padding:20px; display:grid; gap:14px; max-width:560px; }
+  .form-grid .field input, .form-grid .field textarea, .form-grid .field select{
+    width:100%; padding:11px 13px; background:var(--surface-2); border:1px solid var(--border);
+    border-radius:8px; color:var(--text); font-family:var(--font-body); font-size:13.5px; outline:none;
+  }
+  .form-grid .field textarea{ font-family:var(--font-body); resize:vertical; min-height:80px; }
+  .form-grid .field input:focus, .form-grid .field textarea:focus, .form-grid .field select:focus{ border-color:var(--accent); }
+  .form-note{ font-size:12px; color:var(--text-dim); padding:0 20px 20px; }
+
+  .toast{
+    position:fixed; bottom:20px; right:20px; background:var(--surface-2); border:1px solid var(--border);
+    border-radius:10px; padding:13px 18px; font-size:13px; display:flex; align-items:center; gap:10px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.4); z-index:1000; opacity:0; transform:translateY(8px);
+    transition: opacity .2s ease, transform .2s ease; max-width:340px;
+  }
+  .toast.show{ opacity:1; transform:translateY(0); }
+  .toast.ok{ border-color: rgba(0,217,181,0.35); }
+  .toast.err{ border-color: rgba(255,84,112,0.35); }
+  .toast-dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .toast.ok .toast-dot{ background:var(--accent); }
+  .toast.err .toast-dot{ background:var(--danger); }
+
+  /* ============ MODAL ============ */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(5,8,12,0.7); display:none; align-items:center; justify-content:center;
+    z-index:200; padding:20px; backdrop-filter: blur(2px);
+  }
+  .modal-overlay.show{ display:flex; }
+  .modal{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px; width:100%; max-width:520px;
+    max-height:90vh; overflow-y:auto;
+  }
+  .modal-head{ padding:18px 22px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .modal-head h3{ font-family:var(--font-display); font-size:16px; font-weight:600; }
+  .modal-close{ background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:18px; line-height:1; }
+  .modal-body{ padding:20px 22px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .modal-body .field.full{ grid-column:1/-1; }
+  .modal-foot{ padding:16px 22px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px; }
+
+  /* ============ LOADER ============ */
+  .loading-row td{ text-align:center; padding:32px; color:var(--text-dim); font-family:var(--font-mono); font-size:12px; }
+  .spin{
+    display:inline-block; width:14px; height:14px; border:2px solid var(--surface-3);
+    border-top-color: var(--accent); border-radius:50%; animation: spin 0.7s linear infinite; margin-right:8px; vertical-align:-2px;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  @media (max-width: 880px){
+    .sidebar{ width:72px; }
+    .sidebar-head .brand-text, .sidebar-foot, .nav-item span:not(.ic):not(.badge){ display:none; }
+    .nav-item{ justify-content:center; }
+    .nav-item .badge{ display:none; }
+    .main{ margin-left:72px; }
+    .modal-body{ grid-template-columns:1fr; }
+    .content{ padding:18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="brand">
+      <div class="brand-mark">T</div>
+      <div class="brand-text">
+        <div class="name">Tesla Trading</div>
+        <div class="role">Control Panel</div>
+      </div>
+    </div>
+    <div class="login-title">Admin sign in</div>
+    <div class="login-sub">Enter your deployment URL and admin credentials to access the control panel.</div>
+
+    <div class="login-error" id="loginError"></div>
+
+    <div class="field">
+      <label>Apps Script Web App URL</label>
+      <input type="text" id="apiUrl" placeholder="https://script.google.com/macros/s/XXXX/exec" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label>Admin Email</label>
+      <input type="email" id="adminEmail" placeholder="admin@teslatrading.test" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="adminPassword" placeholder="••••••••" autocomplete="off" />
+    </div>
+
+    <button class="btn btn-primary" id="loginBtn" onclick="handleLogin()">Sign in</button>
+
+    <div class="login-divider"></div>
+    <div class="login-foot">SESSION TOKENS EXPIRE AFTER 6 HOURS · STORED LOCALLY</div>
+  </div>
+</div>
+
+<!-- ============ APP SHELL ============ -->
+<div class="app" id="app">
+
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <div class="brand">
+        <div class="brand-mark">T</div>
+        <div class="brand-text">
+          <div class="name">Tesla Trading</div>
+          <div class="role">Control Panel</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-item active" data-tab="overview" onclick="switchTab('overview')">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        <span>Overview</span>
+      </div>
+      <div class="nav-item" data-tab="users" onclick="switchTab('users')">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Users</span>
+        <span class="badge" id="badge-users">–</span>
+      </div>
+      <div class="nav-item" data-tab="deposits" onclick="switchTab('deposits')">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span>Deposits</span>
+        <span class="badge" id="badge-deposits">–</span>
+      </div>
+      <div class="nav-item" data-tab="trades" onclick="switchTab('trades')">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18.7 8 13 13.7 9.5 10.2 5 14.7"/></svg>
+        <span>Trades</span>
+        <span class="badge" id="badge-trades">–</span>
+      </div>
+      <div class="nav-item" data-tab="transactions" onclick="switchTab('transactions')">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        <span>Transactions</span>
+      </div>
+      <div class="nav-item" data-tab="wallet" onclick="switchTab('wallet')">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20M6 15h2"/></svg>
+        <span>Global Wallet</span>
+      </div>
+      <div class="nav-item" data-tab="notify" onclick="switchTab('notify')">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span>Notify User</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="session-card">
+        <div class="session-email" id="sessionEmail">—</div>
+        <div class="session-role" id="sessionRole">ADMIN</div>
+        <button class="btn btn-ghost btn-sm" style="width:100%" onclick="logout()">Sign out</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title" id="pageTitle">Overview</div>
+        <div class="page-sub" id="pageSub">Platform summary and health</div>
+      </div>
+      <div class="conn-pill">
+        <span class="conn-dot" id="connDot"></span>
+        <span id="connText">Connected</span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- OVERVIEW -->
+      <section id="tab-overview">
+        <div class="stat-grid" id="overviewStats"></div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Pending deposit requests</h3>
+              <div class="panel-sub">Most recent deposits awaiting review</div>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-ghost btn-sm" onclick="switchTab('deposits')">View all</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Order</th><th>User</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody id="overviewDepositsBody"><tr class="loading-row"><td colspan="5"><span class="spin"></span>Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- USERS -->
+      <section id="tab-users" style="display:none">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>All users</h3>
+              <div class="panel-sub">Edit account balances, status and verification</div>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-ghost btn-sm" onclick="loadUsers()">Refresh</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>UID</th><th>Name</th><th>Email</th><th>Balance</th><th>Equity</th>
+                  <th>Profit</th><th>Volume</th><th>Status</th><th>Verified</th><th>Country</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersBody"><tr class="loading-row"><td colspan="11"><span class="spin"></span>Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- DEPOSITS -->
+      <section id="tab-deposits" style="display:none">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Deposit orders</h3>
+              <div class="panel-sub">Approve credits user balances and logs a transaction; decline notifies the user</div>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-ghost btn-sm" onclick="loadDeposits()">Refresh</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Order ID</th><th>User</th><th>Amount</th><th>Wallet</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="depositsBody"><tr class="loading-row"><td colspan="7"><span class="spin"></span>Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TRADES -->
+      <section id="tab-trades" style="display:none">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Trades</h3>
+              <div class="panel-sub">Open positions can be closed individually or all at once</div>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-warning btn-sm" onclick="handleCloseAllTrades()">Close all open</button>
+              <button class="btn btn-ghost btn-sm" onclick="loadTrades()">Refresh</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Trade ID</th><th>UID</th><th>Asset</th><th>Decision</th><th>Direction</th><th>Amount</th><th>Status</th><th>Date</th><th>Settle profit/loss</th><th>Actions</th></tr></thead>
+              <tbody id="tradesBody"><tr class="loading-row"><td colspan="10"><span class="spin"></span>Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TRANSACTIONS -->
+      <section id="tab-transactions" style="display:none">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Transaction ledger</h3>
+              <div class="panel-sub">All deposits, withdrawals, bonuses, trades and transfers</div>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-ghost btn-sm" onclick="loadTransactions()">Refresh</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>TX ID</th><th>UID</th><th>Name</th><th>Email</th><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody id="txBody"><tr class="loading-row"><td colspan="8"><span class="spin"></span>Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- WALLET -->
+      <section id="tab-wallet" style="display:none">
+        <div class="panel" style="max-width:560px">
+          <div class="panel-head">
+            <div>
+              <h3>Global deposit wallet</h3>
+              <div class="panel-sub">The crypto address shown to users for deposits</div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Current address</label>
+              <input type="text" id="walletAddress" placeholder="Loading…" />
+            </div>
+            <div>
+              <button class="btn btn-primary" style="width:auto;padding-left:24px;padding-right:24px" onclick="handleUpdateWallet()">Save address</button>
+            </div>
+          </div>
+          <div class="form-note">If this field is left empty, user withdrawals will be disabled platform-wide.</div>
+        </div>
+      </section>
+
+      <!-- NOTIFY -->
+      <section id="tab-notify" style="display:none">
+        <div class="panel" style="max-width:560px">
+          <div class="panel-head">
+            <div>
+              <h3>Send a notification</h3>
+              <div class="panel-sub">Delivers an in-app notification to a single user by UID</div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label>User UID</label>
+              <input type="text" id="notifyUid" placeholder="USR_1718200000000" />
+            </div>
+            <div class="field">
+              <label>Title</label>
+              <input type="text" id="notifyTitle" placeholder="Account update" />
+            </div>
+            <div class="field">
+              <label>Message</label>
+              <textarea id="notifyMessage" placeholder="Write the notification message…"></textarea>
+            </div>
+            <div>
+              <button class="btn btn-primary" style="width:auto;padding-left:24px;padding-right:24px" onclick="handleSendNotification()">Send notification</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- ============ EDIT USER MODAL ============ -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Edit user</h3>
+      <button class="modal-close" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field full"><label>UID</label><input type="text" id="editUid" disabled /></div>
+      <div class="field"><label>Name</label><input type="text" id="editName" /></div>
+      <div class="field"><label>Email</label><input type="email" id="editEmail" /></div>
+      <div class="field full"><label>Password</label><input type="text" id="editPassword" /></div>
+      <div class="field"><label>Balance</label><input type="number" step="0.01" id="editBalance" /></div>
+      <div class="field"><label>Equity</label><input type="number" step="0.01" id="editEquity" /></div>
+      <div class="field"><label>Profit</label><input type="number" step="0.01" id="editProfit" /></div>
+      <div class="field"><label>Volume</label><input type="number" step="0.01" id="editVolume" /></div>
+      <div class="field">
+        <label>Account status</label>
+        <select id="editStatus">
+          <option value="Free Trial">Free Trial</option>
+          <option value="Active">Active</option>
+          <option value="Suspended">Suspended</option>
+          <option value="Closed">Closed</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Verified</label>
+        <select id="editVerified">
+          <option value="true">Verified</option>
+          <option value="false">Unverified</option>
+        </select>
+      </div>
+      <div class="field full"><label>Country</label><input type="text" id="editCountry" /></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeEditModal()">Cancel</button>
+      <button class="btn btn-primary" style="width:auto;padding-left:24px;padding-right:24px" onclick="saveUserEdit()">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast"><span class="toast-dot"></span><span id="toastMsg"></span></div>
+
+<script>
+/* ============================================================
+   STATE
+============================================================ */
+const state = {
+  apiUrl: localStorage.getItem('tt_api_url') || '',
+  token: localStorage.getItem('tt_admin_token') || '',
+  email: localStorage.getItem('tt_admin_email') || '',
+  role: localStorage.getItem('tt_admin_role') || 'admin',
+  cache: { users: null, deposits: null, trades: null, tx: null }
+};
+
+const PAGE_META = {
+  overview:     { title:'Overview',          sub:'Platform summary and health' },
+  users:        { title:'Users',             sub:'Manage accounts, balances and verification' },
+  deposits:     { title:'Deposits',          sub:'Review and settle deposit requests' },
+  trades:       { title:'Trades',            sub:'Open and closed positions across the platform' },
+  transactions: { title:'Transactions',      sub:'Full ledger of platform activity' },
+  wallet:       { title:'Global Wallet',     sub:'Deposit address shown to users' },
+  notify:       { title:'Notify User',       sub:'Send a one-off in-app notification' },
+};
+
+/* ============================================================
+   API HELPER
+   Apps Script web apps don't handle JSON preflight well, so we
+   send text/plain and parse JSON server-side via JSON.parse.
+============================================================ */
+async function api(action, payload = {}) {
+  const body = JSON.stringify({ action, token: state.token, ...payload });
+
+  let res;
+  try {
+    res = await fetch(state.apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body
+    });
+  } catch (err) {
+    setConn(false);
+    throw new Error('Could not reach the API. Check the deployment URL and your connection.');
+  }
+
+  let data;
+  try {
+    data = await res.json();
+  } catch (err) {
+    setConn(false);
+    throw new Error('Unexpected response from the server.');
+  }
+
+  setConn(true);
+
+  if (data && data.sessionExpired) {
+    showToast('Session expired — please sign in again.', 'err');
+    setTimeout(logout, 1200);
+  }
+
+  return data;
+}
+
+function setConn(ok) {
+  const dot = document.getElementById('connDot');
+  const txt = document.getElementById('connText');
+  if (!dot) return;
+  dot.classList.toggle('bad', !ok);
+  txt.textContent = ok ? 'Connected' : 'Connection issue';
+}
+
+/* ============================================================
+   AUTH
+============================================================ */
+async function handleLogin() {
+  const apiUrl = document.getElementById('apiUrl').value.trim();
+  const email = document.getElementById('adminEmail').value.trim();
+  const password = document.getElementById('adminPassword').value;
+  const errorBox = document.getElementById('loginError');
+  const btn = document.getElementById('loginBtn');
+
+  errorBox.style.display = 'none';
+
+  if (!apiUrl || !email || !password) {
+    errorBox.textContent = 'Fill in the deployment URL, email and password.';
+    errorBox.style.display = 'block';
+    return;
+  }
+
+  state.apiUrl = apiUrl;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>Signing in…';
+
+  try {
+    const res = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'adminLogin', email, password })
+    });
+    const data = await res.json();
+
+    if (data && data.status && data.token) {
+      state.token = data.token;
+      state.email = data.admin?.email || email;
+      state.role = data.admin?.role || 'admin';
+
+      localStorage.setItem('tt_api_url', state.apiUrl);
+      localStorage.setItem('tt_admin_token', state.token);
+      localStorage.setItem('tt_admin_email', state.email);
+      localStorage.setItem('tt_admin_role', state.role);
+
+      enterApp();
+    } else {
+      errorBox.textContent = (data && data.message) || 'Invalid email or password.';
+      errorBox.style.display = 'block';
+    }
+  } catch (err) {
+    errorBox.textContent = 'Could not reach the API. Check the deployment URL.';
+    errorBox.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Sign in';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('tt_admin_token');
+  state.token = '';
+  document.getElementById('app').classList.remove('active');
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('adminPassword').value = '';
+}
+
+function enterApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').classList.add('active');
+  document.getElementById('sessionEmail').textContent = state.email;
+  document.getElementById('sessionRole').textContent = (state.role || 'admin').toUpperCase();
+  switchTab('overview');
+  loadOverview();
+}
+
+/* ============================================================
+   NAV
+============================================================ */
+function switchTab(tab) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
+  document.querySelectorAll('[id^="tab-"]').forEach(el => el.style.display = 'none');
+  document.getElementById('tab-' + tab).style.display = 'block';
+
+  const meta = PAGE_META[tab];
+  document.getElementById('pageTitle').textContent = meta.title;
+  document.getElementById('pageSub').textContent = meta.sub;
+
+  if (tab === 'overview') loadOverview();
+  if (tab === 'users' && !state.cache.users) loadUsers();
+  if (tab === 'deposits' && !state.cache.deposits) loadDeposits();
+  if (tab === 'trades' && !state.cache.trades) loadTrades();
+  if (tab === 'transactions' && !state.cache.tx) loadTransactions();
+  if (tab === 'wallet') loadWallet();
+}
+
+/* ============================================================
+   FORMAT HELPERS
+============================================================ */
+function fmtMoney(n) {
+  const v = Number(n) || 0;
+  return '$' + v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function fmtDate(d) {
+  if (!d) return '—';
+  try { return new Date(d).toLocaleString(undefined, { dateStyle:'medium', timeStyle:'short' }); }
+  catch { return String(d); }
+}
+function statusPill(status) {
+  const s = String(status || '').toLowerCase();
+  let cls = 'pill-neutral';
+  if (['completed','approved','active','open','active'].includes(s)) cls = 'pill-ok';
+  if (['pending','processing'].includes(s)) cls = 'pill-warn';
+  if (['declined','closed','suspended','failed'].includes(s)) cls = 'pill-bad';
+  return `<span class="pill ${cls}">${status || '—'}</span>`;
+}
+function escapeHtml(str) {
+  return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ============================================================
+   OVERVIEW
+============================================================ */
+async function loadOverview() {
+  try {
+    const [usersRes, depositsRes, tradesRes] = await Promise.all([
+      api('getAllUsers'),
+      api('getDepositOrders'),
+      api('getAllTrades'),
+    ]);
+
+    if (usersRes.status) state.cache.users = usersRes.users;
+    if (depositsRes.status) state.cache.deposits = depositsRes.orders;
+    if (tradesRes.status) state.cache.trades = tradesRes.trades;
+
+    document.getElementById('badge-users').textContent = state.cache.users ? state.cache.users.length : '–';
+    document.getElementById('badge-deposits').textContent = state.cache.deposits
+      ? state.cache.deposits.filter(d => d.status === 'Pending').length : '–';
+    document.getElementById('badge-trades').textContent = state.cache.trades
+      ? state.cache.trades.filter(t => t.status === 'Open').length : '–';
+
+    renderOverviewStats();
+    renderOverviewDeposits();
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+function renderOverviewStats() {
+  const users = state.cache.users || [];
+  const deposits = state.cache.deposits || [];
+  const trades = state.cache.trades || [];
+
+  const totalBalance = users.reduce((s,u) => s + (Number(u.balance)||0), 0);
+  const totalEquity = users.reduce((s,u) => s + (Number(u.equity)||0), 0);
+  const pendingDeposits = deposits.filter(d => d.status === 'Pending');
+  const pendingAmount = pendingDeposits.reduce((s,d) => s + (Number(d.amount)||0), 0);
+  const openTrades = trades.filter(t => t.status === 'Open');
+  const verified = users.filter(u => u.verifiedStatus === true || u.verifiedStatus === 'TRUE' || u.verifiedStatus === 'true').length;
+  const verifiedPct = users.length ? verified / users.length : 0;
+
+  const cards = [
+    {
+      label:'Total users', value: users.length, unit:'',
+      gauge: users.length ? Math.min(users.length/50,1) : 0,
+      note: `${verified} verified (${Math.round(verifiedPct*100)}%)`
+    },
+    {
+      label:'Total balances held', value: fmtMoney(totalBalance), unit:'',
+      gauge: Math.min(totalBalance/50000,1),
+      note: `${fmtMoney(totalEquity)} in open equity`
+    },
+    {
+      label:'Pending deposits', value: pendingDeposits.length, unit:'requests',
+      gauge: deposits.length ? pendingDeposits.length/deposits.length : 0,
+      note: `${fmtMoney(pendingAmount)} awaiting approval`
+    },
+    {
+      label:'Open trades', value: openTrades.length, unit:'positions',
+      gauge: trades.length ? openTrades.length/trades.length : 0,
+      note: `${trades.length} total recorded`
+    },
+  ];
+
+  document.getElementById('overviewStats').innerHTML = cards.map(c => `
+    <div class="stat-card">
+      <div class="stat-label"><span>${c.label}</span></div>
+      <div class="stat-value">${c.value}<span class="unit">${c.unit}</span></div>
+      <div class="gauge">${renderGaugeSegs(c.gauge)}</div>
+      <div class="gauge-note">${c.note}</div>
+    </div>
+  `).join('');
+}
+
+function renderGaugeSegs(fraction) {
+  const segs = 10;
+  const on = Math.round(Math.max(0, Math.min(1, fraction)) * segs);
+  let html = '';
+  for (let i=0;i<segs;i++) html += `<div class="gauge-seg ${i < on ? 'on':''}"></div>`;
+  return html;
+}
+
+function renderOverviewDeposits() {
+  const tbody = document.getElementById('overviewDepositsBody');
+  const pending = (state.cache.deposits || []).filter(d => d.status === 'Pending').slice(0,5);
+
+  if (!pending.length) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="ic">✓</div><div class="title">All caught up</div><div class="sub">No pending deposit requests right now.</div></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = pending.map(d => `
+    <tr>
+      <td class="mono">${escapeHtml(d.orderId)}</td>
+      <td>${escapeHtml(d.name)}<br><span class="mono">${escapeHtml(d.email)}</span></td>
+      <td class="num">${fmtMoney(d.amount)}</td>
+      <td>${statusPill(d.status)}</td>
+      <td class="mono">${fmtDate(d.date)}</td>
+    </tr>
+  `).join('');
+}
+
+/* ============================================================
+   USERS
+============================================================ */
+async function loadUsers() {
+  const tbody = document.getElementById('usersBody');
+  tbody.innerHTML = `<tr class="loading-row"><td colspan="11"><span class="spin"></span>Loading…</td></tr>`;
+
+  try {
+    const res = await api('getAllUsers');
+    if (!res.status) throw new Error(res.message || 'Failed to load users');
+    state.cache.users = res.users;
+    document.getElementById('badge-users').textContent = res.users.length;
+
+    if (!res.users.length) {
+      tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="ic">∅</div><div class="title">No users yet</div><div class="sub">New registrations will appear here.</div></div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = res.users.map(u => `
+      <tr>
+        <td class="mono">${escapeHtml(u.uid)}</td>
+        <td>${escapeHtml(u.name)}</td>
+        <td class="mono">${escapeHtml(u.email)}</td>
+        <td class="num">${fmtMoney(u.balance)}</td>
+        <td class="num">${fmtMoney(u.equity)}</td>
+        <td class="num ${Number(u.profit) < 0 ? 'neg':'pos'}">${fmtMoney(u.profit)}</td>
+        <td class="num">${fmtMoney(u.volume)}</td>
+        <td>${statusPill(u.statusAcc)}</td>
+        <td>${(u.verifiedStatus === true || u.verifiedStatus === 'TRUE' || u.verifiedStatus === 'true') ? statusPill('Active') : statusPill('Pending')}</td>
+        <td>${escapeHtml(u.country || '—')}</td>
+        <td class="row-actions">
+          <button class="btn btn-ghost btn-sm" onclick='openEditModal(${JSON.stringify(u).replace(/'/g, "&apos;")})'>Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="handleDeleteUser('${u.uid}','${escapeHtml(u.name)}')">Delete</button>
+        </td>
+      </tr>
+    `).join('');
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="ic">!</div><div class="title">Couldn't load users</div><div class="sub">${escapeHtml(err.message)}</div></div></td></tr>`;
+  }
+}
+
+function openEditModal(u) {
+  document.getElementById('editUid').value = u.uid;
+  document.getElementById('editName').value = u.name || '';
+  document.getElementById('editEmail').value = u.email || '';
+  document.getElementById('editPassword').value = ''; // never prefill password
+  document.getElementById('editBalance').value = u.balance || 0;
+  document.getElementById('editEquity').value = u.equity || 0;
+  document.getElementById('editProfit').value = u.profit || 0;
+  document.getElementById('editVolume').value = u.volume || 0;
+  document.getElementById('editStatus').value = u.statusAcc || 'Free Trial';
+  document.getElementById('editVerified').value = (u.verifiedStatus === true || u.verifiedStatus === 'TRUE' || u.verifiedStatus === 'true') ? 'true' : 'false';
+  document.getElementById('editCountry').value = u.country || '';
+  document.getElementById('editModal').classList.add('show');
+}
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('show');
+}
+
+async function saveUserEdit() {
+  const uid = document.getElementById('editUid').value;
+  const payload = {
+    uid,
+    name: document.getElementById('editName').value,
+    email: document.getElementById('editEmail').value,
+    password: document.getElementById('editPassword').value,
+    balance: document.getElementById('editBalance').value,
+    equity: document.getElementById('editEquity').value,
+    profit: document.getElementById('editProfit').value,
+    volume: document.getElementById('editVolume').value,
+    statusAcc: document.getElementById('editStatus').value,
+    verified: document.getElementById('editVerified').value === 'true',
+    country: document.getElementById('editCountry').value,
+  };
+
+  // Don't overwrite the stored password with an empty string
+  if (!payload.password) {
+    const existing = (state.cache.users || []).find(u => u.uid === uid);
+    payload.password = existing?.password || '';
+  }
+
+  try {
+    const res = await api('updateUser', payload);
+    if (!res.status) throw new Error(res.message || 'Update failed');
+    showToast('User updated', 'ok');
+    closeEditModal();
+    loadUsers();
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+async function handleDeleteUser(uid, name) {
+  if (!confirm(`Delete ${name} (${uid})? This permanently removes their account row.`)) return;
+  try {
+    const res = await api('deleteUser', { uid });
+    if (!res.status) throw new Error(res.message || 'Delete failed');
+    showToast('User deleted', 'ok');
+    loadUsers();
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+/* ============================================================
+   DEPOSITS
+============================================================ */
+async function loadDeposits() {
+  const tbody = document.getElementById('depositsBody');
+  tbody.innerHTML = `<tr class="loading-row"><td colspan="7"><span class="spin"></span>Loading…</td></tr>`;
+
+  try {
+    const res = await api('getDepositOrders');
+    if (!res.status) throw new Error(res.message || 'Failed to load deposits');
+    state.cache.deposits = res.orders;
+    document.getElementById('badge-deposits').textContent = res.orders.filter(d => d.status === 'Pending').length;
+
+    if (!res.orders.length) {
+      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="ic">∅</div><div class="title">No deposit requests</div><div class="sub">Requests submitted by users will appear here.</div></div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = res.orders.map(d => `
+      <tr>
+        <td class="mono">${escapeHtml(d.orderId)}</td>
+        <td>${escapeHtml(d.name)}<br><span class="mono">${escapeHtml(d.email)}</span></td>
+        <td class="num">${fmtMoney(d.amount)}</td>
+        <td class="mono">${escapeHtml(d.wallet || '—')}</td>
+        <td>${statusPill(d.status)}</td>
+        <td class="mono">${fmtDate(d.date)}</td>
+        <td class="row-actions">
+          ${d.status === 'Pending' ? `
+            <button class="btn btn-primary btn-sm" style="width:auto" onclick="handleApproveDeposit('${d.orderId}','approve')">Approve</button>
+            <button class="btn btn-danger btn-sm" onclick="handleApproveDeposit('${d.orderId}','decline')">Decline</button>
+          ` : `<span class="mono" style="color:var(--text-faint)">—</span>`}
+        </td>
+      </tr>
+    `).join('');
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="ic">!</div><div class="title">Couldn't load deposits</div><div class="sub">${escapeHtml(err.message)}</div></div></td></tr>`;
+  }
+}
+
+async function handleApproveDeposit(orderId, decision) {
+  const verb = decision === 'approve' ? 'approve and credit' : 'decline';
+  if (!confirm(`${verb.charAt(0).toUpperCase()+verb.slice(1)} deposit ${orderId}?`)) return;
+  try {
+    const res = await api('approveDeposit', { orderId, decision });
+    if (!res.status) throw new Error(res.message || 'Action failed');
+    showToast(decision === 'approve' ? 'Deposit approved and credited' : 'Deposit declined', 'ok');
+    loadDeposits();
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+/* ============================================================
+   TRADES
+============================================================ */
+async function loadTrades() {
+  const tbody = document.getElementById('tradesBody');
+  tbody.innerHTML = `<tr class="loading-row"><td colspan="10"><span class="spin"></span>Loading…</td></tr>`;
+
+  try {
+    const res = await api('getAllTrades');
+    if (!res.status) throw new Error(res.message || 'Failed to load trades');
+    state.cache.trades = res.trades;
+    document.getElementById('badge-trades').textContent = res.trades.filter(t => t.status === 'Open').length;
+
+    if (!res.trades.length) {
+      tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="ic">∅</div><div class="title">No trades yet</div><div class="sub">Trades opened by users will appear here.</div></div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = res.trades.map(t => `
+      <tr>
+        <td class="mono">${escapeHtml(t.tradeId)}</td>
+        <td class="mono">${escapeHtml(t.uid)}</td>
+        <td>${escapeHtml(t.asset)}</td>
+        <td>${escapeHtml(t.decision || '—')}</td>
+        <td>${escapeHtml(t.direction || '—')}</td>
+        <td class="num">${fmtMoney(t.amount)}</td>
+        <td>${statusPill(t.status)}</td>
+        <td class="mono">${fmtDate(t.date)}</td>
+        <td>
+          ${t.status === 'Open'
+            ? `<input type="number" step="0.01" class="inline-input" id="pl-${escapeHtml(t.tradeId)}" placeholder="0.00" value="0" />`
+            : `<span class="mono" style="color:var(--text-faint)">—</span>`}
+        </td>
+        <td class="row-actions">
+          ${t.status === 'Open'
+            ? `<button class="btn btn-primary btn-sm" style="width:auto" onclick="handleCloseTrade('${t.tradeId}','${t.uid}',${Number(t.amount)||0})">Close</button>`
+            : `<span class="mono" style="color:var(--text-faint)">—</span>`}
+        </td>
+      </tr>
+    `).join('');
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="ic">!</div><div class="title">Couldn't load trades</div><div class="sub">${escapeHtml(err.message)}</div></div></td></tr>`;
+  }
+}
+
+async function handleCloseTrade(tradeId, uid, amount) {
+  const plInput = document.getElementById(`pl-${tradeId}`);
+  const profit = plInput ? Number(plInput.value) || 0 : 0;
+
+  if (!confirm(`Close trade ${tradeId} and settle ${fmtMoney(profit)} profit/loss?`)) return;
+
+  try {
+    const res = await api('closeTrade', { tradeId, uid, amount, profit });
+    if (!res.status) throw new Error(res.message || 'Failed to close trade');
+    showToast('Trade closed', 'ok');
+    loadTrades();
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+async function handleCloseAllTrades() {
+  if (!confirm("Close every open trade on the platform? Each user's recorded estimated profit/loss will be settled to their balance.")) return;
+  try {
+    const res = await api('closeAllTrades');
+    if (!res.status) throw new Error(res.message || 'Failed to close trades');
+    showToast('All open trades closed', 'ok');
+    loadTrades();
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+/* ============================================================
+   TRANSACTIONS
+============================================================ */
+async function loadTransactions() {
+  const tbody = document.getElementById('txBody');
+  tbody.innerHTML = `<tr class="loading-row"><td colspan="8"><span class="spin"></span>Loading…</td></tr>`;
+
+  try {
+    const res = await api('getAllTransactions');
+    if (!res.status) throw new Error(res.message || 'Failed to load transactions');
+    state.cache.tx = res.transactions;
+
+    if (!res.transactions.length) {
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="ic">∅</div><div class="title">No transactions yet</div><div class="sub">Platform activity will be logged here.</div></div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = res.transactions.map(t => `
+      <tr>
+        <td class="mono">${escapeHtml(t.txId)}</td>
+        <td class="mono">${escapeHtml(t.uid)}</td>
+        <td>${escapeHtml(t.name)}</td>
+        <td class="mono">${escapeHtml(t.email)}</td>
+        <td>${statusPill(t.type)}</td>
+        <td class="num">${fmtMoney(t.amount)}</td>
+        <td>${statusPill(t.status)}</td>
+        <td class="mono">${fmtDate(t.date)}</td>
+      </tr>
+    `).join('');
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="ic">!</div><div class="title">Couldn't load transactions</div><div class="sub">${escapeHtml(err.message)}</div></div></td></tr>`;
+  }
+}
+
+/* ============================================================
+   WALLET
+============================================================ */
+async function loadWallet() {
+  const input = document.getElementById('walletAddress');
+  input.value = '';
+  input.placeholder = 'Loading…';
+  try {
+    const res = await api('getGlobalWallet');
+    if (!res.status) throw new Error(res.message || 'Failed to load wallet');
+    input.value = res.wallet || '';
+    input.placeholder = 'No address set — withdrawals are disabled';
+  } catch (err) {
+    showToast(err.message, 'err');
+    input.placeholder = 'Failed to load';
+  }
+}
+
+async function handleUpdateWallet() {
+  const wallet = document.getElementById('walletAddress').value.trim();
+  if (!wallet) { showToast('Enter a wallet address before saving', 'err'); return; }
+  try {
+    const res = await api('updateGlobalWallet', { wallet });
+    if (!res.status) throw new Error(res.message || 'Failed to update wallet');
+    showToast('Global wallet updated', 'ok');
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+/* ============================================================
+   NOTIFY
+============================================================ */
+async function handleSendNotification() {
+  const uid = document.getElementById('notifyUid').value.trim();
+  const title = document.getElementById('notifyTitle').value.trim();
+  const message = document.getElementById('notifyMessage').value.trim();
+
+  if (!uid || !title || !message) {
+    showToast('Fill in UID, title and message', 'err');
+    return;
+  }
+
+  try {
+    const res = await api('createNotification', { uid, title, message });
+    if (!res.status) throw new Error(res.message || 'Failed to send notification');
+    showToast('Notification sent', 'ok');
+    document.getElementById('notifyTitle').value = '';
+    document.getElementById('notifyMessage').value = '';
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+/* ============================================================
+   TOAST
+============================================================ */
+let toastTimer;
+function showToast(msg, type='ok') {
+  const el = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  el.classList.remove('ok','err');
+  el.classList.add(type === 'err' ? 'err' : 'ok', 'show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+/* ============================================================
+   INIT — auto sign-in if a session is stored
+============================================================ */
+(function init() {
+  document.getElementById('apiUrl').value = state.apiUrl;
+  document.getElementById('adminEmail').value = state.email;
+
+  if (state.apiUrl && state.token) {
+    enterApp();
+  }
+})();
+</script>
+
+</body>
+</html>
