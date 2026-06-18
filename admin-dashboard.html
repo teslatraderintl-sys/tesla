@@ -369,6 +369,7 @@
         <span>Deposits</span>
         <span class="badge" id="badge-deposits">–</span>
       </div>
+      <div class="nav-item" data-tab="withdrawals" onclick="switchTab('withdrawals')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/><path d="M19 9l3 3-3 3"/></svg><span>Withdrawals</span><span class="badge" id="badge-withdrawals">–</span></div>
       <div class="nav-item" data-tab="trades" onclick="switchTab('trades')">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18.7 8 13 13.7 9.5 10.2 5 14.7"/></svg>
         <span>Trades</span>
@@ -385,6 +386,11 @@
       <div class="nav-item" data-tab="notify" onclick="switchTab('notify')">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         <span>Notify User</span>
+      </div>
+      <div class="nav-item" data-tab="copytraders" onclick="switchTab('copytraders')">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <span>Copy Traders</span>
+        <span class="badge" id="badge-copytraders">–</span>
       </div>
     </nav>
 
@@ -476,6 +482,28 @@
             <table>
               <thead><tr><th>Order ID</th><th>User</th><th>Amount</th><th>Wallet</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
               <tbody id="depositsBody"><tr class="loading-row"><td colspan="7"><span class="spin"></span>Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- WITHDRAWALS -->
+      <section id="tab-withdrawals" style="display:none">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Withdrawal orders</h3>
+              <div class="panel-sub">Approve sends funds from your wallet; decline refunds the frozen balance to the user</div>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-ghost btn-sm" onclick="loadWithdrawals()">Refresh</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Order ID</th><th>User</th><th>Amount</th><th>Asset</th><th>Network</th><th>Address</th><th>Memo</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="withdrawalsBody"><tr class="loading-row"><td colspan="10"><span class="spin"></span>Loading…</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -575,8 +603,75 @@
         </div>
       </section>
 
+      <!-- COPY TRADERS -->
+      <section id="tab-copytraders" style="display:none">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Copy Trader Directory</h3>
+              <div class="panel-sub">Add, edit or remove traders shown to users on the copy trading page</div>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-primary btn-sm" onclick="openAddTraderModal()">+ Add Trader</button>
+              <button class="btn btn-ghost btn-sm" onclick="loadCopyTraders()">Refresh</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Trader ID</th><th>Name</th><th>Handle</th><th>ROI</th>
+                  <th>Win Rate</th><th>Trades</th><th>Copiers</th>
+                  <th>Strategy</th><th>Badge</th><th>Status</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="copytradersBody"><tr class="loading-row"><td colspan="11"><span class="spin"></span>Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
+</div>
+
+<!-- ============ COPY TRADER MODAL ============ -->
+<div class="modal-overlay" id="traderModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="traderModalTitle">Add Copy Trader</h3>
+      <button class="modal-close" onclick="closeTraderModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="traderModalId" />
+      <div class="field"><label>Name</label><input type="text" id="traderName" placeholder="Alex Morgan" /></div>
+      <div class="field"><label>Handle</label><input type="text" id="traderHandle" placeholder="@alexmorgan" /></div>
+      <div class="field"><label>ROI</label><input type="text" id="traderRoi" placeholder="+41.8%" /></div>
+      <div class="field"><label>Win Rate (%)</label><input type="number" id="traderWinRate" placeholder="94" min="0" max="100" /></div>
+      <div class="field"><label>Total Trades</label><input type="number" id="traderTrades" placeholder="1847" min="0" /></div>
+      <div class="field"><label>Copiers</label><input type="number" id="traderCopiers" placeholder="312" min="0" /></div>
+      <div class="field full"><label>Strategy</label><input type="text" id="traderStrategy" placeholder="Scalping BTC/ETH" /></div>
+      <div class="field">
+        <label>Badge</label>
+        <select id="traderBadge" style="width:100%;padding:11px 13px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:13.5px;outline:none;">
+          <option value="Elite">Elite</option>
+          <option value="Pro">Pro</option>
+          <option value="Verified">Verified</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="traderActive" style="width:100%;padding:11px 13px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:13.5px;outline:none;">
+          <option value="true">Active</option>
+          <option value="false">Inactive</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeTraderModal()">Cancel</button>
+      <button class="btn btn-primary" style="width:auto;padding-left:24px;padding-right:24px" onclick="saveTrader()">Save Trader</button>
+    </div>
+  </div>
 </div>
 
 <!-- ============ EDIT USER MODAL ============ -->
@@ -620,6 +715,24 @@
   </div>
 </div>
 
+<!-- ============ CONFIRM DIALOG ============ -->
+<div class="modal-overlay" id="confirmDialog">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-head">
+      <h3 id="confirmTitle">Confirm action</h3>
+      <button class="modal-close" onclick="resolveConfirm(false)">✕</button>
+    </div>
+    <div style="padding:20px 22px">
+      <p id="confirmMessage" style="color:var(--text-dim);font-size:13.5px;line-height:1.6"></p>
+      <div id="confirmDetail" style="margin-top:10px;padding:10px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;font-family:var(--font-mono);font-size:12px;color:var(--text-dim);display:none"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="resolveConfirm(false)">Cancel</button>
+      <button class="btn" id="confirmOkBtn" onclick="resolveConfirm(true)">Confirm</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ TOAST ============ -->
 <div class="toast" id="toast"><span class="toast-dot"></span><span id="toastMsg"></span></div>
 
@@ -632,17 +745,19 @@ const state = {
   token: localStorage.getItem('tt_admin_token') || '',
   email: localStorage.getItem('tt_admin_email') || '',
   role: localStorage.getItem('tt_admin_role') || 'admin',
-  cache: { users: null, deposits: null, trades: null, tx: null }
+  cache: { users: null, deposits: null, withdrawals: null, trades: null, tx: null }
 };
 
 const PAGE_META = {
   overview:     { title:'Overview',          sub:'Platform summary and health' },
   users:        { title:'Users',             sub:'Manage accounts, balances and verification' },
   deposits:     { title:'Deposits',          sub:'Review and settle deposit requests' },
+  withdrawals:  { title:'Withdrawals',        sub:'Review and settle withdrawal requests' },
   trades:       { title:'Trades',            sub:'Open and closed positions across the platform' },
   transactions: { title:'Transactions',      sub:'Full ledger of platform activity' },
   wallet:       { title:'Global Wallet',     sub:'Deposit address shown to users' },
   notify:       { title:'Notify User',       sub:'Send a one-off in-app notification' },
+  copytraders:  { title:'Copy Traders',      sub:'Manage the copy trader directory shown to users' },
 };
 
 /* ============================================================
@@ -777,9 +892,11 @@ function switchTab(tab) {
   if (tab === 'overview') loadOverview();
   if (tab === 'users' && !state.cache.users) loadUsers();
   if (tab === 'deposits' && !state.cache.deposits) loadDeposits();
+  if (tab === 'withdrawals' && !state.cache.withdrawals) loadWithdrawals();
   if (tab === 'trades' && !state.cache.trades) loadTrades();
   if (tab === 'transactions' && !state.cache.tx) loadTransactions();
   if (tab === 'wallet') loadWallet();
+  if (tab === 'copytraders') loadCopyTraders();
 }
 
 /* ============================================================
@@ -1001,7 +1118,8 @@ async function saveUserEdit() {
 }
 
 async function handleDeleteUser(uid, name) {
-  if (!confirm(`Delete ${name} (${uid})? This permanently removes their account row.`)) return;
+  const ok1 = await showConfirm({ title: 'Delete user', message: `Permanently delete ${name}? This removes their account row and cannot be undone.`, detail: uid, danger: true });
+  if (!ok1) return;
   try {
     const res = await api('deleteUser', { uid });
     if (!res.status) throw new Error(res.message || 'Delete failed');
@@ -1052,13 +1170,73 @@ async function loadDeposits() {
 }
 
 async function handleApproveDeposit(orderId, decision) {
-  const verb = decision === 'approve' ? 'approve and credit' : 'decline';
-  if (!confirm(`${verb.charAt(0).toUpperCase()+verb.slice(1)} deposit ${orderId}?`)) return;
+  const ok2 = await showConfirm(decision === 'approve'
+    ? { title: 'Approve deposit', message: 'Credit this deposit to the user\'s balance?', detail: orderId }
+    : { title: 'Decline deposit', message: 'Decline this deposit request? The user will be notified.', detail: orderId, danger: true });
+  if (!ok2) return;
   try {
     const res = await api('approveDeposit', { orderId, decision });
     if (!res.status) throw new Error(res.message || 'Action failed');
     showToast(decision === 'approve' ? 'Deposit approved and credited' : 'Deposit declined', 'ok');
     loadDeposits();
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+/* ============================================================
+   WITHDRAWALS
+============================================================ */
+async function loadWithdrawals() {
+  const tbody = document.getElementById('withdrawalsBody');
+  tbody.innerHTML = `<tr class="loading-row"><td colspan="10"><span class="spin"></span>Loading…</td></tr>`;
+
+  try {
+    const res = await api('getWithdrawalOrders');
+    if (!res.status) throw new Error(res.message || 'Failed to load withdrawals');
+    state.cache.withdrawals = res.orders;
+    document.getElementById('badge-withdrawals').textContent = res.orders.filter(w => w.status === 'Pending').length;
+
+    if (!res.orders.length) {
+      tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="ic">✓</div><div class="title">No withdrawal requests</div><div class="sub">User withdrawal requests will appear here.</div></div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = res.orders.map(w => `
+      <tr>
+        <td class="mono">${escapeHtml(w.orderId)}</td>
+        <td>${escapeHtml(w.name)}<br><span class="mono">${escapeHtml(w.email)}</span></td>
+        <td class="num">${fmtMoney(w.amount)}</td>
+        <td class="mono">${escapeHtml(w.asset || '—')}</td>
+        <td class="mono">${escapeHtml(w.network || '—')}</td>
+        <td class="mono" style="max-width:160px;overflow:hidden;text-overflow:ellipsis" title="${escapeHtml(w.address)}">${escapeHtml(w.address || '—')}</td>
+        <td class="mono">${escapeHtml(w.memo || '—')}</td>
+        <td>${statusPill(w.status)}</td>
+        <td class="mono">${fmtDate(w.date)}</td>
+        <td class="row-actions">
+          ${w.status === 'Pending' ? `
+            <button class="btn btn-primary btn-sm" style="width:auto" onclick="handleApproveWithdrawal('${w.orderId}','approve')">Approve</button>
+            <button class="btn btn-danger btn-sm" onclick="handleApproveWithdrawal('${w.orderId}','decline')">Decline</button>
+          ` : `<span class="mono" style="color:var(--text-faint)">—</span>`}
+        </td>
+      </tr>
+    `).join('');
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="ic">!</div><div class="title">Couldn't load withdrawals</div><div class="sub">${escapeHtml(err.message)}</div></div></td></tr>`;
+  }
+}
+
+async function handleApproveWithdrawal(orderId, decision) {
+  const ok3 = await showConfirm(decision === 'approve'
+    ? { title: 'Approve withdrawal', message: 'Mark this withdrawal as approved? The balance stays deducted — send the funds manually from your wallet.', detail: orderId }
+    : { title: 'Decline withdrawal', message: 'Decline this withdrawal? The frozen amount will be refunded to the user\'s balance.', detail: orderId, danger: true });
+  if (!ok3) return;
+  try {
+    const res = await api('approveWithdrawal', { orderId, decision });
+    if (!res.status) throw new Error(res.message || 'Action failed');
+    showToast(decision === 'approve' ? 'Withdrawal approved' : 'Withdrawal declined — balance refunded', 'ok');
+    state.cache.withdrawals = null;
+    loadWithdrawals();
   } catch (err) {
     showToast(err.message, 'err');
   }
@@ -1113,7 +1291,8 @@ async function handleCloseTrade(tradeId, uid, amount) {
   const plInput = document.getElementById(`pl-${tradeId}`);
   const profit = plInput ? Number(plInput.value) || 0 : 0;
 
-  if (!confirm(`Close trade ${tradeId} and settle ${fmtMoney(profit)} profit/loss?`)) return;
+  const ok4 = await showConfirm({ title: 'Close trade', message: `Settle this trade with a profit/loss of ${fmtMoney(profit)}? The amount will be returned to the user's balance.`, detail: tradeId });
+  if (!ok4) return;
 
   try {
     const res = await api('closeTrade', { tradeId, uid, amount, profit });
@@ -1126,7 +1305,8 @@ async function handleCloseTrade(tradeId, uid, amount) {
 }
 
 async function handleCloseAllTrades() {
-  if (!confirm("Close every open trade on the platform? Each user's recorded estimated profit/loss will be settled to their balance.")) return;
+  const ok5 = await showConfirm({ title: 'Close all open trades', message: "Close every open trade on the platform? Each user's estimated profit/loss will be settled to their balance.", danger: true });
+  if (!ok5) return;
   try {
     const res = await api('closeAllTrades');
     if (!res.status) throw new Error(res.message || 'Failed to close trades');
@@ -1226,6 +1406,46 @@ async function handleSendNotification() {
 }
 
 /* ============================================================
+   CONFIRM DIALOG
+============================================================ */
+let _confirmResolve = null;
+
+function showConfirm({ title = 'Confirm action', message, detail = null, danger = false }) {
+  return new Promise(resolve => {
+    _confirmResolve = resolve;
+    document.getElementById('confirmTitle').textContent   = title;
+    document.getElementById('confirmMessage').textContent = message;
+
+    const detailEl = document.getElementById('confirmDetail');
+    if (detail) {
+      detailEl.textContent = detail;
+      detailEl.style.display = 'block';
+    } else {
+      detailEl.style.display = 'none';
+    }
+
+    const okBtn = document.getElementById('confirmOkBtn');
+    okBtn.className = 'btn ' + (danger ? 'btn-danger' : 'btn-primary');
+    okBtn.style.width = 'auto';
+    okBtn.style.paddingLeft = '24px';
+    okBtn.style.paddingRight = '24px';
+    okBtn.textContent = danger ? 'Yes, proceed' : 'Confirm';
+
+    document.getElementById('confirmDialog').classList.add('show');
+  });
+}
+
+function resolveConfirm(result) {
+  document.getElementById('confirmDialog').classList.remove('show');
+  if (_confirmResolve) { _confirmResolve(result); _confirmResolve = null; }
+}
+
+document.addEventListener('click', e => {
+  const overlay = document.getElementById('confirmDialog');
+  if (e.target === overlay) resolveConfirm(false);
+});
+
+/* ============================================================
    TOAST
 ============================================================ */
 let toastTimer;
@@ -1237,6 +1457,143 @@ function showToast(msg, type='ok') {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
 }
+
+/* ============================================================
+   COPY TRADERS
+============================================================ */
+async function loadCopyTraders() {
+  const tbody = document.getElementById('copytradersBody');
+  tbody.innerHTML = `<tr class="loading-row"><td colspan="11"><span class="spin"></span>Loading…</td></tr>`;
+
+  try {
+    const res = await api('getCopyTradersAdmin');
+    if (!res.status) throw new Error(res.message || 'Failed to load traders');
+
+    const badge = document.getElementById('badge-copytraders');
+    if (badge) badge.textContent = res.traders.length;
+
+    if (!res.traders.length) {
+      tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="ic">∅</div><div class="title">No copy traders yet</div><div class="sub">Click "+ Add Trader" to create the first one.</div></div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = res.traders.map(t => `
+      <tr>
+        <td class="mono">${escapeHtml(t.id)}</td>
+        <td><strong>${escapeHtml(t.name)}</strong></td>
+        <td class="mono">${escapeHtml(t.handle)}</td>
+        <td class="num pos">${escapeHtml(t.roi)}</td>
+        <td class="num">${t.winRate}%</td>
+        <td class="num">${t.trades.toLocaleString()}</td>
+        <td class="num">${t.copiers.toLocaleString()}</td>
+        <td>${escapeHtml(t.strategy)}</td>
+        <td>${badgePill(t.badge)}</td>
+        <td>${t.active ? '<span class="pill pill-ok">Active</span>' : '<span class="pill pill-neutral">Inactive</span>'}</td>
+        <td>
+          <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" onclick='openEditTraderModal(${JSON.stringify(t)})'>Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="handleDeleteTrader('${escapeHtml(t.id)}','${escapeHtml(t.name)}')">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="ic">!</div><div class="title">Couldn't load traders</div><div class="sub">${escapeHtml(err.message)}</div></div></td></tr>`;
+  }
+}
+
+function badgePill(badge) {
+  const map = { Elite: 'pill-ok', Pro: 'pill-warn', Verified: 'pill-neutral' };
+  return `<span class="pill ${map[badge] || 'pill-neutral'}">${escapeHtml(badge || '')}</span>`;
+}
+
+function openAddTraderModal() {
+  document.getElementById('traderModalTitle').textContent = 'Add Copy Trader';
+  document.getElementById('traderModalId').value = '';
+  document.getElementById('traderName').value = '';
+  document.getElementById('traderHandle').value = '';
+  document.getElementById('traderRoi').value = '';
+  document.getElementById('traderWinRate').value = '';
+  document.getElementById('traderTrades').value = '';
+  document.getElementById('traderCopiers').value = '';
+  document.getElementById('traderStrategy').value = '';
+  document.getElementById('traderBadge').value = 'Verified';
+  document.getElementById('traderActive').value = 'true';
+  document.getElementById('traderModal').classList.add('show');
+}
+
+function openEditTraderModal(t) {
+  document.getElementById('traderModalTitle').textContent = 'Edit Copy Trader';
+  document.getElementById('traderModalId').value   = t.id;
+  document.getElementById('traderName').value      = t.name;
+  document.getElementById('traderHandle').value    = t.handle;
+  document.getElementById('traderRoi').value       = t.roi;
+  document.getElementById('traderWinRate').value   = t.winRate;
+  document.getElementById('traderTrades').value    = t.trades;
+  document.getElementById('traderCopiers').value   = t.copiers;
+  document.getElementById('traderStrategy').value  = t.strategy;
+  document.getElementById('traderBadge').value     = t.badge;
+  document.getElementById('traderActive').value    = t.active ? 'true' : 'false';
+  document.getElementById('traderModal').classList.add('show');
+}
+
+function closeTraderModal() {
+  document.getElementById('traderModal').classList.remove('show');
+}
+
+async function saveTrader() {
+  const traderId = document.getElementById('traderModalId').value.trim();
+  const payload = {
+    name:     document.getElementById('traderName').value.trim(),
+    handle:   document.getElementById('traderHandle').value.trim(),
+    roi:      document.getElementById('traderRoi').value.trim(),
+    winRate:  Number(document.getElementById('traderWinRate').value),
+    trades:   Number(document.getElementById('traderTrades').value),
+    copiers:  Number(document.getElementById('traderCopiers').value),
+    strategy: document.getElementById('traderStrategy').value.trim(),
+    badge:    document.getElementById('traderBadge').value,
+    active:   document.getElementById('traderActive').value,
+  };
+
+  if (!payload.name || !payload.handle) {
+    showToast('Name and Handle are required', 'err');
+    return;
+  }
+
+  try {
+    let res;
+    if (traderId) {
+      res = await api('updateCopyTrader', { traderId, ...payload });
+    } else {
+      res = await api('addCopyTrader', payload);
+    }
+    if (!res.status) throw new Error(res.message || 'Failed to save trader');
+    showToast(traderId ? 'Trader updated' : 'Trader added', 'ok');
+    closeTraderModal();
+    loadCopyTraders();
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+async function handleDeleteTrader(traderId, name) {
+  const ok = await showConfirm({ title: 'Delete trader', message: `Remove "${name}" from the copy trader directory? This cannot be undone.`, detail: traderId, danger: true });
+  if (!ok) return;
+  try {
+    const res = await api('deleteCopyTrader', { traderId });
+    if (!res.status) throw new Error(res.message || 'Failed to delete trader');
+    showToast('Trader deleted', 'ok');
+    loadCopyTraders();
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+// Close trader modal on overlay click
+document.addEventListener('click', e => {
+  const overlay = document.getElementById('traderModal');
+  if (e.target === overlay) closeTraderModal();
+});
 
 /* ============================================================
    INIT — auto sign-in if a session is stored

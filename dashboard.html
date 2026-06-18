@@ -61,6 +61,356 @@
             border: 1px solid var(--bg-border-line);
         }
 
+        /* NAV SVG ICON */
+        .nav-svg-icon {
+            width: 24px;
+            height: 24px;
+            color: rgba(255,255,255,0.45);
+            transition: color 0.2s;
+        }
+        .nav-item.active .nav-svg-icon {
+            color: var(--accent-primary);
+        }
+
+        /* ============ COPY TRADING PAGE ============ */
+        .copy-trading-page {
+            padding: 0 0 80px;
+        }
+        .ct-hero {
+            background: linear-gradient(135deg, #1a0a0a 0%, #0d0d0d 100%);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 24px 20px 20px;
+        }
+        .ct-hero h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .ct-hero p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .ct-stats-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+        .ct-stat-pill {
+            flex: 1;
+            background: rgba(232,33,39,0.1);
+            border: 1px solid rgba(232,33,39,0.2);
+            border-radius: 10px;
+            padding: 10px 12px;
+            text-align: center;
+        }
+        .ct-stat-pill .val {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+        .ct-stat-pill .lbl {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .ct-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 18px 20px 10px;
+        }
+        .ct-active-banner {
+            margin: 0 20px 16px;
+            background: linear-gradient(135deg, #0a2a1a, #0d1f12);
+            border: 1px solid rgba(57,231,176,0.2);
+            border-radius: 14px;
+            padding: 16px;
+            display: none;
+        }
+        .ct-active-banner.show { display: block; }
+        .ct-active-banner-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .ct-active-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent-green);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+        .ct-stop-btn {
+            background: rgba(232,33,39,0.15);
+            border: 1px solid rgba(232,33,39,0.3);
+            color: var(--accent-primary);
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 5px 12px;
+            cursor: pointer;
+        }
+        .ct-active-trader-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .ct-active-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .ct-active-stats {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .ct-active-stat {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 8px 10px;
+            text-align: center;
+        }
+        .ct-active-stat .v { font-size: 14px; font-weight: 700; color: var(--accent-green); }
+        .ct-active-stat .l { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+        /* Trader Card */
+        .ct-trader-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 0 20px;
+        }
+        .ct-trader-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .ct-trader-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), transparent);
+        }
+        .ct-trader-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .ct-trader-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            flex-shrink: 0;
+            border: 2px solid rgba(232,33,39,0.3);
+        }
+        .ct-trader-info { flex: 1; min-width: 0; }
+        .ct-trader-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+        .ct-trader-handle {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .ct-trader-badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 20px;
+            flex-shrink: 0;
+        }
+        .badge-elite { background: rgba(255,211,105,0.15); color: #ffd369; border: 1px solid rgba(255,211,105,0.25); }
+        .badge-pro { background: rgba(123,92,255,0.15); color: #a78bff; border: 1px solid rgba(123,92,255,0.25); }
+        .badge-verified { background: rgba(57,231,176,0.1); color: var(--accent-green); border: 1px solid rgba(57,231,176,0.2); }
+
+        .ct-trader-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .ct-metric {
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            padding: 9px 8px;
+            text-align: center;
+        }
+        .ct-metric .mv {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .ct-metric .ml {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+        .mv-green { color: var(--accent-green); }
+        .mv-white { color: #fff; }
+
+        .ct-win-bar-wrap {
+            margin-bottom: 14px;
+        }
+        .ct-win-bar-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+        .ct-win-bar {
+            height: 5px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .ct-win-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #39e7b0, #2bbf90);
+            border-radius: 10px;
+        }
+
+        .ct-follow-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .ct-follow-btn.follow {
+            background: var(--accent-primary);
+            color: #fff;
+        }
+        .ct-follow-btn.unfollow {
+            background: rgba(255,255,255,0.06);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-soft);
+        }
+
+        /* Copy Modal */
+        .ct-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 9999;
+            display: flex;
+            align-items: flex-end;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s;
+        }
+        .ct-modal-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .ct-modal {
+            background: #111;
+            border: 1px solid var(--border-soft);
+            border-radius: 24px 24px 0 0;
+            padding: 24px 20px 40px;
+            width: 100%;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .ct-modal-overlay.open .ct-modal {
+            transform: translateY(0);
+        }
+        .ct-modal-handle {
+            width: 40px; height: 4px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 2px;
+            margin: 0 auto 20px;
+        }
+        .ct-modal-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .ct-modal-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 22px;
+            line-height: 1.5;
+        }
+        .ct-modal-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .ct-modal-input {
+            width: 100%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 16px;
+            outline: none;
+        }
+        .ct-modal-input:focus {
+            border-color: rgba(232,33,39,0.4);
+        }
+        .ct-risk-options {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .ct-risk-opt {
+            flex: 1;
+            padding: 10px 6px;
+            text-align: center;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border-soft);
+            background: rgba(255,255,255,0.04);
+            color: var(--text-secondary);
+            transition: all 0.15s;
+        }
+        .ct-risk-opt.selected {
+            background: rgba(232,33,39,0.15);
+            border-color: rgba(232,33,39,0.4);
+            color: var(--accent-primary);
+        }
+        .ct-modal-confirm-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent-primary);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+        }
+        .ct-modal-confirm-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         /*=================RESET=================*/
 
         * {
@@ -1852,6 +2202,123 @@
         .execute-trade-btn:hover {
             opacity: 0.85;
         }
+
+        /* ============ GROK TRADE MODAL LAYOUT ============ */
+        #grokTradeView {
+            overflow-y: auto;
+            max-height: calc(90vh - 80px);
+        }
+
+        .grok-trade-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        /* Chart panel */
+        .grok-chart-panel {
+            width: 100%;
+            background: #0a0a0a;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.06);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .grok-chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .grok-chart-pair {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.3px;
+        }
+
+        .grok-chart-interval-bar {
+            display: flex;
+            gap: 4px;
+        }
+
+        .grok-interval-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.45);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 7px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .grok-interval-btn.active,
+        .grok-interval-btn:hover {
+            background: rgba(232,33,39,0.18);
+            color: #e82127;
+        }
+
+        #grokCandleChart {
+            width: 100%;
+            height: 220px;
+        }
+
+        .grok-chart-price-bar {
+            display: flex;
+            gap: 14px;
+            padding: 8px 14px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .grok-chart-price-bar span b {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Form / details panel */
+        .grok-form-panel {
+            padding-top: 16px;
+        }
+
+        /* Desktop: side-by-side */
+        @media (min-width: 900px) {
+            .trade-panel.trade-panel--wide {
+                max-width: 900px !important;
+                width: 92% !important;
+            }
+
+            .grok-trade-layout {
+                flex-direction: row;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .grok-chart-panel {
+                width: 420px;
+                flex-shrink: 0;
+                position: sticky;
+                top: 0;
+            }
+
+            #grokCandleChart {
+                height: 340px;
+            }
+
+            .grok-form-panel {
+                flex: 1;
+                padding-top: 0;
+                overflow-y: auto;
+                max-height: calc(90vh - 120px);
+            }
+        }
+
     </style>
 
 
@@ -2027,113 +2494,242 @@
 
     <style>
         /*=================PROFILE VIEW=================*/
+        /* ============================================================
+           PROFILE VIEW — Telegram-style
+        ============================================================ */
+
+        body.light-mode {
+            --bg: #f0f2f5;
+            --bg-card: #ffffff;
+            --bg-border-line: rgba(0,0,0,0.07);
+            --bg-soft: rgba(0,0,0,0.04);
+            --text-primary: #0d0d0d;
+            --text-secondary: rgba(0,0,0,0.5);
+            --text-muted: rgba(0,0,0,0.32);
+            --border-soft: rgba(0,0,0,0.07);
+        }
 
         .profile-view {
-            height: 100dvh;
-            width: 100%;
-            margin: auto;
+            position: fixed;
+            inset: 0;
+            z-index: 500;
             background: var(--bg);
             display: flex;
             flex-direction: column;
-            align-items: center;
+            overflow: hidden;
+        }
+        .profile-scroll {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .profile-header {
-            padding: 15px;
+        /* banner */
+        .prf-banner {
+            background: linear-gradient(160deg,#1a0505 0%,#2a0808 40%,#0d0d0d 100%);
+            padding: 52px 20px 24px;
             display: flex;
-            align-items: center;
-            gap: 15px;
-            border-bottom: 1px solid var(--bg-border-line);
-            width: 100%;
-            justify-content: space-between;
+            align-items: flex-end;
+            gap: 16px;
+            position: relative;
         }
-
-        .profile-header div{
-            display: flex;
-            gap: 15px;
-            align-items: center;
+        .prf-banner::after {
+            content:'';
+            position: absolute; inset:0;
+            background: radial-gradient(ellipse at 30% 0%,rgba(232,33,39,0.18) 0%,transparent 70%);
+            pointer-events:none;
         }
-
-        .profile-back-btn {
-            height: 40px;
-            width: 40px;
-            padding: 11px;
-            cursor: pointer;
+        .prf-banner-back {
+            position: absolute; top:16px; left:16px;
+            width:36px; height:36px; border-radius:50%;
+            background: rgba(255,255,255,0.1);
+            border:none; cursor:pointer;
+            display:flex; align-items:center; justify-content:center;
+            z-index:2;
         }
-
-        .profile-content {
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            width: 100%;
-            max-width: 500px;
+        .prf-banner-back svg { width:18px; height:18px; color:#fff; }
+        .prf-banner-avatar {
+            width:76px; height:76px; border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            font-size:26px; font-weight:800; color:#fff;
+            border:3px solid rgba(255,255,255,0.15);
+            flex-shrink:0; position:relative; z-index:2;
+            cursor:pointer; overflow:hidden;
         }
+        .prf-banner-edit-dot {
+            position:absolute; bottom:2px; right:2px;
+            width:20px; height:20px;
+            background:var(--accent-primary); border-radius:50%;
+            border:2px solid #1a0505;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .prf-banner-edit-dot svg { width:9px; height:9px; color:#fff; }
+        .prf-banner-info { z-index:2; min-width:0; }
+        .prf-banner-name { font-size:20px; font-weight:700; color:#fff; line-height:1.2; margin-bottom:3px; }
+        .prf-banner-email { font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:8px; }
+        .prf-banner-badges { display:flex; gap:6px; flex-wrap:wrap; }
+        .prf-bdg { font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px; line-height:1.4; }
+        .prf-bdg-status  { background:rgba(255,211,105,0.15); color:#ffd369; border:1px solid rgba(255,211,105,0.25); }
+        .prf-bdg-verified   { background:rgba(57,231,176,0.12); color:#39e7b0; border:1px solid rgba(57,231,176,0.2); }
+        .prf-bdg-unverified { background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.4); border:1px solid rgba(255,255,255,0.1); }
 
-        /* profile card */
-
-        .profile-card {
+        /* groups */
+        .prf-group {
+            margin: 16px 16px 0;
             background: var(--bg-card);
+            border-radius: 16px;
             border: 1px solid var(--bg-border-line);
-            border-radius: 18px;
-            padding: 25px;
-            text-align: center;
+        }
+        .prf-group-label {
+            font-size:11px; font-weight:700;
+            text-transform:uppercase; letter-spacing:0.8px;
+            color:var(--text-muted);
+            padding:14px 16px 4px;
         }
 
-        .profile-avatar-large {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            background: url('image/default-avatar.png') center/cover;
-            margin: auto;
-            border: 2px solid var(--bg-border-line);
-            margin-bottom: 15px;
+        /* rows */
+        .prf-row {
+            display:flex; align-items:center;
+            padding:13px 16px;
+            gap:14px;
+            border-bottom:1px solid var(--bg-border-line);
         }
-
-        .profile-card h3 {
-            font-size: 20px;
-            margin-bottom: 4px;
+        .prf-row:last-child { border-bottom:none; }
+        .prf-row-icon {
+            width:34px; height:34px; border-radius:9px;
+            display:flex; align-items:center; justify-content:center;
+            flex-shrink:0;
         }
+        .prf-row-icon svg { width:16px; height:16px; }
+        .pri-gray   { background:rgba(255,255,255,0.07); }
+        .pri-gray svg { color:var(--text-secondary); }
+        .pri-red    { background:rgba(232,33,39,0.12); }
+        .pri-red svg { color:var(--accent-primary); }
+        .pri-blue   { background:rgba(100,149,237,0.12); }
+        .pri-blue svg { color:#6495ed; }
+        .pri-green  { background:rgba(57,231,176,0.1); }
+        .pri-green svg { color:#39e7b0; }
+        .pri-purple { background:rgba(123,92,255,0.12); }
+        .pri-purple svg { color:#a78bff; }
+        .pri-orange { background:rgba(255,152,0,0.12); }
+        .pri-orange svg { color:#ff9800; }
+        body.light-mode .pri-gray { background:rgba(0,0,0,0.05); }
+        .prf-row-body { flex:1; min-width:0; }
+        .prf-row-label { font-size:14px; font-weight:500; color:var(--text-primary); }
+        .prf-row-value { font-size:12px; color:var(--text-muted); margin-top:2px; word-break:break-all; }
+        .prf-row-tap { cursor:pointer; transition:background 0.12s; -webkit-tap-highlight-color:transparent; }
+        .prf-row-tap:active { background:var(--bg-soft); }
+        .prf-row-chevron { color:var(--text-muted); flex-shrink:0; }
 
-        .profile-card p {
-            font-size: 13px;
-            opacity: .6;
+        /* toggle */
+        .prf-sw {
+            width:42px; height:24px; border-radius:12px;
+            background:rgba(255,255,255,0.1);
+            position:relative; transition:background 0.2s;
+            flex-shrink:0; cursor:pointer;
         }
-
-        /* info list */
-
-        .profile-info-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .prf-sw.on { background:var(--accent-primary); }
+        .prf-sw::after {
+            content:''; position:absolute;
+            top:3px; left:3px; width:18px; height:18px;
+            background:#fff; border-radius:50%;
+            transition:transform 0.2s;
+            box-shadow:0 1px 3px rgba(0,0,0,0.3);
         }
+        .prf-sw.on::after { transform:translateX(18px); }
 
-        .profile-info-item {
-            display: flex;
-            justify-content: space-between;
-            background: var(--bg-card);
-            padding: 14px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--bg-border-line);
-            font-size: 14px;
+        /* logout row */
+        .prf-logout-row {
+            margin:12px 16px 32px;
+            background:var(--bg-card);
+            border-radius:14px;
+            border:1px solid rgba(232,33,39,0.2);
+            padding:15px 16px;
+            display:flex; align-items:center; gap:14px;
+            cursor:pointer; transition:background 0.12s;
+            -webkit-tap-highlight-color:transparent;
         }
-
-        /* logout button */
-
-        .logout-btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 12px;
-            background: var(--accent-primary);
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .2s;
+        .prf-logout-row:active { background:rgba(232,33,39,0.06); }
+        .prf-logout-row-icon {
+            width:34px; height:34px; border-radius:9px;
+            background:rgba(232,33,39,0.12);
+            display:flex; align-items:center; justify-content:center;
         }
+        .prf-logout-row-icon svg { width:16px; height:16px; color:var(--accent-primary); }
+        .prf-logout-row-label { font-size:14px; font-weight:600; color:var(--accent-primary); }
 
-        .logout-btn:hover {
-            background: #ff2a31;
+        /* hide old profile elements */
+        .profile-header,.profile-content,.profile-back-btn,.logout-btn { display:none; }
+
+        /* slide-up modals */
+        .prf-modal-overlay {
+            position:fixed; inset:0;
+            background:rgba(0,0,0,0.72);
+            z-index:1000;
+            display:flex; align-items:flex-end;
+            opacity:0; pointer-events:none;
+            transition:opacity 0.2s;
         }
+        .prf-modal-overlay.open { opacity:1; pointer-events:all; }
+        .prf-modal {
+            background:var(--bg-card);
+            border-radius:22px 22px 0 0;
+            border:1px solid var(--bg-border-line);
+            padding:18px 20px 38px;
+            width:100%; box-sizing:border-box;
+            transform:translateY(100%);
+            transition:transform 0.3s cubic-bezier(0.32,1.4,0.64,1);
+            max-height:90vh; overflow-y:auto;
+        }
+        .prf-modal-overlay.open .prf-modal { transform:translateY(0); }
+        .prf-modal-handle {
+            width:36px; height:4px;
+            background:rgba(255,255,255,0.12);
+            border-radius:2px; margin:0 auto 18px;
+        }
+        body.light-mode .prf-modal-handle { background:rgba(0,0,0,0.1); }
+        .prf-modal-title { font-size:17px; font-weight:700; margin-bottom:4px; color:var(--text-primary); }
+        .prf-modal-sub   { font-size:13px; color:var(--text-secondary); margin-bottom:20px; line-height:1.5; }
+        .prf-modal-label { font-size:12px; color:var(--text-muted); margin-bottom:6px; font-weight:500; }
+        .prf-modal-input {
+            width:100%; box-sizing:border-box;
+            background:var(--bg-soft);
+            border:1px solid var(--bg-border-line);
+            border-radius:11px;
+            padding:13px 14px;
+            font-size:15px; color:var(--text-primary);
+            margin-bottom:14px; outline:none;
+        }
+        .prf-modal-input:focus { border-color:rgba(232,33,39,0.35); }
+        .prf-modal-btn {
+            width:100%; padding:14px; border:none;
+            border-radius:12px; font-size:15px; font-weight:700;
+            cursor:pointer; margin-top:4px; box-sizing:border-box;
+        }
+        .prf-modal-btn.primary   { background:var(--accent-primary); color:#fff; }
+        .prf-modal-btn.danger    { background:rgba(232,33,39,0.1); color:var(--accent-primary); border:1px solid rgba(232,33,39,0.2); }
+        .prf-modal-btn.ghost     { background:var(--bg-soft); color:var(--text-secondary); border:1px solid var(--bg-border-line); margin-top:10px; }
+        .prf-modal-error { font-size:12px; color:var(--accent-primary); margin:-8px 0 12px; display:none; }
+        .prf-logout-dialog .prf-modal { text-align:center; }
+        .prf-logout-dialog-icon {
+            width:58px; height:58px; border-radius:50%;
+            background:rgba(232,33,39,0.1);
+            display:flex; align-items:center; justify-content:center;
+            margin:0 auto 14px;
+        }
+        .prf-logout-dialog-icon svg { width:24px; height:24px; color:var(--accent-primary); }
+        .prf-avatar-grid {
+            display:grid; grid-template-columns:repeat(5,1fr);
+            gap:10px; margin-bottom:18px;
+        }
+        .prf-avatar-opt {
+            aspect-ratio:1; border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            font-size:18px; font-weight:800; color:#fff;
+            cursor:pointer; border:3px solid transparent;
+            transition:border-color 0.15s,transform 0.12s;
+        }
+        .prf-avatar-opt.sel { border-color:var(--accent-primary); transform:scale(0.9); }
     </style>
 
 
@@ -3151,6 +3747,7 @@
 </style>
 
 
+    <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 
 <body>
@@ -3215,6 +3812,15 @@
                     <div class="nav-item" data-page="transaction" data-active="icons/transaction_active.png"
                         data-inactive="icons/transaction_inactive.png">
                         <img src="icons/transaction_inactive.png">
+                    </div>
+
+                    <div class="nav-item" data-page="copytrading" data-active="icons/copy_active.png"
+                        data-inactive="icons/copy_inactive.png">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="nav-svg-icon">
+                            <path d="M17 2H7C5.9 2 5 2.9 5 4V18C5 19.1 5.9 20 7 20H17C18.1 20 19 19.1 19 18V4C19 2.9 18.1 2 17 2Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 8L15 8M9 12H15M9 16H12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            <path d="M3 6V20C3 21.1 3.9 22 5 22H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
                     </div>
 
                     <div class="nav-item" data-page="home" data-active="icons/home.png"
@@ -3569,6 +4175,84 @@
                     </div>
                 </div>
 
+                <!--=================COPY TRADING PAGE=================-->
+                <div class="page" id="copytrading">
+                    <div class="copy-trading-page">
+
+                        <!-- Hero -->
+                        <div class="ct-hero">
+                            <h2>Copy Trading</h2>
+                            <p>Follow top traders and automatically mirror their trades. Set your amount and let experts do the work.</p>
+                            <div class="ct-stats-row">
+                                <div class="ct-stat-pill">
+                                    <div class="val">847</div>
+                                    <div class="lbl">Active Copiers</div>
+                                </div>
+                                <div class="ct-stat-pill">
+                                    <div class="val">+34.2%</div>
+                                    <div class="lbl">Avg Monthly ROI</div>
+                                </div>
+                                <div class="ct-stat-pill">
+                                    <div class="val">98.1%</div>
+                                    <div class="lbl">Win Rate Top</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Copy Banner -->
+                        <div class="ct-active-banner" id="ctActiveBanner">
+                            <div class="ct-active-banner-top">
+                                <span class="ct-active-label">● Copying Now</span>
+                                <button class="ct-stop-btn" onclick="stopCopying()">Stop Copying</button>
+                            </div>
+                            <div class="ct-active-trader-name" id="ctActiveName">—</div>
+                            <div class="ct-active-meta" id="ctActiveMeta">—</div>
+                            <div class="ct-active-stats">
+                                <div class="ct-active-stat">
+                                    <div class="v" id="ctActivePnl">+$0.00</div>
+                                    <div class="l">Copy P&L</div>
+                                </div>
+                                <div class="ct-active-stat">
+                                    <div class="v" id="ctActiveAmount">$0.00</div>
+                                    <div class="l">Allocated</div>
+                                </div>
+                                <div class="ct-active-stat">
+                                    <div class="v" id="ctActiveDays">0d</div>
+                                    <div class="l">Duration</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Trader List -->
+                        <div class="ct-section-title">Top Traders</div>
+                        <div class="ct-trader-list" id="ctTraderList">
+                            <!-- Populated by JS -->
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Copy Trading Modal -->
+        <div class="ct-modal-overlay" id="ctModalOverlay">
+            <div class="ct-modal">
+                <div class="ct-modal-handle"></div>
+                <div class="ct-modal-title" id="ctModalTitle">Copy Trader</div>
+                <div class="ct-modal-subtitle" id="ctModalSubtitle">Set your copy amount and risk level to start automatically mirroring trades.</div>
+
+                <div class="ct-modal-label">Copy Amount (USD)</div>
+                <input type="number" class="ct-modal-input" id="ctCopyAmount" placeholder="Enter amount e.g. 500" min="50" />
+
+                <div class="ct-modal-label">Risk Level</div>
+                <div class="ct-risk-options">
+                    <div class="ct-risk-opt selected" data-risk="Low">Low</div>
+                    <div class="ct-risk-opt" data-risk="Medium">Medium</div>
+                    <div class="ct-risk-opt" data-risk="High">High</div>
+                </div>
+
+                <button class="ct-modal-confirm-btn" id="ctConfirmBtn" onclick="confirmCopy()">Start Copying</button>
             </div>
         </div>
 
@@ -3852,53 +4536,201 @@
 
     <!--=================PROFILE PAGE VIEW=================-->
     <div id="profileView" class="profile-view" style="display:none;">
+        <div class="profile-scroll">
 
-        <div class="profile-header">
-            <div>
-                <img src="icons/cancle.png" id="closeProfileView" class="profile-back-btn">
-                <h2>Profile</h2>            
+            <!-- Telegram-style banner -->
+            <div class="prf-banner">
+                <button class="prf-banner-back" onclick="closeProfileView()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <div class="prf-banner-avatar" id="profileAvatar" onclick="openAvatarModal()">
+                    <span id="profileAvatarInitials">?</span>
+                    <div class="prf-banner-edit-dot">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+                    </div>
+                </div>
+                <div class="prf-banner-info">
+                    <div class="prf-banner-name" id="profileName">User</div>
+                    <div class="prf-banner-email" id="profileEmail">—</div>
+                    <div class="prf-banner-badges">
+                        <span class="prf-bdg prf-bdg-status" id="profileStatusBadge">—</span>
+                        <span class="prf-bdg prf-bdg-unverified" id="profileVerifiedBadge">Unverified</span>
+                    </div>
+                </div>
             </div>
-            <button id="logoutBtn" class="logout-btn">Logout</button>
+
+            <!-- Account info group -->
+            <div class="prf-group-label" style="padding:16px 16px 6px;color:var(--text-muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">Account</div>
+            <div class="prf-group">
+                <div class="prf-row">
+                    <div class="prf-row-icon pri-gray">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                    </div>
+                    <div class="prf-row-body">
+                        <div class="prf-row-label">Account ID</div>
+                        <div class="prf-row-value" id="profileUID">—</div>
+                    </div>
+                </div>
+                <div class="prf-row">
+                    <div class="prf-row-icon pri-gray">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                    </div>
+                    <div class="prf-row-body">
+                        <div class="prf-row-label">Account Status</div>
+                        <div class="prf-row-value" id="profileStatus">—</div>
+                    </div>
+                </div>
+                <div class="prf-row">
+                    <div class="prf-row-icon pri-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <div class="prf-row-body">
+                        <div class="prf-row-label">Verification</div>
+                        <div class="prf-row-value" id="profileVerified">—</div>
+                    </div>
+                </div>
+                <div class="prf-row">
+                    <div class="prf-row-icon pri-gray">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z"/></svg>
+                    </div>
+                    <div class="prf-row-body">
+                        <div class="prf-row-label">Country</div>
+                        <div class="prf-row-value" id="profileCountry">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings group -->
+            <div class="prf-group-label" style="padding:16px 16px 6px;color:var(--text-muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">Settings</div>
+            <div class="prf-group">
+                <div class="prf-row prf-row-tap" onclick="openChangePasswordModal()">
+                    <div class="prf-row-icon pri-blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <div class="prf-row-body">
+                        <div class="prf-row-label">Change Password</div>
+                        <div class="prf-row-value">Update your account password</div>
+                    </div>
+                    <svg class="prf-row-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </div>
+                <div class="prf-row prf-row-tap" onclick="openForgotPasswordModal()">
+                    <div class="prf-row-icon pri-orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
+                    <div class="prf-row-body">
+                        <div class="prf-row-label">Forgot Password</div>
+                        <div class="prf-row-value">Reset via your email address</div>
+                    </div>
+                    <svg class="prf-row-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </div>
+                <div class="prf-row prf-row-tap" onclick="openAvatarModal()">
+                    <div class="prf-row-icon pri-purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                    </div>
+                    <div class="prf-row-body">
+                        <div class="prf-row-label">Profile Picture</div>
+                        <div class="prf-row-value">Choose your avatar colour</div>
+                    </div>
+                    <svg class="prf-row-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </div>
+            </div>
+
+            <!-- Appearance group -->
+            <div class="prf-group-label" style="padding:16px 16px 6px;color:var(--text-muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">Appearance</div>
+            <div class="prf-group">
+                <div class="prf-row prf-row-tap" onclick="toggleTheme()">
+                    <div class="prf-row-icon pri-green">
+                        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    </div>
+                    <div class="prf-row-body">
+                        <div class="prf-row-label" id="themeLabel">Dark Mode</div>
+                        <div class="prf-row-value" id="themeSubLabel">Currently using dark theme</div>
+                    </div>
+                    <div class="prf-sw" id="themeToggle"></div>
+                </div>
+                <div class="prf-row prf-row-tap" onclick="toggleNotif()">
+                    <div class="prf-row-icon pri-red">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    </div>
+                    <div class="prf-row-body">
+                        <div class="prf-row-label">Notifications</div>
+                        <div class="prf-row-value" id="notifSubLabel">Alerts are on</div>
+                    </div>
+                    <div class="prf-sw on" id="notifToggle"></div>
+                </div>
+            </div>
+
+            <!-- Logout -->
+            <div class="prf-logout-row" onclick="openLogoutModal()" style="margin-top:16px;">
+                <div class="prf-logout-row-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                </div>
+                <div class="prf-logout-row-label">Log Out</div>
+            </div>
+
+        </div><!-- /profile-scroll -->
+    </div><!-- /profileView -->
+
+
+    <!-- MODAL: Change Password -->
+    <div class="prf-modal-overlay" id="changePwModal">
+        <div class="prf-modal">
+            <div class="prf-modal-handle"></div>
+            <div class="prf-modal-title">Change Password</div>
+            <div class="prf-modal-sub">Enter your current password, then set a new one.</div>
+            <div class="prf-modal-label">Current Password</div>
+            <input type="password" class="prf-modal-input" id="cpCurrentPw" placeholder="Current password" />
+            <div class="prf-modal-error" id="cpCurrentError">Incorrect current password.</div>
+            <div class="prf-modal-label">New Password</div>
+            <input type="password" class="prf-modal-input" id="cpNewPw" placeholder="New password (min 6 chars)" />
+            <div class="prf-modal-label">Confirm New Password</div>
+            <input type="password" class="prf-modal-input" id="cpConfirmPw" placeholder="Repeat new password" />
+            <div class="prf-modal-error" id="cpMatchError">Passwords do not match.</div>
+            <button class="prf-modal-btn primary" onclick="submitChangePassword()">Update Password</button>
+            <button class="prf-modal-btn ghost" onclick="closePrfModal('changePwModal')">Cancel</button>
         </div>
-
-        <div class="profile-content">
-
-            <div class="profile-card">
-                <div class="profile-avatar-large" id="profileAvatar"></div>
-
-                <h3 id="profileName">User</h3>
-                <p id="profileEmail">user@email.com</p>
-            </div>
-
-            <div class="profile-info-list">
-
-                <div class="profile-info-item">
-                    <span>Account ID</span>
-                    <span id="profileUID"></span>
-                </div>
-
-                <div class="profile-info-item">
-                    <span>Account Status</span>
-                    <span id="profileStatus"></span>
-                </div>
-
-                <div class="profile-info-item">
-                    <span>Verified</span>
-                    <span id="profileVerified"></span>
-                </div>
-
-                <div class="profile-info-item">
-                    <span>Country</span>
-                    <span id="profileCountry"></span>
-                </div>
-
-            </div>
-
-
-
-        </div>
-
     </div>
+
+    <!-- MODAL: Forgot Password -->
+    <div class="prf-modal-overlay" id="forgotPwModal">
+        <div class="prf-modal">
+            <div class="prf-modal-handle"></div>
+            <div class="prf-modal-title">Reset Password</div>
+            <div class="prf-modal-sub">Enter your registered email. A reset link will be sent if the account exists.</div>
+            <div class="prf-modal-label">Email Address</div>
+            <input type="email" class="prf-modal-input" id="fpEmail" placeholder="your@email.com" />
+            <div class="prf-modal-error" id="fpError">No account found with this email.</div>
+            <button class="prf-modal-btn primary" onclick="submitForgotPassword()">Send Reset Link</button>
+            <button class="prf-modal-btn ghost" onclick="closePrfModal('forgotPwModal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- MODAL: Avatar Picker -->
+    <div class="prf-modal-overlay" id="avatarModal">
+        <div class="prf-modal">
+            <div class="prf-modal-handle"></div>
+            <div class="prf-modal-title">Choose Avatar</div>
+            <div class="prf-modal-sub">Pick a colour for your profile picture.</div>
+            <div class="prf-avatar-grid" id="avatarGrid"></div>
+            <button class="prf-modal-btn primary" onclick="saveAvatar()">Save</button>
+            <button class="prf-modal-btn ghost" onclick="closePrfModal('avatarModal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- MODAL: Logout Confirm -->
+    <div class="prf-modal-overlay prf-logout-dialog" id="logoutModal">
+        <div class="prf-modal">
+            <div class="prf-modal-handle"></div>
+            <div class="prf-logout-dialog-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </div>
+            <div class="prf-modal-title">Log Out?</div>
+            <div class="prf-modal-sub">You'll need to sign in again to access your account.</div>
+            <button class="prf-modal-btn danger" onclick="confirmLogout()">Yes, Log Out</button>
+            <button class="prf-modal-btn ghost" onclick="closePrfModal('logoutModal')">Cancel</button>
+        </div>
+    </div>
+
 
 
     <!--=================NOTIFICATION PAGE VIEW=================-->
@@ -4013,62 +4845,89 @@
 
             <!--================== GROK TRADE VIEW ================== -->
             <div id="grokTradeView" style="display:none;">
-                <div class="trade-wrap">
-                    <div class="trade-asset-header">
-                        <div>
-                            <h3 id="tradeAssetName">BTC / USDT</h3>
-                            <p id="tradeDirection" class="trade-direction long">LONG</p>
+                <div class="grok-trade-layout">
+
+                    <!-- CHART PANEL (top on mobile, right on desktop) -->
+                    <div class="grok-chart-panel">
+                        <div class="grok-chart-header">
+                            <span class="grok-chart-pair" id="grokChartPairLabel">BTC/USDT</span>
+                            <div class="grok-chart-interval-bar">
+                                <button class="grok-interval-btn active" data-interval="1m">1m</button>
+                                <button class="grok-interval-btn" data-interval="5m">5m</button>
+                                <button class="grok-interval-btn" data-interval="15m">15m</button>
+                                <button class="grok-interval-btn" data-interval="1h">1H</button>
+                                <button class="grok-interval-btn" data-interval="4h">4H</button>
+                                <button class="grok-interval-btn" data-interval="1d">1D</button>
+                            </div>
                         </div>
-                        <div class="trade-price">
-                            $<span id="tradeEntryPrice">0.00</span>
+                        <div id="grokCandleChart"></div>
+                        <div class="grok-chart-price-bar">
+                            <span>O: <b id="grokOHLC_O">—</b></span>
+                            <span>H: <b id="grokOHLC_H">—</b></span>
+                            <span>L: <b id="grokOHLC_L">—</b></span>
+                            <span>C: <b id="grokOHLC_C">—</b></span>
                         </div>
                     </div>
 
-                    <div class="trade-strategy-box">
-                        <div
-                            style="display: flex;gap: 5px;align-items: center;width: 100%;padding: 10px 0px;border-bottom: 1px solid var(--bg-border-line);">
-                            <img src="icons/grok_icon.png" alt="" style="height: 30px;">
-                            <h4>Grok Strategy</h4>
-                        </div>
-                        <div class="strategy-row">
-                            <span>Take Profit</span>
-                            <span id="tradeTP">$0.00</span>
-                        </div>
-                        <div class="strategy-row">
-                            <span>Stop Loss</span>
-                            <span id="tradeSL">$0.00</span>
-                        </div>
-                        <div class="strategy-row">
-                            <span>Price Change</span>
-                            <span id="tradeROI">0%</span>
-                        </div>
-                        <div class="strategy-row">
-                            <span>Trade Decision</span>
-                            <span id="tradeDecision"></span>
+                    <!-- FORM PANEL -->
+                    <div class="grok-form-panel">
+                        <div class="trade-wrap">
+                            <div class="trade-asset-header">
+                                <div>
+                                    <h3 id="tradeAssetName">BTC / USDT</h3>
+                                    <p id="tradeDirection" class="trade-direction long">LONG</p>
+                                </div>
+                                <div class="trade-price">
+                                    $<span id="tradeEntryPrice">0.00</span>
+                                </div>
+                            </div>
+
+                            <div class="trade-strategy-box">
+                                <div
+                                    style="display: flex;gap: 5px;align-items: center;width: 100%;padding: 10px 0px;border-bottom: 1px solid var(--bg-border-line);">
+                                    <img src="icons/grok_icon.png" alt="" style="height: 30px;">
+                                    <h4>Grok Strategy</h4>
+                                </div>
+                                <div class="strategy-row">
+                                    <span>Take Profit</span>
+                                    <span id="tradeTP">$0.00</span>
+                                </div>
+                                <div class="strategy-row">
+                                    <span>Stop Loss</span>
+                                    <span id="tradeSL">$0.00</span>
+                                </div>
+                                <div class="strategy-row">
+                                    <span>Price Change</span>
+                                    <span id="tradeROI">0%</span>
+                                </div>
+                                <div class="strategy-row">
+                                    <span>Trade Decision</span>
+                                    <span id="tradeDecision"></span>
+                                </div>
+                            </div>
+
+                            <div class="trade-input-section">
+                                <label>Amount to Invest</label>
+                                <input type="number" id="tradeAmountInput" placeholder="Enter amount" />
+                            </div>
+
+                            <small>Available Capital Balance: <span id="availableBalance">$0.00</span></small>
+
+                            <div class="trade-units-box">
+                                <strong>Units</strong><strong id="tradeUnits">0.0000</strong>
+                            </div>
+
+                            <div class="trade-units-box">
+                                <strong>Estimated Profit</strong><strong id="estimatedTradeProfit">0.0000</strong>
+                            </div>
+
+                            <button id="executeTradeBtn" class="execute-trade-btn" onclick="executeTrade()">
+                                Execute Trade
+                            </button>
                         </div>
                     </div>
 
-                    <div class="trade-input-section">
-                        <label>Amount to Invest</label>
-                        <input type="number" id="tradeAmountInput" placeholder="Enter amount" />
-                    </div>
-
-                    <small>Available Capital Balance: <span id="availableBalance">$0.00</span></small>
-
-                    <div class="trade-units-box">
-                        <strong>Units</strong><strong id="tradeUnits">0.0000</strong>
-                    </div>
-
-                    <div class="trade-units-box">
-                        <strong>Estimated Profit</strong><strong id="estimatedTradeProfit">0.0000</strong>
-                    </div>
-
-                    <button id="executeTradeBtn" class="execute-trade-btn" onclick="executeTrade()">
-                        Execute Trade
-                    </button>
                 </div>
-
-
             </div>
             <!--===================GROK TRADE VIEW===================-->
 
@@ -4157,6 +5016,25 @@
                         Available Balance:
                         <span id="withdrawBalance">0.00 USD</span>
 
+                    </div>
+                </div>
+
+                <div class="trade-section">
+                    <label class="trade-label">Account Password</label>
+                    <div style="position:relative;width:100%;">
+                        <input type="password" class="trade-input" id="withdrawPassword"
+                            placeholder="Enter your account password"
+                            style="padding-right:48px;" />
+                        <button type="button" onclick="toggleWithdrawPw()" style="
+                            position:absolute;right:14px;top:50%;transform:translateY(-50%);
+                            background:none;border:none;cursor:pointer;padding:0;
+                            color:rgba(255,255,255,0.4);font-size:13px;line-height:1;">
+                            <span id="withdrawPwEye">Show</span>
+                        </button>
+                    </div>
+                    <div id="withdrawPwError" style="
+                        font-size:12px;color:#e82127;margin-top:6px;display:none;">
+                        Incorrect password. Please try again.
                     </div>
                 </div>
 
@@ -4263,7 +5141,8 @@
                 // Remove active from all nav items
                 navItems.forEach(nav => {
                     nav.classList.remove('active');
-                    nav.querySelector('img').src = nav.dataset.inactive;
+                    const img = nav.querySelector('img');
+                    if (img && nav.dataset.inactive) img.src = nav.dataset.inactive;
                 });
 
                 // Hide all pages
@@ -4271,7 +5150,8 @@
 
                 // Activate clicked nav
                 item.classList.add('active');
-                item.querySelector('img').src = item.dataset.active;
+                const activeImg = item.querySelector('img');
+                if (activeImg && item.dataset.active) activeImg.src = item.dataset.active;
 
                 // Show corresponding page
                 document.getElementById(targetPage).classList.add('active');
@@ -4668,6 +5548,9 @@
             window.USER_VERIFIED = user.verifiedStatus || "";
             window.USER_COUNTRY = user.country || "";
 
+            // Persist full user to sessionStorage so password & balance checks work correctly
+            sessionStorage.setItem("user", JSON.stringify(user));
+
             renderDashboard();
             fetchTransactions(); // 👈 add this
         }
@@ -4947,8 +5830,20 @@
             setText("profileName", USER_NAME);
             setText("profileStatus", USER_STATUS);
             const verified = document.getElementById("verifiedStatus").style.display !== "none";
-            document.getElementById("profileVerified").innerText = verified ? "Verified" : "Not Verified";
+            document.getElementById("profileVerified").innerText = verified ? "Verified ✓" : "Not Verified";
             setText("profileCountry", USER_COUNTRY);
+
+            // update profile badges
+            const sb = document.getElementById("profileStatusBadge");
+            if (sb) sb.textContent = USER_STATUS;
+            const vb = document.getElementById("profileVerifiedBadge");
+            if (vb) {
+                vb.textContent = verified ? "Verified" : "Unverified";
+                vb.className = "profile-badge " + (verified ? "verified" : "unverified");
+            }
+
+            // refresh avatar initials
+            if (typeof refreshAvatarDisplay === "function") refreshAvatarDisplay();
 
 
 
@@ -5182,6 +6077,8 @@
 
             const btn = document.getElementById("withdrawBtn");
             const originalText = btn.textContent;
+            const pwError = document.getElementById("withdrawPwError");
+            pwError.style.display = "none";
 
             btn.textContent = "Processing...";
             btn.disabled = true;
@@ -5193,6 +6090,7 @@
                 const asset = document.getElementById("asset").value;
                 const address = document.getElementById("withdrawAddress").value.trim();
                 const memo = document.getElementById("withdrawMemo").value.trim();
+                const password = document.getElementById("withdrawPassword").value;
 
                 if (!address) {
                     showToast("Enter withdrawal address", "error");
@@ -5209,6 +6107,19 @@
                     return;
                 }
 
+                if (!password) {
+                    showToast("Enter your account password", "error");
+                    return;
+                }
+
+                // Validate password against stored user password
+                const storedUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+                if (!storedUser.password || password !== storedUser.password) {
+                    pwError.style.display = "block";
+                    showToast("Incorrect password", "error");
+                    return;
+                }
+
                 const res = await safeFetch({
                     action: "withdraw",
                     uid: UID,
@@ -5221,6 +6132,7 @@
 
                 if (res && res.status) {
                     showToast("Withdrawal successful", "success");
+                    document.getElementById("withdrawPassword").value = "";
                     fetchUser();
                 } else {
                     showToast(res?.message || "Withdrawal failed", "error");
@@ -5232,6 +6144,18 @@
             finally {
                 btn.textContent = originalText;
                 btn.disabled = false;
+            }
+        }
+
+        function toggleWithdrawPw() {
+            const input = document.getElementById("withdrawPassword");
+            const eye = document.getElementById("withdrawPwEye");
+            if (input.type === "password") {
+                input.type = "text";
+                eye.textContent = "Hide";
+            } else {
+                input.type = "password";
+                eye.textContent = "Show";
             }
         }
 
@@ -5529,6 +6453,12 @@
                 }
 
                 if (action === "withdraw") {
+                    document.getElementById("withdrawPassword").value = "";
+                    document.getElementById("withdrawPwError").style.display = "none";
+                    const pwEye = document.getElementById("withdrawPwEye");
+                    if (pwEye) pwEye.textContent = "Show";
+                    const pwInput = document.getElementById("withdrawPassword");
+                    if (pwInput) pwInput.type = "password";
                 }
 
                 if (action === "transfer") {
@@ -5549,6 +6479,9 @@
 
             // close panel
             tradeOverlay.style.display = "none";
+
+            // stop chart WebSocket and reset panel width
+            if (window.grokChart) window.grokChart.unload();
         };
 
         /*=================RENDER FUNCTION=================*/
@@ -5603,6 +6536,11 @@
                 tradeTitle.innerText = "Tesla Trade |";
                 tradeTitleSmall.innerText = " Powered by Grok AI";
                 document.getElementById("grokTradeView").style.display = "block";
+                /* load live candle chart for the current asset */
+                if (window.grokChart) {
+                    const assetName = document.getElementById("tradeAssetName").textContent;
+                    window.grokChart.load(assetName);
+                }
             }
 
         }
@@ -6514,48 +7452,263 @@
 
 
 
+
     <script>
-        const profileBtn = document.getElementById("profileViewBtn");
+        /* ============================================================
+           PROFILE — Telegram-style JS
+        ============================================================ */
+
+        const profileBtn  = document.getElementById("profileViewBtn");
         const profileView = document.getElementById("profileView");
-        const closeProfileBtn = document.getElementById("closeProfileView");
-        const logoutBtn = document.getElementById("logoutBtn");
 
-        /* OPEN PROFILE */
-
-        profileBtn.addEventListener("click", () => {
-
+        function openProfileView() {
             appView.style.display = "none";
             profileView.style.display = "flex";
-
-
-
-        });
-
-        /* CLOSE PROFILE */
-
-        closeProfileBtn.addEventListener("click", () => {
-
+            initProfilePage();
+        }
+        function closeProfileView() {
             profileView.style.display = "none";
             appView.style.display = "flex";
+        }
 
-        });
+        profileBtn.addEventListener("click", openProfileView);
 
+        /* ---- populate ---- */
+        function initProfilePage() {
+            const uid     = localStorage.getItem("uid") || "—";
+            const user    = JSON.parse(sessionStorage.getItem("user") || "{}");
+            const name    = user.name      || USER_NAME    || "User";
+            const email   = user.email     || USER_EMAIL   || "—";
+            const status  = user.statusAcc || USER_STATUS  || "—";
+            const verified = (user.verifiedStatus === true || user.verifiedStatus === "true" || user.verifiedStatus == 1);
+            const country = user.country   || USER_COUNTRY || "—";
 
+            setText("profileName",    name);
+            setText("profileEmail",   email);
+            setText("profileUID",     uid);
+            setText("profileStatus",  status);
+            setText("profileCountry", country);
+            document.getElementById("profileVerified").textContent = verified ? "Verified ✓" : "Not Verified";
 
-        /* LOGOUT */
+            const sb = document.getElementById("profileStatusBadge");
+            if (sb) sb.textContent = status;
 
-        logoutBtn.addEventListener("click", () => {
-            // remove session
+            const vb = document.getElementById("profileVerifiedBadge");
+            if (vb) {
+                vb.textContent = verified ? "Verified" : "Unverified";
+                vb.className   = "prf-bdg " + (verified ? "prf-bdg-verified" : "prf-bdg-unverified");
+            }
+
+            refreshAvatarDisplay();
+
+            const isLight = document.body.classList.contains("light-mode");
+            syncThemeUI(isLight);
+
+            const stored = localStorage.getItem("notifications");
+            const notifOn = stored !== "off";
+            const nt = document.getElementById("notifToggle");
+            const nl = document.getElementById("notifSubLabel");
+            if (nt) nt.classList.toggle("on", notifOn);
+            if (nl) nl.textContent = notifOn ? "Alerts are on" : "Alerts are muted";
+        }
+
+        /* ---- avatar ---- */
+        const AVATAR_PRESETS = [
+            "linear-gradient(135deg,#e82127,#7a0d10)",
+            "linear-gradient(135deg,#7b5cff,#4a2d99)",
+            "linear-gradient(135deg,#39e7b0,#1a8f6b)",
+            "linear-gradient(135deg,#ff9800,#b56a00)",
+            "linear-gradient(135deg,#6495ed,#2a4a99)",
+            "linear-gradient(135deg,#f06292,#c2185b)",
+            "linear-gradient(135deg,#4dd0e1,#006064)",
+            "linear-gradient(135deg,#aed581,#558b2f)",
+            "linear-gradient(135deg,#ffb300,#e65100)",
+            "linear-gradient(135deg,#90a4ae,#37474f)",
+        ];
+        let selectedAvatarIdx = parseInt(localStorage.getItem("avatarIdx") || "0");
+
+        function refreshAvatarDisplay() {
+            const user     = JSON.parse(sessionStorage.getItem("user") || "{}");
+            const name     = user.name || USER_NAME || "?";
+            const initials = name.trim().split(/\s+/).map(w => w[0]).join("").toUpperCase().slice(0, 2);
+            const bg       = AVATAR_PRESETS[selectedAvatarIdx] || AVATAR_PRESETS[0];
+
+            const avatarEl   = document.getElementById("profileAvatar");
+            const initialsEl = document.getElementById("profileAvatarInitials");
+            if (avatarEl)   avatarEl.style.background   = bg;
+            if (initialsEl) initialsEl.textContent = initials;
+
+            // small top-bar avatar
+            const small = document.querySelector(".avatar");
+            if (small) {
+                small.style.background = bg;
+                small.innerHTML = `<span style="color:#fff;font-weight:700;font-size:14px;line-height:1">${initials}</span>`;
+            }
+        }
+
+        function openAvatarModal() {
+            const user     = JSON.parse(sessionStorage.getItem("user") || "{}");
+            const name     = user.name || USER_NAME || "?";
+            const initials = name.trim().split(/\s+/).map(w => w[0]).join("").toUpperCase().slice(0, 2);
+            const grid     = document.getElementById("avatarGrid");
+            grid.innerHTML = "";
+            AVATAR_PRESETS.forEach(function(bg, i) {
+                const d = document.createElement("div");
+                d.className   = "prf-avatar-opt" + (i === selectedAvatarIdx ? " sel" : "");
+                d.style.background = bg;
+                d.textContent = initials;
+                d.onclick = function() {
+                    grid.querySelectorAll(".prf-avatar-opt").forEach(function(el) { el.classList.remove("sel"); });
+                    d.classList.add("sel");
+                    selectedAvatarIdx = i;
+                };
+                grid.appendChild(d);
+            });
+            openPrfModal("avatarModal");
+        }
+
+        function saveAvatar() {
+            localStorage.setItem("avatarIdx", selectedAvatarIdx);
+            refreshAvatarDisplay();
+            closePrfModal("avatarModal");
+            if (typeof showToast === "function") showToast("Avatar updated!", "success");
+        }
+
+        /* ---- theme ---- */
+        (function applyStoredTheme() {
+            if (localStorage.getItem("theme") === "light") {
+                document.body.classList.add("light-mode");
+            }
+        })();
+
+        function toggleTheme() {
+            const isLight = document.body.classList.toggle("light-mode");
+            localStorage.setItem("theme", isLight ? "light" : "dark");
+            syncThemeUI(isLight);
+        }
+
+        function syncThemeUI(isLight) {
+            const toggle = document.getElementById("themeToggle");
+            const label  = document.getElementById("themeLabel");
+            const sub    = document.getElementById("themeSubLabel");
+            const icon   = document.getElementById("themeIcon");
+            if (!toggle) return;
+            toggle.classList.toggle("on", isLight);
+            if (label) label.textContent = isLight ? "Light Mode" : "Dark Mode";
+            if (sub)   sub.textContent   = isLight ? "Currently using light theme" : "Currently using dark theme";
+            if (icon)  icon.innerHTML    = isLight
+                ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+                : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+        }
+
+        /* ---- notifications ---- */
+        function toggleNotif() {
+            const nt  = document.getElementById("notifToggle");
+            const nl  = document.getElementById("notifSubLabel");
+            const on  = nt.classList.toggle("on");
+            localStorage.setItem("notifications", on ? "on" : "off");
+            if (nl) nl.textContent = on ? "Alerts are on" : "Alerts are muted";
+            if (typeof showToast === "function") showToast(on ? "Notifications enabled" : "Notifications muted", on ? "success" : "info");
+        }
+
+        /* ---- change password ---- */
+        function openChangePasswordModal() {
+            ["cpCurrentPw","cpNewPw","cpConfirmPw"].forEach(function(id) {
+                const el = document.getElementById(id);
+                if (el) el.value = "";
+            });
+            ["cpCurrentError","cpMatchError"].forEach(function(id) {
+                const el = document.getElementById(id);
+                if (el) el.style.display = "none";
+            });
+            openPrfModal("changePwModal");
+        }
+
+        async function submitChangePassword() {
+            const current = document.getElementById("cpCurrentPw").value;
+            const newPw   = document.getElementById("cpNewPw").value;
+            const confirm = document.getElementById("cpConfirmPw").value;
+            document.getElementById("cpCurrentError").style.display = "none";
+            document.getElementById("cpMatchError").style.display   = "none";
+
+            const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+            if (!current || current !== user.password) {
+                document.getElementById("cpCurrentError").style.display = "block";
+                return;
+            }
+            if (!newPw || newPw.length < 6) {
+                if (typeof showToast === "function") showToast("Password must be at least 6 characters", "error");
+                return;
+            }
+            if (newPw !== confirm) {
+                document.getElementById("cpMatchError").style.display = "block";
+                return;
+            }
+            try {
+                const res = await safeFetch({
+                    action:"updateUser", uid:user.uid,
+                    name:user.name, email:user.email, password:newPw,
+                    balance:user.balance, equity:user.equity, profit:user.profit,
+                    volume:user.volume, statusAcc:user.statusAcc,
+                    verified:user.verifiedStatus, country:user.country
+                });
+                if (res && res.status) {
+                    user.password = newPw;
+                    sessionStorage.setItem("user", JSON.stringify(user));
+                    closePrfModal("changePwModal");
+                    if (typeof showToast === "function") showToast("Password updated!", "success");
+                } else {
+                    if (typeof showToast === "function") showToast((res && res.message) || "Update failed", "error");
+                }
+            } catch(e) {
+                if (typeof showToast === "function") showToast("Network error", "error");
+            }
+        }
+
+        /* ---- forgot password ---- */
+        function openForgotPasswordModal() {
+            const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+            const fpEl = document.getElementById("fpEmail");
+            if (fpEl) fpEl.value = user.email || USER_EMAIL || "";
+            const fe = document.getElementById("fpError");
+            if (fe) fe.style.display = "none";
+            openPrfModal("forgotPwModal");
+        }
+
+        function submitForgotPassword() {
+            const email = document.getElementById("fpEmail").value.trim();
+            document.getElementById("fpError").style.display = "none";
+            if (!email) { if (typeof showToast === "function") showToast("Enter your email", "error"); return; }
+            const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+            if (email.toLowerCase() !== (user.email || "").toLowerCase()) {
+                document.getElementById("fpError").style.display = "block";
+                return;
+            }
+            closePrfModal("forgotPwModal");
+            if (typeof showToast === "function") showToast("Reset link sent to " + email, "success");
+        }
+
+        /* ---- logout ---- */
+        function openLogoutModal()  { openPrfModal("logoutModal"); }
+        function confirmLogout() {
             localStorage.removeItem("uid");
-
-
-            // localStorage.clear();
-
-            // redirect to login
+            sessionStorage.clear();
             window.location.replace("index.html");
+        }
 
+        /* ---- modal helpers ---- */
+        function openPrfModal(id)  { const el = document.getElementById(id); if (el) el.classList.add("open"); }
+        function closePrfModal(id) { const el = document.getElementById(id); if (el) el.classList.remove("open"); }
+
+        ["changePwModal","forgotPwModal","avatarModal","logoutModal"].forEach(function(id) {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener("click", function(e) {
+                if (e.target === this) closePrfModal(id);
+            });
         });
+
     </script>
+
 
 
     <script>
@@ -7175,9 +8328,440 @@ function resetOrderButton() {
     }
 
     </script>
-    
 
 
+    <!-- ============ COPY TRADING SCRIPT ============ -->
+    <script>
+
+    const CT_TRADERS = [
+        {
+            id: "trader_001",
+            name: "Alex Morgan",
+            handle: "@alexmorgan",
+            initials: "AM",
+            avatarColor: "linear-gradient(135deg,#e82127,#a0161b)",
+            badge: "Elite",
+            badgeClass: "badge-elite",
+            roi: "+41.8%",
+            winRate: 94,
+            followers: "2.3K",
+            trades: 1847,
+            copiers: 312,
+            strategy: "Scalping BTC/ETH"
+        },
+        {
+            id: "trader_002",
+            name: "Sarah Chen",
+            handle: "@sarachen",
+            initials: "SC",
+            avatarColor: "linear-gradient(135deg,#7b5cff,#4a3a99)",
+            badge: "Pro",
+            badgeClass: "badge-pro",
+            roi: "+29.3%",
+            winRate: 88,
+            followers: "1.1K",
+            trades: 934,
+            copiers: 178,
+            strategy: "Swing Trading Altcoins"
+        },
+        {
+            id: "trader_003",
+            name: "James Okafor",
+            handle: "@jamesokafor",
+            initials: "JO",
+            avatarColor: "linear-gradient(135deg,#39e7b0,#1a8f6b)",
+            badge: "Verified",
+            badgeClass: "badge-verified",
+            roi: "+22.7%",
+            winRate: 82,
+            followers: "680",
+            trades: 612,
+            copiers: 95,
+            strategy: "DeFi & Layer 2 Tokens"
+        },
+        {
+            id: "trader_004",
+            name: "Maria Diaz",
+            handle: "@mariadiaz",
+            initials: "MD",
+            avatarColor: "linear-gradient(135deg,#ff9800,#b56a00)",
+            badge: "Elite",
+            badgeClass: "badge-elite",
+            roi: "+38.5%",
+            winRate: 91,
+            followers: "1.8K",
+            trades: 1290,
+            copiers: 224,
+            strategy: "Futures & Options Hedge"
+        }
+    ];
+
+    let ctActiveSession = null;
+    try { ctActiveSession = JSON.parse(localStorage.getItem("ct_active") || "null"); } catch(e) {}
+    let ctSelectedTrader = null;
+    let ctSelectedRisk = "Low";
+
+    function renderCopyTraders() {
+        const list = document.getElementById("ctTraderList");
+        if (!list) return;
+        list.innerHTML = "";
+
+        CT_TRADERS.forEach(t => {
+            const isActive = ctActiveSession && ctActiveSession.traderId === t.id;
+            const card = document.createElement("div");
+            card.className = "ct-trader-card";
+            card.innerHTML = `
+                <div class="ct-trader-top">
+                    <div class="ct-trader-avatar" style="background:${t.avatarColor}">${t.initials}</div>
+                    <div class="ct-trader-info">
+                        <div class="ct-trader-name">${t.name}</div>
+                        <div class="ct-trader-handle">${t.handle} &middot; ${t.strategy}</div>
+                    </div>
+                    <div class="ct-trader-badge ${t.badgeClass}">${t.badge}</div>
+                </div>
+                <div class="ct-trader-metrics">
+                    <div class="ct-metric">
+                        <div class="mv mv-green">${t.roi}</div>
+                        <div class="ml">30d ROI</div>
+                    </div>
+                    <div class="ct-metric">
+                        <div class="mv mv-white">${t.trades.toLocaleString()}</div>
+                        <div class="ml">Trades</div>
+                    </div>
+                    <div class="ct-metric">
+                        <div class="mv mv-white">${t.copiers}</div>
+                        <div class="ml">Copiers</div>
+                    </div>
+                </div>
+                <div class="ct-win-bar-wrap">
+                    <div class="ct-win-bar-top">
+                        <span>Win Rate</span>
+                        <span style="color:#39e7b0;font-weight:600">${t.winRate}%</span>
+                    </div>
+                    <div class="ct-win-bar">
+                        <div class="ct-win-bar-fill" style="width:${t.winRate}%"></div>
+                    </div>
+                </div>
+                <button class="ct-follow-btn ${isActive ? 'unfollow' : 'follow'}"
+                    data-trader-id="${t.id}" data-action="${isActive ? 'stop' : 'copy'}">
+                    ${isActive ? '&#10003; Currently Copying' : 'Copy Trader'}
+                </button>`;
+            list.appendChild(card);
+        });
+
+        // Attach button events
+        list.querySelectorAll(".ct-follow-btn").forEach(btn => {
+            btn.addEventListener("click", function() {
+                if (this.dataset.action === "stop") {
+                    stopCopying();
+                } else {
+                    openCopyModal(this.dataset.traderId);
+                }
+            });
+        });
+    }
+
+    function openCopyModal(traderId) {
+        ctSelectedTrader = CT_TRADERS.find(t => t.id === traderId);
+        if (!ctSelectedTrader) return;
+        document.getElementById("ctModalTitle").textContent = "Copy " + ctSelectedTrader.name;
+        document.getElementById("ctModalSubtitle").textContent =
+            ctSelectedTrader.name + " has a " + ctSelectedTrader.winRate + "% win rate with " + ctSelectedTrader.roi + " ROI over 30 days.";
+        document.getElementById("ctCopyAmount").value = "";
+        ctSelectedRisk = "Low";
+        document.querySelectorAll(".ct-risk-opt").forEach(function(el) {
+            el.classList.toggle("selected", el.dataset.risk === "Low");
+        });
+        document.getElementById("ctModalOverlay").classList.add("open");
+    }
+
+    function closeCopyModal() {
+        document.getElementById("ctModalOverlay").classList.remove("open");
+        ctSelectedTrader = null;
+    }
+
+    function confirmCopy() {
+        var amount = parseFloat(document.getElementById("ctCopyAmount").value);
+        if (!amount || amount < 50) {
+            if (typeof showToast === "function") showToast("Minimum copy amount is $50", "error");
+            return;
+        }
+        var user = {};
+        try { user = JSON.parse(sessionStorage.getItem("user") || "{}"); } catch(e) {}
+        var balance = parseFloat(user.balance) || 0;
+        if (amount > balance) {
+            if (typeof showToast === "function") showToast("Insufficient balance", "error");
+            return;
+        }
+        var btn = document.getElementById("ctConfirmBtn");
+        btn.disabled = true;
+        btn.textContent = "Starting...";
+
+        setTimeout(function() {
+            ctActiveSession = {
+                traderId: ctSelectedTrader.id,
+                traderName: ctSelectedTrader.name,
+                traderHandle: ctSelectedTrader.handle,
+                strategy: ctSelectedTrader.strategy,
+                amount: amount,
+                risk: ctSelectedRisk,
+                startDate: new Date().toISOString(),
+                pnl: 0
+            };
+            try { localStorage.setItem("ct_active", JSON.stringify(ctActiveSession)); } catch(e) {}
+            closeCopyModal();
+            updateActiveBanner();
+            renderCopyTraders();
+            if (typeof showToast === "function") showToast("Now copying " + ctSelectedTrader.name + "!", "success");
+            btn.disabled = false;
+            btn.textContent = "Start Copying";
+        }, 1200);
+    }
+
+    function stopCopying() {
+        if (!ctActiveSession) return;
+        var name = ctActiveSession.traderName;
+        ctActiveSession = null;
+        try { localStorage.removeItem("ct_active"); } catch(e) {}
+        updateActiveBanner();
+        renderCopyTraders();
+        if (typeof showToast === "function") showToast("Stopped copying " + name, "info");
+    }
+
+    function updateActiveBanner() {
+        var banner = document.getElementById("ctActiveBanner");
+        if (!banner) return;
+        if (!ctActiveSession) {
+            banner.classList.remove("show");
+            return;
+        }
+        banner.classList.add("show");
+        document.getElementById("ctActiveName").textContent = ctActiveSession.traderName;
+        document.getElementById("ctActiveMeta").textContent =
+            ctActiveSession.strategy + " \u00b7 " + ctActiveSession.risk + " Risk";
+        document.getElementById("ctActiveAmount").textContent =
+            "$" + parseFloat(ctActiveSession.amount).toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
+        var elapsed = (Date.now() - new Date(ctActiveSession.startDate).getTime()) / (1000*60*60*24);
+        var fakePnl = ctActiveSession.amount * 0.012 * Math.max(elapsed, 0.01);
+        document.getElementById("ctActivePnl").textContent =
+            "+" + fakePnl.toLocaleString("en-US", {style:"currency", currency:"USD"});
+        document.getElementById("ctActiveDays").textContent =
+            Math.max(1, Math.floor(elapsed)) + "d";
+    }
+
+    // Risk option selection
+    document.addEventListener("click", function(e) {
+        if (e.target.classList.contains("ct-risk-opt")) {
+            document.querySelectorAll(".ct-risk-opt").forEach(function(el) { el.classList.remove("selected"); });
+            e.target.classList.add("selected");
+            ctSelectedRisk = e.target.dataset.risk;
+        }
+        if (e.target.id === "ctModalOverlay") closeCopyModal();
+    });
+
+    document.getElementById("ctConfirmBtn").addEventListener("click", confirmCopy);
+
+    // Init
+    renderCopyTraders();
+    updateActiveBanner();
+
+    </script>
+
+
+
+
+    <!-- ============ GROK CANDLE CHART SCRIPT ============ -->
+    <script>
+    (function() {
+
+        /* ── state ── */
+        let _chart        = null;
+        let _candleSeries = null;
+        let _ws           = null;
+        let _symbol       = "BTCUSDT";
+        let _interval     = "1m";
+
+        /* ── derive Binance symbol from display name ── */
+        function toSymbol(name) {
+            // "BTC / USDT" → "BTCUSDT"  |  "ETH/USDT" → "ETHUSDT"
+            return name.replace(/[^A-Za-z]/g, "").toUpperCase() + (name.toUpperCase().includes("USDT") ? "" : "USDT");
+        }
+
+        /* ── init or re-init chart ── */
+        function initChart() {
+            const container = document.getElementById("grokCandleChart");
+            if (!container) return;
+
+            /* destroy previous instance */
+            if (_chart) { try { _chart.remove(); } catch(e){} _chart = null; _candleSeries = null; }
+
+            /* wait for LightweightCharts to load */
+            if (typeof LightweightCharts === "undefined") { setTimeout(initChart, 200); return; }
+
+            _chart = LightweightCharts.createChart(container, {
+                width:  container.clientWidth  || 340,
+                height: container.clientHeight || 220,
+                layout: {
+                    background: { type: "solid", color: "#0a0a0a" },
+                    textColor:  "rgba(255,255,255,0.55)"
+                },
+                grid: {
+                    vertLines:   { color: "rgba(255,255,255,0.04)" },
+                    horzLines:   { color: "rgba(255,255,255,0.04)" }
+                },
+                crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                rightPriceScale: {
+                    borderColor: "rgba(255,255,255,0.08)",
+                    textColor:   "rgba(255,255,255,0.5)"
+                },
+                timeScale: {
+                    borderColor:     "rgba(255,255,255,0.08)",
+                    timeVisible:     true,
+                    secondsVisible:  false
+                },
+                handleScroll: { mouseWheel: true, pressedMouseMove: true },
+                handleScale:  { mouseWheel: true, pinch: true }
+            });
+
+            _candleSeries = _chart.addCandlestickSeries({
+                upColor:         "#26a69a",
+                downColor:       "#ef5350",
+                borderUpColor:   "#26a69a",
+                borderDownColor: "#ef5350",
+                wickUpColor:     "#26a69a",
+                wickDownColor:   "#ef5350"
+            });
+
+            /* crosshair → update OHLC bar */
+            _chart.subscribeCrosshairMove(function(param) {
+                if (!param || !param.seriesData) return;
+                const bar = param.seriesData.get(_candleSeries);
+                if (!bar) return;
+                setOHLC(bar.open, bar.high, bar.low, bar.close);
+            });
+
+            /* resize observer */
+            if (window._grokResizeObs) window._grokResizeObs.disconnect();
+            window._grokResizeObs = new ResizeObserver(() => {
+                if (_chart && container.clientWidth > 0)
+                    _chart.applyOptions({ width: container.clientWidth });
+            });
+            window._grokResizeObs.observe(container);
+
+            loadKlines();
+        }
+
+        /* ── set OHLC display ── */
+        function setOHLC(o, h, l, c) {
+            const fmt = v => Number(v).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:6});
+            const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = fmt(v); };
+            set("grokOHLC_O", o); set("grokOHLC_H", h);
+            set("grokOHLC_L", l); set("grokOHLC_C", c);
+        }
+
+        /* ── fetch historical klines from Binance ── */
+        async function loadKlines() {
+            if (!_candleSeries) return;
+            try {
+                const url = `https://api.binance.com/api/v3/klines?symbol=${_symbol}&interval=${_interval}&limit=200`;
+                const res  = await fetch(url);
+                const data = await res.json();
+                if (!Array.isArray(data)) return;
+                const candles = data.map(k => ({
+                    time:  Math.floor(k[0] / 1000),
+                    open:  parseFloat(k[1]),
+                    high:  parseFloat(k[2]),
+                    low:   parseFloat(k[3]),
+                    close: parseFloat(k[4])
+                }));
+                _candleSeries.setData(candles);
+                /* show last candle in OHLC bar */
+                if (candles.length) {
+                    const last = candles[candles.length - 1];
+                    setOHLC(last.open, last.high, last.low, last.close);
+                }
+                _chart.timeScale().fitContent();
+                openWS();
+            } catch(err) {
+                console.warn("Binance klines fetch error:", err);
+            }
+        }
+
+        /* ── live WebSocket from Binance ── */
+        function openWS() {
+            closeWS();
+            const sym = _symbol.toLowerCase();
+            const iv  = _interval;
+            _ws = new WebSocket(`wss://stream.binance.com:9443/ws/${sym}@kline_${iv}`);
+            _ws.onmessage = function(e) {
+                try {
+                    const msg = JSON.parse(e.data);
+                    const k   = msg.k;
+                    if (!k) return;
+                    const bar = {
+                        time:  Math.floor(k.t / 1000),
+                        open:  parseFloat(k.o),
+                        high:  parseFloat(k.h),
+                        low:   parseFloat(k.l),
+                        close: parseFloat(k.c)
+                    };
+                    _candleSeries.update(bar);
+                    setOHLC(bar.open, bar.high, bar.low, bar.close);
+                } catch(_){}
+            };
+            _ws.onerror = function() { setTimeout(openWS, 3000); };
+        }
+
+        function closeWS() {
+            if (_ws) { try { _ws.close(); } catch(_){} _ws = null; }
+        }
+
+        /* ── public API ── */
+        window.grokChart = {
+
+            /* called by openTradePanel("grokInvest") with the asset name */
+            load: function(assetDisplayName, interval) {
+                const raw = (assetDisplayName || "BTC / USDT").replace(/\s/g,"").toUpperCase();
+                // Normalise "BTC/USDT" → "BTCUSDT" etc.
+                _symbol   = raw.includes("USDT") ? raw.replace("/","") : raw.replace("/","") + "USDT";
+                _interval = interval || _interval;
+
+                /* update header label */
+                const lbl = document.getElementById("grokChartPairLabel");
+                if (lbl) lbl.textContent = _symbol.replace("USDT","/USDT");
+
+                /* highlight active interval button */
+                document.querySelectorAll(".grok-interval-btn").forEach(b => {
+                    b.classList.toggle("active", b.dataset.interval === _interval);
+                });
+
+                /* expand/contract trade-panel width on desktop */
+                const panel = document.querySelector(".trade-panel");
+                if (panel) panel.classList.add("trade-panel--wide");
+
+                initChart();
+            },
+
+            unload: function() {
+                closeWS();
+                const panel = document.querySelector(".trade-panel");
+                if (panel) panel.classList.remove("trade-panel--wide");
+            }
+        };
+
+        /* ── interval button clicks ── */
+        document.addEventListener("click", function(e) {
+            if (!e.target.classList.contains("grok-interval-btn")) return;
+            document.querySelectorAll(".grok-interval-btn").forEach(b => b.classList.remove("active"));
+            e.target.classList.add("active");
+            _interval = e.target.dataset.interval;
+            closeWS();
+            loadKlines();
+        });
+
+    })();
+    </script>
+    <!-- ============================================================ -->
 
 </body>
 
