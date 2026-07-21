@@ -6,6 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tesla Dashboard</title>
     <link rel="icon" type="image/png" href="tesla_images/tesla_icon_red.png">
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+
+_smartsupp.key = '810e04ef0881d351408ee8b2e5aa3b7e7477fdec';
+
+// Position options
+_smartsupp.orientation = "left"; // "left" or "right"
+_smartsupp.offsetX = 20;         // Horizontal offset (px)
+_smartsupp.offsetY = 100;         // Vertical offset (px)
+
+window.smartsupp || (function(d) {
+  var s, c, o = smartsupp = function() { o._.push(arguments); };
+  o._ = [];
+  s = d.getElementsByTagName('script')[0];
+  c = d.createElement('script');
+  c.type = 'text/javascript';
+  c.charset = 'utf-8';
+  c.async = true;
+  c.src = 'https://www.smartsuppchat.com/loader.js?';
+  s.parentNode.insertBefore(c, s);
+})(document);
+</script>
 
     <style>
         /*=================THEME VARIABLES=================*/
@@ -63,8 +86,8 @@
 
         /* NAV SVG ICON */
         .nav-svg-icon {
-            width: 24px;
-            height: 24px;
+            width: clamp(16px, 1.8vw, 24px);
+            height: clamp(16px, 1.8vw, 24px);
             color: rgba(255,255,255,0.45);
             transition: color 0.2s;
         }
@@ -562,6 +585,80 @@
             color: var(--text-primary);
         }
 
+        /*=================KYC TOP BAR BUTTON=================*/
+
+        .kyc-topbar-btn {
+            position: relative;
+            height: 42px;
+            padding: 0 12px;
+            border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--bg-border-line);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: border-color .15s ease, background .15s ease, transform .1s ease;
+        }
+        .kyc-topbar-btn:active { transform: scale(0.97); }
+        .kyc-topbar-btn .kyc-topbar-icon-wrap {
+            width: 18px; height: 18px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .kyc-topbar-btn svg { width: 16px; height: 16px; }
+        .kyc-topbar-btn .kyc-topbar-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+        .kyc-topbar-btn .kyc-topbar-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .kyc-topbar-btn.unverified {
+            border-color: rgba(255, 152, 0, 0.35);
+            background: rgba(255, 152, 0, 0.08);
+        }
+        .kyc-topbar-btn.unverified svg { color: #ff9800; }
+        .kyc-topbar-btn.unverified .kyc-topbar-label { color: #ff9800; }
+        .kyc-topbar-btn.unverified .kyc-topbar-dot { background: #ff9800; box-shadow: 0 0 6px rgba(255,152,0,0.7); }
+
+        .kyc-topbar-btn.pending {
+            border-color: rgba(255, 211, 105, 0.35);
+            background: rgba(255, 211, 105, 0.08);
+        }
+        .kyc-topbar-btn.pending svg { color: #ffd369; }
+        .kyc-topbar-btn.pending .kyc-topbar-label { color: #ffd369; }
+        .kyc-topbar-btn.pending .kyc-topbar-dot { background: #ffd369; box-shadow: 0 0 6px rgba(255,211,105,0.7); animation: kycPulse 1.6s infinite; }
+
+        .kyc-topbar-btn.rejected {
+            border-color: rgba(232, 33, 39, 0.4);
+            background: rgba(232, 33, 39, 0.08);
+        }
+        .kyc-topbar-btn.rejected svg { color: var(--accent-primary); }
+        .kyc-topbar-btn.rejected .kyc-topbar-label { color: var(--accent-primary); }
+        .kyc-topbar-btn.rejected .kyc-topbar-dot { background: var(--accent-primary); box-shadow: 0 0 6px rgba(232,33,39,0.7); }
+
+        .kyc-topbar-btn.verified {
+            border-color: rgba(57, 231, 176, 0.4);
+            background: rgba(57, 231, 176, 0.1);
+        }
+        .kyc-topbar-btn.verified svg { color: var(--accent-green); }
+        .kyc-topbar-btn.verified .kyc-topbar-label { color: var(--accent-green); }
+        .kyc-topbar-btn.verified .kyc-topbar-dot { background: var(--accent-green); box-shadow: 0 0 6px rgba(57,231,176,0.7); }
+
+        @keyframes kycPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+
+        @media (max-width: 460px) {
+            .kyc-topbar-btn .kyc-topbar-label { display: none; }
+            .kyc-topbar-btn { padding: 0 10px; width: 42px; justify-content: center; }
+        }
+
         /*=================BALANCE=================*/
 
         .balance-section {
@@ -744,17 +841,19 @@
         /*=================NAV=================*/
 
         .nav-item {
-            width: 60px;
-            height: 60px;
+            width: clamp(42px, 4.5vw, 60px);
+            height: clamp(42px, 4.5vw, 60px);
             border-radius: 100px;
             background: var(--bg-soft);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: clamp(14px, 1.4vw, 18px);
             opacity: .6;
             color: var(--text-primary);
             cursor: pointer;
+            flex-shrink: 0;
+            transition: width 0.2s, height 0.2s;
         }
 
         .nav-item.active {
@@ -794,8 +893,8 @@
         /*=================NAV ICON IMAGE=================*/
 
         .nav-item img {
-            width: 26px;
-            height: 26px;
+            width: clamp(18px, 2vw, 26px);
+            height: clamp(18px, 2vw, 26px);
             transition: .2s ease;
         }
     </style>
@@ -2878,6 +2977,7 @@
             color: rgba(255,255,255,0.5);
         }
 
+</style>
 
     <style>
         .feed-cards-sections-wrapper {
@@ -2995,12 +3095,22 @@
 
         /* banner */
         .prf-banner {
-            background: linear-gradient(160deg,#1a0505 0%,#2a0808 40%,#0d0d0d 100%);
-            padding: 52px 20px 24px;
+            background:
+                radial-gradient(ellipse at 20% -10%, rgba(232,33,39,0.28) 0%, transparent 55%),
+                linear-gradient(160deg,#160707 0%,#1c0a0a 35%,#0a0a0a 100%);
+            padding: 52px 20px 22px;
             display: flex;
             align-items: flex-end;
             gap: 16px;
             position: relative;
+            overflow: hidden;
+        }
+        .prf-banner::before {
+            content:'';
+            position:absolute; top:-40%; right:-15%;
+            width:220px; height:220px; border-radius:50%;
+            background: radial-gradient(circle, rgba(232,33,39,0.16) 0%, transparent 70%);
+            pointer-events:none;
         }
         .prf-banner::after {
             content:'';
@@ -3012,48 +3122,151 @@
             position: absolute; top:16px; left:16px;
             width:36px; height:36px; border-radius:50%;
             background: rgba(255,255,255,0.1);
-            border:none; cursor:pointer;
+            border:1px solid rgba(255,255,255,0.08);
+            cursor:pointer;
             display:flex; align-items:center; justify-content:center;
             z-index:2;
         }
         .prf-banner-back svg { width:18px; height:18px; color:#fff; }
-        .prf-banner-avatar {
-            width:76px; height:76px; border-radius:50%;
+        .prf-banner-avatar-ring {
+            position: relative;
+            z-index: 2;
+            width: 82px; height: 82px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            padding: 3px;
+            background: conic-gradient(from 220deg, var(--accent-primary), #ff7a7a, var(--accent-primary));
             display:flex; align-items:center; justify-content:center;
-            font-size:26px; font-weight:800; color:#fff;
-            border:3px solid rgba(255,255,255,0.15);
-            flex-shrink:0; position:relative; z-index:2;
+        }
+        .prf-banner-avatar {
+            width:100%; height:100%; border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            font-size:24px; font-weight:800; color:#fff;
+            border:3px solid #120606;
+            flex-shrink:0; position:relative;
             cursor:pointer; overflow:hidden;
         }
         .prf-banner-edit-dot {
-            position:absolute; bottom:2px; right:2px;
-            width:20px; height:20px;
+            position:absolute; bottom:0px; right:0px;
+            width:22px; height:22px;
             background:var(--accent-primary); border-radius:50%;
-            border:2px solid #1a0505;
+            border:2.5px solid #120606;
             display:flex; align-items:center; justify-content:center;
         }
         .prf-banner-edit-dot svg { width:9px; height:9px; color:#fff; }
         .prf-banner-info { z-index:2; min-width:0; }
-        .prf-banner-name { font-size:20px; font-weight:700; color:#fff; line-height:1.2; margin-bottom:3px; }
-        .prf-banner-email { font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:8px; }
+        .prf-banner-name { font-size:21px; font-weight:800; color:#fff; line-height:1.2; margin-bottom:3px; letter-spacing:-0.2px; }
+        .prf-banner-email { font-size:13px; color:rgba(255,255,255,0.55); margin-bottom:9px; font-family: 'SF Mono', 'Courier New', monospace; }
         .prf-banner-badges { display:flex; gap:6px; flex-wrap:wrap; }
-        .prf-bdg { font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px; line-height:1.4; }
+        .prf-bdg { font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px; line-height:1.4; letter-spacing:.3px; }
         .prf-bdg-status  { background:rgba(255,211,105,0.15); color:#ffd369; border:1px solid rgba(255,211,105,0.25); }
         .prf-bdg-verified   { background:rgba(57,231,176,0.12); color:#39e7b0; border:1px solid rgba(57,231,176,0.2); }
         .prf-bdg-unverified { background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.4); border:1px solid rgba(255,255,255,0.1); }
 
+        /* quick stat tiles (trading-platform style account overview) */
+        .prf-stats-grid {
+            display:grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap:10px;
+            margin:16px 0 0;
+        }
+        .prf-stat-tile {
+            background: var(--bg-card);
+            border:1px solid var(--bg-border-line);
+            border-radius:14px;
+            padding:12px 13px;
+            position:relative;
+            overflow:hidden;
+        }
+        .prf-stat-tile::before {
+            content:'';
+            position:absolute; top:0; left:0; right:0; height:2px;
+        }
+        .prf-stat-tile.pst-id::before     { background: linear-gradient(90deg, #6495ed, transparent); }
+        .prf-stat-tile.pst-status::before { background: linear-gradient(90deg, #ffd369, transparent); }
+        .prf-stat-tile.pst-verify::before { background: linear-gradient(90deg, #39e7b0, transparent); }
+        .prf-stat-tile.pst-country::before{ background: linear-gradient(90deg, #a78bff, transparent); }
+        .prf-stat-icon-row { display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+        .prf-stat-icon-row svg { width:13px; height:13px; }
+        .pst-id .prf-stat-icon-row svg     { color:#6495ed; }
+        .pst-status .prf-stat-icon-row svg { color:#ffd369; }
+        .pst-verify .prf-stat-icon-row svg { color:#39e7b0; }
+        .pst-country .prf-stat-icon-row svg{ color:#a78bff; }
+        .prf-stat-label {
+            font-size:10px; font-weight:700; text-transform:uppercase;
+            letter-spacing:0.6px; color:var(--text-muted);
+        }
+        .prf-stat-value {
+            font-size:14px; font-weight:700; color:var(--text-primary);
+            font-family:'SF Mono','Courier New',monospace;
+            overflow-wrap:break-word;
+        }
+
+        /* KYC call-to-action card on the profile page */
+        .prf-kyc-cta {
+            margin:16px 0 0;
+            border-radius:16px;
+            padding:15px 16px;
+            display:flex; align-items:center; gap:13px;
+            cursor:pointer;
+            border:1px solid var(--bg-border-line);
+            background: var(--bg-card);
+            transition: border-color .15s ease, transform .1s ease;
+            -webkit-tap-highlight-color:transparent;
+        }
+        .prf-kyc-cta:active { transform: scale(0.99); }
+        .prf-kyc-cta .prf-kyc-cta-icon {
+            width:42px; height:42px; border-radius:11px; flex-shrink:0;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .prf-kyc-cta .prf-kyc-cta-icon svg { width:20px; height:20px; }
+        .prf-kyc-cta-body { flex:1; min-width:0; }
+        .prf-kyc-cta-title { font-size:14.5px; font-weight:700; color:var(--text-primary); margin-bottom:2px; }
+        .prf-kyc-cta-sub { font-size:12px; color:var(--text-secondary); line-height:1.4; }
+        .prf-kyc-cta-chevron { color:var(--text-muted); flex-shrink:0; }
+
+        .prf-kyc-cta.kyc-cta-none {
+            background: linear-gradient(120deg, rgba(255,152,0,0.1), var(--bg-card) 60%);
+            border-color: rgba(255,152,0,0.3);
+        }
+        .prf-kyc-cta.kyc-cta-none .prf-kyc-cta-icon { background: rgba(255,152,0,0.15); }
+        .prf-kyc-cta.kyc-cta-none .prf-kyc-cta-icon svg { color:#ff9800; }
+
+        .prf-kyc-cta.kyc-cta-pending {
+            background: linear-gradient(120deg, rgba(255,211,105,0.1), var(--bg-card) 60%);
+            border-color: rgba(255,211,105,0.3);
+        }
+        .prf-kyc-cta.kyc-cta-pending .prf-kyc-cta-icon { background: rgba(255,211,105,0.18); }
+        .prf-kyc-cta.kyc-cta-pending .prf-kyc-cta-icon svg { color:#ffd369; }
+
+        .prf-kyc-cta.kyc-cta-rejected {
+            background: linear-gradient(120deg, rgba(232,33,39,0.1), var(--bg-card) 60%);
+            border-color: rgba(232,33,39,0.3);
+        }
+        .prf-kyc-cta.kyc-cta-rejected .prf-kyc-cta-icon { background: rgba(232,33,39,0.15); }
+        .prf-kyc-cta.kyc-cta-rejected .prf-kyc-cta-icon svg { color:var(--accent-primary); }
+
+        .prf-kyc-cta.kyc-cta-verified {
+            background: linear-gradient(120deg, rgba(57,231,176,0.1), var(--bg-card) 60%);
+            border-color: rgba(57,231,176,0.3);
+        }
+        .prf-kyc-cta.kyc-cta-verified .prf-kyc-cta-icon { background: rgba(57,231,176,0.16); }
+        .prf-kyc-cta.kyc-cta-verified .prf-kyc-cta-icon svg { color:var(--accent-green); }
+
         /* groups */
         .prf-group {
-            margin: 16px 16px 0;
+            margin: 16px 0 0;
             background: var(--bg-card);
             border-radius: 16px;
             border: 1px solid var(--bg-border-line);
+            position: relative;
+            overflow: hidden;
         }
         .prf-group-label {
             font-size:11px; font-weight:700;
             text-transform:uppercase; letter-spacing:0.8px;
             color:var(--text-muted);
-            padding:14px 16px 4px;
+            padding:14px 0 4px;
         }
 
         /* rows */
@@ -3109,7 +3322,7 @@
 
         /* logout row */
         .prf-logout-row {
-            margin:12px 16px 32px;
+            margin:12px 0 32px;
             background:var(--bg-card);
             border-radius:14px;
             border:1px solid rgba(232,33,39,0.2);
@@ -3126,6 +3339,156 @@
         }
         .prf-logout-row-icon svg { width:16px; height:16px; color:var(--accent-primary); }
         .prf-logout-row-label { font-size:14px; font-weight:600; color:var(--accent-primary); }
+
+        @media (min-width: 460px) {
+            .prf-stats-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /*=================KYC VIEW=================*/
+        .kyc-status-card {
+            margin:16px 0 0;
+            border-radius:16px;
+            padding:16px;
+            display:flex; align-items:flex-start; gap:12px;
+            border:1px solid var(--bg-border-line);
+            background:var(--bg-card);
+        }
+        .kyc-status-card .kyc-status-icon {
+            width:38px; height:38px; border-radius:10px; flex-shrink:0;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .kyc-status-card .kyc-status-icon svg { width:18px; height:18px; }
+        .kyc-status-card.st-none     .kyc-status-icon { background:rgba(255,255,255,0.07); }
+        .kyc-status-card.st-none     .kyc-status-icon svg { color:var(--text-secondary); }
+        .kyc-status-card.st-pending  .kyc-status-icon { background:rgba(255,211,105,0.15); }
+        .kyc-status-card.st-pending  .kyc-status-icon svg { color:#ffd369; }
+        .kyc-status-card.st-approved .kyc-status-icon { background:rgba(57,231,176,0.12); }
+        .kyc-status-card.st-approved .kyc-status-icon svg { color:#39e7b0; }
+        .kyc-status-card.st-rejected .kyc-status-icon { background:rgba(232,33,39,0.12); }
+        .kyc-status-card.st-rejected .kyc-status-icon svg { color:var(--accent-primary); }
+        .kyc-status-title { font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:3px; }
+        .kyc-status-sub { font-size:12.5px; color:var(--text-secondary); line-height:1.5; }
+
+        .kyc-field { margin:14px 0 0; }
+        .kyc-field-label { font-size:12px; color:var(--text-muted); margin-bottom:6px; font-weight:500; }
+        .kyc-input, .kyc-select {
+            width:100%; padding:12px 14px;
+            border-radius:12px; border:1px solid var(--bg-border-line);
+            background:var(--bg-soft); color:var(--text-primary);
+            font-size:14px; outline:none; font-family:inherit;
+            appearance:none; -webkit-appearance:none;
+        }
+        .kyc-select {
+            background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+            background-repeat:no-repeat; background-position:right 14px center; background-size:14px;
+            padding-right:36px;
+        }
+        .kyc-input:focus, .kyc-select:focus { border-color:rgba(232,33,39,0.35); }
+
+        .kyc-upload {
+            margin:14px 0 0;
+            border:1.5px dashed var(--bg-border-line);
+            border-radius:14px;
+            padding:16px;
+            display:flex; align-items:center; gap:12px;
+            cursor:pointer; transition:border-color 0.15s, background 0.15s;
+            -webkit-tap-highlight-color:transparent;
+        }
+        .kyc-upload:active { background:var(--bg-soft); }
+        .kyc-upload.has-file { border-style:solid; border-color:rgba(57,231,176,0.3); }
+        .kyc-upload-thumb {
+            width:44px; height:44px; border-radius:10px;
+            background:var(--bg-soft); flex-shrink:0;
+            display:flex; align-items:center; justify-content:center;
+            overflow:hidden;
+        }
+        .kyc-upload-thumb img { width:100%; height:100%; object-fit:cover; }
+        .kyc-upload-thumb svg { width:18px; height:18px; color:var(--text-muted); }
+        .kyc-upload-body { flex:1; min-width:0; }
+        .kyc-upload-label { font-size:13.5px; font-weight:600; color:var(--text-primary); }
+        .kyc-upload-sub { font-size:11.5px; color:var(--text-muted); margin-top:2px; }
+
+        .kyc-note {
+            margin:14px 0 0;
+            font-size:11.5px; color:var(--text-muted); line-height:1.5;
+        }
+        .kyc-submit-btn {
+            display:block; width:100%;
+            margin:20px 0 8px;
+            padding:14px; border:none; border-radius:12px;
+            background:var(--accent-primary); color:#fff;
+            font-size:14.5px; font-weight:700; cursor:pointer;
+        }
+        .kyc-submit-btn:disabled { opacity:0.6; cursor:default; }
+        .kyc-reject-reason {
+            margin:10px 0 0; padding:10px 12px;
+            background:rgba(232,33,39,0.08); border:1px solid rgba(232,33,39,0.18);
+            border-radius:10px; font-size:12.5px; color:var(--text-secondary); line-height:1.5;
+        }
+
+        /* ---- KYC wizard ---- */
+        .kyc-steps {
+            display:flex; align-items:center;
+            margin:20px 0 0;
+        }
+        .kyc-step-dot {
+            width:26px; height:26px; border-radius:50%;
+            display:flex; align-items:center; justify-content:center;
+            font-size:12px; font-weight:700;
+            background:var(--bg-soft); color:var(--text-muted);
+            border:1.5px solid var(--bg-border-line);
+            flex-shrink:0; transition:all 0.2s;
+        }
+        .kyc-step-dot.active {
+            background:var(--accent-primary); border-color:var(--accent-primary); color:#fff;
+        }
+        .kyc-step-dot.done {
+            background:rgba(57,231,176,0.15); border-color:#39e7b0; color:#39e7b0;
+        }
+        .kyc-step-line {
+            flex:1; height:2px; background:var(--bg-border-line); margin:0 6px;
+        }
+        .kyc-step-caption {
+            margin:8px 0 0; font-size:12px; font-weight:600; color:var(--text-secondary);
+        }
+        .kyc-step-panel { min-height:120px; }
+
+        .kyc-review-list { margin:0; }
+        .kyc-review-row {
+            display:flex; justify-content:space-between; gap:12px;
+            padding:11px 0; border-bottom:1px solid var(--bg-border-line);
+            font-size:13px;
+        }
+        .kyc-review-row:last-of-type { border-bottom:none; }
+        .kyc-review-key { color:var(--text-muted); }
+        .kyc-review-val { color:var(--text-primary); font-weight:600; text-align:right; max-width:60%; overflow-wrap:break-word; }
+        .kyc-review-thumbs { display:flex; gap:8px; margin-top:10px; }
+        .kyc-review-thumbs img {
+            width:56px; height:56px; border-radius:10px; object-fit:cover;
+            border:1px solid var(--bg-border-line);
+        }
+
+        .kyc-field-error {
+            margin:10px 0 0; font-size:12px; color:var(--accent-primary); font-weight:600;
+        }
+
+        .kyc-nav-row {
+            display:flex; gap:10px;
+            margin:24px 0 8px;
+        }
+        .kyc-nav-btn {
+            flex:1; padding:14px; border-radius:12px; border:none;
+            font-size:14.5px; font-weight:700; cursor:pointer; font-family:inherit;
+        }
+        .kyc-nav-btn.primary { background:var(--accent-primary); color:#fff; }
+        .kyc-nav-btn.secondary { background:var(--bg-soft); color:var(--text-primary); border:1px solid var(--bg-border-line); }
+        .kyc-nav-btn:disabled { opacity:0.6; cursor:default; }
+
+        /* Content wrapper below the banner on the profile and KYC full-screen
+           views — the views fill the entire screen width, padding lives here */
+        .pv-content {
+            padding: 0 16px 32px;
+        }
 
         /* hide old profile elements */
         .profile-header,.profile-content,.profile-back-btn,.logout-btn { display:none; }
@@ -3809,7 +4172,6 @@
                 height: fit-content;
                 background: rgba(0, 0, 0, 0.6);
                 backdrop-filter: blur(10px);
-
             }
 
             .bottom-nav-wrapper {
@@ -3820,6 +4182,19 @@
                 position: sticky;
                 bottom: 0;
                 z-index: 100;
+            }
+
+            .nav-item {
+                width: clamp(36px, 12vw, 52px);
+                height: clamp(36px, 12vw, 52px);
+                font-size: clamp(13px, 3.5vw, 16px);
+                flex: 1;
+            }
+
+            .nav-item img,
+            .nav-svg-icon {
+                width: clamp(16px, 5vw, 22px);
+                height: clamp(16px, 5vw, 22px);
             }
 
             .portfolio-chart-wrap {
@@ -4245,9 +4620,12 @@
                 </div>
             </div>
             <div style="display: flex;gap: 10px;align-items: center;">
-                <div class="top-bar-button" onclick="window.location.href='support.html'">
-                    <img src="icons/support_icon.png" alt="" style="height: 20px;">
-                    <div class="notify-count" id="supportChartCount" style="display: none;"></div>
+                <div class="kyc-topbar-btn unverified" id="kycTopBarBtn" onclick="openProfileView(); openKycView();" title="Identity Verification">
+                    <div class="kyc-topbar-icon-wrap">
+                        <svg id="kycTopBarIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M15 9h3M15 13h3M6 17h12"/></svg>
+                    </div>
+                    <span class="kyc-topbar-label" id="kycTopBarLabel">Verify ID</span>
+                    <span class="kyc-topbar-dot" id="kycTopBarDot"></span>
                 </div>
                 <div class="top-bar-button" id="notificationBtn">
                     <img src="icons/notification_bell.png" alt="" style="height: 20px;">
@@ -5027,15 +5405,17 @@
     <div id="profileView" class="profile-view" style="display:none;">
         <div class="profile-scroll">
 
-            <!-- Telegram-style banner -->
+            <!-- Trading-platform style banner -->
             <div class="prf-banner">
                 <button class="prf-banner-back" onclick="closeProfileView()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
                 </button>
-                <div class="prf-banner-avatar" id="profileAvatar" onclick="openAvatarModal()">
-                    <span id="profileAvatarInitials">?</span>
-                    <div class="prf-banner-edit-dot">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+                <div class="prf-banner-avatar-ring">
+                    <div class="prf-banner-avatar" id="profileAvatar" onclick="openAvatarModal()">
+                        <span id="profileAvatarInitials">?</span>
+                        <div class="prf-banner-edit-dot">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+                        </div>
                     </div>
                 </div>
                 <div class="prf-banner-info">
@@ -5048,49 +5428,54 @@
                 </div>
             </div>
 
-            <!-- Account info group -->
-            <div class="prf-group-label" style="padding:16px 16px 6px;color:var(--text-muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">Account</div>
-            <div class="prf-group">
-                <div class="prf-row">
-                    <div class="prf-row-icon pri-gray">
+            <div class="pv-content">
+
+            <!-- Quick stat tiles -->
+            <div class="prf-stats-grid">
+                <div class="prf-stat-tile pst-id">
+                    <div class="prf-stat-icon-row">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                        <span class="prf-stat-label">Account ID</span>
                     </div>
-                    <div class="prf-row-body">
-                        <div class="prf-row-label">Account ID</div>
-                        <div class="prf-row-value" id="profileUID">—</div>
-                    </div>
+                    <div class="prf-stat-value" id="profileUID">—</div>
                 </div>
-                <div class="prf-row">
-                    <div class="prf-row-icon pri-gray">
+                <div class="prf-stat-tile pst-status">
+                    <div class="prf-stat-icon-row">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                        <span class="prf-stat-label">Status</span>
                     </div>
-                    <div class="prf-row-body">
-                        <div class="prf-row-label">Account Status</div>
-                        <div class="prf-row-value" id="profileStatus">—</div>
-                    </div>
+                    <div class="prf-stat-value" id="profileStatus">—</div>
                 </div>
-                <div class="prf-row">
-                    <div class="prf-row-icon pri-green">
+                <div class="prf-stat-tile pst-verify">
+                    <div class="prf-stat-icon-row">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span class="prf-stat-label">Verification</span>
                     </div>
-                    <div class="prf-row-body">
-                        <div class="prf-row-label">Verification</div>
-                        <div class="prf-row-value" id="profileVerified">—</div>
-                    </div>
+                    <div class="prf-stat-value" id="profileVerified">—</div>
                 </div>
-                <div class="prf-row">
-                    <div class="prf-row-icon pri-gray">
+                <div class="prf-stat-tile pst-country">
+                    <div class="prf-stat-icon-row">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z"/></svg>
+                        <span class="prf-stat-label">Country</span>
                     </div>
-                    <div class="prf-row-body">
-                        <div class="prf-row-label">Country</div>
-                        <div class="prf-row-value" id="profileCountry">—</div>
-                    </div>
+                    <div class="prf-stat-value" id="profileCountry">—</div>
                 </div>
             </div>
 
+            <!-- KYC call-to-action -->
+            <div class="prf-kyc-cta kyc-cta-none" id="profileKycCta" onclick="openKycView()">
+                <div class="prf-kyc-cta-icon" id="kycRowIcon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M15 9h3M15 13h3M6 17h12"/></svg>
+                </div>
+                <div class="prf-kyc-cta-body">
+                    <div class="prf-kyc-cta-title">Identity Verification (KYC)</div>
+                    <div class="prf-kyc-cta-sub" id="kycRowStatus">Not submitted — tap to verify</div>
+                </div>
+                <svg class="prf-kyc-cta-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+
             <!-- Settings group -->
-            <div class="prf-group-label" style="padding:16px 16px 6px;color:var(--text-muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">Settings</div>
+            <div class="prf-group-label" style="padding:16px 0 6px;color:var(--text-muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">Settings</div>
             <div class="prf-group">
                 <div class="prf-row prf-row-tap" onclick="openChangePasswordModal()">
                     <div class="prf-row-icon pri-blue">
@@ -5125,7 +5510,7 @@
             </div>
 
             <!-- Appearance group -->
-            <div class="prf-group-label" style="padding:16px 16px 6px;color:var(--text-muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">Appearance</div>
+            <div class="prf-group-label" style="padding:16px 0 6px;color:var(--text-muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;">Appearance</div>
             <div class="prf-group">
                 <div class="prf-row prf-row-tap" onclick="toggleTheme()">
                     <div class="prf-row-icon pri-green">
@@ -5157,8 +5542,145 @@
                 <div class="prf-logout-row-label">Log Out</div>
             </div>
 
+            </div><!-- /pv-content -->
+
         </div><!-- /profile-scroll -->
     </div><!-- /profileView -->
+
+    <!--=================KYC / IDENTITY VERIFICATION VIEW=================-->
+    <div id="kycView" class="profile-view" style="display:none;">
+        <div class="profile-scroll">
+
+            <div class="prf-banner" style="align-items:flex-start;padding:52px 20px 22px;">
+                <button class="prf-banner-back" onclick="closeKycView()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <div class="prf-banner-info" style="z-index:2;">
+                    <div class="prf-banner-name" style="font-size:19px;margin-top:2px;">Identity Verification</div>
+                    <div class="prf-banner-email">Verify your identity to unlock full account access</div>
+                </div>
+            </div>
+
+            <div class="pv-content">
+
+            <!-- Status card -->
+            <div class="kyc-status-card st-none" id="kycStatusCard">
+                <div class="kyc-status-icon" id="kycStatusIcon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                </div>
+                <div>
+                    <div class="kyc-status-title" id="kycStatusTitle">Not Submitted</div>
+                    <div class="kyc-status-sub" id="kycStatusSub">Complete the form below to verify your identity. This usually takes 1–2 business days to review.</div>
+                </div>
+            </div>
+            <div class="kyc-reject-reason" id="kycRejectReason" style="display:none;"></div>
+
+            <!-- Form (wizard) -->
+            <div id="kycFormWrap">
+
+                <!-- Step indicator -->
+                <div class="kyc-steps" id="kycSteps">
+                    <div class="kyc-step-dot active" data-step="1"><span>1</span></div>
+                    <div class="kyc-step-line"></div>
+                    <div class="kyc-step-dot" data-step="2"><span>2</span></div>
+                    <div class="kyc-step-line"></div>
+                    <div class="kyc-step-dot" data-step="3"><span>3</span></div>
+                    <div class="kyc-step-line"></div>
+                    <div class="kyc-step-dot" data-step="4"><span>4</span></div>
+                </div>
+                <div class="kyc-step-caption" id="kycStepCaption">Step 1 of 4 — Personal Details</div>
+
+                <!-- Step 1: Personal Details -->
+                <div class="kyc-step-panel" id="kycStep1">
+                    <div class="kyc-field" style="margin-top:14px;">
+                        <div class="kyc-field-label">Full Legal Name</div>
+                        <input type="text" class="kyc-input" id="kycFullName" placeholder="As shown on your ID">
+                    </div>
+                    <div class="kyc-field">
+                        <div class="kyc-field-label">Date of Birth</div>
+                        <input type="date" class="kyc-input" id="kycDob">
+                    </div>
+                    <div class="kyc-field">
+                        <div class="kyc-field-label">Country of Issue</div>
+                        <input type="text" class="kyc-input" id="kycCountry" placeholder="Country">
+                    </div>
+                </div>
+
+                <!-- Step 2: ID Details -->
+                <div class="kyc-step-panel" id="kycStep2" style="display:none;">
+                    <div class="kyc-field" style="margin-top:14px;">
+                        <div class="kyc-field-label">ID Type</div>
+                        <select class="kyc-select" id="kycIdType" onchange="handleKycIdTypeChange()">
+                            <option value="Passport">Passport</option>
+                            <option value="National ID">National ID Card</option>
+                            <option value="Driver's License">Driver's License</option>
+                        </select>
+                    </div>
+                    <div class="kyc-field">
+                        <div class="kyc-field-label">ID Number</div>
+                        <input type="text" class="kyc-input" id="kycIdNumber" placeholder="Document number">
+                    </div>
+                </div>
+
+                <!-- Step 3: Documents -->
+                <div class="kyc-step-panel" id="kycStep3" style="display:none;">
+                    <div class="prf-group-label" style="padding:14px 0 6px;">Upload Documents</div>
+
+                    <div class="kyc-upload" id="kycFrontUpload" onclick="document.getElementById('kycFrontFile').click()">
+                        <div class="kyc-upload-thumb" id="kycFrontThumb">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        </div>
+                        <div class="kyc-upload-body">
+                            <div class="kyc-upload-label" id="kycFrontLabel">ID Front Side</div>
+                            <div class="kyc-upload-sub">Tap to upload — JPG or PNG, max 4MB</div>
+                        </div>
+                    </div>
+                    <input type="file" accept="image/*" id="kycFrontFile" style="display:none;" onchange="handleKycFile(this,'front')">
+
+                    <div class="kyc-upload" id="kycBackUpload" onclick="document.getElementById('kycBackFile').click()">
+                        <div class="kyc-upload-thumb" id="kycBackThumb">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        </div>
+                        <div class="kyc-upload-body">
+                            <div class="kyc-upload-label" id="kycBackLabel">ID Back Side</div>
+                            <div class="kyc-upload-sub">Tap to upload — JPG or PNG, max 4MB</div>
+                        </div>
+                    </div>
+                    <input type="file" accept="image/*" id="kycBackFile" style="display:none;" onchange="handleKycFile(this,'back')">
+
+                    <div class="kyc-upload" id="kycSelfieUpload" onclick="document.getElementById('kycSelfieFile').click()">
+                        <div class="kyc-upload-thumb" id="kycSelfieThumb">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                        </div>
+                        <div class="kyc-upload-body">
+                            <div class="kyc-upload-label">Selfie Holding Your ID</div>
+                            <div class="kyc-upload-sub">Tap to upload — JPG or PNG, max 4MB</div>
+                        </div>
+                    </div>
+                    <input type="file" accept="image/*" id="kycSelfieFile" style="display:none;" onchange="handleKycFile(this,'selfie')">
+                </div>
+
+                <!-- Step 4: Review -->
+                <div class="kyc-step-panel" id="kycStep4" style="display:none;">
+                    <div class="prf-group-label" style="padding:14px 0 6px;">Review Your Details</div>
+                    <div class="kyc-review-list" id="kycReviewList"></div>
+                    <div class="kyc-note">By submitting, you confirm the documents provided are authentic and belong to you. Your documents are only used for identity verification purposes.</div>
+                </div>
+
+                <div class="kyc-field-error" id="kycStepError" style="display:none;"></div>
+
+                <!-- Nav buttons -->
+                <div class="kyc-nav-row">
+                    <button class="kyc-nav-btn secondary" id="kycBackBtn" onclick="kycPrevStep()" style="display:none;">Back</button>
+                    <button class="kyc-nav-btn primary" id="kycNextBtn" onclick="kycNextStep()">Continue</button>
+                </div>
+            </div>
+            <!-- /kycFormWrap -->
+
+            </div><!-- /pv-content -->
+
+        </div><!-- /profile-scroll -->
+    </div><!-- /kycView -->
 
 
     <!-- MODAL: Change Password -->
@@ -6470,6 +6992,10 @@
             const verified = document.getElementById("verifiedStatus").style.display !== "none";
             document.getElementById("profileVerified").innerText = verified ? "Verified ✓" : "Not Verified";
             setText("profileCountry", USER_COUNTRY);
+
+            // give the top-bar KYC badge an immediate best guess, then refine with the real status
+            if (typeof updateKycTopBarBadge === "function") updateKycTopBarBadge(verified ? "verified" : "none");
+            if (typeof refreshKycRowStatus === "function") refreshKycRowStatus();
 
             // update profile badges
             const sb = document.getElementById("profileStatusBadge");
@@ -8339,6 +8865,7 @@
             }
 
             refreshAvatarDisplay();
+            if (typeof refreshKycRowStatus === "function") refreshKycRowStatus();
 
             const isLight = document.body.classList.contains("light-mode");
             syncThemeUI(isLight);
@@ -8544,6 +9071,374 @@
             if (el) el.addEventListener("click", function(e) {
                 if (e.target === this) closePrfModal(id);
             });
+        });
+
+        /* ============================================================
+           KYC / IDENTITY VERIFICATION (STEP WIZARD)
+        ============================================================ */
+
+        const kycView = document.getElementById("kycView");
+        const kycFiles = { front: null, back: null, selfie: null }; // {base64, mime, name}
+        let kycLatestStatus = null; // cached latest submission from server
+        let kycStep = 1;
+        const KYC_TOTAL_STEPS = 4;
+        const KYC_STEP_CAPTIONS = {
+            1: "Step 1 of 4 — Personal Details",
+            2: "Step 2 of 4 — ID Details",
+            3: "Step 3 of 4 — Documents",
+            4: "Step 4 of 4 — Review & Submit"
+        };
+
+        function openKycView() {
+            profileView.style.display = "none";
+            kycView.style.display = "flex";
+            initKycPage();
+        }
+        function closeKycView() {
+            kycView.style.display = "none";
+            profileView.style.display = "flex";
+        }
+
+        function handleKycIdTypeChange() {
+            const type = document.getElementById("kycIdType").value;
+            const backRow = document.getElementById("kycBackUpload");
+            // Passports typically don't have a meaningful back page — hide it
+            backRow.style.display = (type === "Passport") ? "none" : "flex";
+        }
+
+        function fileToBase64(file) {
+            return new Promise(function(resolve, reject) {
+                const reader = new FileReader();
+                reader.onload = function() { resolve(reader.result.split(",")[1]); };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function handleKycFile(input, slot) {
+            const file = input.files && input.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith("image/")) {
+                showToast("Please upload an image file", "error");
+                input.value = "";
+                return;
+            }
+            if (file.size > 4 * 1024 * 1024) {
+                showToast("File too large — max 4MB", "error");
+                input.value = "";
+                return;
+            }
+
+            try {
+                const base64 = await fileToBase64(file);
+                kycFiles[slot] = { base64: base64, mime: file.type, name: file.name };
+
+                const box   = document.getElementById(slot === "front" ? "kycFrontUpload" : slot === "back" ? "kycBackUpload" : "kycSelfieUpload");
+                const thumb = document.getElementById(slot === "front" ? "kycFrontThumb"  : slot === "back" ? "kycBackThumb"  : "kycSelfieThumb");
+                if (box) box.classList.add("has-file");
+                if (thumb) thumb.innerHTML = `<img src="data:${file.type};base64,${base64}" alt="">`;
+
+                const sub = box ? box.querySelector(".kyc-upload-sub") : null;
+                if (sub) sub.textContent = "Selected: " + file.name;
+            } catch (e) {
+                showToast("Could not read file", "error");
+            }
+        }
+
+        function updateKycTopBarBadge(status) {
+            const btn   = document.getElementById("kycTopBarBtn");
+            const icon  = document.getElementById("kycTopBarIcon");
+            const label = document.getElementById("kycTopBarLabel");
+
+            const s = (status || "none").toLowerCase();
+            const cls = (s === "pending") ? "pending" :
+                        (s === "approved" || s === "verified") ? "verified" :
+                        (s === "rejected") ? "rejected" : "unverified";
+
+            const cta = document.getElementById("profileKycCta");
+            if (cta) {
+                const ctaCls = cls === "unverified" ? "none" : cls;
+                cta.className = "prf-kyc-cta kyc-cta-" + ctaCls;
+            }
+
+            if (!btn) return;
+            btn.className = "kyc-topbar-btn " + cls;
+
+            if (cls === "verified") {
+                if (label) label.textContent = "Verified";
+                if (icon) icon.innerHTML = '<path d="M20 6L9 17l-5-5"/>';
+                btn.title = "Identity Verified";
+            } else if (cls === "pending") {
+                if (label) label.textContent = "Pending";
+                if (icon) icon.innerHTML = '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>';
+                btn.title = "Verification Pending";
+            } else if (cls === "rejected") {
+                if (label) label.textContent = "Resubmit";
+                if (icon) icon.innerHTML = '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>';
+                btn.title = "Verification Rejected — tap to resubmit";
+            } else {
+                if (label) label.textContent = "Verify ID";
+                if (icon) icon.innerHTML = '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M15 9h3M15 13h3M6 17h12"/>';
+                btn.title = "Verify your identity (KYC)";
+            }
+        }
+
+        function setKycStatusCard(status, note) {
+            const card  = document.getElementById("kycStatusCard");
+            const icon  = document.getElementById("kycStatusIcon");
+            const title = document.getElementById("kycStatusTitle");
+            const sub   = document.getElementById("kycStatusSub");
+            const reasonBox = document.getElementById("kycRejectReason");
+            const formWrap  = document.getElementById("kycFormWrap");
+            const rowStatus = document.getElementById("kycRowStatus");
+
+            const s = (status || "none").toLowerCase();
+            card.className = "kyc-status-card st-" + (
+                s === "pending" ? "pending" :
+                s === "approved" || s === "verified" ? "approved" :
+                s === "rejected" ? "rejected" : "none"
+            );
+
+            reasonBox.style.display = "none";
+            updateKycTopBarBadge(s);
+
+            if (s === "pending") {
+                icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+                title.textContent = "Under Review";
+                sub.textContent = "Your documents were submitted and are being reviewed. This usually takes 1–2 business days.";
+                formWrap.style.display = "none";
+                if (rowStatus) rowStatus.textContent = "Pending review";
+            } else if (s === "approved" || s === "verified") {
+                icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+                title.textContent = "Verified";
+                sub.textContent = "Your identity has been verified. You now have full access to your account.";
+                formWrap.style.display = "none";
+                if (rowStatus) rowStatus.textContent = "Verified ✓";
+            } else if (s === "rejected") {
+                icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+                title.textContent = "Verification Rejected";
+                sub.textContent = "Your last submission was not approved. Please review the note below, then resubmit.";
+                formWrap.style.display = "block";
+                if (note) {
+                    reasonBox.style.display = "block";
+                    reasonBox.textContent = "Reason: " + note;
+                }
+                if (rowStatus) rowStatus.textContent = "Rejected — tap to resubmit";
+                kycGoToStep(1);
+            } else {
+                icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>';
+                title.textContent = "Not Submitted";
+                sub.textContent = "Complete the steps below to verify your identity. This usually takes 1–2 business days to review.";
+                formWrap.style.display = "block";
+                if (rowStatus) rowStatus.textContent = "Not submitted — tap to verify";
+                kycGoToStep(1);
+            }
+        }
+
+        async function refreshKycRowStatus() {
+            const rowStatus = document.getElementById("kycRowStatus");
+            if (!rowStatus) return;
+            const data = await safeFetch({ action: "getKycStatus", uid: UID });
+            if (data && data.status && data.submission) {
+                const s = (data.submission.status || "").toLowerCase();
+                if (s === "pending") rowStatus.textContent = "Pending review";
+                else if (s === "approved" || s === "verified") rowStatus.textContent = "Verified ✓";
+                else if (s === "rejected") rowStatus.textContent = "Rejected — tap to resubmit";
+                else rowStatus.textContent = "Not submitted — tap to verify";
+                updateKycTopBarBadge(s);
+            } else {
+                rowStatus.textContent = "Not submitted — tap to verify";
+                updateKycTopBarBadge("none");
+            }
+        }
+
+        async function initKycPage() {
+            const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+
+            // prefill from known profile data
+            const fullNameEl = document.getElementById("kycFullName");
+            const countryEl  = document.getElementById("kycCountry");
+            if (fullNameEl && !fullNameEl.value) fullNameEl.value = user.name || USER_NAME || "";
+            if (countryEl  && !countryEl.value)  countryEl.value  = user.country || USER_COUNTRY || "";
+
+            setKycStatusCard("none");
+            kycGoToStep(1);
+
+            const data = await safeFetch({ action: "getKycStatus", uid: UID });
+            if (data && data.status && data.submission) {
+                kycLatestStatus = data.submission;
+                setKycStatusCard(data.submission.status, data.submission.note);
+            } else {
+                kycLatestStatus = null;
+                const rowStatus = document.getElementById("kycRowStatus");
+                if (rowStatus) rowStatus.textContent = "Not submitted — tap to verify";
+            }
+        }
+
+        /* ---- Wizard navigation ---- */
+
+        function kycShowStepError(msg) {
+            const err = document.getElementById("kycStepError");
+            if (!err) return;
+            if (!msg) { err.style.display = "none"; err.textContent = ""; return; }
+            err.style.display = "block";
+            err.textContent = msg;
+        }
+
+        function kycValidateStep(step) {
+            if (step === 1) {
+                const fullName = document.getElementById("kycFullName").value.trim();
+                const dob      = document.getElementById("kycDob").value;
+                const country  = document.getElementById("kycCountry").value.trim();
+                if (!fullName || !dob || !country) {
+                    kycShowStepError("Please fill in your name, date of birth and country");
+                    return false;
+                }
+                return true;
+            }
+            if (step === 2) {
+                const idType   = document.getElementById("kycIdType").value;
+                const idNumber = document.getElementById("kycIdNumber").value.trim();
+                if (!idType || !idNumber) {
+                    kycShowStepError("Please select an ID type and enter your ID number");
+                    return false;
+                }
+                return true;
+            }
+            if (step === 3) {
+                const idType = document.getElementById("kycIdType").value;
+                if (!kycFiles.front) {
+                    kycShowStepError("Please upload the front of your ID");
+                    return false;
+                }
+                if (idType !== "Passport" && !kycFiles.back) {
+                    kycShowStepError("Please upload the back of your ID");
+                    return false;
+                }
+                if (!kycFiles.selfie) {
+                    kycShowStepError("Please upload a selfie holding your ID");
+                    return false;
+                }
+                return true;
+            }
+            return true;
+        }
+
+        function kycRenderReview() {
+            const list = document.getElementById("kycReviewList");
+            if (!list) return;
+
+            const fullName = document.getElementById("kycFullName").value.trim();
+            const dob      = document.getElementById("kycDob").value;
+            const idType   = document.getElementById("kycIdType").value;
+            const idNumber = document.getElementById("kycIdNumber").value.trim();
+            const country  = document.getElementById("kycCountry").value.trim();
+
+            const rows = [
+                ["Full Legal Name", fullName],
+                ["Date of Birth", dob],
+                ["ID Type", idType],
+                ["ID Number", idNumber],
+                ["Country of Issue", country]
+            ];
+
+            list.innerHTML = rows.map(function(r) {
+                return `<div class="kyc-review-row"><div class="kyc-review-key">${r[0]}</div><div class="kyc-review-val">${r[1] || "—"}</div></div>`;
+            }).join("") + `
+                <div class="kyc-review-row" style="border-bottom:none;flex-direction:column;align-items:flex-start;">
+                    <div class="kyc-review-key" style="margin-bottom:6px;">Documents</div>
+                    <div class="kyc-review-thumbs">
+                        ${kycFiles.front ? `<img src="data:${kycFiles.front.mime};base64,${kycFiles.front.base64}">` : ""}
+                        ${kycFiles.back ? `<img src="data:${kycFiles.back.mime};base64,${kycFiles.back.base64}">` : ""}
+                        ${kycFiles.selfie ? `<img src="data:${kycFiles.selfie.mime};base64,${kycFiles.selfie.base64}">` : ""}
+                    </div>
+                </div>`;
+        }
+
+        function kycGoToStep(step) {
+            kycStep = step;
+            kycShowStepError(null);
+
+            for (let i = 1; i <= KYC_TOTAL_STEPS; i++) {
+                const panel = document.getElementById("kycStep" + i);
+                if (panel) panel.style.display = (i === step) ? "block" : "none";
+
+                const dot = document.querySelector('.kyc-step-dot[data-step="' + i + '"]');
+                if (dot) {
+                    dot.classList.remove("active", "done");
+                    if (i < step) dot.classList.add("done");
+                    else if (i === step) dot.classList.add("active");
+                }
+            }
+
+            const caption = document.getElementById("kycStepCaption");
+            if (caption) caption.textContent = KYC_STEP_CAPTIONS[step] || "";
+
+            const backBtn = document.getElementById("kycBackBtn");
+            const nextBtn = document.getElementById("kycNextBtn");
+            if (backBtn) backBtn.style.display = (step === 1) ? "none" : "block";
+            if (nextBtn) nextBtn.textContent = (step === KYC_TOTAL_STEPS) ? "Submit for Verification" : "Continue";
+
+            if (step === KYC_TOTAL_STEPS) kycRenderReview();
+        }
+
+        function kycPrevStep() {
+            if (kycStep > 1) kycGoToStep(kycStep - 1);
+        }
+
+        function kycNextStep() {
+            if (!kycValidateStep(kycStep)) return;
+
+            if (kycStep < KYC_TOTAL_STEPS) {
+                kycGoToStep(kycStep + 1);
+            } else {
+                submitKyc();
+            }
+        }
+
+        async function submitKyc() {
+            const fullName = document.getElementById("kycFullName").value.trim();
+            const dob      = document.getElementById("kycDob").value;
+            const idType   = document.getElementById("kycIdType").value;
+            const idNumber = document.getElementById("kycIdNumber").value.trim();
+            const country  = document.getElementById("kycCountry").value.trim();
+
+            const btn = document.getElementById("kycNextBtn");
+            btn.disabled = true;
+            btn.textContent = "Submitting...";
+
+            const payload = {
+                action: "submitKyc",
+                uid: UID,
+                fullName: fullName,
+                dob: dob,
+                idType: idType,
+                idNumber: idNumber,
+                country: country,
+                idFrontBase64: kycFiles.front.base64,
+                idFrontMime: kycFiles.front.mime,
+                idBackBase64: kycFiles.back ? kycFiles.back.base64 : "",
+                idBackMime: kycFiles.back ? kycFiles.back.mime : "",
+                selfieBase64: kycFiles.selfie.base64,
+                selfieMime: kycFiles.selfie.mime
+            };
+
+            const res = await safeFetch(payload);
+
+            btn.disabled = false;
+            btn.textContent = "Submit for Verification";
+
+            if (res && res.status) {
+                showToast("Submitted! We'll review your documents shortly.", "success");
+                setKycStatusCard("pending");
+            } else {
+                showToast((res && res.message) || "Submission failed — please try again", "error");
+            }
+        }
+
+        kycView.addEventListener("click", function(e) {
+            if (e.target === this) closeKycView();
         });
 
     </script>
