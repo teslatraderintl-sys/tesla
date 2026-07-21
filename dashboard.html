@@ -1015,32 +1015,39 @@ window.smartsupp || (function(d) {
         .asset-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--bg-border-line);
+            overflow: hidden;
         }
 
         .asset-list-item {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 14px 15px;
-            border: 1px solid var(--bg-border-line);
+            align-items: center;
+            gap: 12px;
+            padding: 13px 15px;
             color: var(--text-primary);
             cursor: pointer;
-            transition: .2s ease;
+            transition: background .15s ease;
             position: relative;
+            border-bottom: 1px solid var(--bg-border-line);
+        }
+
+        .asset-list-item:last-child {
+            border-bottom: none;
         }
 
         .asset-list-item:hover {
-            border-color: var(--accent-primary);
+            background: rgba(255, 255, 255, 0.03);
         }
 
-        .asset-list-item .ali-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
+        .asset-list-item .ali-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1c2030;
+            flex-shrink: 0;
         }
 
         .asset-list-item .ali-name-group {
@@ -1048,20 +1055,23 @@ window.smartsupp || (function(d) {
             flex-direction: column;
             gap: 2px;
             min-width: 0;
+            flex: 1;
         }
 
         .asset-list-item .ali-name {
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 14.5px;
+            font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .asset-list-item .ali-badges {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .asset-list-item .ali-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .asset-list-item .ali-price-group {
@@ -1073,25 +1083,9 @@ window.smartsupp || (function(d) {
         }
 
         .asset-list-item .ali-price {
-            font-size: 15px;
+            font-size: 14.5px;
             font-weight: 700;
-        }
-
-        .asset-list-item .ali-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            padding-top: 8px;
-            border-top: 1px solid var(--bg-border-line);
-        }
-
-        .asset-list-item .ali-info-pill {
-            display: flex;
-            gap: 14px;
-            font-size: 11px;
-            color: var(--text-secondary);
-            flex-wrap: wrap;
+            white-space: nowrap;
         }
 
         .asset-list-empty {
@@ -4714,13 +4708,438 @@ window.smartsupp || (function(d) {
   cursor:pointer;
 }
 
-.modal-actions-cancel-button{
-  background-color: #222;
-}
+</style>
 
-.modal-actions-invest-button{
-  background-color: var(--accent-primary);
-}
+<!--=================ASSET TRADE EXECUTION MODAL (screenshot-style)=================-->
+<style>
+
+    .atm-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .85);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 2100;
+    }
+
+    .atm-modal {
+        width: 100%;
+        max-width: 420px;
+        height: 100%;
+        max-height: 780px;
+        background: #0b0d14;
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, .08);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+        color: var(--text-primary);
+        transition: max-width .25s ease, max-height .25s ease;
+    }
+
+    .atm-modal.atm-modal--fullscreen {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+
+    .atm-drag-handle {
+        width: 40px;
+        height: 4px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, .18);
+        margin: 10px auto 4px;
+        flex-shrink: 0;
+    }
+
+    /* ---------- HEADER ---------- */
+    .atm-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px 8px;
+        flex-shrink: 0;
+    }
+
+    .atm-back-btn {
+        background: none;
+        border: none;
+        color: var(--text-primary);
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px 6px 4px 0;
+        line-height: 1;
+    }
+
+    .atm-coin-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #1c2030;
+        flex-shrink: 0;
+    }
+
+    .atm-header-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.25;
+        min-width: 0;
+    }
+
+    .atm-title {
+        font-size: 15px;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .atm-subtitle {
+        font-size: 11.5px;
+        color: var(--text-secondary);
+    }
+
+    .atm-header-actions {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .atm-icon-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid var(--bg-border-line);
+        background: rgba(255, 255, 255, .03);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+
+    .atm-icon-btn svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    /* ---------- TABS ---------- */
+    .atm-tabs {
+        display: flex;
+        gap: 6px;
+        padding: 4px 12px 10px;
+        overflow-x: auto;
+        flex-shrink: 0;
+        scrollbar-width: none;
+    }
+
+    .atm-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .atm-tab {
+        flex-shrink: 0;
+        white-space: nowrap;
+        padding: 8px 14px;
+        border-radius: 18px;
+        background: transparent;
+        border: 1px solid transparent;
+        color: var(--text-secondary);
+        font-size: 12.5px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .atm-tab.active {
+        background: rgba(255, 255, 255, .08);
+        border-color: var(--bg-border-line);
+        color: var(--text-primary);
+    }
+
+    /* ---------- ONE CLICK ORDER ---------- */
+    .atm-oneclick-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 16px;
+        font-size: 13px;
+        color: var(--text-primary);
+        flex-shrink: 0;
+    }
+
+    .atm-toggle {
+        position: relative;
+        width: 40px;
+        height: 22px;
+        flex-shrink: 0;
+    }
+
+    .atm-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .atm-toggle-slider {
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, .15);
+        border-radius: 20px;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    .atm-toggle-slider::before {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        left: 2px;
+        top: 2px;
+        border-radius: 50%;
+        background: #fff;
+        transition: .2s;
+    }
+
+    .atm-toggle input:checked+.atm-toggle-slider {
+        background: var(--accent-primary);
+    }
+
+    .atm-toggle input:checked+.atm-toggle-slider::before {
+        transform: translateX(18px);
+    }
+
+    /* ---------- CHART ---------- */
+    .atm-chart-wrap {
+        flex: 1;
+        min-height: 0;
+        position: relative;
+        padding: 6px 6px 0;
+    }
+
+    .atm-chart-wrap #atmChart {
+        width: 100%;
+        height: 100%;
+    }
+
+    .atm-range-badge {
+        position: absolute;
+        left: 16px;
+        bottom: 10px;
+        background: rgba(255, 255, 255, .1);
+        color: var(--text-primary);
+        font-size: 11px;
+        font-weight: 700;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+
+    /* ---------- INTERVAL BAR ---------- */
+    .atm-interval-bar {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 10px;
+        flex-shrink: 0;
+        border-top: 1px solid var(--bg-border-line);
+    }
+
+    .atm-interval-btn {
+        flex: 1;
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 12.5px;
+        font-weight: 500;
+        padding: 7px 0;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .atm-interval-btn.active {
+        background: rgba(255, 255, 255, .08);
+        color: var(--text-primary);
+        font-weight: 700;
+    }
+
+    .atm-fullscreen-btn {
+        width: 30px;
+        height: 30px;
+        flex-shrink: 0;
+        border: none;
+        background: none;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .atm-fullscreen-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* ---------- SELL / BUY ---------- */
+    .atm-order-buttons {
+        display: flex;
+        gap: 10px;
+        padding: 10px 12px calc(12px + env(safe-area-inset-bottom));
+        flex-shrink: 0;
+    }
+
+    .atm-order-btn {
+        flex: 1;
+        border: none;
+        border-radius: 16px;
+        padding: 12px 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        cursor: pointer;
+        color: #fff;
+        font-family: inherit;
+    }
+
+    .atm-order-btn .atm-order-label {
+        font-size: 12px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        letter-spacing: .3px;
+    }
+
+    .atm-order-btn .atm-order-price {
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .atm-sell-btn {
+        background: #ff4d4d;
+    }
+
+    .atm-buy-btn {
+        background: #00c46a;
+    }
+
+    /* ---------- PLACEHOLDER TAB PANELS ---------- */
+    .atm-placeholder {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 30px;
+        color: var(--text-secondary);
+        font-size: 13px;
+    }
+
+    /* ---------- ORDER TICKET (shown after tapping Buy/Sell) ---------- */
+    .atm-ticket-overlay {
+        position: absolute;
+        inset: 0;
+        background: #0b0d14;
+        display: flex;
+        flex-direction: column;
+        transform: translateY(100%);
+        transition: transform .25s ease;
+        z-index: 5;
+    }
+
+    .atm-ticket-overlay.open {
+        transform: translateY(0);
+    }
+
+    .atm-ticket-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--bg-border-line);
+        flex-shrink: 0;
+    }
+
+    .atm-ticket-header h3 {
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .atm-ticket-direction {
+        font-size: 12px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 6px;
+    }
+
+    .atm-ticket-direction.long {
+        background: rgba(0, 196, 106, .15);
+        color: #00c46a;
+    }
+
+    .atm-ticket-direction.short {
+        background: rgba(255, 77, 77, .15);
+        color: #ff4d4d;
+    }
+
+    .atm-ticket-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+    }
+
+    .atm-ticket-body label {
+        font-size: 12px;
+        color: var(--text-secondary);
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .atm-ticket-body input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid var(--bg-border-line);
+        background: #14161f;
+        color: #fff;
+        font-size: 14px;
+        outline: none;
+        margin-bottom: 14px;
+    }
+
+    .atm-ticket-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        padding: 9px 0;
+        border-bottom: 1px solid var(--bg-border-line);
+    }
+
+    .atm-ticket-execute-btn {
+        width: 100%;
+        padding: 14px;
+        border-radius: 14px;
+        border: none;
+        color: #fff;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        margin-top: 16px;
+    }
 
 </style>
 
@@ -6332,6 +6751,165 @@ window.smartsupp || (function(d) {
 
         </div>
 
+    </div>
+
+    <!--=================ASSET TRADE EXECUTION MODAL (screenshot-style)=================-->
+    <div class="atm-overlay" id="atmOverlay">
+        <div class="atm-modal">
+
+            <div class="atm-drag-handle"></div>
+
+            <!-- HEADER -->
+            <div class="atm-header">
+                <button class="atm-back-btn" id="atmBackBtn">‹</button>
+                <img class="atm-coin-icon" id="atmCoinIcon" src="" alt="">
+                <div class="atm-header-text">
+                    <div class="atm-title" id="atmTitle">BTCUSD</div>
+                    <div class="atm-subtitle">Cryptocurrencies</div>
+                </div>
+                <div class="atm-header-actions">
+                    <button class="atm-icon-btn" title="Info">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                    </button>
+                    <button class="atm-icon-btn" title="Alerts">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </button>
+                    <button class="atm-icon-btn" title="Add to watchlist">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TABS -->
+            <div class="atm-tabs" id="atmTabs">
+                <button class="atm-tab active" data-tab="trade">Trade</button>
+                <button class="atm-tab" data-tab="askai">✨ Ask AI</button>
+                <button class="atm-tab" data-tab="news">News &amp; Analysis</button>
+                <button class="atm-tab" data-tab="insights">Insights</button>
+            </div>
+
+            <!-- ONE CLICK ORDER -->
+            <div class="atm-oneclick-row">
+                <span>One Click Order</span>
+                <label class="atm-toggle">
+                    <input type="checkbox" id="atmOneClickToggle">
+                    <span class="atm-toggle-slider"></span>
+                </label>
+            </div>
+
+            <!-- TRADE TAB PANEL -->
+            <div class="atm-tab-panel" id="atmPanelTrade"
+                style="flex:1; min-height:0; display:flex; flex-direction:column; position:relative;">
+
+                <div class="atm-chart-wrap">
+                    <div id="atmChart"></div>
+                    <div class="atm-range-badge" id="atmRangeBadge">1H</div>
+                </div>
+
+                <div class="atm-interval-bar">
+                    <button class="atm-interval-btn active" data-interval="1H">1H</button>
+                    <button class="atm-interval-btn" data-interval="1D">1D</button>
+                    <button class="atm-interval-btn" data-interval="1W">1W</button>
+                    <button class="atm-interval-btn" data-interval="1M">1M</button>
+                    <button class="atm-interval-btn" data-interval="3M">3M</button>
+                    <button class="atm-interval-btn" data-interval="1Y">1Y</button>
+                    <button class="atm-interval-btn" data-interval="MAX">MAX</button>
+                    <button class="atm-fullscreen-btn" id="atmFullscreenBtn" title="Fullscreen">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <polyline points="9 21 3 21 3 15"></polyline>
+                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="atm-order-buttons">
+                    <button class="atm-order-btn atm-sell-btn" id="atmSellBtn">
+                        <span class="atm-order-label">SELL <svg width="10" height="10" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+                                <line x1="7" y1="7" x2="17" y2="17"></line>
+                                <polyline points="17 7 17 17 7 17"></polyline>
+                            </svg></span>
+                        <span class="atm-order-price" id="atmSellPrice">$0.00</span>
+                    </button>
+                    <button class="atm-order-btn atm-buy-btn" id="atmBuyBtn">
+                        <span class="atm-order-label">BUY <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="3" stroke-linecap="round">
+                                <line x1="7" y1="17" x2="17" y2="7"></line>
+                                <polyline points="7 7 17 7 17 17"></polyline>
+                            </svg></span>
+                        <span class="atm-order-price" id="atmBuyPrice">$0.00</span>
+                    </button>
+                </div>
+
+                <!-- ORDER TICKET (slides up over chart when Buy/Sell tapped) -->
+                <div class="atm-ticket-overlay" id="atmTicketOverlay">
+                    <div class="atm-ticket-header">
+                        <button class="atm-back-btn" id="atmTicketBackBtn">‹</button>
+                        <h3 id="atmTicketAssetName">BTC / USDT</h3>
+                        <span class="atm-ticket-direction long" id="atmTicketDirection">BUY</span>
+                    </div>
+                    <div class="atm-ticket-body">
+                        <label>Amount to Invest (USD)</label>
+                        <input type="number" id="atmAmountInput" placeholder="Enter amount">
+
+                        <div class="atm-ticket-row">
+                            <span>Available Balance</span>
+                            <span id="atmAvailableBalance">$0.00</span>
+                        </div>
+                        <div class="atm-ticket-row">
+                            <span>Entry Price</span>
+                            <span id="atmEntryPrice">$0.00</span>
+                        </div>
+                        <div class="atm-ticket-row">
+                            <span>Take Profit</span>
+                            <span id="atmTP">$0.00</span>
+                        </div>
+                        <div class="atm-ticket-row">
+                            <span>Stop Loss</span>
+                            <span id="atmSL">$0.00</span>
+                        </div>
+                        <div class="atm-ticket-row">
+                            <span>Units</span>
+                            <span id="atmUnits">0.0000</span>
+                        </div>
+                        <div class="atm-ticket-row">
+                            <span>Estimated Profit</span>
+                            <span id="atmEstimatedProfit">$0.00</span>
+                        </div>
+
+                        <button class="atm-ticket-execute-btn" id="atmExecuteBtn">Confirm Order</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OTHER TAB PLACEHOLDERS -->
+            <div class="atm-tab-panel atm-placeholder" id="atmPanelAskai" style="display:none;">
+                Ask AI insights for this asset are coming soon.
+            </div>
+            <div class="atm-tab-panel atm-placeholder" id="atmPanelNews" style="display:none;">
+                News &amp; analysis for this asset are coming soon.
+            </div>
+            <div class="atm-tab-panel atm-placeholder" id="atmPanelInsights" style="display:none;">
+                Deeper insights for this asset are coming soon.
+            </div>
+
+        </div>
     </div>
 
     <div id="investModal" class="invest-modal" style="display:none;">
@@ -8404,7 +8982,8 @@ window.smartsupp || (function(d) {
                     symbol: coin.symbol.toUpperCase(),
                     price: coin.current_price,
                     change: coin.price_change_percentage_24h || 0,
-                    volume: coin.total_volume
+                    volume: coin.total_volume,
+                    image: coin.image
                 }));
             }
 
@@ -8474,56 +9053,38 @@ window.smartsupp || (function(d) {
                         : "icons/arrow-trend-down.png";
 
                     row.innerHTML = `
-                <div class="ali-top">
-                    <div class="ali-name-group">
-                        <div class="ali-badges">
-                            <span class="ai-badge">Grok AI ${aiScore}</span>
-                        </div>
-                        <div class="ali-name">${asset.name} (${asset.symbol})</div>
-                    </div>
+                <img class="ali-icon" src="${asset.image || 'icons/grok_icon.png'}" alt="">
 
-                    <div class="ali-price-group">
-                        <div class="ali-price">$${asset.price.toLocaleString()}</div>
-                        <div class="${changeClass}">${isPositive ? "+" : ""}${asset.change.toFixed(2)}%</div>
-                    </div>
+                <div class="ali-name-group">
+                    <div class="ali-name">${asset.symbol}USD</div>
+                    <div class="ali-subtitle">${asset.name} vs US Dollar</div>
                 </div>
 
-                <div class="ali-bottom">
-                    <div class="ali-info-pill">
-                        <span>AI Confidence ${confidence}%</span>
-                        <span>TP $${targetPrice}</span>
-                        <span>SL $${stopLoss}</span>
-                    </div>
-
-                    <div class="small-pill momentum-pill">
-                        <img src="${iconSrc}" class="momentum-icon" />
-                        <span class="animated-roi">$0.00</span>
-                    </div>
+                <div class="ali-price-group">
+                    <div class="ali-price">${asset.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: asset.price < 10 ? 5 : 2 })}</div>
+                    <div class="${changeClass}">${isPositive ? "+" : ""}${asset.change.toFixed(2)}%</div>
                 </div>
             `;
 
-                    /* CLICK → OPEN RECEIPT MODAL */
+                    /* CLICK → OPEN NEW TRADE EXECUTION MODAL */
                     row.addEventListener("click", () => {
 
                         const direction = asset.change >= 0 ? "LONG" : "SHORT";
 
-                        populateTradeView({
+                        openAssetTradeModal({
                             name: `${asset.symbol} / USDT`,
+                            symbol: asset.symbol,
+                            image: asset.image,
                             direction: direction,
                             entry: asset.price,
                             tp: targetPrice,
                             sl: stopLoss,
                             roi: asset.change
                         });
-
-                        openTradePanel("grokInvest");
                     });
 
 
                     container.appendChild(row);
-
-                    const roiElem = row.querySelector(".animated-roi");
-                    animateNumber(roiElem, 0, estimatedROI, 800);
                 });
             }
 
@@ -8588,14 +9149,14 @@ window.smartsupp || (function(d) {
                         row.classList.add("asset-list-item", "loading");
 
                         row.innerHTML = `
-                <div class="ali-top">
-                    <div class="ali-name-group">
-                        <div class="ali-name">Loading...</div>
-                    </div>
-                    <div class="ali-price-group">
-                        <div class="ali-price">----</div>
-                        <div>----</div>
-                    </div>
+                <div class="ali-icon" style="background: rgba(255,255,255,0.06);"></div>
+                <div class="ali-name-group">
+                    <div class="ali-name">Loading...</div>
+                    <div class="ali-subtitle">Please wait</div>
+                </div>
+                <div class="ali-price-group">
+                    <div class="ali-price">----</div>
+                    <div>----</div>
                 </div>
             `;
 
@@ -10663,6 +11224,380 @@ function resetOrderButton() {
             _interval = e.target.dataset.interval;
             closeWS();
             loadKlines();
+        });
+
+    })();
+    </script>
+    <!-- ============================================================ -->
+
+
+    <!--=================ASSET TRADE EXECUTION MODAL LOGIC=================-->
+    <script>
+    (function () {
+
+        const overlay      = document.getElementById("atmOverlay");
+        const backBtn       = document.getElementById("atmBackBtn");
+        const coinIcon      = document.getElementById("atmCoinIcon");
+        const titleEl       = document.getElementById("atmTitle");
+        const rangeBadge    = document.getElementById("atmRangeBadge");
+        const sellPriceEl   = document.getElementById("atmSellPrice");
+        const buyPriceEl    = document.getElementById("atmBuyPrice");
+        const sellBtn       = document.getElementById("atmSellBtn");
+        const buyBtn        = document.getElementById("atmBuyBtn");
+        const ticketOverlay = document.getElementById("atmTicketOverlay");
+        const ticketBackBtn = document.getElementById("atmTicketBackBtn");
+        const ticketDirEl   = document.getElementById("atmTicketDirection");
+        const ticketNameEl  = document.getElementById("atmTicketAssetName");
+        const amountInput   = document.getElementById("atmAmountInput");
+        const fullscreenBtn = document.getElementById("atmFullscreenBtn");
+
+        let currentAsset = null;
+        let _chart = null;
+        let _series = null;
+        let _ws = null;
+        let _symbol = "BTCUSDT";
+        let _rangeKey = "1H";
+
+        /* Binance interval / candle-count per screenshot time range */
+        const RANGE_MAP = {
+            "1H":  { interval: "1m",  limit: 60 },
+            "1D":  { interval: "5m",  limit: 288 },
+            "1W":  { interval: "1h",  limit: 168 },
+            "1M":  { interval: "4h",  limit: 180 },
+            "3M":  { interval: "1d",  limit: 90 },
+            "1Y":  { interval: "1w",  limit: 52 },
+            "MAX": { interval: "1M",  limit: 60 }
+        };
+
+        /*=================OPEN / CLOSE=================*/
+
+        window.openAssetTradeModal = function (data) {
+
+            currentAsset = data;
+
+            const raw = (data.symbol || data.name || "BTC").replace(/[^A-Za-z]/g, "").toUpperCase();
+            _symbol = raw.includes("USDT") ? raw : raw + "USDT";
+
+            titleEl.textContent = (data.symbol || "BTC") + "USD";
+            coinIcon.src = data.image || "icons/grok_icon.png";
+
+            sellPriceEl.textContent = "$" + Number(data.entry).toLocaleString(undefined, { maximumFractionDigits: 6 });
+            buyPriceEl.textContent  = "$" + Number(data.entry).toLocaleString(undefined, { maximumFractionDigits: 6 });
+
+            closeTicket(true);
+
+            overlay.style.display = "flex";
+            document.body.style.overflow = "hidden";
+
+            _rangeKey = "1H";
+            document.querySelectorAll(".atm-interval-btn").forEach(b => {
+                b.classList.toggle("active", b.dataset.interval === _rangeKey);
+            });
+            rangeBadge.textContent = _rangeKey;
+
+            initChart();
+        };
+
+        function closeAssetTradeModal() {
+            overlay.style.display = "none";
+            document.body.style.overflow = "";
+            closeWS();
+            closeTicket(true);
+        }
+
+        backBtn.addEventListener("click", closeAssetTradeModal);
+        overlay.addEventListener("click", function (e) {
+            if (e.target === overlay) closeAssetTradeModal();
+        });
+
+        /*=================TABS=================*/
+
+        document.getElementById("atmTabs").addEventListener("click", function (e) {
+            const tab = e.target.closest(".atm-tab");
+            if (!tab) return;
+
+            document.querySelectorAll(".atm-tab").forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+
+            const map = {
+                trade: "atmPanelTrade",
+                askai: "atmPanelAskai",
+                news: "atmPanelNews",
+                insights: "atmPanelInsights"
+            };
+
+            Object.values(map).forEach(id => {
+                const panel = document.getElementById(id);
+                if (panel) panel.style.display = "none";
+            });
+
+            const target = document.getElementById(map[tab.dataset.tab]);
+            if (target) target.style.display = tab.dataset.tab === "trade" ? "flex" : "flex";
+        });
+
+        /*=================INTERVAL BAR=================*/
+
+        document.querySelectorAll(".atm-interval-btn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                document.querySelectorAll(".atm-interval-btn").forEach(b => b.classList.remove("active"));
+                this.classList.add("active");
+                _rangeKey = this.dataset.interval;
+                rangeBadge.textContent = _rangeKey;
+                closeWS();
+                loadKlines();
+            });
+        });
+
+        /*=================FULLSCREEN TOGGLE=================*/
+
+        fullscreenBtn.addEventListener("click", function () {
+            const modal = document.querySelector(".atm-modal");
+            modal.classList.toggle("atm-modal--fullscreen");
+            if (_chart) {
+                setTimeout(() => {
+                    const container = document.getElementById("atmChart");
+                    _chart.applyOptions({
+                        width: container.clientWidth,
+                        height: container.clientHeight
+                    });
+                }, 260);
+            }
+        });
+
+        /*=================CHART=================*/
+
+        function initChart() {
+            const container = document.getElementById("atmChart");
+            if (!container) return;
+
+            if (_chart) { try { _chart.remove(); } catch (e) {} _chart = null; _series = null; }
+            if (typeof LightweightCharts === "undefined") { setTimeout(initChart, 200); return; }
+
+            _chart = LightweightCharts.createChart(container, {
+                width: container.clientWidth || 340,
+                height: container.clientHeight || 260,
+                layout: {
+                    background: { type: "solid", color: "transparent" },
+                    textColor: "rgba(255,255,255,0.55)"
+                },
+                grid: {
+                    vertLines: { color: "rgba(255,255,255,0.05)" },
+                    horzLines: { color: "rgba(255,255,255,0.05)" }
+                },
+                crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+                rightPriceScale: {
+                    borderColor: "rgba(255,255,255,0.08)",
+                    textColor: "rgba(255,255,255,0.5)"
+                },
+                timeScale: {
+                    borderColor: "rgba(255,255,255,0.08)",
+                    timeVisible: true,
+                    secondsVisible: false
+                },
+                handleScroll: { mouseWheel: true, pressedMouseMove: true },
+                handleScale: { mouseWheel: true, pinch: true }
+            });
+
+            _series = _chart.addLineSeries({
+                color: "#00ff88",
+                lineWidth: 2,
+                priceLineVisible: true,
+                priceLineColor: "#00ff88",
+                priceLineStyle: LightweightCharts.LineStyle.Dashed,
+                lastValueVisible: true
+            });
+
+            if (window._atmResizeObs) window._atmResizeObs.disconnect();
+            window._atmResizeObs = new ResizeObserver(() => {
+                if (_chart && container.clientWidth > 0) {
+                    _chart.applyOptions({ width: container.clientWidth, height: container.clientHeight });
+                }
+            });
+            window._atmResizeObs.observe(container);
+
+            loadKlines();
+        }
+
+        async function loadKlines() {
+            if (!_series) return;
+            const cfg = RANGE_MAP[_rangeKey] || RANGE_MAP["1H"];
+            try {
+                const url = `https://api.binance.com/api/v3/klines?symbol=${_symbol}&interval=${cfg.interval}&limit=${cfg.limit}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                if (!Array.isArray(data)) return;
+
+                const points = data.map(k => ({
+                    time: Math.floor(k[0] / 1000),
+                    value: parseFloat(k[4])
+                }));
+
+                _series.setData(points);
+                _chart.timeScale().fitContent();
+
+                if (points.length) {
+                    const last = points[points.length - 1].value;
+                    updatePrices(last);
+                }
+
+                openWS();
+            } catch (err) {
+                console.warn("ATM klines fetch error:", err);
+            }
+        }
+
+        function openWS() {
+            closeWS();
+            const sym = _symbol.toLowerCase();
+            const cfg = RANGE_MAP[_rangeKey] || RANGE_MAP["1H"];
+            _ws = new WebSocket(`wss://stream.binance.com:9443/ws/${sym}@kline_${cfg.interval}`);
+            _ws.onmessage = function (e) {
+                try {
+                    const msg = JSON.parse(e.data);
+                    const k = msg.k;
+                    if (!k || !_series) return;
+                    _series.update({ time: Math.floor(k.t / 1000), value: parseFloat(k.c) });
+                    updatePrices(parseFloat(k.c));
+                } catch (_) {}
+            };
+            _ws.onerror = function () { setTimeout(openWS, 3000); };
+        }
+
+        function closeWS() {
+            if (_ws) { try { _ws.close(); } catch (_) {} _ws = null; }
+        }
+
+        function updatePrices(price) {
+            if (!price) return;
+            sellPriceEl.textContent = "$" + price.toLocaleString(undefined, { maximumFractionDigits: 6 });
+            buyPriceEl.textContent  = "$" + price.toLocaleString(undefined, { maximumFractionDigits: 6 });
+        }
+
+        /*=================ORDER TICKET=================*/
+
+        function openTicket(direction) {
+            if (!currentAsset) return;
+
+            ticketDirEl.textContent = direction;
+            ticketDirEl.classList.remove("long", "short");
+            ticketDirEl.classList.add(direction === "BUY" ? "long" : "short");
+
+            ticketNameEl.textContent = currentAsset.name;
+
+            document.getElementById("atmAvailableBalance").textContent = "$" + (window.USER_CAPITAL || 0);
+            document.getElementById("atmEntryPrice").textContent = sellPriceEl.textContent.replace("$", "$");
+            document.getElementById("atmTP").textContent = "$" + Number(currentAsset.tp).toLocaleString();
+            document.getElementById("atmSL").textContent = "$" + Number(currentAsset.sl).toLocaleString();
+            document.getElementById("atmUnits").textContent = "0.0000";
+            document.getElementById("atmEstimatedProfit").textContent = "$0.00";
+            amountInput.value = "";
+
+            ticketOverlay.classList.add("open");
+        }
+
+        function closeTicket(instant) {
+            if (!ticketOverlay) return;
+            if (instant) {
+                ticketOverlay.classList.remove("open");
+            } else {
+                ticketOverlay.classList.remove("open");
+            }
+        }
+
+        sellBtn.addEventListener("click", () => openTicket("SELL"));
+        buyBtn.addEventListener("click", () => openTicket("BUY"));
+        ticketBackBtn.addEventListener("click", () => closeTicket(false));
+
+        /*=================AMOUNT CALCULATOR=================*/
+
+        amountInput.addEventListener("input", function () {
+            const amount = parseFloat(this.value) || 0;
+
+            const entryPrice = parseFloat(
+                document.getElementById("atmEntryPrice").textContent.replace(/[^0-9.]/g, "")
+            ) || 0;
+
+            const roiPercent = currentAsset ? Math.abs(currentAsset.roi) : 0;
+
+            const units = entryPrice ? amount / entryPrice : 0;
+            document.getElementById("atmUnits").textContent = units.toFixed(6);
+
+            const predictedProfit = amount * (roiPercent / 100);
+            document.getElementById("atmEstimatedProfit").textContent = "$" + predictedProfit.toFixed(2);
+        });
+
+        /*=================EXECUTE ORDER=================*/
+
+        document.getElementById("atmExecuteBtn").addEventListener("click", async function () {
+
+            const btn = this;
+
+            try {
+                btn.disabled = true;
+                btn.textContent = "Processing Order...";
+
+                const uid = localStorage.getItem("uid") || "";
+                const direction = ticketDirEl.textContent === "SELL" ? "SHORT" : "LONG";
+                const decision = ticketDirEl.textContent === "SELL" ? "Sell" : "Buy";
+
+                const entryPrice = parseFloat(
+                    document.getElementById("atmEntryPrice").textContent.replace(/[^0-9.]/g, "")
+                ) || 0;
+                const takeProfit = parseFloat(
+                    document.getElementById("atmTP").textContent.replace(/[^0-9.]/g, "")
+                ) || 0;
+                const stopLoss = parseFloat(
+                    document.getElementById("atmSL").textContent.replace(/[^0-9.]/g, "")
+                ) || 0;
+                const amount = parseFloat(amountInput.value) || 0;
+                const units = parseFloat(document.getElementById("atmUnits").textContent) || 0;
+                const estimatedProfit = parseFloat(
+                    document.getElementById("atmEstimatedProfit").textContent.replace(/[^0-9.]/g, "")
+                ) || 0;
+                const roi = currentAsset ? currentAsset.roi : 0;
+
+                if (!uid) { showToast("User session missing", "error"); resetBtn(); return; }
+                if (!amount || amount <= 0) { showToast("Enter trade amount", "error"); resetBtn(); return; }
+                if (amount > (window.USER_CAPITAL || 0)) { showToast("Amount exceeds available balance", "error"); resetBtn(); return; }
+
+                const tradeData = {
+                    action: "createTrade",
+                    uid: uid,
+                    asset: currentAsset ? currentAsset.name : "",
+                    decision: decision,
+                    direction: direction,
+                    entry: entryPrice,
+                    tp: takeProfit,
+                    sl: stopLoss,
+                    amount: amount,
+                    units: units,
+                    estimatedProfit: estimatedProfit,
+                    roi: roi
+                };
+
+                const response = await fetch(API, { method: "POST", body: JSON.stringify(tradeData) });
+                const result = await response.json();
+
+                if (result && result.success) {
+                    showToast("Order executed successfully", "success");
+                    if (typeof result.newBalance === "number") window.USER_CAPITAL = result.newBalance;
+                    closeTicket(true);
+                    closeAssetTradeModal();
+                } else {
+                    showToast((result && result.message) || "Order failed", "error");
+                }
+
+            } catch (err) {
+                console.warn("ATM execute order error:", err);
+                showToast("Something went wrong", "error");
+            } finally {
+                resetBtn();
+            }
+
+            function resetBtn() {
+                btn.disabled = false;
+                btn.textContent = "Confirm Order";
+            }
         });
 
     })();
