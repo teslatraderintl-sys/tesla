@@ -967,6 +967,140 @@ window.smartsupp || (function(d) {
             transform: translateY(-4px);
         }
 
+        /*=================ANALYTICS CATEGORY TAB NAV=================*/
+
+        .analytics-tab-nav {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 0 14px;
+            position: sticky;
+            top: 62px;
+            background-color: #000;
+            z-index: 19;
+            scrollbar-width: none;
+        }
+
+        .analytics-tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .analytics-tab-btn {
+            flex-shrink: 0;
+            white-space: nowrap;
+            padding: 9px 16px;
+            border-radius: 20px;
+            background: var(--bg-filter);
+            border: 1px solid var(--bg-border-line);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .analytics-tab-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        /*=================ASSET LIST (INVESTMENT PAGE)=================*/
+
+        .asset-list-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .asset-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .asset-list-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 14px 15px;
+            border: 1px solid var(--bg-border-line);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: .2s ease;
+            position: relative;
+        }
+
+        .asset-list-item:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .asset-list-item .ali-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .asset-list-item .ali-name-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .asset-list-item .ali-name {
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .asset-list-item .ali-badges {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .asset-list-item .ali-price-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+
+        .asset-list-item .ali-price {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .asset-list-item .ali-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding-top: 8px;
+            border-top: 1px solid var(--bg-border-line);
+        }
+
+        .asset-list-item .ali-info-pill {
+            display: flex;
+            gap: 14px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .asset-list-empty {
+            padding: 40px 15px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
         /*=================WALLET ACTION BUTTONS=================*/
 
         .wallet-actions {
@@ -4977,6 +5111,9 @@ window.smartsupp || (function(d) {
                         <img class="search-icon" src="icons/search-icon.png" alt="">
                     </div>
 
+                    <!-- ================= CATEGORY TAB NAV ================= -->
+                    <div class="analytics-tab-nav" id="analyticsTabNav"></div>
+
                     <div class="market-analytics-wrapper" id="marketAnalyticsWrapper"></div>
 
                 </div>
@@ -8180,11 +8317,13 @@ window.smartsupp || (function(d) {
         document.addEventListener("DOMContentLoaded", function () {
 
             const wrapper = document.getElementById("marketAnalyticsWrapper");
+            const tabNav = document.getElementById("analyticsTabNav");
             const searchInput = document.getElementById("analyticsSearchInput");
 
             let analyticsLoaded = false;
             let refreshAnalyticsInterval = null;
             let allMarketData = []; // STORE FULL DATASET
+            let activeTabKey = null;
 
             const categoryConfig = [
                 { key: "topBullish", title: "Top Bullish" },
@@ -8202,22 +8341,50 @@ window.smartsupp || (function(d) {
 
             function buildSections() {
 
+                tabNav.innerHTML = "";
                 wrapper.innerHTML = "";
 
-                categoryConfig.forEach(category => {
+                categoryConfig.forEach((category, index) => {
 
-                    const section = document.createElement("div");
-                    section.classList.add("asset-section");
+                    /* Tab button */
+                    const tabBtn = document.createElement("button");
+                    tabBtn.type = "button";
+                    tabBtn.classList.add("analytics-tab-btn");
+                    tabBtn.dataset.key = category.key;
+                    tabBtn.textContent = category.title;
+                    if (index === 0) tabBtn.classList.add("active");
 
-                    section.innerHTML = `
-                <h4>${category.title}</h4>
-                <div class="asset-scroll-wrapper">
-                    <div class="asset-row" id="${category.key}Container"></div>
-                </div>
-            `;
+                    tabBtn.addEventListener("click", () => switchAnalyticsTab(category.key));
 
-                    wrapper.appendChild(section);
+                    tabNav.appendChild(tabBtn);
+
+                    /* List panel */
+                    const panel = document.createElement("div");
+                    panel.classList.add("asset-list-panel");
+                    panel.id = `${category.key}Panel`;
+                    panel.style.display = index === 0 ? "flex" : "none";
+
+                    panel.innerHTML = `<div class="asset-list" id="${category.key}Container"></div>`;
+
+                    wrapper.appendChild(panel);
                     containers[category.key] = document.getElementById(`${category.key}Container`);
+                });
+
+                activeTabKey = categoryConfig[0].key;
+            }
+
+            /*=================SWITCH TAB=================*/
+
+            function switchAnalyticsTab(key) {
+
+                activeTabKey = key;
+
+                document.querySelectorAll(".analytics-tab-btn").forEach(btn => {
+                    btn.classList.toggle("active", btn.dataset.key === key);
+                });
+
+                document.querySelectorAll(".asset-list-panel").forEach(panel => {
+                    panel.style.display = panel.id === `${key}Panel` ? "flex" : "none";
                 });
             }
 
@@ -8282,15 +8449,14 @@ window.smartsupp || (function(d) {
                 container.innerHTML = "";
 
                 if (!list || list.length === 0) {
-                    container.innerHTML = "<div class='asset'>No results</div>";
+                    container.innerHTML = "<div class='asset-list-empty'>No results</div>";
                     return;
                 }
 
                 list.forEach(asset => {
 
-                    const card = document.createElement("div");
-                    card.classList.add("asset");
-                    card.style.position = "relative";
+                    const row = document.createElement("div");
+                    row.classList.add("asset-list-item");
 
                     const isPositive = asset.change >= 0;
                     const changeClass = isPositive ? "green" : "red";
@@ -8307,16 +8473,26 @@ window.smartsupp || (function(d) {
                         ? "icons/arrow-trend-up.png"
                         : "icons/arrow-trend-down.png";
 
-                    card.innerHTML = `
-                <span class="ai-badge top-right">Grok AI ${aiScore}</span>
+                    row.innerHTML = `
+                <div class="ali-top">
+                    <div class="ali-name-group">
+                        <div class="ali-badges">
+                            <span class="ai-badge">Grok AI ${aiScore}</span>
+                        </div>
+                        <div class="ali-name">${asset.name} (${asset.symbol})</div>
+                    </div>
 
-                <h5>${asset.name} (${asset.symbol})</h5>
+                    <div class="ali-price-group">
+                        <div class="ali-price">$${asset.price.toLocaleString()}</div>
+                        <div class="${changeClass}">${isPositive ? "+" : ""}${asset.change.toFixed(2)}%</div>
+                    </div>
+                </div>
 
-                <div class="rate">$${asset.price.toLocaleString()}</div>
-
-                <div class="change-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <div class="${changeClass}">
-                        ${isPositive ? "+" : ""}${asset.change.toFixed(2)}%
+                <div class="ali-bottom">
+                    <div class="ali-info-pill">
+                        <span>AI Confidence ${confidence}%</span>
+                        <span>TP $${targetPrice}</span>
+                        <span>SL $${stopLoss}</span>
                     </div>
 
                     <div class="small-pill momentum-pill">
@@ -8324,20 +8500,10 @@ window.smartsupp || (function(d) {
                         <span class="animated-roi">$0.00</span>
                     </div>
                 </div>
-                <div style="display: flex; gap: 10px; align-items: center; width:100%; font-size: 14px; padding: 8px 0px; border-bottom: 1px solid var(--bg-border-line);margin-bottom:8px;">
-                    <img src="icons/grok_icon.png" style="height: 30px;" />
-                    <p>Grok Strategy</p>
-                </div>
-                <div class="info-pill">
-                    
-                    <span>AI Confidence ${confidence}%</span>
-                    <span>TP $${targetPrice}</span>
-                    <span>SL $${stopLoss}</span>
-                </div>
             `;
 
                     /* CLICK → OPEN RECEIPT MODAL */
-                    card.addEventListener("click", () => {
+                    row.addEventListener("click", () => {
 
                         const direction = asset.change >= 0 ? "LONG" : "SHORT";
 
@@ -8354,9 +8520,9 @@ window.smartsupp || (function(d) {
                     });
 
 
-                    container.appendChild(card);
+                    container.appendChild(row);
 
-                    const roiElem = card.querySelector(".animated-roi");
+                    const roiElem = row.querySelector(".animated-roi");
                     animateNumber(roiElem, 0, estimatedROI, 800);
                 });
             }
@@ -8416,18 +8582,24 @@ window.smartsupp || (function(d) {
 
                     container.innerHTML = "";
 
-                    for (let i = 0; i < 12; i++) {
+                    for (let i = 0; i < 6; i++) {
 
-                        const card = document.createElement("div");
-                        card.classList.add("asset", "loading");
+                        const row = document.createElement("div");
+                        row.classList.add("asset-list-item", "loading");
 
-                        card.innerHTML = `
-                <h5>Loading...</h5>
-                <div class="rate">----</div>
-                <div>----</div>
+                        row.innerHTML = `
+                <div class="ali-top">
+                    <div class="ali-name-group">
+                        <div class="ali-name">Loading...</div>
+                    </div>
+                    <div class="ali-price-group">
+                        <div class="ali-price">----</div>
+                        <div>----</div>
+                    </div>
+                </div>
             `;
 
-                        container.appendChild(card);
+                        container.appendChild(row);
                     }
                 });
             }
