@@ -4052,23 +4052,91 @@ window.smartsupp || (function(d) {
 
 
     <style>
-        /* BASE */
+        /* =========================================================
+           INVEST / BUY VIEWS — premium redesign
+           Shared shell for the "Invest in Model" and "Buy Model" screens.
+           Invest reads like a trading/equity screen (mono figures, ROI
+           framing). Buy reads like a configurator/checkout (spec sheet,
+           invoice). Both share the same structural language so the app
+           still feels like one product.
+        ========================================================= */
+
+        @keyframes ivFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
         .invest-view,
         .buy-view {
             height: 100dvh;
-            background: #000;
+            background:
+                radial-gradient(1200px 600px at 15% -10%, rgba(232,33,39,0.10), transparent 60%),
+                #000;
             display: flex;
             flex-direction: column;
             color: #fff;
+            position: relative;
+            animation: ivFadeIn .35s ease both;
         }
 
-        /* HEADER stays same */
+        /* HEADER */
         .invest-header {
             display: flex;
-            gap: 20px;
-            padding: 20px;
-            border-bottom: 1px solid #111;
+            gap: 14px;
             align-items: center;
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border-soft, rgba(255,255,255,.06));
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            position: relative;
+            z-index: 20;
+            flex-shrink: 0;
+        }
+
+        .iv-back-btn {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: rgba(255,255,255,0.75);
+            transition: .2s ease;
+            padding: 0;
+        }
+        .iv-back-btn svg { width: 16px; height: 16px; display: block; }
+        .iv-back-btn:hover {
+            border-color: var(--accent-primary, #e82127);
+            background: rgba(232,33,39,0.12);
+            color: #fff;
+        }
+
+        .iv-header-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+        .iv-eyebrow {
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.1px;
+            color: rgba(255,255,255,0.4);
+            font-family: 'SF Mono','Courier New',monospace;
+        }
+        .invest-header h3 {
+            font-size: clamp(16px, 2.2vw, 19px);
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* MAIN LAYOUT */
@@ -4076,158 +4144,446 @@ window.smartsupp || (function(d) {
             flex: 1;
             display: flex;
             overflow: hidden;
+            position: relative;
         }
 
-        /* LEFT SIDE (IMAGE HERO) */
+        /* LEFT SIDE — HERO IMAGE */
         .left-panel {
             position: relative;
-            flex: 0.5;
+            flex: 0 0 44%;
             display: flex;
             flex-direction: column;
-            gap: 20px;
             align-items: center;
             justify-content: center;
-            background: #000;
+            background:
+                radial-gradient(closest-side, rgba(232,33,39,0.20), rgba(232,33,39,0) 70%),
+                #000;
+            overflow: hidden;
+            padding: 30px 24px 84px;
         }
 
         .left-panel .car-image {
-            width: 70%;
-            max-width: 900px;
+            width: 80%;
+            max-width: 620px;
             object-fit: contain;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 30px 50px rgba(0,0,0,0.65));
         }
 
         /* Tesla logo overlay */
         .left-panel .tesla-logo {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 150px;
+            top: 22px;
+            left: 22px;
+            width: 118px;
             z-index: 5;
-        }        
+            opacity: 0.92;
+        }
+
+        /* Floating glass spec strip, straddles the bottom of the hero image */
+        .iv-spec-strip {
+            position: absolute;
+            left: 50%;
+            bottom: 22px;
+            transform: translateX(-50%);
+            z-index: 6;
+            display: flex;
+            background: rgba(10,10,10,0.62);
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 16px;
+            padding: 12px 6px;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            max-width: calc(100% - 24px);
+        }
+        .iv-spec-item {
+            padding: 0 16px;
+            text-align: center;
+            border-right: 1px solid rgba(255,255,255,0.10);
+            min-width: 76px;
+        }
+        .iv-spec-item:last-child { border-right: none; }
+        .iv-spec-item strong {
+            display: block;
+            font-family: 'SF Mono','Courier New',monospace;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+        .iv-spec-item span {
+            display: block;
+            margin-top: 3px;
+            font-size: 9.5px;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            color: rgba(255,255,255,0.45);
+        }
 
         /* RIGHT PANEL */
         .right-panel {
-            flex: 0.8;
-            padding: 30px;
-            padding-bottom: 0px;
+            flex: 1;
+            padding: 30px 30px 0;
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 26px;
             overflow-y: auto;
-            border-left: 1px solid #111;
+            border-left: 1px solid var(--border-soft, rgba(255,255,255,.06));
+            scrollbar-width: thin;
+        }
+        .right-panel::-webkit-scrollbar { width: 8px; }
+        .right-panel::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
         }
 
         /* TITLE */
-        .product-title h1 {
-            font-size: 32px;
-            font-weight: 600;
+        .product-title h1,
+        .product-title h2 {
+            font-size: clamp(23px, 2.8vw, 29px);
+            font-weight: 700;
+            letter-spacing: -0.4px;
         }
 
         .product-title p {
-            opacity: .6;
-            margin-top: 5px;
+            opacity: .62;
+            margin-top: 7px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            max-width: 52ch;
+        }
+
+        /* SECTION HEADINGS — small accent tick before every h3 in the flow */
+        .right-panel h3 {
+            font-size: 14.5px;
+            font-weight: 700;
+            letter-spacing: .15px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #fff;
+        }
+        .right-panel h3::before {
+            content: "";
+            width: 3px;
+            height: 15px;
+            border-radius: 2px;
+            background: var(--accent-primary, #e82127);
+            display: inline-block;
+            flex-shrink: 0;
         }
 
         /* STATS ROW */
         .tesla-stats-bar {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
         }
 
         .tesla-stats-bar div {
             text-align: center;
+            background: var(--bg-card, #0f0f0f);
+            border: 1px solid var(--border-soft, rgba(255,255,255,.06));
+            border-radius: 12px;
+            padding: 14px 8px;
+            transition: border-color .2s ease;
+        }
+        .tesla-stats-bar div:hover {
+            border-color: rgba(255,255,255,0.18);
         }
 
         .tesla-stats-bar strong {
             display: block;
-            font-size: 18px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'SF Mono','Courier New',monospace;
+            letter-spacing: -0.3px;
         }
 
         .tesla-stats-bar span {
-            font-size: 12px;
-            opacity: .6;
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            opacity: .5;
+            margin-top: 5px;
         }
 
-        /* OPTION BOXES */
-        .option-box {
-            border: 1px solid #222;
-            padding: 15px;
-            border-radius: 10px;
+        /* ===== INVESTMENT PLAN CARDS (Invest view) ===== */
+        .iv-plan-grid {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .iv-plan-card {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.10);
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            padding: 14px 16px;
             cursor: pointer;
-            transition: .2s;
+            transition: .2s ease;
+            color: #fff;
+            font-family: inherit;
+        }
+        .iv-plan-card:hover {
+            border-color: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.04);
+        }
+        .iv-plan-card.active {
+            border-color: var(--accent-primary, #e82127);
+            background: rgba(232,33,39,0.08);
+            box-shadow: 0 0 0 1px rgba(232,33,39,0.25);
+        }
+        .iv-plan-radio {
+            width: 18px;
+            height: 18px;
+            min-width: 18px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            position: relative;
+            transition: .2s ease;
+            flex-shrink: 0;
+        }
+        .iv-plan-card.active .iv-plan-radio {
+            border-color: var(--accent-primary, #e82127);
+        }
+        .iv-plan-card.active .iv-plan-radio::after {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background: var(--accent-primary, #e82127);
+        }
+        .iv-plan-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .iv-plan-name-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .iv-plan-name {
+            font-size: 14.5px;
+            font-weight: 700;
+        }
+        .iv-plan-badge {
+            font-size: 9.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            color: var(--accent-pro-text, #ffd369);
+            background: var(--accent-pro-bg, #2d223f);
+            padding: 3px 7px;
+            border-radius: 6px;
+        }
+        .iv-plan-range {
+            font-size: 13px;
+            font-family: 'SF Mono','Courier New',monospace;
+            color: rgba(255,255,255,0.55);
         }
 
-        .option-box:hover {
-            border-color: #e82127;
-        }
-
-        /* INVEST PACKAGES */
-        .package {
-            border: 1px solid #222;
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        .package.pro {
-            border-color: #e82127;
-        }
-
-        /* PROS CONS */
+        /* ===== PROS / RISKS (Invest view) ===== */
         .unordered-list-wrap {
             display: flex;
-            gap: 20px;
+            gap: 16px;
+            flex-wrap: wrap;
         }
-
-        .unordered-list-wrap div {
+        .fact-col {
+            flex: 1;
+            min-width: 160px;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 10px;
+            background: var(--bg-card, #0f0f0f);
+            border: 1px solid var(--border-soft, rgba(255,255,255,.06));
+            border-radius: 12px;
+            padding: 14px 16px;
         }
+        .fact-col-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .fact-col-head .dot {
+            width: 19px;
+            height: 19px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        .fact-col.pros .dot { background: rgba(57,231,176,0.15); color: var(--accent-green, #39e7b0); }
+        .fact-col.risks .dot { background: rgba(255,176,32,0.15); color: #ffb020; }
+        .fact-col h4 { font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; opacity: .8; }
 
         .unordered-list-wrap ul {
-            padding-left: 15px;
-            opacity: .7;
-            gap: 5px;
+            padding-left: 0;
+            list-style: none;
+            gap: 8px;
             font-size: 13px;
-            font-weight: 100;
+            font-weight: 400;
             display: flex;
             flex-direction: column;
         }
+        .unordered-list-wrap li {
+            position: relative;
+            padding-left: 19px;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.72);
+        }
+        .fact-col.pros li::before {
+            content: "\2713";
+            position: absolute;
+            left: 0; top: 0;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--accent-green, #39e7b0);
+        }
+        .fact-col.risks li::before {
+            content: "!";
+            position: absolute;
+            left: 3px; top: -1px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #ffb020;
+        }
+
+        /* ===== TRUST / REASSURANCE NOTE ===== */
+        .iv-trust-note {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.45);
+            padding: 2px 0 4px;
+        }
+        .iv-trust-note svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--accent-green, #39e7b0); }
 
         /* STICKY CTA */
         .bottom-bar {
             width: 100%;
-            border-top: 1px solid #383838;
-            padding: 15px 0px;
+            border-top: 1px solid rgba(255,255,255,0.10);
+            padding: 16px 0px;
+            margin-top: 4px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 14px;
             position: sticky;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);            
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .bottom-bar-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+        .bottom-bar-info span {
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: rgba(255,255,255,0.42);
         }
 
         .price-tag {
-            font-size: 22px;
-            font-weight: 600;
+            font-size: 21px;
+            font-weight: 700;
+            font-family: 'SF Mono','Courier New',monospace;
+            letter-spacing: -0.4px;
+            white-space: nowrap;
         }
 
         .buy-confirm-btn,
         .invest-confirm-btn {
-            background: #e82127;
+            background: linear-gradient(135deg, #ff3b3f, #c81017);
             border: none;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-weight: 600;
+            padding: 13px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
             cursor: pointer;
             display: flex;
             gap: 10px;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            color: #fff;
+            white-space: nowrap;
+            box-shadow: 0 10px 24px rgba(232,33,39,0.28);
+            transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+            flex-shrink: 0;
+        }
+        .buy-confirm-btn:hover,
+        .invest-confirm-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 30px rgba(232,33,39,0.38);
+            filter: brightness(1.05);
+        }
+        .buy-confirm-btn:active,
+        .invest-confirm-btn:active {
+            transform: translateY(0);
+        }
+        .buy-confirm-btn:disabled,
+        .invest-confirm-btn:disabled {
+            opacity: .6;
+            cursor: default;
+            transform: none;
+        }
+
+        /* ===== RESPONSIVE (invest / buy views only) ===== */
+        @media (max-width: 900px) {
+            .invest-header { padding: 12px 16px; }
+            .left-panel .tesla-logo { width: 74px; top: 14px; left: 14px; }
+
+            .invest-content {
+                flex-direction: column;
+                overflow-y: auto;
+                scrollbar-gutter: stable;
+            }
+
+            .left-panel {
+                flex: none;
+                padding: 22px 16px 56px;
+                min-height: 260px;
+            }
+            .left-panel .car-image { width: 74%; }
+
+            .iv-spec-strip {
+                bottom: -18px;
+                padding: 10px 4px;
+            }
+            .iv-spec-item { padding: 0 10px; min-width: 62px; }
+            .iv-spec-item strong { font-size: 12.5px; }
+
+            .right-panel {
+                flex: 1;
+                overflow-y: visible;
+                border-left: none;
+                padding: 40px 18px 0;
+                gap: 22px;
+            }
+
+            .unordered-list-wrap { flex-direction: column; }
+
+            .bottom-bar { padding: 14px 0 calc(14px + env(safe-area-inset-bottom)); }
         }
     </style>
 
@@ -4240,37 +4596,6 @@ window.smartsupp || (function(d) {
             .tesla-widget-grid-wrap {
                 grid-template-columns: 1fr;
             }
-
-        /* Tesla logo overlay */
-        .left-panel .tesla-logo {
-            width: 80px;
-        }  
-
-        .invest-header{
-            padding: 8px;
-        }
-
-
-        .left-panel {
-            flex: 0.6;
-        }
-
-        .right-panel {
-            flex: 1;
-            overflow-y: visible;
-        }        
-
-
-            /* MAIN LAYOUT */
-            .invest-content {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-                overflow-y: auto;
-                scrollbar-gutter: stable;
-            }
-
 
             .tesla-car-card {
                 height: 250px;
@@ -4346,62 +4671,83 @@ window.smartsupp || (function(d) {
     </style>
 
 <style>
+/* ===== DELIVERY FORM (Buy view) ===== */
 .tesla-delivery-form{
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
     color: white;
-    background: transparent;
+    background: var(--bg-card, #0f0f0f);
+    border: 1px solid var(--border-soft, rgba(255,255,255,.06));
+    border-radius: 14px;
+    padding: 18px;
 }
 
-/* TITLE */
 .tesla-delivery-form h2{
-    font-weight: 600;
-    font-size: 22px;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+.tesla-delivery-form h2::before {
+    content: "";
+    width: 3px;
+    height: 15px;
+    border-radius: 2px;
+    background: var(--accent-primary, #e82127);
+    display: inline-block;
 }
 
 /* FIELD */
 .field{
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.6);
+    gap: 7px;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: rgba(255,255,255,0.45);
 }
 
 /* INPUTS */
 .field input,
 .field select,
 .field textarea{
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.14);
     border-radius: 10px;
-    padding: 12px;
+    padding: 12px 13px;
     color: white;
     font-size: 14px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
     outline: none;
     transition: 0.2s ease;
 }
 
-/* TEXTAREA HEIGHT */
 .field textarea{
     min-height: 80px;
     resize: none;
 }
 
-/* FOCUS EFFECT */
+.field input::placeholder,
+.field textarea::placeholder { color: rgba(255,255,255,0.28); }
+
 .field input:focus,
 .field select:focus,
 .field textarea:focus{
     border-color: #e82127;
+    background: rgba(232,33,39,0.05);
 }
 
-/* BUTTON */
 .submit-btn{
     margin-top: 10px;
     padding: 14px;
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid #e82127;
     background: transparent;
     color: white;
@@ -4410,7 +4756,6 @@ window.smartsupp || (function(d) {
     transition: 0.25s ease;
 }
 
-/* BUTTON HOVER */
 .submit-btn:hover{
     background: #e82127;
     color: white;
@@ -4419,47 +4764,58 @@ window.smartsupp || (function(d) {
 
 
 <style>
+/* ===== WARRANTY (Buy view) ===== */
 .tesla-warranty-box{
     width: 100%;
-    max-width: 500px;
-    margin: 20px auto;
+    max-width: 100%;
+    margin: 0;
     color: #fff;
-    font-family: 'Inter', sans-serif;
 }
 
 .tesla-warranty-title{
-    text-align: center;
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 20px;
+    text-align: left;
+    font-size: 14.5px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+.tesla-warranty-title::before {
+    content: "";
+    width: 3px;
+    height: 15px;
+    border-radius: 2px;
+    background: var(--accent-primary, #e82127);
+    display: inline-block;
 }
 
 .tesla-warranty-card{
-    background: #0f0f0f;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    padding: 20px;
+    background: var(--bg-card, #0f0f0f);
+    border: 1px solid var(--border-soft, rgba(255,255,255,.06));
+    border-radius: 14px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
 }
-
-/* ITEM */
 
 .tesla-warranty-item{
     display: flex;
     gap: 14px;
     align-items: flex-start;
 }
-
-/* ICON */
+.tesla-warranty-item + .tesla-warranty-item {
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
 
 .tesla-icon{
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-radius: 10px;
-    background: #1a1a1a;
-    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(232,33,39,0.10);
+    border: 1px solid rgba(232,33,39,0.18);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4469,175 +4825,210 @@ window.smartsupp || (function(d) {
 .tesla-icon img{
     width: 18px;
     height: 18px;
-    opacity: 0.9;
+    opacity: 0.95;
 }
 
-/* TEXT */
-
 .tesla-warranty-text h4{
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 6px;
+    font-size: 13.5px;
+    font-weight: 700;
+    margin-bottom: 5px;
 }
 
 .tesla-warranty-text p{
-    font-size: 13px;
+    font-size: 12.5px;
     line-height: 1.6;
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.55);
 }
 </style>
 
 
 <style>
-/* WRAPPER */
-.custom-select{
+/* ===== BILLING SUMMARY ROWS (Buy view — static invoice lines) ===== */
+.option-box {
+    border: 1px solid var(--border-soft, rgba(255,255,255,.06));
+    background: var(--bg-card, #0f0f0f);
+    padding: 13px 15px;
+    border-radius: 10px;
     display: flex;
-    flex-direction: column;
-    gap: 6px;
-    position: relative;
-    font-size: 13px;
-    color: white;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.7);
+}
+.option-box span:first-child { color: rgba(255,255,255,0.5); }
+.option-box span:last-child,
+.option-box #buyPrice,
+.option-box #buyShipping {
+    font-family: 'SF Mono','Courier New',monospace;
+    font-weight: 600;
+    color: #fff;
 }
 
 #buyTax {
     font-weight: 600;
     color: #fff;
+    font-family: 'SF Mono','Courier New',monospace;
 }
 
 .tax-percent {
-    font-size: 12px;
+    font-size: 11.5px;
+    font-family: inherit;
+    font-weight: 400;
     color: #888;
     margin-left: 6px;
 }
 
+/* ===== CUSTOM SELECT (Delivery method) ===== */
+.custom-select{
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    position: relative;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: rgba(255,255,255,0.45);
+}
 
-/* BOX */
 .select-box{
-    border: 1px solid rgba(255, 255, 255, 0.329);
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.03);
     border-radius: 10px;
-    padding: 12px;
+    padding: 12px 13px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
     color: white;
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
     transition: 0.2s;
 }
 
-/* HOVER / ACTIVE */
 .select-box:hover{
-    border-color: rgba(255, 255, 255, 0.329);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* ARROW */
+.custom-select.open .select-box {
+    border-color: var(--accent-primary, #e82127);
+}
+
 .arrow{
     width: 8px;
     height: 8px;
-    border-right: 2px solid white;
-    border-bottom: 2px solid white;
+    border-right: 2px solid rgba(255,255,255,0.5);
+    border-bottom: 2px solid rgba(255,255,255,0.5);
     transform: rotate(45deg);
     transition: 0.2s;
 }
 
-/* OPTIONS PANEL */
 .options{
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
-    background: var(--bg-card);
+    background: #141414;
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 10px;
     margin-top: 6px;
     overflow: hidden;
     display: none;
     z-index: 10;
-    padding: 8px;
+    padding: 6px;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.5);
 }
 
-/* OPTION */
 .option{
-    padding: 12px;
-    color: white;
+    padding: 11px 10px;
+    color: rgba(255,255,255,0.75);
     cursor: pointer;
-    transition: 0.2s;
-    border-radius: 6px;
+    transition: 0.15s;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
 }
 
-/* HOVER */
 .option:hover{
-    background: var(--bg-soft);
+    background: rgba(255,255,255,0.06);
+    color: #fff;
 }
 
-/* ACTIVE */
 .option.active{
-    background: var(--accent-primary);
+    background: rgba(232,33,39,0.14);
+    color: #fff;
+    font-weight: 600;
 }
 
-/* OPEN STATE */
 .custom-select.open .options{
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
 }
 
 .custom-select.open .arrow{
     transform: rotate(-135deg);
+    border-color: var(--accent-primary, #e82127);
 }
 </style>
 
 
 <style>
-    /* WRAPPER */
+    /* ===== KEY FEATURES (Buy view) ===== */
 .tesla-benefits{
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
 }
 
-.tesla-benefits h3{
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 5px;
+.iv-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 10px;
 }
 
-/* CARD */
 .benefit-card{
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 12px 14px;
+    padding: 13px 15px;
     border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: rgba(255,255,255,0.02);
-    transition: 0.25s ease;
+    border: 1px solid var(--border-soft, rgba(255,255,255,.06));
+    background: var(--bg-card, #0f0f0f);
+    transition: 0.2s ease;
 }
 
-/* HOVER EFFECT */
 .benefit-card:hover{
-    border-color: rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.05);
-    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.18);
+    transform: translateY(-1px);
 }
 
-/* IMAGE */
+.benefit-card .tesla-icon {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.08);
+}
+
 .benefit-card img{
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
     object-fit: contain;
     filter: brightness(1.1);
 }
 
-/* TEXT */
 .benefit-text h4{
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13.5px;
+    font-weight: 700;
     margin-bottom: 3px;
 }
 
 .benefit-text p{
     font-size: 12px;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.4;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
 }
 </style>
 
@@ -4648,22 +5039,45 @@ window.smartsupp || (function(d) {
   top:0; left:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.7);
+  background:rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display:flex;
   justify-content:center;
   align-items:center;
   z-index:9999;
+  padding: 20px;
+  animation: ivFadeIn .2s ease both;
 }
 
 .invest-modal-content{
-  background:#111;
-  padding:20px;
-  border-radius:12px;
-  width:320px;
-  display:flex;
-  flex-direction:column;
-  gap:15px;
-  color:#fff;
+  background: #0c0c0c;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 24px;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: #fff;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
+
+.invest-modal-content h3 {
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.invest-modal-content h3::before {
+  content: "";
+  width: 3px;
+  height: 15px;
+  border-radius: 2px;
+  background: var(--accent-primary, #e82127);
+  display: inline-block;
 }
 
 .quick-amounts{
@@ -4673,39 +5087,87 @@ window.smartsupp || (function(d) {
 }
 
 .amt-btn{
-  padding:10px;
-  border:none;
-  background:#222;
-  color:#fff;
-  border-radius:8px;
-  cursor:pointer;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  font-weight: 600;
+  font-family: 'SF Mono','Courier New',monospace;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: .15s ease;
+}
+.amt-btn:hover {
+  border-color: rgba(255,255,255,0.25);
 }
 
 .amt-btn.active{
-  background:#e50914;
+  background: rgba(232,33,39,0.12);
+  border-color: var(--accent-primary, #e82127);
+  color: #fff;
+}
+
+.manual-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .manual-input input{
   width:100%;
-  padding:10px;
-  border-radius:8px;
-  border:1px solid #333;
-  background:#000;
+  padding: 12px 13px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.03);
   color:#fff;
+  font-size: 14px;
+  font-family: 'SF Mono','Courier New',monospace;
+  outline: none;
+  transition: .2s ease;
+}
+.manual-input input:focus {
+  border-color: var(--accent-primary, #e82127);
+  background: rgba(232,33,39,0.05);
+}
+
+.manual-input small {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.4);
 }
 
 .modal-actions{
   display:flex;
   justify-content:space-between;
   gap:10px;
+  margin-top: 2px;
 }
 
 .modal-actions button{
   flex:1;
-  padding:10px;
+  padding: 12px;
   border:none;
-  border-radius:8px;
+  border-radius: 10px;
   cursor:pointer;
+  font-weight: 700;
+  font-size: 13.5px;
+  transition: .15s ease;
+}
+
+.modal-actions-cancel-button {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.75);
+  border: 1px solid rgba(255,255,255,0.1) !important;
+}
+.modal-actions-cancel-button:hover { background: rgba(255,255,255,0.1); }
+
+.modal-actions-invest-button {
+  background: linear-gradient(135deg, #ff3b3f, #c81017);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(232,33,39,0.28);
+}
+.modal-actions-invest-button:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
 }
 
 </style>
@@ -4728,15 +5190,70 @@ window.smartsupp || (function(d) {
         max-width: 420px;
         height: 100%;
         max-height: 780px;
-        background: #0b0d14;
-        border-radius: 22px;
-        border: 1px solid rgba(255, 255, 255, .08);
+        background: var(--bg-card);
+        border-radius: 16px;
+        border: 1px solid var(--bg-border-line);
         display: flex;
         flex-direction: column;
         overflow: hidden;
         position: relative;
         color: var(--text-primary);
         transition: max-width .25s ease, max-height .25s ease;
+    }
+
+    /* ---------- ANALYTICS/TRADE PAGE LAYOUT ---------- */
+    /* Mobile (default): list only, full width. Trade panel stays a fixed overlay/modal (.atm-overlay above). */
+    .analytics-body-row {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .analytics-list-col {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        min-width: 0;
+    }
+
+    /* Desktop: list and trade panel side by side, on the same row */
+    @media (min-width: 900px) {
+
+        .analytics-body-row {
+            flex-direction: row;
+            align-items: stretch;
+        }
+
+        .analytics-list-col {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Trade panel becomes a persistent inline column instead of a full-screen modal */
+        #analytics .atm-overlay {
+            position: static;
+            inset: auto;
+            background: transparent;
+            display: block !important;
+            align-items: stretch;
+            justify-content: flex-start;
+            z-index: auto;
+            flex: 0 0 380px;
+            width: 380px;
+        }
+
+        #analytics .atm-modal {
+            width: 100%;
+            max-width: none;
+            height: auto;
+            max-height: none;
+            position: sticky;
+            top: 20px;
+        }
+
+        #analytics .atm-drag-handle {
+            display: none;
+        }
     }
 
     .atm-modal.atm-modal--fullscreen {
@@ -5053,7 +5570,7 @@ window.smartsupp || (function(d) {
     .atm-ticket-overlay {
         position: absolute;
         inset: 0;
-        background: #0b0d14;
+        background: var(--bg-card);
         display: flex;
         flex-direction: column;
         transform: translateY(100%);
@@ -5523,17 +6040,187 @@ window.smartsupp || (function(d) {
                             strategy to make maximum profit with minimal to no risk.</p>
                     </div>
 
-                    <!-- ================= SEARCH BAR ================= -->
-                    <div class="analytics-search-wrapper">
-                        <input type="text" id="analyticsSearchInput"
-                            placeholder="Search market (e.g. Bitcoin, ETH, SOL)..." autocomplete="off" />
-                        <img class="search-icon" src="icons/search-icon.png" alt="">
+                    <!-- ================= DESKTOP: list + trade panel side by side / MOBILE: list only, trade panel becomes a modal ================= -->
+                    <div class="analytics-body-row">
+
+                        <div class="analytics-list-col">
+
+                            <!-- ================= SEARCH BAR ================= -->
+                            <div class="analytics-search-wrapper">
+                                <input type="text" id="analyticsSearchInput"
+                                    placeholder="Search market (e.g. Bitcoin, ETH, SOL)..." autocomplete="off" />
+                                <img class="search-icon" src="icons/search-icon.png" alt="">
+                            </div>
+
+                            <!-- ================= CATEGORY TAB NAV ================= -->
+                            <div class="analytics-tab-nav" id="analyticsTabNav"></div>
+
+                            <div class="market-analytics-wrapper" id="marketAnalyticsWrapper"></div>
+
+                        </div>
+
+                        <!-- ================= TRADE EXECUTION PANEL =================
+                             Mobile: fixed full-screen modal, opens when an asset is tapped.
+                             Desktop (>=900px): persistent panel, same row as the asset list. -->
+                        <div class="atm-overlay" id="atmOverlay">
+                            <div class="atm-modal">
+
+                                <div class="atm-drag-handle"></div>
+
+                                <!-- HEADER -->
+                                <div class="atm-header">
+                                    <button class="atm-back-btn" id="atmBackBtn">‹</button>
+                                    <img class="atm-coin-icon" id="atmCoinIcon" src="" alt="">
+                                    <div class="atm-header-text">
+                                        <div class="atm-title" id="atmTitle">BTCUSD</div>
+                                        <div class="atm-subtitle">Cryptocurrencies</div>
+                                    </div>
+                                    <div class="atm-header-actions">
+                                        <button class="atm-icon-btn" title="Info">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                            </svg>
+                                        </button>
+                                        <button class="atm-icon-btn" title="Alerts">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                            </svg>
+                                        </button>
+                                        <button class="atm-icon-btn" title="Add to watchlist">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- TABS -->
+                                <div class="atm-tabs" id="atmTabs">
+                                    <button class="atm-tab active" data-tab="trade">Trade</button>
+                                    <button class="atm-tab" data-tab="askai">✨ Ask AI</button>
+                                    <button class="atm-tab" data-tab="news">News &amp; Analysis</button>
+                                    <button class="atm-tab" data-tab="insights">Insights</button>
+                                </div>
+
+                                <!-- ONE CLICK ORDER -->
+                                <div class="atm-oneclick-row">
+                                    <span>One Click Order</span>
+                                    <label class="atm-toggle">
+                                        <input type="checkbox" id="atmOneClickToggle">
+                                        <span class="atm-toggle-slider"></span>
+                                    </label>
+                                </div>
+
+                                <!-- TRADE TAB PANEL -->
+                                <div class="atm-tab-panel" id="atmPanelTrade"
+                                    style="flex:1; min-height:0; display:flex; flex-direction:column; position:relative;">
+
+                                    <div class="atm-chart-wrap">
+                                        <div id="atmChart"></div>
+                                        <div class="atm-range-badge" id="atmRangeBadge">1H</div>
+                                    </div>
+
+                                    <div class="atm-interval-bar">
+                                        <button class="atm-interval-btn active" data-interval="1H">1H</button>
+                                        <button class="atm-interval-btn" data-interval="1D">1D</button>
+                                        <button class="atm-interval-btn" data-interval="1W">1W</button>
+                                        <button class="atm-interval-btn" data-interval="1M">1M</button>
+                                        <button class="atm-interval-btn" data-interval="3M">3M</button>
+                                        <button class="atm-interval-btn" data-interval="1Y">1Y</button>
+                                        <button class="atm-interval-btn" data-interval="MAX">MAX</button>
+                                        <button class="atm-fullscreen-btn" id="atmFullscreenBtn" title="Fullscreen">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="15 3 21 3 21 9"></polyline>
+                                                <polyline points="9 21 3 21 3 15"></polyline>
+                                                <line x1="21" y1="3" x2="14" y2="10"></line>
+                                                <line x1="3" y1="21" x2="10" y2="14"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <div class="atm-order-buttons">
+                                        <button class="atm-order-btn atm-sell-btn" id="atmSellBtn">
+                                            <span class="atm-order-label">SELL <svg width="10" height="10" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+                                                    <line x1="7" y1="7" x2="17" y2="17"></line>
+                                                    <polyline points="17 7 17 17 7 17"></polyline>
+                                                </svg></span>
+                                            <span class="atm-order-price" id="atmSellPrice">$0.00</span>
+                                        </button>
+                                        <button class="atm-order-btn atm-buy-btn" id="atmBuyBtn">
+                                            <span class="atm-order-label">BUY <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="3" stroke-linecap="round">
+                                                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                                                    <polyline points="7 7 17 7 17 17"></polyline>
+                                                </svg></span>
+                                            <span class="atm-order-price" id="atmBuyPrice">$0.00</span>
+                                        </button>
+                                    </div>
+
+                                    <!-- ORDER TICKET (slides up over chart when Buy/Sell tapped) -->
+                                    <div class="atm-ticket-overlay" id="atmTicketOverlay">
+                                        <div class="atm-ticket-header">
+                                            <button class="atm-back-btn" id="atmTicketBackBtn">‹</button>
+                                            <h3 id="atmTicketAssetName">BTC / USDT</h3>
+                                            <span class="atm-ticket-direction long" id="atmTicketDirection">BUY</span>
+                                        </div>
+                                        <div class="atm-ticket-body">
+                                            <label>Amount to Invest (USD)</label>
+                                            <input type="number" id="atmAmountInput" placeholder="Enter amount">
+
+                                            <div class="atm-ticket-row">
+                                                <span>Available Balance</span>
+                                                <span id="atmAvailableBalance">$0.00</span>
+                                            </div>
+                                            <div class="atm-ticket-row">
+                                                <span>Entry Price</span>
+                                                <span id="atmEntryPrice">$0.00</span>
+                                            </div>
+                                            <div class="atm-ticket-row">
+                                                <span>Take Profit</span>
+                                                <span id="atmTP">$0.00</span>
+                                            </div>
+                                            <div class="atm-ticket-row">
+                                                <span>Stop Loss</span>
+                                                <span id="atmSL">$0.00</span>
+                                            </div>
+                                            <div class="atm-ticket-row">
+                                                <span>Units</span>
+                                                <span id="atmUnits">0.0000</span>
+                                            </div>
+                                            <div class="atm-ticket-row">
+                                                <span>Estimated Profit</span>
+                                                <span id="atmEstimatedProfit">$0.00</span>
+                                            </div>
+
+                                            <button class="atm-ticket-execute-btn" id="atmExecuteBtn">Confirm Order</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- OTHER TAB PLACEHOLDERS -->
+                                <div class="atm-tab-panel atm-placeholder" id="atmPanelAskai" style="display:none;">
+                                    Ask AI insights for this asset are coming soon.
+                                </div>
+                                <div class="atm-tab-panel atm-placeholder" id="atmPanelNews" style="display:none;">
+                                    News &amp; analysis for this asset are coming soon.
+                                </div>
+                                <div class="atm-tab-panel atm-placeholder" id="atmPanelInsights" style="display:none;">
+                                    Deeper insights for this asset are coming soon.
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
-
-                    <!-- ================= CATEGORY TAB NAV ================= -->
-                    <div class="analytics-tab-nav" id="analyticsTabNav"></div>
-
-                    <div class="market-analytics-wrapper" id="marketAnalyticsWrapper"></div>
 
                 </div>
 
@@ -5688,18 +6375,30 @@ window.smartsupp || (function(d) {
     <div class="invest-view" id="investView" style="display:none;">
 
         <div class="invest-header">
-            <img src="icons/cancle.png" class="profile-back-btn" onclick="closeInvestView()">
-            <h3 id="investTitle">Invest</h3>
+            <button type="button" class="iv-back-btn" onclick="closeInvestView()" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="iv-header-text">
+                <span class="iv-eyebrow">Tesla Equity</span>
+                <h3 id="investTitle">Invest</h3>
+            </div>
         </div>
 
         <div class="invest-content">
 
             <!-- LEFT -->
             <div class="left-panel">
-                <img id="investImage"  class="car-image">
+                <img id="investImage" class="car-image" alt="">
 
                 <!-- Tesla Logo Overlay -->
                 <img src="tesla_images/tesla_text_logo.png" class="tesla-logo" alt="Tesla Logo">
+
+                <!-- Floating spec strip -->
+                <div class="iv-spec-strip">
+                    <div class="iv-spec-item"><strong id="sharePrice"></strong><span>Share Price</span></div>
+                    <div class="iv-spec-item"><strong>$200</strong><span>Minimum</span></div>
+                    <div class="iv-spec-item"><strong>12%</strong><span>Avg ROI</span></div>
+                </div>
             </div>
 
             <!-- RIGHT -->
@@ -5710,37 +6409,48 @@ window.smartsupp || (function(d) {
                     <p id="investDesc"></p>
                 </div>
 
-                <!-- STATS -->
-                <div class="tesla-stats-bar">
-                    <div><strong id="sharePrice"></strong><span>Share Price</span></div>
-                    <div><strong>$200</strong><span>Minimum</span></div>
-                    <div><strong>12%</strong><span>Avg ROI</span></div>
-                </div>
-
                 <!-- PACKAGES -->
-                <div style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
+                <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
                     <h3>Investment Plans</h3>
 
-                    <div class="option-box">
-                        <span>Starter</span>
-                        <span>$200 - $5k</span>
-                    </div>
+                    <div class="iv-plan-grid" id="investPlanGrid">
+                        <button type="button" class="iv-plan-card active" data-plan="Starter">
+                            <span class="iv-plan-radio"></span>
+                            <span class="iv-plan-body">
+                                <span class="iv-plan-name-wrap">
+                                    <span class="iv-plan-name">Starter</span>
+                                </span>
+                                <span class="iv-plan-range">$200 – $5,000</span>
+                            </span>
+                        </button>
 
-                    <div class="option-box">
-                        <span>Pro</span>
-                        <span>$5k - $50k</span>
-                    </div>
+                        <button type="button" class="iv-plan-card" data-plan="Pro">
+                            <span class="iv-plan-radio"></span>
+                            <span class="iv-plan-body">
+                                <span class="iv-plan-name-wrap">
+                                    <span class="iv-plan-name">Pro</span>
+                                    <span class="iv-plan-badge">Popular</span>
+                                </span>
+                                <span class="iv-plan-range">$5,000 – $50,000</span>
+                            </span>
+                        </button>
 
-                    <div class="option-box">
-                        <span>Institutional</span>
-                        <span>$50k+</span>
+                        <button type="button" class="iv-plan-card" data-plan="Institutional">
+                            <span class="iv-plan-radio"></span>
+                            <span class="iv-plan-body">
+                                <span class="iv-plan-name-wrap">
+                                    <span class="iv-plan-name">Institutional</span>
+                                </span>
+                                <span class="iv-plan-range">$50,000+</span>
+                            </span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- PROS / RISKS -->
                 <div class="unordered-list-wrap">
-                    <div>
-                        <h4>Pros</h4>
+                    <div class="fact-col pros">
+                        <div class="fact-col-head"><span class="dot">&#10003;</span><h4>Strengths</h4></div>
                         <ul>
                             <li>High EV demand</li>
                             <li>Global expansion</li>
@@ -5748,8 +6458,8 @@ window.smartsupp || (function(d) {
                         </ul>
                     </div>
 
-                    <div>
-                        <h4>Risks</h4>
+                    <div class="fact-col risks">
+                        <div class="fact-col-head"><span class="dot">!</span><h4>Risks</h4></div>
                         <ul>
                             <li>Market volatility</li>
                             <li>Regulations</li>
@@ -5758,10 +6468,21 @@ window.smartsupp || (function(d) {
                     </div>
                 </div>
 
+                <div class="iv-trust-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Funds are staked instantly and can be withdrawn after the lock-up period.
+                </div>
+
                 <!-- CTA -->
                 <div class="bottom-bar">
+                    <div class="bottom-bar-info">
+                        <span>Selected Plan</span>
+                        <div class="price-tag" id="investSelectedPlan">Starter</div>
+                    </div>
                     <button class="invest-confirm-btn">
-                    <img src="icons/invest_icon.png" style="height: 20px;">Invest Now</button>
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
+                        Invest Now
+                    </button>
                 </div>
 
             </div>
@@ -5775,18 +6496,30 @@ window.smartsupp || (function(d) {
     <div class="buy-view" id="buyView" style="display:none;">
 
         <div class="invest-header">
-            <img src="icons/cancle.png" class="profile-back-btn" onclick="closeBuyView()">
-            <h3 id="buyTitle">Purchase Vehicle</h3>
+            <button type="button" class="iv-back-btn" onclick="closeBuyView()" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="iv-header-text">
+                <span class="iv-eyebrow">Vehicle Order</span>
+                <h3 id="buyTitle">Purchase Vehicle</h3>
+            </div>
         </div>
 
         <div class="invest-content">
 
             <!-- LEFT -->
             <div class="left-panel">
-                <img id="buyImage" class="car-image">
+                <img id="buyImage" class="car-image" alt="">
 
                 <!-- Tesla Logo Overlay -->
                 <img src="tesla_images/tesla_text_logo.png" class="tesla-logo" alt="Tesla Logo">
+
+                <!-- Floating spec strip -->
+                <div class="iv-spec-strip">
+                    <div class="iv-spec-item"><strong id="buyRange"></strong><span>Range</span></div>
+                    <div class="iv-spec-item"><strong id="buyTopSpeed"></strong><span>Top Speed</span></div>
+                    <div class="iv-spec-item"><strong id="buyAccel"></strong><span>0-100</span></div>
+                </div>
             </div>
 
             <!-- RIGHT -->
@@ -5797,21 +6530,14 @@ window.smartsupp || (function(d) {
                     <p id="buyDesc"></p>
                 </div>
 
-                <!-- STATS -->
-                <div class="tesla-stats-bar">
-                    <div><strong>533 km</strong><span>Range</span></div>
-                    <div><strong>217 km/h</strong><span>Top Speed</span></div>
-                    <div><strong>3.5s</strong><span>0-100</span></div>
-                </div>
-
                 <!-- BENEFITS -->
                 <div class="tesla-benefits">
 
                     <h3>Key Features</h3>
 
-                    <div class="responsive-wrap">
+                    <div class="iv-feature-grid">
                         <div class="benefit-card">
-                            <img src="icons/wheel.png" alt="">
+                            <div class="tesla-icon"><img src="icons/wheel.png" alt=""></div>
                             <div class="benefit-text">
                                 <h4>Autopilot Ready</h4>
                                 <p>Advanced driver assistance system for safer and smarter driving.</p>
@@ -5819,7 +6545,7 @@ window.smartsupp || (function(d) {
                         </div>
 
                         <div class="benefit-card">
-                            <img src="icons/smart_car_icon.png" alt="">
+                            <div class="tesla-icon"><img src="icons/smart_car_icon.png" alt=""></div>
                             <div class="benefit-text">
                                 <h4>OTA Updates</h4>
                                 <p>Receive over-the-air updates that improve performance over time.</p>
@@ -5827,7 +6553,7 @@ window.smartsupp || (function(d) {
                         </div>
 
                         <div class="benefit-card">
-                            <img src="icons/plug.png" alt="">
+                            <div class="tesla-icon"><img src="icons/plug.png" alt=""></div>
                             <div class="benefit-text">
                                 <h4>Supercharger Access</h4>
                                 <p>Fast charging network available across major global routes.</p>
@@ -5883,7 +6609,7 @@ window.smartsupp || (function(d) {
                 
 
                 <!-- BILLING SUMMARY -->
-                <div style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
+                <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
                     <h3>Billing Summary</h3>
 
                     <div class="option-box">
@@ -5936,16 +6662,21 @@ window.smartsupp || (function(d) {
                         </div>
                     </div>
 
-                    
-
                 </div>                           
 
+                <div class="iv-trust-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Encrypted checkout — your details are only used to arrange delivery.
+                </div>
 
                 <!-- CTA -->
                 <div class="bottom-bar">
-                    <div class="price-tag" id="buyTotal"></div>
+                    <div class="bottom-bar-info">
+                        <span>Total Due</span>
+                        <div class="price-tag" id="buyTotal"></div>
+                    </div>
                     <button id="orderBtn" class="buy-confirm-btn" onclick="submitCarOrder()">
-                        <img src="icons/cart_icon.png"  style="height: 20px;">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
                         <span class="btn-text">Order Now</span>
                     </button>
                 </div>
@@ -6751,165 +7482,6 @@ window.smartsupp || (function(d) {
 
         </div>
 
-    </div>
-
-    <!--=================ASSET TRADE EXECUTION MODAL (screenshot-style)=================-->
-    <div class="atm-overlay" id="atmOverlay">
-        <div class="atm-modal">
-
-            <div class="atm-drag-handle"></div>
-
-            <!-- HEADER -->
-            <div class="atm-header">
-                <button class="atm-back-btn" id="atmBackBtn">‹</button>
-                <img class="atm-coin-icon" id="atmCoinIcon" src="" alt="">
-                <div class="atm-header-text">
-                    <div class="atm-title" id="atmTitle">BTCUSD</div>
-                    <div class="atm-subtitle">Cryptocurrencies</div>
-                </div>
-                <div class="atm-header-actions">
-                    <button class="atm-icon-btn" title="Info">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="16" x2="12" y2="12"></line>
-                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                        </svg>
-                    </button>
-                    <button class="atm-icon-btn" title="Alerts">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                        </svg>
-                    </button>
-                    <button class="atm-icon-btn" title="Add to watchlist">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- TABS -->
-            <div class="atm-tabs" id="atmTabs">
-                <button class="atm-tab active" data-tab="trade">Trade</button>
-                <button class="atm-tab" data-tab="askai">✨ Ask AI</button>
-                <button class="atm-tab" data-tab="news">News &amp; Analysis</button>
-                <button class="atm-tab" data-tab="insights">Insights</button>
-            </div>
-
-            <!-- ONE CLICK ORDER -->
-            <div class="atm-oneclick-row">
-                <span>One Click Order</span>
-                <label class="atm-toggle">
-                    <input type="checkbox" id="atmOneClickToggle">
-                    <span class="atm-toggle-slider"></span>
-                </label>
-            </div>
-
-            <!-- TRADE TAB PANEL -->
-            <div class="atm-tab-panel" id="atmPanelTrade"
-                style="flex:1; min-height:0; display:flex; flex-direction:column; position:relative;">
-
-                <div class="atm-chart-wrap">
-                    <div id="atmChart"></div>
-                    <div class="atm-range-badge" id="atmRangeBadge">1H</div>
-                </div>
-
-                <div class="atm-interval-bar">
-                    <button class="atm-interval-btn active" data-interval="1H">1H</button>
-                    <button class="atm-interval-btn" data-interval="1D">1D</button>
-                    <button class="atm-interval-btn" data-interval="1W">1W</button>
-                    <button class="atm-interval-btn" data-interval="1M">1M</button>
-                    <button class="atm-interval-btn" data-interval="3M">3M</button>
-                    <button class="atm-interval-btn" data-interval="1Y">1Y</button>
-                    <button class="atm-interval-btn" data-interval="MAX">MAX</button>
-                    <button class="atm-fullscreen-btn" id="atmFullscreenBtn" title="Fullscreen">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <polyline points="9 21 3 21 3 15"></polyline>
-                            <line x1="21" y1="3" x2="14" y2="10"></line>
-                            <line x1="3" y1="21" x2="10" y2="14"></line>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="atm-order-buttons">
-                    <button class="atm-order-btn atm-sell-btn" id="atmSellBtn">
-                        <span class="atm-order-label">SELL <svg width="10" height="10" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
-                                <line x1="7" y1="7" x2="17" y2="17"></line>
-                                <polyline points="17 7 17 17 7 17"></polyline>
-                            </svg></span>
-                        <span class="atm-order-price" id="atmSellPrice">$0.00</span>
-                    </button>
-                    <button class="atm-order-btn atm-buy-btn" id="atmBuyBtn">
-                        <span class="atm-order-label">BUY <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="3" stroke-linecap="round">
-                                <line x1="7" y1="17" x2="17" y2="7"></line>
-                                <polyline points="7 7 17 7 17 17"></polyline>
-                            </svg></span>
-                        <span class="atm-order-price" id="atmBuyPrice">$0.00</span>
-                    </button>
-                </div>
-
-                <!-- ORDER TICKET (slides up over chart when Buy/Sell tapped) -->
-                <div class="atm-ticket-overlay" id="atmTicketOverlay">
-                    <div class="atm-ticket-header">
-                        <button class="atm-back-btn" id="atmTicketBackBtn">‹</button>
-                        <h3 id="atmTicketAssetName">BTC / USDT</h3>
-                        <span class="atm-ticket-direction long" id="atmTicketDirection">BUY</span>
-                    </div>
-                    <div class="atm-ticket-body">
-                        <label>Amount to Invest (USD)</label>
-                        <input type="number" id="atmAmountInput" placeholder="Enter amount">
-
-                        <div class="atm-ticket-row">
-                            <span>Available Balance</span>
-                            <span id="atmAvailableBalance">$0.00</span>
-                        </div>
-                        <div class="atm-ticket-row">
-                            <span>Entry Price</span>
-                            <span id="atmEntryPrice">$0.00</span>
-                        </div>
-                        <div class="atm-ticket-row">
-                            <span>Take Profit</span>
-                            <span id="atmTP">$0.00</span>
-                        </div>
-                        <div class="atm-ticket-row">
-                            <span>Stop Loss</span>
-                            <span id="atmSL">$0.00</span>
-                        </div>
-                        <div class="atm-ticket-row">
-                            <span>Units</span>
-                            <span id="atmUnits">0.0000</span>
-                        </div>
-                        <div class="atm-ticket-row">
-                            <span>Estimated Profit</span>
-                            <span id="atmEstimatedProfit">$0.00</span>
-                        </div>
-
-                        <button class="atm-ticket-execute-btn" id="atmExecuteBtn">Confirm Order</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- OTHER TAB PLACEHOLDERS -->
-            <div class="atm-tab-panel atm-placeholder" id="atmPanelAskai" style="display:none;">
-                Ask AI insights for this asset are coming soon.
-            </div>
-            <div class="atm-tab-panel atm-placeholder" id="atmPanelNews" style="display:none;">
-                News &amp; analysis for this asset are coming soon.
-            </div>
-            <div class="atm-tab-panel atm-placeholder" id="atmPanelInsights" style="display:none;">
-                Deeper insights for this asset are coming soon.
-            </div>
-
-        </div>
     </div>
 
     <div id="investModal" class="invest-modal" style="display:none;">
@@ -10401,7 +10973,14 @@ window.smartsupp || (function(d) {
             if (model) model.innerText = car.model;
             if (desc) desc.innerText = car.description;
             if (img) img.src = car.image;
-            if (price) price.innerText = "$" + car.price*0.002.toLocaleString();
+            if (price) price.innerText = "$" + (car.price * 0.002).toLocaleString(undefined, { maximumFractionDigits: 2 });
+
+            // Reset plan selector to the default plan every time the view opens
+            const planCards = document.querySelectorAll("#investPlanGrid .iv-plan-card");
+            planCards.forEach(c => c.classList.remove("active"));
+            if (planCards[0]) planCards[0].classList.add("active");
+            const planLabel = document.getElementById("investSelectedPlan");
+            if (planLabel && planCards[0]) planLabel.innerText = planCards[0].dataset.plan;
         }
 
 
@@ -10436,6 +11015,9 @@ function openBuyView(index) {
     const taxEl = document.getElementById("buyTax");
     const taxPercentEl = document.getElementById("buyTaxPercent"); // ✅ added
     const totalEl = document.getElementById("buyTotal");
+    const rangeEl = document.getElementById("buyRange");
+    const topSpeedEl = document.getElementById("buyTopSpeed");
+    const accelEl = document.getElementById("buyAccel");
 
     const shipping = car.shippingFee || 0;
 
@@ -10463,6 +11045,16 @@ function openBuyView(index) {
     }
 
     if (totalEl) totalEl.innerText = money(total);
+
+    // ✅ bind real per-car spec data (was previously hardcoded placeholder text)
+    const stats = car.stats || {};
+    if (rangeEl) rangeEl.innerText = stats.range || "—";
+    if (topSpeedEl) topSpeedEl.innerText = stats.topSpeed || "—";
+    if (accelEl) {
+        const accelMatch = (stats.acceleration || "").match(/[\d.]+s/);
+        accelEl.innerText = accelMatch ? accelMatch[0] : (stats.acceleration || "—");
+        accelEl.title = stats.acceleration || "";
+    }
 }       
 
         function closeBuyView() {
@@ -10726,6 +11318,17 @@ function resetOrderButton() {
     document.querySelectorAll(".amt-btn").forEach(b=>b.classList.remove("active"));
     }
 
+    /* INVESTMENT PLAN SELECT */
+    document.querySelectorAll("#investPlanGrid .iv-plan-card").forEach(card=>{
+    card.addEventListener("click", ()=>{
+        document.querySelectorAll("#investPlanGrid .iv-plan-card").forEach(c=>c.classList.remove("active"));
+        card.classList.add("active");
+
+        const label = document.getElementById("investSelectedPlan");
+        if (label) label.innerText = card.dataset.plan;
+    });
+    });
+
     /* QUICK SELECT */
     document.querySelectorAll(".amt-btn").forEach(btn=>{
     btn.addEventListener("click", ()=>{
@@ -10754,7 +11357,7 @@ function resetOrderButton() {
         return;
     }
 
-    const selectedPlan = document.querySelector(".option-box.active")?.innerText || "Starter";
+    const selectedPlan = document.querySelector("#investPlanGrid .iv-plan-card.active")?.dataset.plan || "Starter";
 
     const payload = {
         action: "createInvestment",
@@ -11287,7 +11890,11 @@ function resetOrderButton() {
             closeTicket(true);
 
             overlay.style.display = "flex";
-            document.body.style.overflow = "hidden";
+
+            const isDesktopLayout = window.matchMedia("(min-width: 900px)").matches;
+            if (!isDesktopLayout) {
+                document.body.style.overflow = "hidden";
+            }
 
             _rangeKey = "1H";
             document.querySelectorAll(".atm-interval-btn").forEach(b => {
@@ -11578,7 +12185,7 @@ function resetOrderButton() {
                 const response = await fetch(API, { method: "POST", body: JSON.stringify(tradeData) });
                 const result = await response.json();
 
-                if (result && result.success) {
+                if (result && result.status) {
                     showToast("Order executed successfully", "success");
                     if (typeof result.newBalance === "number") window.USER_CAPITAL = result.newBalance;
                     closeTicket(true);
