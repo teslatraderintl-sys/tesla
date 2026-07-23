@@ -12211,6 +12211,162 @@ function resetOrderButton() {
     </script>
     <!-- ============================================================ -->
 
+
+    <!--=================DEVICE / BROWSER BACK BUTTON HANDLER=================-->
+    <!--
+        Purpose: make the hardware/device back button (and the browser's own
+        back gesture or back button) behave like an in-app "back" instead of
+        leaving this page or navigating to whatever page was open before it.
+
+        How it works:
+        1. On load we push an extra history entry ("trap") on top of the real
+           one, so there is always something for the browser to "go back" to
+           that still points at this very same page.
+        2. When the user presses back, the browser fires a `popstate` event
+           (it does NOT yet leave the page, because we gave it our own entry
+           to pop first). We immediately re-push another trap entry so the
+           very next back press behaves the same way, and the real browser
+           history underneath is never actually reached.
+        3. Inside that popstate handler we decide what "back" should mean
+           right now, in this order:
+             a) If any modal / overlay / sub-view is currently open, close
+                the most specific (innermost) one that's open.
+             b) Otherwise, if a bottom-nav tab other than the default "Tesla"
+                tab is active, switch back to that default tab.
+             c) Otherwise we're already at the app's home/root, so the back
+                press is simply absorbed and nothing happens (the user is
+                kept on the page instead of exiting).
+    -->
+    <script>
+    (function () {
+
+        function isOpenByClass(id) {
+            var el = document.getElementById(id);
+            return !!el && el.classList.contains("open");
+        }
+
+        function isOpenByFlexDisplay(id) {
+            var el = document.getElementById(id);
+            return !!el && el.style.display === "flex";
+        }
+
+        // Ordered from most nested / topmost UI to outermost. The first
+        // match found is closed; everything behind it is left untouched.
+        var backLayers = [
+            // Order ticket inside the Buy/Sell asset trading modal
+            {
+                isOpen: function () { return isOpenByClass("atmTicketOverlay"); },
+                close: function () {
+                    var b = document.getElementById("atmTicketBackBtn");
+                    if (b) b.click();
+                }
+            },
+            // Buy/Sell asset trading modal (candlestick chart view)
+            {
+                isOpen: function () { return isOpenByFlexDisplay("atmOverlay"); },
+                close: function () {
+                    var b = document.getElementById("atmBackBtn");
+                    if (b) b.click();
+                }
+            },
+            // Investment amount confirmation modal
+            {
+                isOpen: function () { return isOpenByFlexDisplay("investModal"); },
+                close: function () { if (typeof closeInvestModal === "function") closeInvestModal(); }
+            },
+            // Copy trading "copy this trader" modal
+            {
+                isOpen: function () { return isOpenByClass("ctModalOverlay"); },
+                close: function () { if (typeof closeCopyModal === "function") closeCopyModal(); }
+            },
+            // Notification detail reader
+            {
+                isOpen: function () { return isOpenByFlexDisplay("notifReadOverlay"); },
+                close: function () { if (typeof closeNotifRead === "function") closeNotifRead(); }
+            },
+            // Generic profile dialogs: avatar / change password / forgot password / logout
+            {
+                isOpen: function () {
+                    return ["avatarModal", "changePwModal", "forgotPwModal", "logoutModal"].some(isOpenByClass);
+                },
+                close: function () {
+                    ["avatarModal", "changePwModal", "forgotPwModal", "logoutModal"].forEach(function (id) {
+                        if (isOpenByClass(id) && typeof closePrfModal === "function") closePrfModal(id);
+                    });
+                }
+            },
+            // Deposit / withdraw / transfer / analytics / receipt / grok trade panel
+            {
+                isOpen: function () { return isOpenByFlexDisplay("tradePanelOverlay"); },
+                close: function () {
+                    var b = document.getElementById("closeTradePanel");
+                    if (b) b.click();
+                }
+            },
+            // KYC verification wizard (nested inside the profile page)
+            {
+                isOpen: function () { return isOpenByFlexDisplay("kycView"); },
+                close: function () { if (typeof closeKycView === "function") closeKycView(); }
+            },
+            // Buy-a-Tesla full page view
+            {
+                isOpen: function () { return isOpenByFlexDisplay("buyView"); },
+                close: function () { if (typeof closeBuyView === "function") closeBuyView(); }
+            },
+            // Invest-in-a-Tesla full page view
+            {
+                isOpen: function () { return isOpenByFlexDisplay("investView"); },
+                close: function () { if (typeof closeInvestView === "function") closeInvestView(); }
+            },
+            // Profile page
+            {
+                isOpen: function () { return isOpenByFlexDisplay("profileView"); },
+                close: function () { if (typeof closeProfileView === "function") closeProfileView(); }
+            }
+        ];
+
+        function closeTopMostOpenLayer() {
+            for (var i = 0; i < backLayers.length; i++) {
+                try {
+                    if (backLayers[i].isOpen()) {
+                        backLayers[i].close();
+                        return true;
+                    }
+                } catch (e) { /* ignore and keep trying the rest */ }
+            }
+            return false;
+        }
+
+        function goToHomeTabIfNeeded() {
+            var activeNav = document.querySelector(".nav-item.active");
+            if (activeNav && activeNav.dataset.page !== "tesla") {
+                var homeNav = document.querySelector('.nav-item[data-page="tesla"]');
+                if (homeNav) { homeNav.click(); return true; }
+            }
+            return false;
+        }
+
+        function trapHistoryState() {
+            history.pushState({ appBackTrap: true }, "", location.href);
+        }
+
+        // Seed one extra entry so the very first back press is caught by us.
+        trapHistoryState();
+
+        window.addEventListener("popstate", function () {
+            // Re-trap immediately so the real browser history is never reached
+            // and the device back button can never actually exit this page.
+            trapHistoryState();
+
+            if (closeTopMostOpenLayer()) return;
+            if (goToHomeTabIfNeeded()) return;
+            // Already at the home tab with nothing open — absorb the back press.
+        });
+
+    })();
+    </script>
+    <!-- ======================================================================= -->
+
 </body>
 
 </html>
