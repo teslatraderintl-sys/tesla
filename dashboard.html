@@ -12296,6 +12296,14 @@ function resetOrderButton() {
                 isOpen: function () { return isOpenByFlexDisplay("notifReadOverlay"); },
                 close: function () { if (typeof closeNotifRead === "function") closeNotifRead(); }
             },
+            // Notification list page (opened from the bell icon in the top bar)
+            {
+                isOpen: function () { return isOpenByFlexDisplay("notificationView"); },
+                close: function () {
+                    var b = document.getElementById("backFromNotifications");
+                    if (b) b.click();
+                }
+            },
             // Generic profile dialogs: avatar / change password / forgot password / logout
             {
                 isOpen: function () {
