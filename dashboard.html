@@ -97,62 +97,127 @@ window.smartsupp || (function(d) {
 
         /* ============ COPY TRADING PAGE ============ */
         .copy-trading-page {
-            padding: 0 0 80px;
+            padding: 0;
         }
+
+        /* Hero — bleeds edge-to-edge by cancelling .content's 20px side padding,
+           instead of stacking its own padding on top of it */
         .ct-hero {
-            background: linear-gradient(135deg, #1a0a0a 0%, #0d0d0d 100%);
+            position: relative;
+            overflow: hidden;
+            margin: 0 -20px;
+            background: linear-gradient(160deg, #1a0a0a 0%, #0a0a0a 65%);
             border-bottom: 1px solid var(--border-soft);
-            padding: 24px 20px 20px;
+            padding: 26px 20px 22px;
+        }
+        .ct-hero::after {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(232,33,39,0.22), transparent 70%);
+            pointer-events: none;
+        }
+        .ct-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--accent-primary);
+            margin-bottom: 10px;
+        }
+        .ct-eyebrow::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            box-shadow: 0 0 8px rgba(232,33,39,0.8);
         }
         .ct-hero h2 {
-            font-size: 20px;
+            font-size: 21px;
             font-weight: 700;
             color: #fff;
             margin-bottom: 6px;
+            letter-spacing: -0.3px;
+            position: relative;
         }
         .ct-hero p {
             font-size: 13px;
             color: var(--text-secondary);
             line-height: 1.5;
+            max-width: 340px;
+            position: relative;
         }
         .ct-stats-row {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-top: 18px;
+            position: relative;
         }
         .ct-stat-pill {
             flex: 1;
-            background: rgba(232,33,39,0.1);
-            border: 1px solid rgba(232,33,39,0.2);
-            border-radius: 10px;
-            padding: 10px 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 10px 8px;
             text-align: center;
         }
         .ct-stat-pill .val {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
-            color: var(--accent-primary);
+            color: #fff;
         }
         .ct-stat-pill .lbl {
-            font-size: 10px;
+            font-size: 9.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
             color: var(--text-muted);
-            margin-top: 2px;
+            margin-top: 3px;
         }
+
         .ct-section-title {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
             font-size: 13px;
             font-weight: 600;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            padding: 18px 20px 10px;
+            padding: 18px 0 10px;
         }
+        .ct-section-title span.ct-sub {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0;
+            color: var(--text-muted);
+        }
+
+        /* Active Copy Banner */
         .ct-active-banner {
-            margin: 0 20px 16px;
-            background: linear-gradient(135deg, #0a2a1a, #0d1f12);
-            border: 1px solid rgba(57,231,176,0.2);
+            position: relative;
+            margin: 0 0 16px;
+            background: linear-gradient(135deg, #0c2018, #0a0a0a);
+            border: 1px solid rgba(57,231,176,0.18);
             border-radius: 14px;
-            padding: 16px;
+            padding: 16px 16px 16px 18px;
             display: none;
+            overflow: hidden;
+        }
+        .ct-active-banner::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--accent-green), #1a8f6e);
         }
         .ct-active-banner.show { display: block; }
         .ct-active-banner-top {
@@ -163,13 +228,13 @@ window.smartsupp || (function(d) {
         }
         .ct-active-label {
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--accent-green);
             text-transform: uppercase;
             letter-spacing: 0.6px;
         }
         .ct-stop-btn {
-            background: rgba(232,33,39,0.15);
+            background: rgba(232,33,39,0.12);
             border: 1px solid rgba(232,33,39,0.3);
             color: var(--accent-primary);
             font-size: 11px;
@@ -177,7 +242,9 @@ window.smartsupp || (function(d) {
             border-radius: 8px;
             padding: 5px 12px;
             cursor: pointer;
+            transition: background 0.15s;
         }
+        .ct-stop-btn:hover { background: rgba(232,33,39,0.22); }
         .ct-active-trader-name {
             font-size: 15px;
             font-weight: 700;
@@ -190,25 +257,43 @@ window.smartsupp || (function(d) {
         }
         .ct-active-stats {
             display: flex;
-            gap: 10px;
-            margin-top: 12px;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.06);
         }
         .ct-active-stat {
             flex: 1;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-            padding: 8px 10px;
             text-align: center;
         }
+        .ct-active-stat:not(:last-child) {
+            border-right: 1px solid rgba(255,255,255,0.06);
+        }
         .ct-active-stat .v { font-size: 14px; font-weight: 700; color: var(--accent-green); }
-        .ct-active-stat .l { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+        .ct-active-stat .l { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
 
         /* Trader Card */
         .ct-trader-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            padding: 0 20px;
+            padding: 0;
+        }
+
+        /* Desktop: cards flow in a grid instead of a single column */
+        @media (min-width: 900px) {
+            .ct-trader-list {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+            .ct-active-banner {
+                max-width: 640px;
+            }
+        }
+        @media (min-width: 1300px) {
+            .ct-trader-list {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
         .ct-trader-card {
             background: var(--bg-card);
@@ -217,6 +302,10 @@ window.smartsupp || (function(d) {
             padding: 16px;
             position: relative;
             overflow: hidden;
+            transition: border-color 0.15s;
+        }
+        .ct-trader-card:active {
+            border-color: rgba(255,255,255,0.14);
         }
         .ct-trader-card::before {
             content: '';
@@ -229,16 +318,16 @@ window.smartsupp || (function(d) {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
         .ct-trader-avatar {
-            width: 46px;
-            height: 46px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             flex-shrink: 0;
             border: 2px solid rgba(232,33,39,0.3);
@@ -249,10 +338,16 @@ window.smartsupp || (function(d) {
             font-weight: 700;
             color: #fff;
             margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .ct-trader-handle {
             font-size: 11px;
             color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .ct-trader-badge {
             font-size: 10px;
@@ -265,17 +360,21 @@ window.smartsupp || (function(d) {
         .badge-pro { background: rgba(123,92,255,0.15); color: #a78bff; border: 1px solid rgba(123,92,255,0.25); }
         .badge-verified { background: rgba(57,231,176,0.1); color: var(--accent-green); border: 1px solid rgba(57,231,176,0.2); }
 
+        /* Slim stat strip instead of boxed grid — less visual weight, less padding */
         .ct-trader-metrics {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            padding: 11px 0;
+            margin-bottom: 12px;
+            border-top: 1px solid var(--border-soft);
+            border-bottom: 1px solid var(--border-soft);
         }
         .ct-metric {
-            background: rgba(255,255,255,0.04);
-            border-radius: 10px;
-            padding: 9px 8px;
+            flex: 1;
             text-align: center;
+        }
+        .ct-metric:not(:last-child) {
+            border-right: 1px solid var(--border-soft);
         }
         .ct-metric .mv {
             font-size: 14px;
@@ -283,7 +382,10 @@ window.smartsupp || (function(d) {
             margin-bottom: 2px;
         }
         .ct-metric .ml {
-            font-size: 10px;
+            font-size: 9.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
             color: var(--text-muted);
         }
         .mv-green { color: var(--accent-green); }
@@ -297,7 +399,7 @@ window.smartsupp || (function(d) {
             justify-content: space-between;
             font-size: 11px;
             color: var(--text-muted);
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
         .ct-win-bar {
             height: 5px;
@@ -325,10 +427,11 @@ window.smartsupp || (function(d) {
             background: var(--accent-primary);
             color: #fff;
         }
+        .ct-follow-btn.follow:active { transform: scale(0.98); }
         .ct-follow-btn.unfollow {
-            background: rgba(255,255,255,0.06);
-            color: var(--text-secondary);
-            border: 1px solid var(--border-soft);
+            background: rgba(57,231,176,0.1);
+            color: var(--accent-green);
+            border: 1px solid rgba(57,231,176,0.25);
         }
 
         /* Copy Modal */
@@ -351,7 +454,7 @@ window.smartsupp || (function(d) {
             background: #111;
             border: 1px solid var(--border-soft);
             border-radius: 24px 24px 0 0;
-            padding: 24px 20px 40px;
+            padding: 24px 20px 32px;
             width: 100%;
             transform: translateY(100%);
             transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
@@ -373,7 +476,7 @@ window.smartsupp || (function(d) {
         .ct-modal-subtitle {
             font-size: 13px;
             color: var(--text-secondary);
-            margin-bottom: 22px;
+            margin-bottom: 20px;
             line-height: 1.5;
         }
         .ct-modal-label {
@@ -389,11 +492,33 @@ window.smartsupp || (function(d) {
             padding: 14px 16px;
             font-size: 16px;
             color: #fff;
-            margin-bottom: 16px;
             outline: none;
         }
         .ct-modal-input:focus {
             border-color: rgba(232,33,39,0.4);
+        }
+        .ct-quick-amounts {
+            display: flex;
+            gap: 8px;
+            margin: 10px 0 16px;
+        }
+        .ct-quick-amt-btn {
+            flex: 1;
+            padding: 8px 4px;
+            text-align: center;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid var(--border-soft);
+            background: rgba(255,255,255,0.03);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .ct-quick-amt-btn:hover, .ct-quick-amt-btn:active {
+            border-color: rgba(232,33,39,0.35);
+            color: #fff;
+            background: rgba(232,33,39,0.1);
         }
         .ct-risk-options {
             display: flex;
@@ -402,22 +527,34 @@ window.smartsupp || (function(d) {
         }
         .ct-risk-opt {
             flex: 1;
-            padding: 10px 6px;
+            padding: 10px 6px 9px;
             text-align: center;
             border-radius: 10px;
-            font-size: 12px;
-            font-weight: 600;
             cursor: pointer;
             border: 1px solid var(--border-soft);
             background: rgba(255,255,255,0.04);
             color: var(--text-secondary);
             transition: all 0.15s;
         }
+        .ct-risk-opt .rl {
+            font-size: 12px;
+            font-weight: 600;
+            display: block;
+            pointer-events: none;
+        }
+        .ct-risk-opt .rd {
+            font-size: 9.5px;
+            color: var(--text-muted);
+            display: block;
+            margin-top: 2px;
+            pointer-events: none;
+        }
         .ct-risk-opt.selected {
             background: rgba(232,33,39,0.15);
             border-color: rgba(232,33,39,0.4);
             color: var(--accent-primary);
         }
+        .ct-risk-opt.selected .rd { color: rgba(232,33,39,0.7); }
         .ct-modal-confirm-btn {
             width: 100%;
             padding: 14px;
@@ -6291,19 +6428,20 @@ window.smartsupp || (function(d) {
 
                         <!-- Hero -->
                         <div class="ct-hero">
-                            <h2>Copy Trading</h2>
-                            <p>Follow top traders and automatically mirror their trades. Set your amount and let experts do the work.</p>
+                            <div class="ct-eyebrow">Copy Trading</div>
+                            <h2>Trade like the best, automatically</h2>
+                            <p>Follow top performers and mirror their trades in real time. Set an amount, pick a risk level, and let their strategy work for you.</p>
                             <div class="ct-stats-row">
                                 <div class="ct-stat-pill">
                                     <div class="val">847</div>
                                     <div class="lbl">Active Copiers</div>
                                 </div>
                                 <div class="ct-stat-pill">
-                                    <div class="val">+34.2%</div>
+                                    <div class="val" style="color:var(--accent-green)">+34.2%</div>
                                     <div class="lbl">Avg Monthly ROI</div>
                                 </div>
                                 <div class="ct-stat-pill">
-                                    <div class="val">98.1%</div>
+                                    <div class="val" style="color:#ffd369">98.1%</div>
                                     <div class="lbl">Win Rate Top</div>
                                 </div>
                             </div>
@@ -6334,7 +6472,10 @@ window.smartsupp || (function(d) {
                         </div>
 
                         <!-- Trader List -->
-                        <div class="ct-section-title">Top Traders</div>
+                        <div class="ct-section-title">
+                            <span>Top Traders</span>
+                            <span class="ct-sub">Sorted by 30d ROI</span>
+                        </div>
                         <div class="ct-trader-list" id="ctTraderList">
                             <!-- Populated by JS -->
                         </div>
@@ -6354,12 +6495,27 @@ window.smartsupp || (function(d) {
 
                 <div class="ct-modal-label">Copy Amount (USD)</div>
                 <input type="number" class="ct-modal-input" id="ctCopyAmount" placeholder="Enter amount e.g. 500" min="50" />
+                <div class="ct-quick-amounts">
+                    <div class="ct-quick-amt-btn" onclick="document.getElementById('ctCopyAmount').value=100">$100</div>
+                    <div class="ct-quick-amt-btn" onclick="document.getElementById('ctCopyAmount').value=250">$250</div>
+                    <div class="ct-quick-amt-btn" onclick="document.getElementById('ctCopyAmount').value=500">$500</div>
+                    <div class="ct-quick-amt-btn" onclick="document.getElementById('ctCopyAmount').value=1000">$1,000</div>
+                </div>
 
                 <div class="ct-modal-label">Risk Level</div>
                 <div class="ct-risk-options">
-                    <div class="ct-risk-opt selected" data-risk="Low">Low</div>
-                    <div class="ct-risk-opt" data-risk="Medium">Medium</div>
-                    <div class="ct-risk-opt" data-risk="High">High</div>
+                    <div class="ct-risk-opt selected" data-risk="Low">
+                        <span class="rl">Low</span>
+                        <span class="rd">Steady</span>
+                    </div>
+                    <div class="ct-risk-opt" data-risk="Medium">
+                        <span class="rl">Medium</span>
+                        <span class="rd">Balanced</span>
+                    </div>
+                    <div class="ct-risk-opt" data-risk="High">
+                        <span class="rl">High</span>
+                        <span class="rd">Aggressive</span>
+                    </div>
                 </div>
 
                 <button class="ct-modal-confirm-btn" id="ctConfirmBtn" onclick="confirmCopy()">Start Copying</button>
