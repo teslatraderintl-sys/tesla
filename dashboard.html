@@ -278,13 +278,12 @@ window.smartsupp || (function(d) {
             gap: 12px;
             padding: 0;
         }
-
-        /* Desktop: cards flow in a grid instead of a single column */
         @media (min-width: 900px) {
             .ct-trader-list {
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 14px;
+                align-items: start;
             }
             .ct-active-banner {
                 max-width: 640px;
@@ -3904,6 +3903,365 @@ window.smartsupp || (function(d) {
 
 
     <style>
+        /* ============ TESLA PAGE TOP TAB NAV ============ */
+        .tesla-tab-nav {
+            display: flex;
+            gap: 4px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-soft);
+            border-radius: 14px;
+            padding: 4px;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            backdrop-filter: blur(10px);
+        }
+        .tesla-tab-btn {
+            flex: 1;
+            padding: 10px 6px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+        .tesla-tab-btn.active {
+            background: var(--accent-primary);
+            color: #fff;
+        }
+        .tesla-tab-panel { display: none; }
+        .tesla-tab-panel.active { display: block; }
+
+        /* ============ TESLA NEWS TAB ============ */
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .news-card {
+            display: flex;
+            gap: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 14px;
+            cursor: pointer;
+            transition: border-color 0.15s;
+        }
+        .news-card:active {
+            border-color: rgba(255,255,255,0.14);
+        }
+        .news-thumb {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        .news-body { flex: 1; min-width: 0; }
+        .news-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-bottom: 6px;
+        }
+        .tag-earnings { background: rgba(57,231,176,0.1); color: var(--accent-green); border: 1px solid rgba(57,231,176,0.2); }
+        .tag-product { background: rgba(123,92,255,0.15); color: #a78bff; border: 1px solid rgba(123,92,255,0.25); }
+        .tag-company { background: rgba(255,211,105,0.15); color: #ffd369; border: 1px solid rgba(255,211,105,0.25); }
+        .tag-market { background: rgba(232,33,39,0.12); color: var(--accent-primary); border: 1px solid rgba(232,33,39,0.25); }
+        .news-headline {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.35;
+            margin-bottom: 4px;
+        }
+        .news-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* ============ TESLA STOCK CHART PANEL ============ */
+        .stock-detail-panel {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 16px 18px 20px;
+        }
+        .sd-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .sd-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .sd-icon img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+        .sd-symbol { font-size: 15px; font-weight: 700; color: #fff; }
+        .sd-name { font-size: 12px; color: var(--text-muted); }
+        .sd-price-block { margin-bottom: 14px; }
+        .sd-price { font-size: 30px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+        .sd-change { font-size: 13px; font-weight: 600; margin-top: 4px; }
+        .sd-chart-wrap {
+            width: 100%;
+            height: 220px;
+            margin-bottom: 14px;
+        }
+        .sd-chart-wrap canvas { width: 100%; height: 100%; }
+        .sd-range-badges {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .sd-range-btn {
+            flex: 1;
+            text-align: center;
+            padding: 8px 4px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid var(--border-soft);
+            background: rgba(255,255,255,0.03);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .sd-range-btn.active {
+            background: rgba(232,33,39,0.15);
+            border-color: rgba(232,33,39,0.4);
+            color: var(--accent-primary);
+        }
+        .sd-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .sd-stat {
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .sd-stat .l { font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+        .sd-stat .v { font-size: 14px; font-weight: 700; color: #fff; }
+
+        /* Wraps the chart panel and the trading/strategies/plans/offers/info
+           side panel. Chart on top, side panel below on mobile; side panel on
+           the left, chart on the right on desktop. */
+        .stock-tab-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        @media (min-width: 900px) {
+            .stock-tab-layout {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+            .stock-detail-panel {
+                order: 2;
+                flex: 1 1 420px;
+                min-width: 320px;
+                position: sticky;
+                top: 0;
+            }
+            .stock-side-panel {
+                order: 1;
+                flex: 1 1 380px;
+                min-width: 320px;
+            }
+        }
+
+        /* ============ TRADING / STRATEGIES / PLANS / OFFERS / INFO ============ */
+        .stock-side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .ssp-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 16px;
+        }
+        .ssp-card-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        .ssp-trade-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .ssp-trade-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border-soft);
+            background: rgba(255,255,255,0.03);
+            color: var(--text-secondary);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .ssp-trade-btn.active[data-side="buy"] {
+            background: rgba(57,231,176,0.15);
+            border-color: rgba(57,231,176,0.4);
+            color: var(--accent-green);
+        }
+        .ssp-trade-btn.active[data-side="sell"] {
+            background: rgba(232,33,39,0.15);
+            border-color: rgba(232,33,39,0.4);
+            color: var(--accent-primary);
+        }
+        .ssp-trade-field { margin-bottom: 12px; }
+        .ssp-trade-field label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .ssp-trade-field input {
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-soft);
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            box-sizing: border-box;
+        }
+        .ssp-trade-summary {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+        .ssp-trade-submit {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            background: var(--accent-green);
+            color: #06231a;
+            transition: background 0.15s, color 0.15s;
+        }
+        .ssp-trade-submit.sell-mode {
+            background: rgba(232,33,39,0.15);
+            border: 1px solid rgba(232,33,39,0.35);
+            color: var(--accent-primary);
+        }
+        .ssp-list {
+            display: flex;
+            flex-direction: column;
+        }
+        .ssp-strategy-item,
+        .ssp-plan-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-soft);
+        }
+        .ssp-strategy-item:last-child,
+        .ssp-plan-item:last-child { border-bottom: none; }
+        .ssp-item-name { font-size: 13px; font-weight: 700; color: #fff; }
+        .ssp-item-desc { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
+        .ssp-tag {
+            flex-shrink: 0;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+        .ssp-tag-low { background: rgba(57,231,176,0.15); color: var(--accent-green); }
+        .ssp-tag-med { background: rgba(255,211,105,0.15); color: var(--accent-pro-text); }
+        .ssp-tag-high { background: rgba(232,33,39,0.15); color: var(--accent-primary); }
+        .ssp-plan-btn {
+            flex-shrink: 0;
+            padding: 8px 14px;
+            border-radius: 9px;
+            border: 1px solid rgba(232,33,39,0.35);
+            background: rgba(232,33,39,0.12);
+            color: var(--accent-primary);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .ssp-offer-card { background: linear-gradient(160deg, #1a0a0a 0%, #0a0a0a 65%); }
+        .ssp-offer { padding: 10px 0; border-bottom: 1px solid var(--border-soft); }
+        .ssp-offer:last-child { border-bottom: none; }
+        .ssp-offer-badge {
+            display: inline-block;
+            font-size: 9.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--accent-primary);
+            background: rgba(232,33,39,0.12);
+            border-radius: 6px;
+            padding: 3px 7px;
+            margin-bottom: 6px;
+        }
+        .ssp-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .ssp-info-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+    </style>
+
+    <style>
         .tesla-widget-container {
             display: flex;
             flex-direction: column;
@@ -4135,6 +4493,7 @@ window.smartsupp || (function(d) {
         }
 
         .investBtn {
+            width: 100%;
             padding: 12px 10px;
             border-radius: 10px;
             border: none;
@@ -4143,13 +4502,14 @@ window.smartsupp || (function(d) {
             cursor: pointer;
             font-weight: 600;
             display: flex;
-            gap: 5px;
+            gap: 8px;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
 
         }
 
         .buyVehicleBtn {
+            width: 100%;
             padding: 12px 10px;
             border-radius: 10px;
             border: 1px solid var(--bg-border-line);
@@ -4158,9 +4518,9 @@ window.smartsupp || (function(d) {
             cursor: pointer;
             font-weight: 600;
             display: flex;
-            gap: 5px;
+            gap: 8px;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
         }
     </style>
 
@@ -5894,113 +6254,295 @@ window.smartsupp || (function(d) {
                 <!--=================TESLA PAGE=================-->
                 <div class="page active" id="tesla">
 
-                    <div class="tesla-widget-container">
+                    <!-- Top tab nav: switches between Tesla Stocks / Buy Cars / News -->
+                    <div class="tesla-tab-nav">
+                        <button class="tesla-tab-btn" data-panel="teslaBuyCarsTab">Buy Cars</button>
+                        <button class="tesla-tab-btn active" data-panel="teslaStocksTab">Tesla Stocks</button>
+                        <button class="tesla-tab-btn" data-panel="teslaNewsTab">News</button>
+                    </div>
 
-                        <div class="page-header" style="padding: 20px 0px;">
-                            <h2>Invest in Tesla vehicle models</h2>
-                            <p style="margin-top: 20px;">Grok AI reads the chart for you in real time and gives you the
-                                best
-                                strategy to make maximum profit with minimal to no risk.</p>
-                        </div>
+                    <!-- ===== BUY CARS TAB ===== -->
+                    <div class="tesla-tab-panel" id="teslaBuyCarsTab">
+                        <div class="tesla-widget-container">
 
-                        <div class="tesla-widget-grid" id="teslaCars"></div>
-
-                        <div class="responsive-wrap">
-                            <div class="grok-trade-card">
-                                <div class="grok-header">
-                                    <div class="grok-title">
-                                        <img src="icons/grok_icon.png" alt="" style="height: 40px;">
-                                        <span>Grok AI Special Pick</span>
-                                    </div>
-                                    <div class="grok-badge">AI Powered</div>
-                                </div>
-
-                                <div class="grok-body">
-
-                                    <div class="grok-stat">
-                                        <span>AI Confidence</span>
-                                        <span id="grokConfidence">87%</span>
-                                    </div>
-
-                                    <div class="grok-stat">
-                                        <span>Market Direction</span>
-                                        <span class="bullish">Bullish <img src="icons/arrow-trend-up.png" alt=""
-                                                style="height: 20px;"></span>
-                                    </div>
-
-                                    <div class="grok-stat">
-                                        <span>Recommended Asset</span>
-                                        <span>BTC/USDT</span>
-                                    </div>
-
-                                    <div class="grok-stat">
-                                        <span>Expected ROI</span>
-                                        <span class="profit">+12.45%</span>
-                                    </div>
-
-                                    <button id="startGrokTrade" class="grok-btn">
-                                        Start AI Trade
-                                    </button>
-
-                                </div>
+                            <div class="page-header" style="padding: 20px 0px;">
+                                <h2>Buy a Tesla</h2>
+                                <p style="margin-top: 20px;">Purchase a Tesla vehicle outright, shipped and taxed to
+                                    your market.</p>
                             </div>
 
-                            <!--=================CAMPAIGN SLIDER=================-->
-                            <div class="campaign-slider">
+                            <div class="tesla-widget-grid" id="teslaCars"></div>
 
-                                <div class="campaign-track" id="campaignTrack">
+                        </div>
+                    </div>
 
-                                    <div class="campaign-card">
+                    <!-- ===== TESLA STOCKS TAB ===== -->
+                    <div class="tesla-tab-panel active" id="teslaStocksTab">
+                        <div class="tesla-widget-container">
 
-                                        <div class="grok-campaign-card">
+                            <div class="page-header" style="padding: 20px 0px;">
+                                <h2>Tesla Stock</h2>
+                                <p style="margin-top: 20px;">Everything about trading TSLA in one place — live
+                                    chart, order entry, strategies, plans, and offers.</p>
+                            </div>
 
-                                            <div class="grok-content">
+                            <div class="stock-tab-layout">
 
-                                                <img src="icons/grok_icon.png" alt="" style="height: 30px;">
+                                <!-- Tesla chart + key stats (always visible, mobile & desktop) -->
+                                <div class="stock-detail-panel" id="stockDetailOverlay">
+                                    <div class="sd-header">
+                                        <div class="sd-icon" id="sdIcon">T</div>
+                                        <div class="sd-header-text">
+                                            <div class="sd-symbol" id="sdSymbol">TSLA</div>
+                                            <div class="sd-name" id="sdName">Tesla, Inc.</div>
+                                        </div>
+                                    </div>
 
-                                                <h2 class="grok-title">
-                                                    Trade with Elon's Trading Expert <br>Grok Model 2.0
-                                                </h2>
+                                    <div class="sd-price-block">
+                                        <div class="sd-price" id="sdPrice">$0.00</div>
+                                        <div class="sd-change" id="sdChange">+0.00%</div>
+                                    </div>
 
-                                                <p class="grok-description">
-                                                    Powered by Elon’s AI core.
-                                                    <br>Up to 48% daily ROI low risk.
-                                                </p>
+                                    <div class="sd-chart-wrap">
+                                        <canvas id="sdChartCanvas" width="600" height="220"></canvas>
+                                    </div>
 
-                                                <button class="grok-cta-btn">
-                                                    Activate Grok 2.0
-                                                </button>
+                                    <div class="sd-range-badges" id="sdRangeBadges">
+                                        <div class="sd-range-btn active" data-range="1D">1D</div>
+                                        <div class="sd-range-btn" data-range="1W">1W</div>
+                                        <div class="sd-range-btn" data-range="1M">1M</div>
+                                        <div class="sd-range-btn" data-range="1Y">1Y</div>
+                                    </div>
+
+                                    <div class="sd-stats-grid">
+                                        <div class="sd-stat"><span class="l">Open</span><span class="v" id="sdOpen">—</span></div>
+                                        <div class="sd-stat"><span class="l">Day High</span><span class="v" id="sdHigh">—</span></div>
+                                        <div class="sd-stat"><span class="l">Day Low</span><span class="v" id="sdLow">—</span></div>
+                                        <div class="sd-stat"><span class="l">Volume</span><span class="v" id="sdVolume">—</span></div>
+                                    </div>
+                                </div>
+
+                                <!-- Trading / Strategies / Plans / Offers / More Info -->
+                                <div class="stock-side-panel">
+
+                                    <!-- TRADE -->
+                                    <div class="ssp-card">
+                                        <div class="ssp-card-title">Trade TSLA</div>
+                                        <div class="ssp-trade-toggle" id="sspTradeToggle">
+                                            <button class="ssp-trade-btn active" data-side="buy" type="button">Buy</button>
+                                            <button class="ssp-trade-btn" data-side="sell" type="button">Sell</button>
+                                        </div>
+                                        <div class="ssp-trade-field">
+                                            <label for="sspAmount">Amount (USD)</label>
+                                            <input type="number" id="sspAmount" value="500" min="1" step="1">
+                                        </div>
+                                        <div class="ssp-trade-summary">
+                                            <span>Est. shares</span>
+                                            <span id="sspShares">—</span>
+                                        </div>
+                                        <button class="ssp-trade-submit" id="sspSubmitBtn" type="button">Buy TSLA</button>
+                                    </div>
+
+                                    <!-- STRATEGIES -->
+                                    <div class="ssp-card">
+                                        <div class="ssp-card-title">Strategies</div>
+                                        <div class="ssp-list">
+                                            <div class="ssp-strategy-item">
+                                                <div>
+                                                    <div class="ssp-item-name">Conservative DCA</div>
+                                                    <div class="ssp-item-desc">Auto-buy a fixed amount on a schedule to smooth out volatility</div>
+                                                </div>
+                                                <span class="ssp-tag ssp-tag-low">Low risk</span>
+                                            </div>
+                                            <div class="ssp-strategy-item">
+                                                <div>
+                                                    <div class="ssp-item-name">Momentum Swing</div>
+                                                    <div class="ssp-item-desc">Ride short-term price trends with tighter entry and exit points</div>
+                                                </div>
+                                                <span class="ssp-tag ssp-tag-med">Medium risk</span>
+                                            </div>
+                                            <div class="ssp-strategy-item">
+                                                <div>
+                                                    <div class="ssp-item-name">Covered Call Income</div>
+                                                    <div class="ssp-item-desc">Generate yield against an existing TSLA position</div>
+                                                </div>
+                                                <span class="ssp-tag ssp-tag-high">High risk</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- PLANS -->
+                                    <div class="ssp-card">
+                                        <div class="ssp-card-title">Recurring Plans</div>
+                                        <div class="ssp-list">
+                                            <div class="ssp-plan-item">
+                                                <div>
+                                                    <div class="ssp-item-name">Weekly</div>
+                                                    <div class="ssp-item-desc">$50 every week</div>
+                                                </div>
+                                                <button class="ssp-plan-btn" type="button">Start</button>
+                                            </div>
+                                            <div class="ssp-plan-item">
+                                                <div>
+                                                    <div class="ssp-item-name">Monthly</div>
+                                                    <div class="ssp-item-desc">$200 every month</div>
+                                                </div>
+                                                <button class="ssp-plan-btn" type="button">Start</button>
+                                            </div>
+                                            <div class="ssp-plan-item">
+                                                <div>
+                                                    <div class="ssp-item-name">Quarterly</div>
+                                                    <div class="ssp-item-desc">$600 every quarter</div>
+                                                </div>
+                                                <button class="ssp-plan-btn" type="button">Start</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- OFFERS -->
+                                    <div class="ssp-card ssp-offer-card">
+                                        <div class="ssp-card-title">Offers</div>
+                                        <div class="ssp-offer">
+                                            <div class="ssp-offer-badge">Limited time</div>
+                                            <div class="ssp-item-name">Zero-fee TSLA trades this month</div>
+                                            <div class="ssp-item-desc">No commission on buy or sell orders through the end of the month</div>
+                                        </div>
+                                        <div class="ssp-offer">
+                                            <div class="ssp-offer-badge">Referral</div>
+                                            <div class="ssp-item-name">Refer a friend, get $25 in TSLA</div>
+                                            <div class="ssp-item-desc">Both of you receive a bonus once they fund their account</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- MORE INFO -->
+                                    <div class="ssp-card">
+                                        <div class="ssp-card-title">About Tesla, Inc.</div>
+                                        <div class="ssp-info-grid">
+                                            <div class="sd-stat"><span class="l">Sector</span><span class="v">Auto &amp; Clean Energy</span></div>
+                                            <div class="sd-stat"><span class="l">CEO</span><span class="v">Elon Musk</span></div>
+                                            <div class="sd-stat"><span class="l">Founded</span><span class="v">2003</span></div>
+                                            <div class="sd-stat"><span class="l">Headquarters</span><span class="v">Austin, TX</span></div>
+                                        </div>
+                                        <p class="ssp-info-desc">Tesla designs and manufactures electric vehicles, battery
+                                            energy storage, and solar products, alongside a growing software and
+                                            services business.</p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ===== NEWS TAB ===== -->
+                    <div class="tesla-tab-panel" id="teslaNewsTab">
+                        <div class="tesla-widget-container">
+
+                            <div class="page-header" style="padding: 20px 0px;">
+                                <h2>Tesla News</h2>
+                                <p style="margin-top: 20px;">The latest headlines on Tesla's stock, products, and
+                                    company milestones.</p>
+                            </div>
+
+                            <div class="responsive-wrap">
+                                <div class="grok-trade-card">
+                                    <div class="grok-header">
+                                        <div class="grok-title">
+                                            <img src="icons/grok_icon.png" alt="" style="height: 40px;">
+                                            <span>Grok AI Special Pick</span>
+                                        </div>
+                                        <div class="grok-badge">AI Powered</div>
+                                    </div>
+
+                                    <div class="grok-body">
+
+                                        <div class="grok-stat">
+                                            <span>AI Confidence</span>
+                                            <span id="grokConfidence">87%</span>
+                                        </div>
+
+                                        <div class="grok-stat">
+                                            <span>Market Direction</span>
+                                            <span class="bullish">Bullish <img src="icons/arrow-trend-up.png" alt=""
+                                                    style="height: 20px;"></span>
+                                        </div>
+
+                                        <div class="grok-stat">
+                                            <span>Recommended Asset</span>
+                                            <span>BTC/USDT</span>
+                                        </div>
+
+                                        <div class="grok-stat">
+                                            <span>Expected ROI</span>
+                                            <span class="profit">+12.45%</span>
+                                        </div>
+
+                                        <button id="startGrokTrade" class="grok-btn">
+                                            Start AI Trade
+                                        </button>
+
+                                    </div>
+                                </div>
+
+                                <!--=================CAMPAIGN SLIDER=================-->
+                                <div class="campaign-slider">
+
+                                    <div class="campaign-track" id="campaignTrack">
+
+                                        <div class="campaign-card">
+
+                                            <div class="grok-campaign-card">
+
+                                                <div class="grok-content">
+
+                                                    <img src="icons/grok_icon.png" alt="" style="height: 30px;">
+
+                                                    <h2 class="grok-title">
+                                                        Trade with Elon's Trading Expert <br>Grok Model 2.0
+                                                    </h2>
+
+                                                    <p class="grok-description">
+                                                        Powered by Elon’s AI core.
+                                                        <br>Up to 48% daily ROI low risk.
+                                                    </p>
+
+                                                    <button class="grok-cta-btn">
+                                                        Activate Grok 2.0
+                                                    </button>
+
+                                                </div>
 
                                             </div>
 
-                                        </div>
 
+                                        </div>
+                                        <div class="campaign-card"></div>
+                                        <div class="campaign-card"></div>
+                                        <div class="campaign-card"></div>
 
                                     </div>
-                                    <div class="campaign-card"></div>
-                                    <div class="campaign-card"></div>
-                                    <div class="campaign-card"></div>
+
+                                    <div class="campaign-dots" id="campaignDots">
+                                        <span class="campaign-dot active"></span>
+                                        <span class="campaign-dot"></span>
+                                        <span class="campaign-dot"></span>
+                                        <span class="campaign-dot"></span>
+                                    </div>
 
                                 </div>
-
-                                <div class="campaign-dots" id="campaignDots">
-                                    <span class="campaign-dot active"></span>
-                                    <span class="campaign-dot"></span>
-                                    <span class="campaign-dot"></span>
-                                    <span class="campaign-dot"></span>
-                                </div>
-
                             </div>
+
+                            <div class="news-list" id="teslaNewsList"></div>
+
                         </div>
-
-
-
                     </div>
 
                 </div>
                 <!--============================================-->
 
                 <!--=================HOME PAGE=================-->
+
                 <div class="page" id="home">
 
                     <div class="balance-section">
@@ -6521,6 +7063,8 @@ window.smartsupp || (function(d) {
                 <button class="ct-modal-confirm-btn" id="ctConfirmBtn" onclick="confirmCopy()">Start Copying</button>
             </div>
         </div>
+
+        <!-- Stock Detail Overlay now lives inline inside the Tesla Stocks tab, see teslaStocksTab above -->
 
 
 
@@ -11047,9 +11591,9 @@ window.smartsupp || (function(d) {
 
 
         // ================= RENDER =================
-        function renderTeslaCars() {
+        function renderTeslaProducts(containerId, mode) {
 
-            const container = document.getElementById("teslaCars");
+            const container = document.getElementById(containerId);
             if (!container) return;
 
             container.innerHTML = teslaCars.map((car, index) => `
@@ -11088,13 +11632,13 @@ window.smartsupp || (function(d) {
 
         <div class="tesla-actions">
 
+            ${mode === "invest" ? `
             <button class="investBtn" onclick="openInvestView(${index})">
                 <img src="icons/invest_icon.png" style="height: 20px;"> Invest in ${car.model}
-            </button>
-
+            </button>` : `
             <button class="buyVehicleBtn" onclick="openBuyView(${index})">
                 <img src="icons/cart_icon.png" style="height: 20px;"> Buy ${car.model}
-            </button>
+            </button>`}
 
         </div>
 
@@ -11106,7 +11650,247 @@ window.smartsupp || (function(d) {
 
         }
 
+        function renderTeslaCars() {
+            renderTeslaProducts("teslaCars", "buy");
+        }
+
         document.addEventListener("DOMContentLoaded", renderTeslaCars);
+
+        // ================= TESLA PAGE TABS (Stocks / Buy Cars / News) =================
+        function switchTeslaTab(panelId) {
+            document.querySelectorAll(".tesla-tab-btn").forEach(function (btn) {
+                btn.classList.toggle("active", btn.dataset.panel === panelId);
+            });
+            document.querySelectorAll(".tesla-tab-panel").forEach(function (panel) {
+                panel.classList.toggle("active", panel.id === panelId);
+            });
+            var contentEl = document.querySelector(".content");
+            if (contentEl) contentEl.scrollTo({ top: 0, behavior: "smooth" });
+        }
+        document.querySelectorAll(".tesla-tab-btn").forEach(function (btn) {
+            btn.addEventListener("click", function () { switchTeslaTab(this.dataset.panel); });
+        });
+
+        // ================= TESLA NEWS =================
+        const TESLA_NEWS = [
+            {
+                tag: "Earnings", tagClass: "tag-earnings", emoji: "📈",
+                headline: "Tesla beats delivery estimates, shares climb in after-hours trading",
+                meta: "2h ago · Markets"
+            },
+            {
+                tag: "Product", tagClass: "tag-product", emoji: "🚗",
+                headline: "Full Self-Driving v13 begins wider rollout across the fleet",
+                meta: "5h ago · Product"
+            },
+            {
+                tag: "Company", tagClass: "tag-company", emoji: "🏭",
+                headline: "New Gigafactory groundbreaking announced for Southeast Asia",
+                meta: "1d ago · Company"
+            },
+            {
+                tag: "Market", tagClass: "tag-market", emoji: "💹",
+                headline: "Analysts raise price targets ahead of next earnings call",
+                meta: "1d ago · Markets"
+            },
+            {
+                tag: "Product", tagClass: "tag-product", emoji: "🔋",
+                headline: "Cybertruck production ramps past quarterly target volume",
+                meta: "2d ago · Product"
+            },
+            {
+                tag: "Company", tagClass: "tag-company", emoji: "🌍",
+                headline: "Tesla expands Supercharger network access to more EV brands",
+                meta: "3d ago · Company"
+            }
+        ];
+
+        function renderTeslaNews() {
+            const list = document.getElementById("teslaNewsList");
+            if (!list) return;
+            list.innerHTML = TESLA_NEWS.map(function (n) {
+                return `
+                <div class="news-card">
+                    <div class="news-thumb" style="background:rgba(255,255,255,0.05)">${n.emoji}</div>
+                    <div class="news-body">
+                        <span class="news-tag ${n.tagClass}">${n.tag}</span>
+                        <div class="news-headline">${n.headline}</div>
+                        <div class="news-meta">${n.meta}</div>
+                    </div>
+                </div>`;
+            }).join("");
+        }
+        document.addEventListener("DOMContentLoaded", renderTeslaNews);
+
+        // ================= TESLA STOCK (Tesla Stocks tab) =================
+        const TESLA_STOCK = { symbol: "TSLA", name: "Tesla, Inc.", price: 248.50, change: 2.34, color: "#e82127", logo: "tesla_images/tesla_icon_red.png" };
+
+        // Seed a short rolling price history for the chart
+        TESLA_STOCK.history = [];
+        (function () {
+            var p = TESLA_STOCK.price * (1 - TESLA_STOCK.change / 100);
+            for (var i = 0; i < 30; i++) {
+                p += (Math.random() - 0.48) * (TESLA_STOCK.price * 0.004);
+                TESLA_STOCK.history.push(p);
+            }
+            TESLA_STOCK.history[TESLA_STOCK.history.length - 1] = TESLA_STOCK.price;
+        })();
+
+        // Simulate gentle live price movement so the chart feels real-time
+        setInterval(function () {
+            var s = TESLA_STOCK;
+            var delta = (Math.random() - 0.5) * (s.price * 0.0015);
+            s.price = Math.max(1, s.price + delta);
+            s.change += (Math.random() - 0.5) * 0.05;
+            s.history.push(s.price);
+            if (s.history.length > 60) s.history.shift();
+
+            var stocksTabVisible = document.getElementById("teslaStocksTab") &&
+                document.getElementById("teslaStocksTab").classList.contains("active");
+            if (stocksTabVisible) {
+                renderStockDetail();
+                updateTradeEstimate();
+            }
+        }, 3000);
+
+        // ================= TESLA CHART PANEL =================
+        var _sdRange = "1D";
+
+        function renderStockDetail() {
+            var s = TESLA_STOCK;
+            var isPositive = s.change >= 0;
+
+            var sdIconEl = document.getElementById("sdIcon");
+            sdIconEl.innerHTML = '<img src="' + s.logo + '" alt="' + s.symbol + '" onerror="this.replaceWith(Object.assign(document.createElement(\'span\'),{textContent:\'' + s.symbol.charAt(0) + '\'}))">';
+            sdIconEl.style.background = s.color;
+            document.getElementById("sdSymbol").textContent = s.symbol;
+            document.getElementById("sdName").textContent = s.name;
+            document.getElementById("sdPrice").textContent = "$" + s.price.toFixed(2);
+            var changeEl = document.getElementById("sdChange");
+            changeEl.textContent = (isPositive ? "+" : "") + s.change.toFixed(2) + "% today";
+            changeEl.style.color = isPositive ? "#39e7b0" : "#e82127";
+
+            var hist = s.history;
+            var high = Math.max.apply(null, hist);
+            var low = Math.min.apply(null, hist);
+            document.getElementById("sdOpen").textContent = "$" + hist[0].toFixed(2);
+            document.getElementById("sdHigh").textContent = "$" + high.toFixed(2);
+            document.getElementById("sdLow").textContent = "$" + low.toFixed(2);
+            document.getElementById("sdVolume").textContent = (Math.round((s.price * 3.2e6)) / 1e6).toFixed(1) + "M";
+
+            drawStockChart(hist, isPositive);
+        }
+
+        function drawStockChart(history, isPositive) {
+            var canvas = document.getElementById("sdChartCanvas");
+            if (!canvas) return;
+            var dpr = window.devicePixelRatio || 1;
+            var rect = canvas.getBoundingClientRect();
+            var w = rect.width || 600, h = rect.height || 220;
+            canvas.width = w * dpr;
+            canvas.height = h * dpr;
+            var ctx = canvas.getContext("2d");
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.clearRect(0, 0, w, h);
+
+            var min = Math.min.apply(null, history);
+            var max = Math.max.apply(null, history);
+            var range = (max - min) || 1;
+            var step = w / (history.length - 1);
+            var color = isPositive ? "#39e7b0" : "#e82127";
+
+            // Gradient fill under the line
+            var grad = ctx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, isPositive ? "rgba(57,231,176,0.25)" : "rgba(232,33,39,0.25)");
+            grad.addColorStop(1, "rgba(0,0,0,0)");
+
+            ctx.beginPath();
+            history.forEach(function (v, i) {
+                var x = i * step;
+                var y = h - ((v - min) / range) * (h - 20) - 10;
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            });
+            ctx.lineTo(w, h);
+            ctx.lineTo(0, h);
+            ctx.closePath();
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            ctx.beginPath();
+            history.forEach(function (v, i) {
+                var x = i * step;
+                var y = h - ((v - min) / range) * (h - 20) - 10;
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            });
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        document.addEventListener("DOMContentLoaded", renderStockDetail);
+
+        // Redraw the chart if the panel is resized (e.g. crossing the
+        // mobile/desktop breakpoint, or the browser window changing size)
+        var _sdResizeTimer = null;
+        window.addEventListener("resize", function () {
+            clearTimeout(_sdResizeTimer);
+            _sdResizeTimer = setTimeout(function () {
+                var isPositive = TESLA_STOCK.change >= 0;
+                drawStockChart(TESLA_STOCK.history, isPositive);
+            }, 150);
+        });
+
+        document.getElementById("sdRangeBadges").addEventListener("click", function (e) {
+            var btn = e.target.closest(".sd-range-btn");
+            if (!btn) return;
+            document.querySelectorAll(".sd-range-btn").forEach(function (b) { b.classList.remove("active"); });
+            btn.classList.add("active");
+            _sdRange = btn.dataset.range;
+            renderStockDetail();
+        });
+
+        // ================= TRADE TSLA WIDGET =================
+        var _sspSide = "buy";
+        var sspTradeToggle = document.getElementById("sspTradeToggle");
+        var sspAmount = document.getElementById("sspAmount");
+        var sspShares = document.getElementById("sspShares");
+        var sspSubmitBtn = document.getElementById("sspSubmitBtn");
+
+        function updateTradeEstimate() {
+            var amount = parseFloat(sspAmount.value);
+            if (!amount || amount <= 0 || !TESLA_STOCK.price) {
+                sspShares.textContent = "—";
+                return;
+            }
+            sspShares.textContent = (amount / TESLA_STOCK.price).toFixed(4);
+        }
+
+        function setTradeSide(side) {
+            _sspSide = side;
+            sspTradeToggle.querySelectorAll(".ssp-trade-btn").forEach(function (b) {
+                b.classList.toggle("active", b.dataset.side === side);
+            });
+            sspSubmitBtn.textContent = (side === "buy" ? "Buy" : "Sell") + " TSLA";
+            sspSubmitBtn.classList.toggle("sell-mode", side === "sell");
+        }
+
+        sspTradeToggle.addEventListener("click", function (e) {
+            var btn = e.target.closest(".ssp-trade-btn");
+            if (!btn) return;
+            setTradeSide(btn.dataset.side);
+        });
+        sspAmount.addEventListener("input", updateTradeEstimate);
+        sspSubmitBtn.addEventListener("click", function () {
+            if (typeof showToast === "function") showToast("Demo mode — live stock trading isn't wired up yet", "info");
+        });
+        updateTradeEstimate();
+
+        // Recurring plan "Start" buttons and strategy rows are demo-only
+        document.querySelectorAll(".ssp-plan-btn").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                if (typeof showToast === "function") showToast("Demo mode — recurring plans aren't wired up yet", "info");
+            });
+        });
 
 
         // ================= VIEW CONTROL =================
@@ -12498,6 +13282,19 @@ function resetOrderButton() {
             {
                 isOpen: function () { return isOpenByFlexDisplay("profileView"); },
                 close: function () { if (typeof closeProfileView === "function") closeProfileView(); }
+            },
+            // Tesla page sub-tabs (Buy Cars / News) — back returns to the default Tesla Stocks tab
+            {
+                isOpen: function () {
+                    var stocksBtn = document.querySelector('.tesla-tab-btn[data-panel="teslaStocksTab"]');
+                    var teslaPage = document.getElementById("tesla");
+                    return !!stocksBtn && !stocksBtn.classList.contains("active")
+                        && !!teslaPage && teslaPage.classList.contains("active");
+                },
+                close: function () {
+                    var stocksBtn = document.querySelector('.tesla-tab-btn[data-panel="teslaStocksTab"]');
+                    if (stocksBtn) stocksBtn.click();
+                }
             }
         ];
 
