@@ -5690,7 +5690,7 @@ window.smartsupp || (function(d) {
                 </div>
             </div>
             <div style="display: flex;gap: 10px;align-items: center;">
-                <div class="kyc-topbar-btn unverified" id="kycTopBarBtn" onclick="openProfileView(); openKycView();" title="Identity Verification">
+                <div class="kyc-topbar-btn unverified" id="kycTopBarBtn" onclick="openKycView();" title="Identity Verification">
                     <div class="kyc-topbar-icon-wrap">
                         <svg id="kycTopBarIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M15 9h3M15 13h3M6 17h12"/></svg>
                     </div>
@@ -10394,14 +10394,26 @@ window.smartsupp || (function(d) {
             4: "Step 4 of 4 — Review & Submit"
         };
 
+        // Remembers where KYC was opened FROM, so closing it returns to the
+        // correct place: "profile" if the profile page was already open
+        // (Profile -> Verify), or "dashboard" if it was launched straight
+        // from the dashboard topbar shortcut, bypassing the profile page.
+        let kycReturnTo = "dashboard";
+
         function openKycView() {
+            kycReturnTo = (profileView.style.display === "flex") ? "profile" : "dashboard";
             profileView.style.display = "none";
+            appView.style.display = "none";
             kycView.style.display = "flex";
             initKycPage();
         }
         function closeKycView() {
             kycView.style.display = "none";
-            profileView.style.display = "flex";
+            if (kycReturnTo === "profile") {
+                profileView.style.display = "flex";
+            } else {
+                appView.style.display = "flex";
+            }
         }
 
         function handleKycIdTypeChange() {
@@ -12350,6 +12362,20 @@ function resetOrderButton() {
             history.pushState({ appBackTrap: true }, "", location.href);
         }
 
+        function ensureTrapped() {
+            // Only push a new trap if we're not already sitting on one —
+            // avoids piling up pointless duplicate entries.
+            if (!history.state || !history.state.appBackTrap) {
+                trapHistoryState();
+            }
+        }
+
+        function handleBackPress() {
+            if (closeTopMostOpenLayer()) return;
+            if (goToHomeTabIfNeeded()) return;
+            // Already at the home tab with nothing open — absorb the back press.
+        }
+
         // Seed one extra entry so the very first back press is caught by us.
         trapHistoryState();
 
@@ -12357,11 +12383,31 @@ function resetOrderButton() {
             // Re-trap immediately so the real browser history is never reached
             // and the device back button can never actually exit this page.
             trapHistoryState();
-
-            if (closeTopMostOpenLayer()) return;
-            if (goToHomeTabIfNeeded()) return;
-            // Already at the home tab with nothing open — absorb the back press.
+            handleBackPress();
         });
+
+        // Mobile browsers cache this page (bfcache) when the user briefly
+        // navigates away and back (e.g. switching apps). On restore the
+        // history entry we trapped can end up stale or missing, which is a
+        // common reason the very next back press slips past our handler and
+        // exits the page instead of being absorbed. Re-assert the trap
+        // whenever the page becomes visible/restored again.
+        window.addEventListener("pageshow", function (e) {
+            ensureTrapped();
+        });
+        document.addEventListener("visibilitychange", function () {
+            if (document.visibilityState === "visible") ensureTrapped();
+        });
+
+        // Some devices/wrapped app shells (e.g. a Cordova/Capacitor WebView)
+        // deliver the hardware back button as its own event instead of a
+        // normal browser popstate. Listen for that too, defensively — this
+        // is a no-op in an ordinary mobile/desktop browser since the event
+        // never fires there.
+        document.addEventListener("backbutton", function (e) {
+            if (e && typeof e.preventDefault === "function") e.preventDefault();
+            handleBackPress();
+        }, false);
 
     })();
     </script>
