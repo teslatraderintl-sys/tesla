@@ -659,6 +659,10 @@ window.smartsupp || (function(d) {
             height: 45px;
             border-radius: 50%;
             background: url('image/default-avatar.png') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
         .profile-info h3 {
@@ -1110,10 +1114,8 @@ window.smartsupp || (function(d) {
             gap: 8px;
             overflow-x: auto;
             padding: 4px 0 14px;
-            position: sticky;
-            top: 62px;
+            margin-top: 12px;
             background-color: #000;
-            z-index: 19;
             scrollbar-width: none;
         }
 
@@ -2829,12 +2831,17 @@ window.smartsupp || (function(d) {
         .analytics-search-wrapper {
             position: relative;
             width: 100%;
-            margin-bottom: 20px;
-            top: 0;
-            position: sticky;
-            z-index: 20;
-            padding: 15px 0px;
+            padding: 15px 0px 0px;
             background-color: black;
+        }
+
+        /* Groups the search bar and category tabs so they scroll together
+           as a single sticky unit with a fixed gap between them. */
+        .analytics-sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background-color: #000;
         }
 
         #analyticsSearchInput {
@@ -3911,6 +3918,7 @@ window.smartsupp || (function(d) {
             border: 1px solid var(--border-soft);
             border-radius: 14px;
             padding: 4px;
+            margin-top: 16px;
             position: sticky;
             top: 0;
             z-index: 5;
@@ -3965,6 +3973,7 @@ window.smartsupp || (function(d) {
             align-items: center;
             justify-content: center;
             font-size: 22px;
+            overflow: hidden;
         }
         .news-body { flex: 1; min-width: 0; }
         .news-tag {
@@ -3991,6 +4000,107 @@ window.smartsupp || (function(d) {
         .news-meta {
             font-size: 11px;
             color: var(--text-muted);
+        }
+        .news-thumb img, .news-thumb-fallback {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        .news-thumb-fallback {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.06);
+            color: var(--text-secondary);
+            font-size: 20px;
+            font-weight: 800;
+        }
+        .news-loading, .news-empty {
+            padding: 30px 16px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+        }
+
+        /* ============ NEWS DETAIL OVERLAY ============ */
+        .news-detail-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg-app, #000);
+            z-index: 9997;
+            flex-direction: column;
+        }
+        .ndo-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--border-soft);
+            flex-shrink: 0;
+        }
+        .ndo-back-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border-soft);
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .ndo-header-label { font-size: 14px; font-weight: 700; color: #fff; }
+        .ndo-content { flex: 1; overflow-y: auto; }
+        .ndo-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: rgba(255,255,255,0.05);
+            display: block;
+        }
+        .ndo-image-fallback {
+            width: 100%;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            font-weight: 800;
+            color: var(--text-secondary);
+            background: rgba(255,255,255,0.04);
+        }
+        .ndo-body { padding: 18px; max-width: 640px; margin: 0 auto; }
+        .ndo-title {
+            font-size: 21px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.32;
+            margin: 12px 0 8px;
+        }
+        .ndo-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 18px; }
+        .ndo-snippet {
+            font-size: 14.5px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            margin-bottom: 24px;
+            white-space: pre-line;
+        }
+        .ndo-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 13px 22px;
+            border-radius: 12px;
+            background: var(--accent-primary);
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
         }
 
         /* ============ TESLA STOCK CHART PANEL ============ */
@@ -4025,6 +4135,7 @@ window.smartsupp || (function(d) {
             width: 20px;
             height: 20px;
             object-fit: contain;
+            filter: brightness(0) invert(1);
         }
         .sd-symbol { font-size: 15px; font-weight: 700; color: #fff; }
         .sd-name { font-size: 12px; color: var(--text-muted); }
@@ -4033,10 +4144,10 @@ window.smartsupp || (function(d) {
         .sd-change { font-size: 13px; font-weight: 600; margin-top: 4px; }
         .sd-chart-wrap {
             width: 100%;
-            height: 220px;
+            height: 240px;
             margin-bottom: 14px;
         }
-        .sd-chart-wrap canvas { width: 100%; height: 100%; }
+        .sd-chart-wrap > div { width: 100%; height: 100%; }
         .sd-range-badges {
             display: flex;
             gap: 8px;
@@ -5722,8 +5833,8 @@ window.smartsupp || (function(d) {
         }
 
         .analytics-list-col {
-            flex: 1;
-            min-width: 0;
+            flex: 1 1 0;
+            min-width: 260px;
         }
 
         /* Trade panel becomes a persistent inline column instead of a full-screen modal */
@@ -5735,8 +5846,9 @@ window.smartsupp || (function(d) {
             align-items: stretch;
             justify-content: flex-start;
             z-index: auto;
-            flex: 0 0 380px;
-            width: 380px;
+            flex: 2 1 0;
+            width: auto;
+            min-width: 420px;
         }
 
         #analytics .atm-modal {
@@ -5961,6 +6073,43 @@ window.smartsupp || (function(d) {
         pointer-events: none;
     }
 
+    /* ---------- CHART STYLE TOGGLE (Line / Candles) ---------- */
+    .atm-chart-style-toggle {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        display: flex;
+        gap: 2px;
+        background: rgba(255, 255, 255, .06);
+        border: 1px solid var(--bg-border-line);
+        border-radius: 10px;
+        padding: 2px;
+        z-index: 2;
+    }
+
+    .atm-chart-style-btn {
+        width: 26px;
+        height: 26px;
+        border: none;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .atm-chart-style-btn svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .atm-chart-style-btn.active {
+        background: rgba(255, 255, 255, .12);
+        color: var(--text-primary);
+    }
+
     /* ---------- INTERVAL BAR ---------- */
     .atm-interval-bar {
         display: flex;
@@ -6063,6 +6212,250 @@ window.smartsupp || (function(d) {
         font-size: 13px;
     }
 
+    /* ---------- ASK AI / NEWS / INSIGHTS TAB PANELS ---------- */
+    .atm-tab-content {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 4px 16px 20px;
+    }
+
+    .askai-card {
+        background: rgba(255, 255, 255, .03);
+        border: 1px solid var(--bg-border-line);
+        border-radius: 14px;
+        padding: 16px;
+    }
+
+    .askai-card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .askai-card-header img {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
+
+    .askai-card-header h4 {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .askai-confidence {
+        font-size: 11px;
+        color: var(--text-muted);
+    }
+
+    .askai-signal {
+        margin-left: auto;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+        flex-shrink: 0;
+    }
+
+    .askai-signal.buy {
+        background: rgba(0, 196, 106, .15);
+        color: #00c46a;
+    }
+
+    .askai-signal.sell {
+        background: rgba(255, 77, 77, .15);
+        color: #ff4d4d;
+    }
+
+    .askai-signal.hold {
+        background: rgba(255, 211, 105, .15);
+        color: #ffd369;
+    }
+
+    .askai-summary {
+        font-size: 13px;
+        line-height: 1.6;
+        color: var(--text-secondary);
+        margin-bottom: 16px;
+    }
+
+    .askai-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    .askai-stat {
+        background: rgba(255, 255, 255, .03);
+        border: 1px solid var(--border-soft);
+        border-radius: 10px;
+        padding: 10px 8px;
+        text-align: center;
+    }
+
+    .askai-stat span {
+        display: block;
+        font-size: 9.5px;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+    }
+
+    .askai-stat strong {
+        font-size: 13px;
+        color: var(--text-primary);
+    }
+
+    .askai-disclaimer {
+        font-size: 10.5px;
+        color: var(--text-muted);
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    .atm-news-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .atm-news-loading,
+    .atm-news-empty {
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 13px;
+        padding: 30px 10px;
+    }
+
+    .atm-news-item {
+        display: block;
+        background: rgba(255, 255, 255, .03);
+        border: 1px solid var(--bg-border-line);
+        border-radius: 12px;
+        padding: 12px;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .atm-news-item-top {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+        font-size: 11px;
+        color: var(--text-muted);
+    }
+
+    .atm-news-item-top img {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+    }
+
+    .atm-news-item h5 {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-primary);
+        line-height: 1.4;
+        margin-bottom: 4px;
+    }
+
+    .atm-news-item p {
+        font-size: 12px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    .insights-block {
+        background: rgba(255, 255, 255, .03);
+        border: 1px solid var(--bg-border-line);
+        border-radius: 14px;
+        padding: 4px 14px;
+        margin-bottom: 18px;
+    }
+
+    .insights-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        font-size: 13px;
+        border-bottom: 1px solid var(--bg-border-line);
+        color: var(--text-secondary);
+    }
+
+    .insights-row:last-child {
+        border-bottom: none;
+    }
+
+    .insights-row strong {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    .insights-range {
+        margin-bottom: 20px;
+    }
+
+    .insights-range-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+        color: var(--text-muted);
+        margin-bottom: 10px;
+    }
+
+    .insights-range-track {
+        position: relative;
+        height: 6px;
+        border-radius: 4px;
+        background: linear-gradient(90deg, #ff4d4d, rgba(255, 255, 255, .12) 50%, #00c46a);
+    }
+
+    .insights-range-marker {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid var(--accent-primary);
+        transform: translate(-50%, -50%);
+    }
+
+    .insights-volatility {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        color: var(--text-secondary);
+    }
+
+    .insights-vol-bar {
+        flex: 1;
+        height: 6px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, .08);
+        overflow: hidden;
+    }
+
+    .insights-vol-fill {
+        height: 100%;
+        background: var(--accent-primary);
+        width: 0%;
+    }
+
     /* ---------- ORDER TICKET (shown after tapping Buy/Sell) ---------- */
     .atm-ticket-overlay {
         position: absolute;
@@ -6143,16 +6536,40 @@ window.smartsupp || (function(d) {
         border-bottom: 1px solid var(--bg-border-line);
     }
 
+    /* Amount to Invest / Take Profit / Stop Loss:
+       stacked in one column on mobile, side-by-side in one row on desktop */
+    .atm-ticket-inputs-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+
+    @media (min-width: 900px) {
+        .atm-ticket-inputs-row {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .atm-ticket-inputs-row .atm-input-group input {
+        margin-bottom: 0;
+    }
+
     .atm-ticket-execute-btn {
         width: 100%;
         padding: 14px;
         border-radius: 14px;
         border: none;
+        background: var(--accent-primary);
         color: #fff;
         font-weight: 700;
         font-size: 15px;
         cursor: pointer;
         margin-top: 16px;
+    }
+
+    .atm-ticket-execute-btn:hover {
+        background: #c81b20;
     }
 
 </style>
@@ -6256,13 +6673,13 @@ window.smartsupp || (function(d) {
 
                     <!-- Top tab nav: switches between Tesla Stocks / Buy Cars / News -->
                     <div class="tesla-tab-nav">
-                        <button class="tesla-tab-btn" data-panel="teslaBuyCarsTab">Buy Cars</button>
-                        <button class="tesla-tab-btn active" data-panel="teslaStocksTab">Tesla Stocks</button>
+                        <button class="tesla-tab-btn active" data-panel="teslaBuyCarsTab">Buy Cars</button>
+                        <button class="tesla-tab-btn" data-panel="teslaStocksTab">Tesla Stocks</button>
                         <button class="tesla-tab-btn" data-panel="teslaNewsTab">News</button>
                     </div>
 
                     <!-- ===== BUY CARS TAB ===== -->
-                    <div class="tesla-tab-panel" id="teslaBuyCarsTab">
+                    <div class="tesla-tab-panel active" id="teslaBuyCarsTab">
                         <div class="tesla-widget-container">
 
                             <div class="page-header" style="padding: 20px 0px;">
@@ -6277,7 +6694,7 @@ window.smartsupp || (function(d) {
                     </div>
 
                     <!-- ===== TESLA STOCKS TAB ===== -->
-                    <div class="tesla-tab-panel active" id="teslaStocksTab">
+                    <div class="tesla-tab-panel" id="teslaStocksTab">
                         <div class="tesla-widget-container">
 
                             <div class="page-header" style="padding: 20px 0px;">
@@ -6304,7 +6721,7 @@ window.smartsupp || (function(d) {
                                     </div>
 
                                     <div class="sd-chart-wrap">
-                                        <canvas id="sdChartCanvas" width="600" height="220"></canvas>
+                                        <div id="sdChartCanvas"></div>
                                     </div>
 
                                     <div class="sd-range-badges" id="sdRangeBadges">
@@ -6445,95 +6862,16 @@ window.smartsupp || (function(d) {
                                     company milestones.</p>
                             </div>
 
-                            <div class="responsive-wrap">
-                                <div class="grok-trade-card">
-                                    <div class="grok-header">
-                                        <div class="grok-title">
-                                            <img src="icons/grok_icon.png" alt="" style="height: 40px;">
-                                            <span>Grok AI Special Pick</span>
-                                        </div>
-                                        <div class="grok-badge">AI Powered</div>
-                                    </div>
-
-                                    <div class="grok-body">
-
-                                        <div class="grok-stat">
-                                            <span>AI Confidence</span>
-                                            <span id="grokConfidence">87%</span>
-                                        </div>
-
-                                        <div class="grok-stat">
-                                            <span>Market Direction</span>
-                                            <span class="bullish">Bullish <img src="icons/arrow-trend-up.png" alt=""
-                                                    style="height: 20px;"></span>
-                                        </div>
-
-                                        <div class="grok-stat">
-                                            <span>Recommended Asset</span>
-                                            <span>BTC/USDT</span>
-                                        </div>
-
-                                        <div class="grok-stat">
-                                            <span>Expected ROI</span>
-                                            <span class="profit">+12.45%</span>
-                                        </div>
-
-                                        <button id="startGrokTrade" class="grok-btn">
-                                            Start AI Trade
-                                        </button>
-
-                                    </div>
-                                </div>
-
-                                <!--=================CAMPAIGN SLIDER=================-->
-                                <div class="campaign-slider">
-
-                                    <div class="campaign-track" id="campaignTrack">
-
-                                        <div class="campaign-card">
-
-                                            <div class="grok-campaign-card">
-
-                                                <div class="grok-content">
-
-                                                    <img src="icons/grok_icon.png" alt="" style="height: 30px;">
-
-                                                    <h2 class="grok-title">
-                                                        Trade with Elon's Trading Expert <br>Grok Model 2.0
-                                                    </h2>
-
-                                                    <p class="grok-description">
-                                                        Powered by Elon’s AI core.
-                                                        <br>Up to 48% daily ROI low risk.
-                                                    </p>
-
-                                                    <button class="grok-cta-btn">
-                                                        Activate Grok 2.0
-                                                    </button>
-
-                                                </div>
-
-                                            </div>
-
-
-                                        </div>
-                                        <div class="campaign-card"></div>
-                                        <div class="campaign-card"></div>
-                                        <div class="campaign-card"></div>
-
-                                    </div>
-
-                                    <div class="campaign-dots" id="campaignDots">
-                                        <span class="campaign-dot active"></span>
-                                        <span class="campaign-dot"></span>
-                                        <span class="campaign-dot"></span>
-                                        <span class="campaign-dot"></span>
-                                    </div>
-
-                                </div>
-                            </div>
-
                             <div class="news-list" id="teslaNewsList"></div>
+
+                            <!-- News Detail Overlay -->
+                            <div class="news-detail-overlay" id="newsDetailOverlay">
+                                <div class="ndo-header">
+                                    <button class="ndo-back-btn" id="newsDetailBackBtn">&#8592;</button>
+                                    <span class="ndo-header-label">Article</span>
+                                </div>
+                                <div class="ndo-content" id="newsDetailContent"></div>
+                            </div>
 
                         </div>
                     </div>
@@ -6724,15 +7062,16 @@ window.smartsupp || (function(d) {
 
                         <div class="analytics-list-col">
 
-                            <!-- ================= SEARCH BAR ================= -->
-                            <div class="analytics-search-wrapper">
-                                <input type="text" id="analyticsSearchInput"
-                                    placeholder="Search market (e.g. Bitcoin, ETH, SOL)..." autocomplete="off" />
-                                <img class="search-icon" src="icons/search-icon.png" alt="">
-                            </div>
+                            <!-- ================= SEARCH BAR + CATEGORY TAB NAV (stick together, fixed gap) ================= -->
+                            <div class="analytics-sticky-header">
+                                <div class="analytics-search-wrapper">
+                                    <input type="text" id="analyticsSearchInput"
+                                        placeholder="Search market (e.g. Bitcoin, ETH, SOL)..." autocomplete="off" />
+                                    <img class="search-icon" src="icons/search-icon.png" alt="">
+                                </div>
 
-                            <!-- ================= CATEGORY TAB NAV ================= -->
-                            <div class="analytics-tab-nav" id="analyticsTabNav"></div>
+                                <div class="analytics-tab-nav" id="analyticsTabNav"></div>
+                            </div>
 
                             <div class="market-analytics-wrapper" id="marketAnalyticsWrapper"></div>
 
@@ -6804,6 +7143,23 @@ window.smartsupp || (function(d) {
                                     <div class="atm-chart-wrap">
                                         <div id="atmChart"></div>
                                         <div class="atm-range-badge" id="atmRangeBadge">1H</div>
+                                        <div class="atm-chart-style-toggle" id="atmChartStyleToggle">
+                                            <button class="atm-chart-style-btn active" data-style="line" title="Line chart">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="3 17 9 11 13 15 21 6"></polyline>
+                                                </svg>
+                                            </button>
+                                            <button class="atm-chart-style-btn" data-style="candle" title="Candlestick chart">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="6" y1="2" x2="6" y2="22"></line>
+                                                    <rect x="3.5" y="8" width="5" height="7"></rect>
+                                                    <line x1="17" y1="2" x2="17" y2="22"></line>
+                                                    <rect x="14.5" y="5" width="5" height="9"></rect>
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <div class="atm-interval-bar">
@@ -6852,8 +7208,20 @@ window.smartsupp || (function(d) {
                                             <span class="atm-ticket-direction long" id="atmTicketDirection">BUY</span>
                                         </div>
                                         <div class="atm-ticket-body">
-                                            <label>Amount to Invest (USD)</label>
-                                            <input type="number" id="atmAmountInput" placeholder="Enter amount">
+                                            <div class="atm-ticket-inputs-row">
+                                                <div class="atm-input-group">
+                                                    <label>Amount to Invest (USD)</label>
+                                                    <input type="number" id="atmAmountInput" placeholder="Enter amount">
+                                                </div>
+                                                <div class="atm-input-group">
+                                                    <label>Take Profit (USD)</label>
+                                                    <input type="number" id="atmTP" placeholder="Enter take profit">
+                                                </div>
+                                                <div class="atm-input-group">
+                                                    <label>Stop Loss (USD)</label>
+                                                    <input type="number" id="atmSL" placeholder="Enter stop loss">
+                                                </div>
+                                            </div>
 
                                             <div class="atm-ticket-row">
                                                 <span>Available Balance</span>
@@ -6862,14 +7230,6 @@ window.smartsupp || (function(d) {
                                             <div class="atm-ticket-row">
                                                 <span>Entry Price</span>
                                                 <span id="atmEntryPrice">$0.00</span>
-                                            </div>
-                                            <div class="atm-ticket-row">
-                                                <span>Take Profit</span>
-                                                <span id="atmTP">$0.00</span>
-                                            </div>
-                                            <div class="atm-ticket-row">
-                                                <span>Stop Loss</span>
-                                                <span id="atmSL">$0.00</span>
                                             </div>
                                             <div class="atm-ticket-row">
                                                 <span>Units</span>
@@ -6885,15 +7245,86 @@ window.smartsupp || (function(d) {
                                     </div>
                                 </div>
 
-                                <!-- OTHER TAB PLACEHOLDERS -->
-                                <div class="atm-tab-panel atm-placeholder" id="atmPanelAskai" style="display:none;">
-                                    Ask AI insights for this asset are coming soon.
+                                <!-- ===== ASK AI TAB ===== -->
+                                <div class="atm-tab-panel atm-tab-content" id="atmPanelAskai" style="display:none;">
+                                    <div class="askai-card">
+                                        <div class="askai-card-header">
+                                            <img src="icons/grok_icon.png" alt="">
+                                            <div>
+                                                <h4>AI Trade Read</h4>
+                                                <span class="askai-confidence" id="askaiConfidence">— confidence</span>
+                                            </div>
+                                            <span class="askai-signal" id="askaiSignal">—</span>
+                                        </div>
+                                        <p class="askai-summary" id="askaiSummary">Open an asset to see an AI-generated read on this trade.</p>
+                                        <div class="askai-stats">
+                                            <div class="askai-stat">
+                                                <span>Risk / Reward</span>
+                                                <strong id="askaiRR">—</strong>
+                                            </div>
+                                            <div class="askai-stat">
+                                                <span>Upside to TP</span>
+                                                <strong id="askaiUpside">—</strong>
+                                            </div>
+                                            <div class="askai-stat">
+                                                <span>Downside to SL</span>
+                                                <strong id="askaiDownside">—</strong>
+                                            </div>
+                                        </div>
+                                        <div class="askai-disclaimer">AI-generated for informational purposes only — not financial advice.</div>
+                                    </div>
                                 </div>
-                                <div class="atm-tab-panel atm-placeholder" id="atmPanelNews" style="display:none;">
-                                    News &amp; analysis for this asset are coming soon.
+
+                                <!-- ===== NEWS & ANALYSIS TAB ===== -->
+                                <div class="atm-tab-panel atm-tab-content" id="atmPanelNews" style="display:none;">
+                                    <div class="atm-news-list" id="atmNewsList">
+                                        <div class="atm-news-loading">Loading news…</div>
+                                    </div>
                                 </div>
-                                <div class="atm-tab-panel atm-placeholder" id="atmPanelInsights" style="display:none;">
-                                    Deeper insights for this asset are coming soon.
+
+                                <!-- ===== INSIGHTS TAB ===== -->
+                                <div class="atm-tab-panel atm-tab-content" id="atmPanelInsights" style="display:none;">
+                                    <div class="insights-block">
+                                        <div class="insights-row">
+                                            <span>24h Change</span>
+                                            <strong id="insightsChange">—</strong>
+                                        </div>
+                                        <div class="insights-row">
+                                            <span>Entry Price</span>
+                                            <strong id="insightsEntry">—</strong>
+                                        </div>
+                                        <div class="insights-row">
+                                            <span>Take Profit</span>
+                                            <strong id="insightsTP">—</strong>
+                                        </div>
+                                        <div class="insights-row">
+                                            <span>Stop Loss</span>
+                                            <strong id="insightsSL">—</strong>
+                                        </div>
+                                        <div class="insights-row">
+                                            <span>Risk / Reward Ratio</span>
+                                            <strong id="insightsRR">—</strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="insights-range">
+                                        <div class="insights-range-labels">
+                                            <span>Stop Loss</span>
+                                            <span>Entry</span>
+                                            <span>Take Profit</span>
+                                        </div>
+                                        <div class="insights-range-track">
+                                            <div class="insights-range-marker" id="insightsRangeMarker"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="insights-volatility">
+                                        <span>Volatility</span>
+                                        <div class="insights-vol-bar">
+                                            <div class="insights-vol-fill" id="insightsVolFill"></div>
+                                        </div>
+                                        <span id="insightsVolLabel">—</span>
+                                    </div>
                                 </div>
 
                             </div>
@@ -9609,73 +10040,6 @@ window.smartsupp || (function(d) {
     <!--=========================================================-->
 
 
-    <!--START GROK TRADE HANDLER-->
-    <script>
-        document.getElementById("startGrokTrade").addEventListener("click", function () {
-
-            const btn = this;
-            btn.disabled = true;
-            btn.textContent = "Processing...";
-
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.textContent = "Start AI Trade";
-                showToast("Grok AI trade executed successfully", "success");
-            }, 2000);
-
-        });
-    </script>
-
-
-    <script>
-
-        /*=================CAMPAIGN SLIDER=================*/
-
-        let campaignIndex = 0;
-
-        const campaignTrack = document.getElementById("campaignTrack");
-        const campaignDots = document.querySelectorAll(".campaign-dot");
-
-        function showCampaignSlide(index) {
-
-            campaignTrack.style.transform =
-                "translateX(-" + (index * 100) + "%)";
-
-            campaignDots.forEach(dot => dot.classList.remove("active"));
-
-            campaignDots[index].classList.add("active");
-        }
-
-        /* AUTO SLIDE */
-
-        setInterval(() => {
-
-            campaignIndex++;
-
-            if (campaignIndex >= campaignDots.length) {
-                campaignIndex = 0;
-            }
-
-            showCampaignSlide(campaignIndex);
-
-        }, 10000);
-
-
-        /* DOT CLICK SUPPORT */
-
-        campaignDots.forEach((dot, i) => {
-
-            dot.addEventListener("click", () => {
-
-                campaignIndex = i;
-                showCampaignSlide(campaignIndex);
-
-            });
-
-        });
-
-    </script>
-
 
     <!--========================MODAL PANEL CONTROL SCRIPT========================-->
     <script>
@@ -11672,69 +12036,241 @@ window.smartsupp || (function(d) {
         });
 
         // ================= TESLA NEWS =================
-        const TESLA_NEWS = [
+        // Pulls real-time headlines about Tesla and the wider Elon Musk
+        // group of companies (SpaceX, Neuralink, xAI, The Boring Company)
+        // from public RSS feeds, converted to JSON via rss2json.com so they
+        // can be fetched client-side without an API key.
+        const NEWS_QUERY = 'Tesla OR SpaceX OR Neuralink OR "xAI" OR "Boring Company" OR "Elon Musk"';
+        const NEWS_SOURCES = [
             {
-                tag: "Earnings", tagClass: "tag-earnings", emoji: "📈",
-                headline: "Tesla beats delivery estimates, shares climb in after-hours trading",
-                meta: "2h ago · Markets"
+                name: "Google News",
+                rssUrl: "https://news.google.com/rss/search?q=" + encodeURIComponent(NEWS_QUERY) + "&hl=en-US&gl=US&ceid=US:en"
             },
             {
-                tag: "Product", tagClass: "tag-product", emoji: "🚗",
-                headline: "Full Self-Driving v13 begins wider rollout across the fleet",
-                meta: "5h ago · Product"
-            },
-            {
-                tag: "Company", tagClass: "tag-company", emoji: "🏭",
-                headline: "New Gigafactory groundbreaking announced for Southeast Asia",
-                meta: "1d ago · Company"
-            },
-            {
-                tag: "Market", tagClass: "tag-market", emoji: "💹",
-                headline: "Analysts raise price targets ahead of next earnings call",
-                meta: "1d ago · Markets"
-            },
-            {
-                tag: "Product", tagClass: "tag-product", emoji: "🔋",
-                headline: "Cybertruck production ramps past quarterly target volume",
-                meta: "2d ago · Product"
-            },
-            {
-                tag: "Company", tagClass: "tag-company", emoji: "🌍",
-                headline: "Tesla expands Supercharger network access to more EV brands",
-                meta: "3d ago · Company"
+                name: "Electrek",
+                rssUrl: "https://electrek.co/feed/"
             }
         ];
+
+        // Used only if every live source fails to load (offline, feed
+        // outage, etc.) so the tab never renders empty.
+        const NEWS_FALLBACK = [
+            {
+                title: "Tesla beats delivery estimates, shares climb in after-hours trading",
+                snippet: "Tesla's latest quarterly deliveries topped analyst expectations, sending shares higher after the closing bell.",
+                source: "Markets", pubDate: null, link: "#", tag: "Earnings", tagClass: "tag-earnings", logo: "https://logo.clearbit.com/tesla.com"
+            },
+            {
+                title: "Full Self-Driving v13 begins wider rollout across the fleet",
+                snippet: "Tesla has started pushing its latest Full Self-Driving software build to a broader set of vehicles.",
+                source: "Product", pubDate: null, link: "#", tag: "Product", tagClass: "tag-product", logo: "https://logo.clearbit.com/tesla.com"
+            },
+            {
+                title: "SpaceX prepares next Starship test flight",
+                snippet: "SpaceX is targeting an upcoming launch window for its next integrated Starship test flight.",
+                source: "SpaceX", pubDate: null, link: "#", tag: "SpaceX", tagClass: "tag-market", logo: "https://logo.clearbit.com/spacex.com"
+            },
+            {
+                title: "Neuralink shares update on clinical trial progress",
+                snippet: "Neuralink provided an update on patients participating in its brain-computer interface trials.",
+                source: "Neuralink", pubDate: null, link: "#", tag: "Neuralink", tagClass: "tag-company", logo: "https://logo.clearbit.com/neuralink.com"
+            },
+            {
+                title: "New Gigafactory groundbreaking announced for Southeast Asia",
+                snippet: "Tesla announced plans for a new Gigafactory site as it continues expanding global manufacturing capacity.",
+                source: "Company", pubDate: null, link: "#", tag: "Company", tagClass: "tag-company", logo: "https://logo.clearbit.com/tesla.com"
+            },
+            {
+                title: "Cybertruck production ramps past quarterly target volume",
+                snippet: "Tesla's Cybertruck production line has exceeded its internal volume targets for the quarter.",
+                source: "Product", pubDate: null, link: "#", tag: "Product", tagClass: "tag-product", logo: "https://logo.clearbit.com/tesla.com"
+            }
+        ];
+
+        var NEWS_ITEMS = [];
+
+        function stripHtml(html) {
+            if (!html) return "";
+            var tmp = document.createElement("div");
+            tmp.innerHTML = html;
+            return (tmp.textContent || tmp.innerText || "").replace(/\s+/g, " ").trim();
+        }
+
+        function escapeHtml(str) {
+            var div = document.createElement("div");
+            div.textContent = str == null ? "" : String(str);
+            return div.innerHTML;
+        }
+
+        function newsTimeAgo(dateStr) {
+            if (!dateStr) return "Recently";
+            var diffMs = Date.now() - new Date(dateStr).getTime();
+            if (isNaN(diffMs)) return "Recently";
+            var mins = Math.floor(diffMs / 60000);
+            if (mins < 1) return "Just now";
+            if (mins < 60) return mins + "m ago";
+            var hrs = Math.floor(mins / 60);
+            if (hrs < 24) return hrs + "h ago";
+            var days = Math.floor(hrs / 24);
+            if (days < 7) return days + "d ago";
+            return new Date(dateStr).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+        }
+
+        function extractNewsImage(item) {
+            if (item.thumbnail) return item.thumbnail;
+            if (item.enclosure && item.enclosure.link) return item.enclosure.link;
+            var html = item.description || item.content || "";
+            var match = /<img[^>]+src=["']([^"'>]+)["']/i.exec(html);
+            return match ? match[1] : null;
+        }
+
+        // Maps a story to the company it's about and that company's logo,
+        // used whenever the article itself has no usable image.
+        function classifyNewsTag(item) {
+            var text = ((item.title || "") + " " + (item.description || "")).toLowerCase();
+            if (text.indexOf("spacex") !== -1 || text.indexOf("starship") !== -1) return { tag: "SpaceX", tagClass: "tag-market", logo: "https://logo.clearbit.com/spacex.com" };
+            if (text.indexOf("neuralink") !== -1) return { tag: "Neuralink", tagClass: "tag-company", logo: "https://logo.clearbit.com/neuralink.com" };
+            if (text.indexOf("xai") !== -1 || text.indexOf("grok") !== -1) return { tag: "xAI", tagClass: "tag-product", logo: "https://logo.clearbit.com/x.ai" };
+            if (text.indexOf("boring company") !== -1 || text.indexOf("boring co") !== -1) return { tag: "Boring Co.", tagClass: "tag-company", logo: "https://logo.clearbit.com/boringcompany.com" };
+            if (text.indexOf("deliver") !== -1 || text.indexOf("earnings") !== -1 || text.indexOf("share") !== -1 || text.indexOf("stock") !== -1) return { tag: "Markets", tagClass: "tag-market", logo: "https://logo.clearbit.com/tesla.com" };
+            return { tag: "Tesla", tagClass: "tag-earnings", logo: "https://logo.clearbit.com/tesla.com" };
+        }
+
+        function normalizeNewsItem(raw, sourceName) {
+            var meta = classifyNewsTag(raw);
+            return {
+                title: stripHtml(raw.title),
+                snippet: stripHtml(raw.description || raw.content || "").slice(0, 220),
+                image: extractNewsImage(raw),
+                source: (raw.author && stripHtml(raw.author)) || sourceName,
+                pubDate: raw.pubDate || null,
+                link: raw.link || "#",
+                tag: meta.tag,
+                tagClass: meta.tagClass,
+                logo: meta.logo
+            };
+        }
+
+        function fetchNewsFeed(source) {
+            var api = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(source.rssUrl);
+            return fetch(api)
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.status !== "ok" || !Array.isArray(data.items)) return [];
+                    return data.items.map(function (raw) { return normalizeNewsItem(raw, source.name); });
+                })
+                .catch(function () { return []; });
+        }
+
+        function loadTeslaNews() {
+            var list = document.getElementById("teslaNewsList");
+            if (list && !NEWS_ITEMS.length) {
+                list.innerHTML = '<div class="news-loading">Loading the latest Tesla &amp; Elon-companies news…</div>';
+            }
+
+            Promise.all(NEWS_SOURCES.map(fetchNewsFeed)).then(function (results) {
+                var merged = [].concat.apply([], results);
+
+                var seen = {};
+                merged = merged.filter(function (it) {
+                    var key = it.title.trim().toLowerCase();
+                    if (!key || seen[key]) return false;
+                    seen[key] = true;
+                    return true;
+                });
+
+                merged.sort(function (a, b) {
+                    return new Date(b.pubDate || 0) - new Date(a.pubDate || 0);
+                });
+
+                NEWS_ITEMS = merged.length ? merged.slice(0, 30) : NEWS_FALLBACK;
+                renderTeslaNews();
+            }).catch(function () {
+                NEWS_ITEMS = NEWS_FALLBACK;
+                renderTeslaNews();
+            });
+        }
+
+        // Two-step <img> fallback shared by the list thumbnails and the
+        // detail view: article image -> company logo -> a plain initial.
+        // Exposed on window since it's invoked from inline onerror handlers.
+        window.newsImgFallback = function (img) {
+            if (img.dataset.stage !== "logo" && img.dataset.logo) {
+                img.dataset.stage = "logo";
+                img.src = img.dataset.logo;
+                return;
+            }
+            var span = document.createElement("span");
+            span.className = img.classList.contains("ndo-image") ? "ndo-image-fallback" : "news-thumb-fallback";
+            span.textContent = (img.dataset.letter || "?");
+            img.replaceWith(span);
+        };
+
+        function buildNewsThumbImg(n, cssClass) {
+            var primary = n.image || n.logo;
+            return '<img class="' + cssClass + '" src="' + escapeHtml(primary) + '" alt="" ' +
+                'data-logo="' + escapeHtml(n.logo) + '" data-letter="' + escapeHtml(n.tag.charAt(0)) + '" ' +
+                'onerror="window.newsImgFallback(this)">';
+        }
 
         function renderTeslaNews() {
             const list = document.getElementById("teslaNewsList");
             if (!list) return;
-            list.innerHTML = TESLA_NEWS.map(function (n) {
+            if (!NEWS_ITEMS.length) {
+                list.innerHTML = '<div class="news-empty">No news available right now.</div>';
+                return;
+            }
+            list.innerHTML = NEWS_ITEMS.map(function (n, index) {
                 return `
-                <div class="news-card">
-                    <div class="news-thumb" style="background:rgba(255,255,255,0.05)">${n.emoji}</div>
+                <div class="news-card" data-index="${index}">
+                    <div class="news-thumb">${buildNewsThumbImg(n, "")}</div>
                     <div class="news-body">
-                        <span class="news-tag ${n.tagClass}">${n.tag}</span>
-                        <div class="news-headline">${n.headline}</div>
-                        <div class="news-meta">${n.meta}</div>
+                        <span class="news-tag ${n.tagClass}">${escapeHtml(n.tag)}</span>
+                        <div class="news-headline">${escapeHtml(n.title)}</div>
+                        <div class="news-meta">${newsTimeAgo(n.pubDate)} · ${escapeHtml(n.source)}</div>
                     </div>
                 </div>`;
             }).join("");
+
+            list.querySelectorAll(".news-card").forEach(function (card) {
+                card.addEventListener("click", function () {
+                    openNewsDetail(parseInt(this.dataset.index, 10));
+                });
+            });
         }
-        document.addEventListener("DOMContentLoaded", renderTeslaNews);
+
+        document.addEventListener("DOMContentLoaded", loadTeslaNews);
+        // Refresh from the live feeds periodically so headlines stay current
+        setInterval(loadTeslaNews, 5 * 60 * 1000);
+
+        // ================= NEWS DETAIL OVERLAY =================
+        function openNewsDetail(index) {
+            var n = NEWS_ITEMS[index];
+            if (!n) return;
+            var content = document.getElementById("newsDetailContent");
+
+            content.innerHTML = `
+                ${buildNewsThumbImg(n, "ndo-image")}
+                <div class="ndo-body">
+                    <span class="news-tag ${n.tagClass}">${escapeHtml(n.tag)}</span>
+                    <div class="ndo-title">${escapeHtml(n.title)}</div>
+                    <div class="ndo-meta">${newsTimeAgo(n.pubDate)} · ${escapeHtml(n.source)}</div>
+                    <div class="ndo-snippet">${escapeHtml(n.snippet) || "No preview available for this story."}</div>
+                    <a class="ndo-link-btn" href="${escapeHtml(n.link)}" target="_blank" rel="noopener noreferrer">Read full story ↗</a>
+                </div>`;
+
+            document.getElementById("newsDetailOverlay").style.display = "flex";
+            content.scrollTop = 0;
+        }
+
+        function closeNewsDetail() {
+            document.getElementById("newsDetailOverlay").style.display = "none";
+        }
+
+        document.getElementById("newsDetailBackBtn").addEventListener("click", closeNewsDetail);
 
         // ================= TESLA STOCK (Tesla Stocks tab) =================
         const TESLA_STOCK = { symbol: "TSLA", name: "Tesla, Inc.", price: 248.50, change: 2.34, color: "#e82127", logo: "tesla_images/tesla_icon_red.png" };
-
-        // Seed a short rolling price history for the chart
-        TESLA_STOCK.history = [];
-        (function () {
-            var p = TESLA_STOCK.price * (1 - TESLA_STOCK.change / 100);
-            for (var i = 0; i < 30; i++) {
-                p += (Math.random() - 0.48) * (TESLA_STOCK.price * 0.004);
-                TESLA_STOCK.history.push(p);
-            }
-            TESLA_STOCK.history[TESLA_STOCK.history.length - 1] = TESLA_STOCK.price;
-        })();
 
         // Simulate gentle live price movement so the chart feels real-time
         setInterval(function () {
@@ -11742,19 +12278,21 @@ window.smartsupp || (function(d) {
             var delta = (Math.random() - 0.5) * (s.price * 0.0015);
             s.price = Math.max(1, s.price + delta);
             s.change += (Math.random() - 0.5) * 0.05;
-            s.history.push(s.price);
-            if (s.history.length > 60) s.history.shift();
 
             var stocksTabVisible = document.getElementById("teslaStocksTab") &&
                 document.getElementById("teslaStocksTab").classList.contains("active");
             if (stocksTabVisible) {
                 renderStockDetail();
+                updateTeslaChartLive();
                 updateTradeEstimate();
             }
         }, 3000);
 
         // ================= TESLA CHART PANEL =================
-        var _sdRange = "1D";
+        var _teslaChart = null;
+        var _teslaSeries = null;
+        var _teslaRange = "1D";
+        var _teslaPoints = [];
 
         function renderStockDetail() {
             var s = TESLA_STOCK;
@@ -11769,75 +12307,158 @@ window.smartsupp || (function(d) {
             var changeEl = document.getElementById("sdChange");
             changeEl.textContent = (isPositive ? "+" : "") + s.change.toFixed(2) + "% today";
             changeEl.style.color = isPositive ? "#39e7b0" : "#e82127";
+            document.getElementById("sdVolume").textContent = (Math.round((s.price * 3.2e6)) / 1e6).toFixed(1) + "M";
+        }
 
-            var hist = s.history;
-            var high = Math.max.apply(null, hist);
-            var low = Math.min.apply(null, hist);
-            document.getElementById("sdOpen").textContent = "$" + hist[0].toFixed(2);
+        // Builds a synthetic price series for a given range. Intraday (1D)
+        // uses UNIX timestamps so the time scale shows clock times; longer
+        // ranges use calendar-day strings so it shows dates/months instead.
+        function generateTeslaSeries(rangeKey) {
+            var price = TESLA_STOCK.price;
+            var points = [];
+            var now = new Date();
+
+            if (rangeKey === "1D") {
+                var count = 60; // ~3 hours of 3-minute bars
+                var start = price / (1 + (TESLA_STOCK.change || 0) / 100);
+                var t0 = Math.floor(now.getTime() / 1000) - (count - 1) * 180;
+                var p = start;
+                for (var i = 0; i < count; i++) {
+                    p += (Math.random() - 0.47) * (price * 0.003);
+                    points.push({ time: t0 + i * 180, value: +Math.max(1, p).toFixed(2) });
+                }
+            } else {
+                var days, stepDays;
+                if (rangeKey === "1W") { days = 7; stepDays = 1; }
+                else if (rangeKey === "1M") { days = 30; stepDays = 1; }
+                else { days = 360; stepDays = 30; } // 1Y ~ monthly bars
+
+                var count2 = Math.floor(days / stepDays) + 1;
+                var p2 = price * (0.82 + Math.random() * 0.12);
+                for (var j = count2 - 1; j >= 0; j--) {
+                    var d = new Date(now);
+                    d.setDate(d.getDate() - j * stepDays);
+                    var dateStr = d.toISOString().slice(0, 10);
+                    p2 += (Math.random() - 0.45) * (price * (rangeKey === "1Y" ? 0.035 : 0.012));
+                    points.push({ time: dateStr, value: +Math.max(1, p2).toFixed(2) });
+                }
+            }
+            points[points.length - 1].value = +price.toFixed(2);
+            return points;
+        }
+
+        function updateStatsFromPoints(points) {
+            if (!points || !points.length) return;
+            var values = points.map(function (p) { return p.value; });
+            var high = Math.max.apply(null, values);
+            var low = Math.min.apply(null, values);
+            document.getElementById("sdOpen").textContent = "$" + values[0].toFixed(2);
             document.getElementById("sdHigh").textContent = "$" + high.toFixed(2);
             document.getElementById("sdLow").textContent = "$" + low.toFixed(2);
-            document.getElementById("sdVolume").textContent = (Math.round((s.price * 3.2e6)) / 1e6).toFixed(1) + "M";
-
-            drawStockChart(hist, isPositive);
         }
 
-        function drawStockChart(history, isPositive) {
-            var canvas = document.getElementById("sdChartCanvas");
-            if (!canvas) return;
-            var dpr = window.devicePixelRatio || 1;
-            var rect = canvas.getBoundingClientRect();
-            var w = rect.width || 600, h = rect.height || 220;
-            canvas.width = w * dpr;
-            canvas.height = h * dpr;
-            var ctx = canvas.getContext("2d");
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            ctx.clearRect(0, 0, w, h);
+        function initTeslaChart() {
+            var container = document.getElementById("sdChartCanvas");
+            if (!container) return;
+            if (typeof LightweightCharts === "undefined") { setTimeout(initTeslaChart, 200); return; }
 
-            var min = Math.min.apply(null, history);
-            var max = Math.max.apply(null, history);
-            var range = (max - min) || 1;
-            var step = w / (history.length - 1);
+            _teslaChart = LightweightCharts.createChart(container, {
+                width: container.clientWidth || 600,
+                height: container.clientHeight || 240,
+                layout: {
+                    background: { type: "solid", color: "transparent" },
+                    textColor: "rgba(255,255,255,0.55)"
+                },
+                grid: {
+                    vertLines: { color: "rgba(255,255,255,0.05)" },
+                    horzLines: { color: "rgba(255,255,255,0.08)" }
+                },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                    vertLine: { color: "rgba(255,255,255,0.25)", width: 1, style: LightweightCharts.LineStyle.Dashed, labelBackgroundColor: "#e82127" },
+                    horzLine: { color: "rgba(255,255,255,0.25)", width: 1, style: LightweightCharts.LineStyle.Dashed, labelBackgroundColor: "#e82127" }
+                },
+                rightPriceScale: {
+                    borderColor: "rgba(255,255,255,0.08)",
+                    textColor: "rgba(255,255,255,0.5)"
+                },
+                timeScale: {
+                    borderColor: "rgba(255,255,255,0.08)",
+                    timeVisible: true,
+                    secondsVisible: false
+                },
+                handleScroll: false,
+                handleScale: false
+            });
+
+            _teslaSeries = _teslaChart.addAreaSeries({
+                lineColor: "#39e7b0",
+                topColor: "rgba(57,231,176,0.28)",
+                bottomColor: "rgba(0,0,0,0)",
+                lineWidth: 2,
+                priceLineVisible: true,
+                priceLineStyle: LightweightCharts.LineStyle.Dashed,
+                lastValueVisible: true,
+                priceFormat: { type: "price", precision: 2, minMove: 0.01 }
+            });
+
+            if (window._teslaResizeObs) window._teslaResizeObs.disconnect();
+            window._teslaResizeObs = new ResizeObserver(function () {
+                if (_teslaChart && container.clientWidth > 0) {
+                    _teslaChart.applyOptions({ width: container.clientWidth, height: container.clientHeight });
+                }
+            });
+            window._teslaResizeObs.observe(container);
+
+            setTeslaRange("1D");
+        }
+
+        function setTeslaRange(rangeKey) {
+            _teslaRange = rangeKey;
+            if (!_teslaChart || !_teslaSeries) return;
+
+            _teslaChart.applyOptions({ timeScale: { timeVisible: rangeKey === "1D", secondsVisible: false } });
+
+            _teslaPoints = generateTeslaSeries(rangeKey);
+            _teslaSeries.setData(_teslaPoints);
+            _teslaChart.timeScale().fitContent();
+            updateStatsFromPoints(_teslaPoints);
+
+            var isPositive = TESLA_STOCK.change >= 0;
             var color = isPositive ? "#39e7b0" : "#e82127";
-
-            // Gradient fill under the line
-            var grad = ctx.createLinearGradient(0, 0, 0, h);
-            grad.addColorStop(0, isPositive ? "rgba(57,231,176,0.25)" : "rgba(232,33,39,0.25)");
-            grad.addColorStop(1, "rgba(0,0,0,0)");
-
-            ctx.beginPath();
-            history.forEach(function (v, i) {
-                var x = i * step;
-                var y = h - ((v - min) / range) * (h - 20) - 10;
-                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            _teslaSeries.applyOptions({
+                lineColor: color,
+                topColor: isPositive ? "rgba(57,231,176,0.28)" : "rgba(232,33,39,0.28)",
+                priceLineColor: color
             });
-            ctx.lineTo(w, h);
-            ctx.lineTo(0, h);
-            ctx.closePath();
-            ctx.fillStyle = grad;
-            ctx.fill();
-
-            ctx.beginPath();
-            history.forEach(function (v, i) {
-                var x = i * step;
-                var y = h - ((v - min) / range) * (h - 20) - 10;
-                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-            });
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 2;
-            ctx.stroke();
         }
 
-        document.addEventListener("DOMContentLoaded", renderStockDetail);
+        // Keeps the chart's most recent bar (and the stats grid) in sync
+        // with the live-ticking price without regenerating the whole series
+        function updateTeslaChartLive() {
+            if (!_teslaSeries || !_teslaPoints.length) return;
+            var price = +TESLA_STOCK.price.toFixed(2);
+            var lastPt = _teslaPoints[_teslaPoints.length - 1];
 
-        // Redraw the chart if the panel is resized (e.g. crossing the
-        // mobile/desktop breakpoint, or the browser window changing size)
-        var _sdResizeTimer = null;
-        window.addEventListener("resize", function () {
-            clearTimeout(_sdResizeTimer);
-            _sdResizeTimer = setTimeout(function () {
-                var isPositive = TESLA_STOCK.change >= 0;
-                drawStockChart(TESLA_STOCK.history, isPositive);
-            }, 150);
+            if (_teslaRange === "1D") {
+                var nowSec = Math.floor(Date.now() / 1000);
+                if (nowSec > lastPt.time) {
+                    lastPt = { time: nowSec, value: price };
+                    _teslaPoints.push(lastPt);
+                } else {
+                    lastPt.value = price;
+                }
+            } else {
+                lastPt.value = price;
+            }
+
+            _teslaSeries.update(lastPt);
+            updateStatsFromPoints(_teslaPoints);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            renderStockDetail();
+            initTeslaChart();
         });
 
         document.getElementById("sdRangeBadges").addEventListener("click", function (e) {
@@ -11845,8 +12466,7 @@ window.smartsupp || (function(d) {
             if (!btn) return;
             document.querySelectorAll(".sd-range-btn").forEach(function (b) { b.classList.remove("active"); });
             btn.classList.add("active");
-            _sdRange = btn.dataset.range;
-            renderStockDetail();
+            setTeslaRange(btn.dataset.range);
         });
 
         // ================= TRADE TSLA WIDGET =================
@@ -12809,6 +13429,8 @@ function resetOrderButton() {
         let currentAsset = null;
         let _chart = null;
         let _series = null;
+        let _chartStyle = "line";
+        let _lastKlines = [];
         let _ws = null;
         let _symbol = "BTCUSDT";
         let _rangeKey = "1H";
@@ -12855,6 +13477,14 @@ function resetOrderButton() {
             rangeBadge.textContent = _rangeKey;
 
             initChart();
+
+            renderAskAI(currentAsset);
+            renderInsights(currentAsset);
+            resetAssetNews();
+
+            // Reset to the Trade tab whenever a new asset is opened
+            const tradeTabBtn = document.querySelector('.atm-tab[data-tab="trade"]');
+            if (tradeTabBtn) tradeTabBtn.click();
         };
 
         function closeAssetTradeModal() {
@@ -12868,6 +13498,160 @@ function resetOrderButton() {
         overlay.addEventListener("click", function (e) {
             if (e.target === overlay) closeAssetTradeModal();
         });
+
+        /*=================ASK AI TAB=================*/
+
+        function renderAskAI(asset) {
+            if (!asset) return;
+
+            const entry = Number(asset.entry) || 0;
+            const tp = Number(asset.tp) || 0;
+            const sl = Number(asset.sl) || 0;
+            const roi = Number(asset.roi) || 0;
+
+            const upsideAmt = tp - entry;
+            const downsideAmt = entry - sl;
+            const upsidePct = entry ? (upsideAmt / entry) * 100 : 0;
+            const downsidePct = entry ? (downsideAmt / entry) * 100 : 0;
+            const rr = downsideAmt > 0 ? (upsideAmt / downsideAmt) : 0;
+
+            const confidence = Math.min(95, Math.max(55, Math.round(60 + Math.abs(roi) * 3)));
+
+            let signal = "HOLD", signalClass = "hold";
+            if (roi >= 1) { signal = "BUY"; signalClass = "buy"; }
+            else if (roi <= -1) { signal = "SELL"; signalClass = "sell"; }
+
+            const dirWord = roi >= 0 ? "upward" : "downward";
+            const nameLabel = asset.symbol || (asset.name || "").split(" ")[0] || "This asset";
+
+            const signalEl = document.getElementById("askaiSignal");
+            signalEl.textContent = signal;
+            signalEl.className = "askai-signal " + signalClass;
+
+            document.getElementById("askaiConfidence").textContent = confidence + "% confidence";
+            document.getElementById("askaiSummary").textContent =
+                nameLabel + " is showing " + dirWord + " momentum, moving " + Math.abs(roi).toFixed(2) +
+                "% over the last 24h. Based on the current setup, take profit sits " + Math.abs(upsidePct).toFixed(2) +
+                "% above entry and stop loss sits " + Math.abs(downsidePct).toFixed(2) +
+                "% below, for a risk/reward ratio of " + (rr ? rr.toFixed(2) : "—") + ":1.";
+
+            document.getElementById("askaiRR").textContent = rr ? rr.toFixed(2) + ":1" : "—";
+            document.getElementById("askaiUpside").textContent = (upsidePct >= 0 ? "+" : "") + upsidePct.toFixed(2) + "%";
+            document.getElementById("askaiDownside").textContent = "-" + Math.abs(downsidePct).toFixed(2) + "%";
+        }
+
+        /*=================INSIGHTS TAB=================*/
+
+        function renderInsights(asset) {
+            if (!asset) return;
+
+            const entry = Number(asset.entry) || 0;
+            const tp = Number(asset.tp) || 0;
+            const sl = Number(asset.sl) || 0;
+            const roi = Number(asset.roi) || 0;
+
+            const upsideAmt = tp - entry;
+            const downsideAmt = entry - sl;
+            const rr = downsideAmt > 0 ? (upsideAmt / downsideAmt) : 0;
+
+            const changeEl = document.getElementById("insightsChange");
+            changeEl.textContent = (roi >= 0 ? "+" : "") + roi.toFixed(2) + "%";
+            changeEl.style.color = roi >= 0 ? "#00c46a" : "#ff4d4d";
+
+            document.getElementById("insightsEntry").textContent = "$" + entry.toLocaleString(undefined, { maximumFractionDigits: 6 });
+            document.getElementById("insightsTP").textContent = "$" + tp.toLocaleString(undefined, { maximumFractionDigits: 6 });
+            document.getElementById("insightsSL").textContent = "$" + sl.toLocaleString(undefined, { maximumFractionDigits: 6 });
+            document.getElementById("insightsRR").textContent = rr ? rr.toFixed(2) + ":1" : "—";
+
+            let markerPct = 50;
+            if (tp !== sl) {
+                markerPct = ((entry - sl) / (tp - sl)) * 100;
+                markerPct = Math.max(4, Math.min(96, markerPct));
+            }
+            document.getElementById("insightsRangeMarker").style.left = markerPct + "%";
+
+            const volatility = Math.min(100, Math.abs(roi) * 12);
+            document.getElementById("insightsVolFill").style.width = volatility + "%";
+            const volLabel = volatility < 25 ? "Low" : volatility < 60 ? "Moderate" : "High";
+            document.getElementById("insightsVolLabel").textContent = volLabel;
+        }
+
+        /*=================NEWS & ANALYSIS TAB=================*/
+
+        let _newsLoadedForSymbol = null;
+
+        function resetAssetNews() {
+            _newsLoadedForSymbol = null;
+            const list = document.getElementById("atmNewsList");
+            if (list) list.innerHTML = '<div class="atm-news-loading">Loading news…</div>';
+        }
+
+        function newsTimeAgoAtm(dateStr) {
+            if (!dateStr) return "Recently";
+            const diffMs = Date.now() - new Date(dateStr).getTime();
+            if (isNaN(diffMs)) return "Recently";
+            const mins = Math.floor(diffMs / 60000);
+            if (mins < 1) return "Just now";
+            if (mins < 60) return mins + "m ago";
+            const hrs = Math.floor(mins / 60);
+            if (hrs < 24) return hrs + "h ago";
+            const days = Math.floor(hrs / 24);
+            return days + "d ago";
+        }
+
+        function stripHtmlAtm(html) {
+            if (!html) return "";
+            const tmp = document.createElement("div");
+            tmp.innerHTML = html;
+            return (tmp.textContent || tmp.innerText || "").replace(/\s+/g, " ").trim();
+        }
+
+        async function fetchAssetNews(asset) {
+            if (!asset) return;
+
+            const symbol = asset.symbol || (asset.name || "").split("/")[0].trim() || "crypto";
+            if (_newsLoadedForSymbol === symbol) return; // already loaded for this asset
+
+            const list = document.getElementById("atmNewsList");
+            list.innerHTML = '<div class="atm-news-loading">Loading news…</div>';
+
+            try {
+                const query = symbol + " crypto OR " + symbol + " price";
+                const rssUrl = "https://news.google.com/rss/search?q=" + encodeURIComponent(query) + "&hl=en-US&gl=US&ceid=US:en";
+                const apiUrl = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(rssUrl);
+
+                const res = await fetch(apiUrl);
+                const data = await res.json();
+
+                const items = (data.items || []).slice(0, 8);
+
+                _newsLoadedForSymbol = symbol;
+
+                if (!items.length) {
+                    list.innerHTML = '<div class="atm-news-empty">No recent news found for ' + symbol + '.</div>';
+                    return;
+                }
+
+                list.innerHTML = items.map(function (item) {
+                    const title = stripHtmlAtm(item.title);
+                    const snippet = stripHtmlAtm(item.description || item.content || "").slice(0, 160);
+                    const source = (item.author && stripHtmlAtm(item.author)) || "Google News";
+                    return '<a class="atm-news-item" href="' + (item.link || "#") + '" target="_blank" rel="noopener">' +
+                        '<div class="atm-news-item-top">' +
+                        '<span>' + source + '</span>' +
+                        '<span>•</span>' +
+                        '<span>' + newsTimeAgoAtm(item.pubDate) + '</span>' +
+                        '</div>' +
+                        '<h5>' + title + '</h5>' +
+                        (snippet ? '<p>' + snippet + '…</p>' : '') +
+                        '</a>';
+                }).join("");
+
+            } catch (err) {
+                console.warn("Asset news fetch error:", err);
+                list.innerHTML = '<div class="atm-news-empty">Couldn\'t load news right now. Try again later.</div>';
+            }
+        }
 
         /*=================TABS=================*/
 
@@ -12892,6 +13676,10 @@ function resetOrderButton() {
 
             const target = document.getElementById(map[tab.dataset.tab]);
             if (target) target.style.display = tab.dataset.tab === "trade" ? "flex" : "flex";
+
+            if (tab.dataset.tab === "news") {
+                fetchAssetNews(currentAsset);
+            }
         });
 
         /*=================INTERVAL BAR=================*/
@@ -12925,6 +13713,74 @@ function resetOrderButton() {
 
         /*=================CHART=================*/
 
+        function createSeries() {
+            if (_chartStyle === "candle") {
+                _series = _chart.addCandlestickSeries({
+                    priceScaleId: "right",
+                    upColor: "#00c46a",
+                    downColor: "#ff4d4d",
+                    borderUpColor: "#00c46a",
+                    borderDownColor: "#ff4d4d",
+                    wickUpColor: "#00c46a",
+                    wickDownColor: "#ff4d4d"
+                });
+            } else {
+                _series = _chart.addLineSeries({
+                    priceScaleId: "right",
+                    color: "#00ff88",
+                    lineWidth: 2,
+                    priceLineVisible: true,
+                    priceLineColor: "#00ff88",
+                    priceLineStyle: LightweightCharts.LineStyle.Dashed,
+                    lastValueVisible: true
+                });
+            }
+
+            // Removing/re-adding a series can leave the right price scale
+            // marked as having nothing to show; force it back on so the
+            // price labels never disappear when switching chart styles.
+            _chart.priceScale("right").applyOptions({ visible: true, autoScale: true });
+        }
+
+        function klineToLinePoint(k) {
+            return { time: k.time, value: k.close };
+        }
+
+        function klineToCandle(k) {
+            return { time: k.time, open: k.open, high: k.high, low: k.low, close: k.close };
+        }
+
+        function applySeriesData() {
+            if (!_series || !_lastKlines.length) return;
+            const data = _chartStyle === "candle"
+                ? _lastKlines.map(klineToCandle)
+                : _lastKlines.map(klineToLinePoint);
+            _series.setData(data);
+            _chart.timeScale().fitContent();
+        }
+
+        /*=================CHART STYLE TOGGLE=================*/
+
+        const chartStyleToggle = document.getElementById("atmChartStyleToggle");
+        if (chartStyleToggle) {
+            chartStyleToggle.addEventListener("click", function (e) {
+                const btn = e.target.closest(".atm-chart-style-btn");
+                if (!btn || btn.dataset.style === _chartStyle) return;
+
+                _chartStyle = btn.dataset.style;
+                document.querySelectorAll(".atm-chart-style-btn").forEach(b => {
+                    b.classList.toggle("active", b.dataset.style === _chartStyle);
+                });
+
+                if (_chart && _series) {
+                    try { _chart.removeSeries(_series); } catch (e2) {}
+                    _series = null;
+                }
+                createSeries();
+                applySeriesData();
+            });
+        }
+
         function initChart() {
             const container = document.getElementById("atmChart");
             if (!container) return;
@@ -12957,14 +13813,7 @@ function resetOrderButton() {
                 handleScale: { mouseWheel: true, pinch: true }
             });
 
-            _series = _chart.addLineSeries({
-                color: "#00ff88",
-                lineWidth: 2,
-                priceLineVisible: true,
-                priceLineColor: "#00ff88",
-                priceLineStyle: LightweightCharts.LineStyle.Dashed,
-                lastValueVisible: true
-            });
+            createSeries();
 
             if (window._atmResizeObs) window._atmResizeObs.disconnect();
             window._atmResizeObs = new ResizeObserver(() => {
@@ -12986,17 +13835,18 @@ function resetOrderButton() {
                 const data = await res.json();
                 if (!Array.isArray(data)) return;
 
-                const points = data.map(k => ({
+                _lastKlines = data.map(k => ({
                     time: Math.floor(k[0] / 1000),
-                    value: parseFloat(k[4])
+                    open: parseFloat(k[1]),
+                    high: parseFloat(k[2]),
+                    low: parseFloat(k[3]),
+                    close: parseFloat(k[4])
                 }));
 
-                _series.setData(points);
-                _chart.timeScale().fitContent();
+                applySeriesData();
 
-                if (points.length) {
-                    const last = points[points.length - 1].value;
-                    updatePrices(last);
+                if (_lastKlines.length) {
+                    updatePrices(_lastKlines[_lastKlines.length - 1].close);
                 }
 
                 openWS();
@@ -13015,8 +13865,23 @@ function resetOrderButton() {
                     const msg = JSON.parse(e.data);
                     const k = msg.k;
                     if (!k || !_series) return;
-                    _series.update({ time: Math.floor(k.t / 1000), value: parseFloat(k.c) });
-                    updatePrices(parseFloat(k.c));
+
+                    const kline = {
+                        time: Math.floor(k.t / 1000),
+                        open: parseFloat(k.o),
+                        high: parseFloat(k.h),
+                        low: parseFloat(k.l),
+                        close: parseFloat(k.c)
+                    };
+
+                    if (_lastKlines.length && _lastKlines[_lastKlines.length - 1].time === kline.time) {
+                        _lastKlines[_lastKlines.length - 1] = kline;
+                    } else {
+                        _lastKlines.push(kline);
+                    }
+
+                    _series.update(_chartStyle === "candle" ? klineToCandle(kline) : klineToLinePoint(kline));
+                    updatePrices(kline.close);
                 } catch (_) {}
             };
             _ws.onerror = function () { setTimeout(openWS, 3000); };
@@ -13045,8 +13910,8 @@ function resetOrderButton() {
 
             document.getElementById("atmAvailableBalance").textContent = "$" + (window.USER_CAPITAL || 0);
             document.getElementById("atmEntryPrice").textContent = sellPriceEl.textContent.replace("$", "$");
-            document.getElementById("atmTP").textContent = "$" + Number(currentAsset.tp).toLocaleString();
-            document.getElementById("atmSL").textContent = "$" + Number(currentAsset.sl).toLocaleString();
+            document.getElementById("atmTP").value = Number(currentAsset.tp) || "";
+            document.getElementById("atmSL").value = Number(currentAsset.sl) || "";
             document.getElementById("atmUnits").textContent = "0.0000";
             document.getElementById("atmEstimatedProfit").textContent = "$0.00";
             amountInput.value = "";
@@ -13102,12 +13967,8 @@ function resetOrderButton() {
                 const entryPrice = parseFloat(
                     document.getElementById("atmEntryPrice").textContent.replace(/[^0-9.]/g, "")
                 ) || 0;
-                const takeProfit = parseFloat(
-                    document.getElementById("atmTP").textContent.replace(/[^0-9.]/g, "")
-                ) || 0;
-                const stopLoss = parseFloat(
-                    document.getElementById("atmSL").textContent.replace(/[^0-9.]/g, "")
-                ) || 0;
+                const takeProfit = parseFloat(document.getElementById("atmTP").value) || 0;
+                const stopLoss = parseFloat(document.getElementById("atmSL").value) || 0;
                 const amount = parseFloat(amountInput.value) || 0;
                 const units = parseFloat(document.getElementById("atmUnits").textContent) || 0;
                 const estimatedProfit = parseFloat(
@@ -13218,6 +14079,14 @@ function resetOrderButton() {
                 isOpen: function () { return isOpenByFlexDisplay("atmOverlay"); },
                 close: function () {
                     var b = document.getElementById("atmBackBtn");
+                    if (b) b.click();
+                }
+            },
+            // News article detail overlay (Tesla News tab)
+            {
+                isOpen: function () { return isOpenByFlexDisplay("newsDetailOverlay"); },
+                close: function () {
+                    var b = document.getElementById("newsDetailBackBtn");
                     if (b) b.click();
                 }
             },
