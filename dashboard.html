@@ -3217,6 +3217,240 @@ window.smartsupp || (function(d) {
 
         .trades-tab-bar { display: none; }  /* not used with pill style */
 
+        /* ========== PORTFOLIO REPORT TOP TABS (Tesla vs Crypto) ========== */
+        .portfolio-report-tabs {
+            display: flex;
+            gap: 0;
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 14px;
+            padding: 4px;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            margin-bottom: 16px;
+        }
+        .portfolio-report-tab-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 600;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.45);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            text-align: center;
+        }
+        .portfolio-report-tab-btn.active {
+            background: var(--accent-primary);
+            color: #fff;
+        }
+
+        /* ========== SMALL PILL SUB-TABS (Crypto Open/Closed) ========== */
+        .mini-pill-tabs {
+            display: inline-flex;
+            gap: 4px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 999px;
+            padding: 3px;
+            margin-bottom: 14px;
+        }
+        .mini-pill-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12.5px;
+            font-weight: 600;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .mini-pill-btn.active {
+            background: var(--accent-primary);
+            color: #fff;
+        }
+        .mini-pill-badge {
+            font-size: 10px;
+            font-weight: 700;
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+            padding: 1px 6px;
+            border-radius: 20px;
+            min-width: 16px;
+            text-align: center;
+        }
+        .mini-pill-btn.active .mini-pill-badge {
+            background: rgba(255,255,255,0.25);
+        }
+        .mini-pill-badge.closed-badge {
+            background: rgba(57,231,176,0.15);
+            color: var(--accent-green);
+        }
+        .mini-pill-btn.active .mini-pill-badge.closed-badge {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+
+        /* ========== TESLA STOCK TRADE REPORT ========== */
+        .tsr-summary-card {
+            background: linear-gradient(145deg, rgba(232,33,39,0.12), rgba(10,10,10,0.95));
+            border: 1px solid rgba(232,33,39,0.25);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+        .tsr-summary-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .tsr-summary-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .tsr-symbol-badge {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #e82127;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .tsr-symbol-badge img { width: 24px; height: 24px; object-fit: contain; }
+        .tsr-symbol { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: 0.2px; }
+        .tsr-live-price { font-size: 21px; font-weight: 800; color: #fff; margin-top: 2px; display: flex; align-items: center; }
+        .tsr-live-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            margin-right: 7px;
+            animation: tsrPulse 1.6s infinite;
+        }
+        @keyframes tsrPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.25; }
+        }
+        .tsr-summary-right { text-align: right; }
+        .tsr-summary-label {
+            font-size: 10.5px;
+            color: rgba(255,255,255,0.45);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .tsr-summary-pl { font-size: 20px; font-weight: 800; line-height: 1.15; }
+        .tsr-summary-pl-pct { font-size: 12.5px; font-weight: 700; margin-top: 2px; }
+        .tsr-summary-pl.profit, .tsr-summary-pl-pct.profit { color: var(--accent-green); }
+        .tsr-summary-pl.loss, .tsr-summary-pl-pct.loss { color: var(--red); }
+
+        .tsr-summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .tsr-stat { text-align: center; }
+        .tsr-stat-label {
+            font-size: 10px;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 4px;
+        }
+        .tsr-stat-value { font-size: 14px; font-weight: 700; color: #fff; }
+
+        .tsr-positions-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .tsr-position-card {
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 14px;
+            padding: 14px;
+            animation: fadeIn 0.2s ease;
+        }
+        .tsr-pos-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .tsr-pos-left { display: flex; align-items: center; gap: 8px; }
+        .tsr-pos-side {
+            font-size: 10.5px;
+            font-weight: 800;
+            padding: 2px 9px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .tsr-pos-side.buy { background: rgba(57,231,176,0.12); color: var(--accent-green); }
+        .tsr-pos-side.sell { background: rgba(232,33,39,0.12); color: var(--red); }
+        .tsr-pos-shares { font-size: 12.5px; color: rgba(255,255,255,0.55); }
+        .tsr-pos-status {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .tsr-pos-status.open { background: rgba(255,211,105,0.12); color: #ffd369; }
+        .tsr-pos-status.closed { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
+
+        .tsr-pos-mid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .tsr-pos-col .l { font-size: 9.5px; color: rgba(255,255,255,0.4); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
+        .tsr-pos-col .v { font-size: 12.5px; font-weight: 700; color: #fff; }
+
+        .tsr-pos-pl {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .tsr-pos-pl-amt { font-size: 15px; font-weight: 800; }
+        .tsr-pos-pl-pct { font-size: 11.5px; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
+        .tsr-pos-pl.profit .tsr-pos-pl-amt { color: var(--accent-green); }
+        .tsr-pos-pl.profit .tsr-pos-pl-pct { color: var(--accent-green); background: rgba(57,231,176,0.12); }
+        .tsr-pos-pl.loss .tsr-pos-pl-amt { color: var(--red); }
+        .tsr-pos-pl.loss .tsr-pos-pl-pct { color: var(--red); background: rgba(232,33,39,0.12); }
+
+        .tsr-pos-date { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 8px; }
+
+        @media (max-width: 480px) {
+            .tsr-pos-mid { grid-template-columns: repeat(2, 1fr); row-gap: 12px; }
+            .tsr-summary-stats { grid-template-columns: repeat(3, 1fr); }
+            .portfolio-report-tab-btn { font-size: 12.5px; padding: 10px 8px; }
+        }
+
         /* Closed trade row — muted, with final P&L */
         .trade-row.closed-trade {
             opacity: 0.75;
@@ -3911,6 +4145,13 @@ window.smartsupp || (function(d) {
 
     <style>
         /* ============ TESLA PAGE TOP TAB NAV ============ */
+        .tesla-tab-nav-wrap{
+            margin-top: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            padding: 20px;            
+        }
         .tesla-tab-nav {
             display: flex;
             gap: 4px;
@@ -3918,10 +4159,6 @@ window.smartsupp || (function(d) {
             border: 1px solid var(--border-soft);
             border-radius: 14px;
             padding: 4px;
-            margin-top: 16px;
-            position: sticky;
-            top: 0;
-            z-index: 5;
             backdrop-filter: blur(10px);
         }
         .tesla-tab-btn {
@@ -6672,12 +6909,13 @@ window.smartsupp || (function(d) {
                 <div class="page active" id="tesla">
 
                     <!-- Top tab nav: switches between Tesla Stocks / Buy Cars / News -->
-                    <div class="tesla-tab-nav">
-                        <button class="tesla-tab-btn active" data-panel="teslaBuyCarsTab">Buy Cars</button>
-                        <button class="tesla-tab-btn" data-panel="teslaStocksTab">Tesla Stocks</button>
-                        <button class="tesla-tab-btn" data-panel="teslaNewsTab">News</button>
+                    <div class="tesla-tab-nav-wrap">
+                        <div class="tesla-tab-nav">
+                            <button class="tesla-tab-btn active" data-panel="teslaBuyCarsTab">Buy Cars</button>
+                            <button class="tesla-tab-btn" data-panel="teslaStocksTab">Tesla Stocks</button>
+                            <button class="tesla-tab-btn" data-panel="teslaNewsTab">News</button>
+                        </div>
                     </div>
-
                     <!-- ===== BUY CARS TAB ===== -->
                     <div class="tesla-tab-panel active" id="teslaBuyCarsTab">
                         <div class="tesla-widget-container">
@@ -7339,51 +7577,108 @@ window.smartsupp || (function(d) {
                 <div class="page" id="portfolio">
                     <div id="portfolioView" class="portfolio-section">
 
-                        <!-- Tab Header -->
-                        <div class="trades-tab-header">
-                            <button class="trades-tab-btn active" id="tabOpenBtn" onclick="switchTradeTab('open')">
-                                Open Trades
-                                <span class="trades-tab-badge" id="openTradeCount">0</span>
+                        <!-- Top-level report tabs -->
+                        <div class="portfolio-report-tabs">
+                            <button class="portfolio-report-tab-btn active" id="tabTeslaReportBtn" onclick="switchPortfolioReport('tesla')">
+                                Tesla Stock Trade Report
                             </button>
-                            <button class="trades-tab-btn" id="tabClosedBtn" onclick="switchTradeTab('closed')">
-                                Closed Trades
-                                <span class="trades-tab-badge closed-badge" id="closedTradeCount">0</span>
+                            <button class="portfolio-report-tab-btn" id="tabCryptoReportBtn" onclick="switchPortfolioReport('crypto')">
+                                Crypto Trade Report
                             </button>
                         </div>
 
-                        <!-- Tab indicator bar -->
-                        <div class="trades-tab-bar">
-                            <div class="trades-tab-indicator" id="tradesTabIndicator"></div>
-                        </div>
+                        <!-- ================= TESLA STOCK TRADE REPORT ================= -->
+                        <div id="teslaReportPanel">
 
-                        <!-- Open Trades panel -->
-                        <div id="openTradesPanel">
-                            <div id="tradesList" class="history-list">
-                                <div class="history-empty">
-                                    <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;">
-                                        <svg width="200" height="200" viewBox="0 0 200 200">
-                                            <circle class="wave w1" cx="100" cy="100" r="20"/>
-                                            <circle class="wave w2" cx="100" cy="100" r="20"/>
-                                            <circle class="wave w3" cx="100" cy="100" r="20"/>
-                                        </svg>
-                                        <p class="empty-list-text">No open trades yet</p>
+                            <div class="tsr-summary-card">
+                                <div class="tsr-summary-top">
+                                    <div class="tsr-summary-left">
+                                        <div class="tsr-symbol-badge">
+                                            <img src="tesla_images/tesla_icon_red.png" alt="TSLA"
+                                                onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'T'}))">
+                                        </div>
+                                        <div>
+                                            <div class="tsr-symbol">TSLA · Tesla, Inc.</div>
+                                            <div class="tsr-live-price"><span class="tsr-live-dot"></span><span id="tsrLivePrice">$0.00</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="tsr-summary-right">
+                                        <div class="tsr-summary-label">Total P&amp;L</div>
+                                        <div class="tsr-summary-pl" id="tsrTotalPL">$0.00</div>
+                                        <div class="tsr-summary-pl-pct" id="tsrTotalPLPercent">0.00%</div>
+                                    </div>
+                                </div>
+                                <div class="tsr-summary-stats">
+                                    <div class="tsr-stat">
+                                        <div class="tsr-stat-label">Invested</div>
+                                        <div class="tsr-stat-value" id="tsrInvested">$0.00</div>
+                                    </div>
+                                    <div class="tsr-stat">
+                                        <div class="tsr-stat-label">Current Value</div>
+                                        <div class="tsr-stat-value" id="tsrCurrentValue">$0.00</div>
+                                    </div>
+                                    <div class="tsr-stat">
+                                        <div class="tsr-stat-label">Positions</div>
+                                        <div class="tsr-stat-value" id="tsrPositionCount">0</div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Closed Trades panel -->
-                        <div id="closedTradesPanel" style="display:none;">
-                            <div id="closedTradesList" class="history-list">
-                                <div style="display:flex;flex-direction:column;align-items:center;padding:40px 20px;gap:12px;color:rgba(255,255,255,0.35);">
-                                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                                    <p style="font-size:14px;">No closed trades yet</p>
+                            <div class="tsr-positions-list" id="tsrPositionsList">
+                                <div class="tsr-empty">
+                                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.1-2.8-2.8L7 14.1"/></svg>
+                                    <p class="empty-list-text" style="color:rgba(255,255,255,0.35);font-size:14px;">No Tesla stock trades yet</p>
                                 </div>
                             </div>
+
+                        </div>
+
+                        <!-- ================= CRYPTO TRADE REPORT ================= -->
+                        <div id="cryptoReportPanel" style="display:none;">
+
+                            <!-- small pill sub-tabs -->
+                            <div class="mini-pill-tabs">
+                                <button class="mini-pill-btn active" id="tabOpenBtn" onclick="switchTradeTab('open')">
+                                    Open Trades
+                                    <span class="mini-pill-badge" id="openTradeCount">0</span>
+                                </button>
+                                <button class="mini-pill-btn" id="tabClosedBtn" onclick="switchTradeTab('closed')">
+                                    Closed Trades
+                                    <span class="mini-pill-badge closed-badge" id="closedTradeCount">0</span>
+                                </button>
+                            </div>
+
+                            <!-- Open Trades panel -->
+                            <div id="openTradesPanel">
+                                <div id="tradesList" class="history-list">
+                                    <div class="history-empty">
+                                        <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;">
+                                            <svg width="200" height="200" viewBox="0 0 200 200">
+                                                <circle class="wave w1" cx="100" cy="100" r="20"/>
+                                                <circle class="wave w2" cx="100" cy="100" r="20"/>
+                                                <circle class="wave w3" cx="100" cy="100" r="20"/>
+                                            </svg>
+                                            <p class="empty-list-text">No open trades yet</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Closed Trades panel -->
+                            <div id="closedTradesPanel" style="display:none;">
+                                <div id="closedTradesList" class="history-list">
+                                    <div style="display:flex;flex-direction:column;align-items:center;padding:40px 20px;gap:12px;color:rgba(255,255,255,0.35);">
+                                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                        <p style="font-size:14px;">No closed trades yet</p>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
                 </div>
+
 
                 <!--=================Transactions PAGE=================-->
                 <div class="page" id="transaction">
@@ -9122,6 +9417,65 @@ window.smartsupp || (function(d) {
         }
 
 
+        /*===========================
+        FETCH TESLA STOCK TRADES
+        ===========================*/
+
+        var _teslaStockTrades = [];
+
+        async function fetchTeslaStockTrades() {
+
+            const data = await safeFetch({
+                action: "getTeslaStockTrades",
+                uid: UID
+            });
+
+            if (!data || !data.status) {
+                console.error("Failed to fetch Tesla stock trades");
+                return;
+            }
+
+            _teslaStockTrades = data.trades || [];
+
+            if (typeof renderTeslaStockReport === "function") {
+                renderTeslaStockReport();
+            }
+        }
+
+
+
+        /*===========================
+        PORTFOLIO REPORT TABS
+        (Tesla Stock Trade Report vs Crypto Trade Report)
+        ===========================*/
+
+        var _currentPortfolioReport = "tesla";
+
+        function switchPortfolioReport(view) {
+            _currentPortfolioReport = view;
+
+            var teslaBtn   = document.getElementById("tabTeslaReportBtn");
+            var cryptoBtn  = document.getElementById("tabCryptoReportBtn");
+            var teslaPanel = document.getElementById("teslaReportPanel");
+            var cryptoPanel = document.getElementById("cryptoReportPanel");
+
+            if (view === "crypto") {
+                cryptoBtn.classList.add("active");
+                teslaBtn.classList.remove("active");
+                cryptoPanel.style.display = "block";
+                teslaPanel.style.display  = "none";
+            } else {
+                teslaBtn.classList.add("active");
+                cryptoBtn.classList.remove("active");
+                teslaPanel.style.display  = "block";
+                cryptoPanel.style.display = "none";
+                if (typeof renderTeslaStockReport === "function") {
+                    renderTeslaStockReport();
+                }
+            }
+        }
+
+
 
         /*===========================
         RENDER OPEN TRADES
@@ -9286,12 +9640,14 @@ window.smartsupp || (function(d) {
             fetchTransactions();
             fetchNotifications(); // 👈 add this
             fetchTrades();
+            fetchTeslaStockTrades();
 
             refreshInterval = setInterval(() => {
                 fetchUser();
                 fetchTransactions();
                 fetchNotifications(); // 👈 add this
                 fetchTrades();
+                fetchTeslaStockTrades();
 
             }, 5000);
         }
@@ -12286,7 +12642,115 @@ window.smartsupp || (function(d) {
                 updateTeslaChartLive();
                 updateTradeEstimate();
             }
+
+            // Keep the Portfolio > Tesla Stock Trade Report live P&L in sync
+            // with the ticking price, regardless of which page is open.
+            if (typeof renderTeslaStockReport === "function") {
+                renderTeslaStockReport();
+            }
         }, 3000);
+
+        // ================= TESLA STOCK TRADE REPORT (Portfolio page) =================
+        function renderTeslaStockReport() {
+
+            var listEl   = document.getElementById("tsrPositionsList");
+            var priceEl  = document.getElementById("tsrLivePrice");
+            if (!listEl || !priceEl) return; // panel not on this page yet
+
+            var price = TESLA_STOCK.price;
+            priceEl.textContent = "$" + price.toFixed(2);
+
+            var trades = _teslaStockTrades || [];
+
+            if (trades.length === 0) {
+                listEl.innerHTML =
+                    '<div class="tsr-empty">' +
+                        '<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.1-2.8-2.8L7 14.1"/></svg>' +
+                        '<p class="empty-list-text" style="color:rgba(255,255,255,0.35);font-size:14px;">No Tesla stock trades yet</p>' +
+                    '</div>';
+                setText("tsrInvested", "$0.00");
+                setText("tsrCurrentValue", "$0.00");
+                setText("tsrPositionCount", "0");
+                setText("tsrTotalPL", "$0.00");
+                setText("tsrTotalPLPercent", "0.00%");
+                return;
+            }
+
+            var totalInvested = 0;
+            var totalCurrentValue = 0;
+            var cardsHTML = "";
+
+            trades.forEach(function (t) {
+
+                var side      = (t.side || "Buy");
+                var isBuy     = side.toLowerCase() !== "sell";
+                var isOpen    = (t.status || "Open") === "Open";
+                var entry     = Number(t.entry) || 0;
+                var amount    = Number(t.amount) || 0;
+                var shares    = Number(t.shares) || 0;
+
+                // For open positions, value ticks live with the market price.
+                // Closed positions are frozen at their recorded amount.
+                var currentValue = isOpen ? (shares * price) : amount;
+
+                // Long positions profit when price rises; short/"Sell" positions
+                // profit when price falls, so the P&L is mirrored.
+                var pl = isOpen
+                    ? (isBuy ? (currentValue - amount) : (amount - currentValue))
+                    : 0;
+
+                var plPercent = amount > 0 ? (pl / amount) * 100 : 0;
+                var plClass   = pl >= 0 ? "profit" : "loss";
+                var plSign    = pl >= 0 ? "+" : "-";
+
+                totalInvested     += amount;
+                totalCurrentValue += currentValue;
+
+                cardsHTML +=
+                    '<div class="tsr-position-card">' +
+                        '<div class="tsr-pos-top">' +
+                            '<div class="tsr-pos-left">' +
+                                '<span class="tsr-pos-side ' + (isBuy ? "buy" : "sell") + '">' + (isBuy ? "Buy" : "Sell") + '</span>' +
+                                '<span class="tsr-pos-shares">' + shares.toFixed(4) + ' shares</span>' +
+                            '</div>' +
+                            '<span class="tsr-pos-status ' + (isOpen ? "open" : "closed") + '">' + (isOpen ? "Open" : "Closed") + '</span>' +
+                        '</div>' +
+                        '<div class="tsr-pos-mid">' +
+                            '<div class="tsr-pos-col"><div class="l">Entry Price</div><div class="v">$' + entry.toFixed(2) + '</div></div>' +
+                            '<div class="tsr-pos-col"><div class="l">Current Price</div><div class="v">$' + price.toFixed(2) + '</div></div>' +
+                            '<div class="tsr-pos-col"><div class="l">Invested</div><div class="v">$' + amount.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + '</div></div>' +
+                            '<div class="tsr-pos-col"><div class="l">Current Value</div><div class="v">$' + currentValue.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + '</div></div>' +
+                        '</div>' +
+                        '<div class="tsr-pos-pl ' + plClass + '">' +
+                            '<span class="tsr-pos-pl-amt">' + plSign + '$' + Math.abs(pl).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + '</span>' +
+                            '<span class="tsr-pos-pl-pct">' + plSign + Math.abs(plPercent).toFixed(2) + '%</span>' +
+                        '</div>' +
+                        '<div class="tsr-pos-date">' + (t.date || "") + '</div>' +
+                    '</div>';
+            });
+
+            listEl.innerHTML = cardsHTML;
+
+            var totalPL = totalCurrentValue - totalInvested;
+            var totalPLPercent = totalInvested > 0 ? (totalPL / totalInvested) * 100 : 0;
+            var totalClass = totalPL >= 0 ? "profit" : "loss";
+            var totalSign  = totalPL >= 0 ? "+" : "-";
+
+            setText("tsrInvested", "$" + totalInvested.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}));
+            setText("tsrCurrentValue", "$" + totalCurrentValue.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}));
+            setText("tsrPositionCount", trades.length);
+
+            var totalPLEl = document.getElementById("tsrTotalPL");
+            var totalPLPctEl = document.getElementById("tsrTotalPLPercent");
+            if (totalPLEl) {
+                totalPLEl.textContent = totalSign + "$" + Math.abs(totalPL).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+                totalPLEl.className = "tsr-summary-pl " + totalClass;
+            }
+            if (totalPLPctEl) {
+                totalPLPctEl.textContent = totalSign + Math.abs(totalPLPercent).toFixed(2) + "%";
+                totalPLPctEl.className = "tsr-summary-pl-pct " + totalClass;
+            }
+        }
 
         // ================= TESLA CHART PANEL =================
         var _teslaChart = null;
@@ -12500,9 +12964,86 @@ window.smartsupp || (function(d) {
             setTradeSide(btn.dataset.side);
         });
         sspAmount.addEventListener("input", updateTradeEstimate);
-        sspSubmitBtn.addEventListener("click", function () {
-            if (typeof showToast === "function") showToast("Demo mode — live stock trading isn't wired up yet", "info");
+
+        sspSubmitBtn.addEventListener("click", async function () {
+
+            const btn = sspSubmitBtn;
+            const originalLabel = btn.textContent;
+
+            try {
+
+                const uid = (typeof UID !== "undefined" && UID) ? UID : (localStorage.getItem("uid") || "");
+
+                if (!uid) {
+                    showToast("User session missing", "error");
+                    return;
+                }
+
+                const amount = parseFloat(sspAmount.value) || 0;
+
+                if (!amount || amount <= 0) {
+                    showToast("Enter a valid amount", "error");
+                    return;
+                }
+
+                const availableBalance = (typeof window.USER_CAPITAL === "number") ? window.USER_CAPITAL : 0;
+
+                if (amount > availableBalance) {
+                    showToast("Amount exceeds available balance", "error");
+                    return;
+                }
+
+                const entryPrice = TESLA_STOCK.price;
+                const units = entryPrice ? amount / entryPrice : 0;
+                const decision = _sspSide === "sell" ? "Sell" : "Buy";
+
+                btn.disabled = true;
+                btn.textContent = "Processing...";
+
+                const tradeData = {
+                    action: "createTeslaStockTrade",
+                    uid: uid,
+                    symbol: TESLA_STOCK.symbol,
+                    company: TESLA_STOCK.name,
+                    side: decision,
+                    entry: entryPrice,
+                    amount: amount,
+                    shares: units
+                };
+
+                const response = await fetch(API, {
+                    method: "POST",
+                    body: JSON.stringify(tradeData)
+                });
+
+                const result = await response.json();
+
+                if (result && result.status) {
+
+                    showToast(decision + " order for TSLA executed", "success");
+
+                    if (typeof result.newBalance === "number") {
+                        window.USER_CAPITAL = result.newBalance;
+                    }
+
+                    // Refresh balance display and portfolio (open trades) immediately
+                    if (typeof fetchUser === "function") fetchUser();
+                    if (typeof fetchTrades === "function") fetchTrades();
+                    if (typeof fetchTeslaStockTrades === "function") fetchTeslaStockTrades();
+
+                } else {
+                    showToast((result && result.message) || "Trade failed", "error");
+                }
+
+            } catch (err) {
+                console.warn("TSLA trade error:", err);
+                showToast("Something went wrong placing the trade", "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalLabel;
+            }
         });
+
         updateTradeEstimate();
 
         // Recurring plan "Start" buttons and strategy rows are demo-only
