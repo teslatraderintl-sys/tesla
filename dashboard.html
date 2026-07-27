@@ -99,6 +99,14 @@ window.smartsupp || (function(d) {
         .copy-trading-page {
             padding: 0;
         }
+        .ct-loading, .ct-empty {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            padding: 32px 16px;
+            border: 1px dashed var(--border-soft);
+            border-radius: 14px;
+        }
 
         /* Hero — bleeds edge-to-edge by cancelling .content's 20px side padding,
            instead of stacking its own padding on top of it */
@@ -3333,7 +3341,7 @@ window.smartsupp || (function(d) {
             overflow: hidden;
             flex-shrink: 0;
         }
-        .tsr-symbol-badge img { width: 24px; height: 24px; object-fit: contain; }
+        .tsr-symbol-badge img { width: 24px; height: 24px; object-fit: contain; filter: brightness(0) invert(1); }
         .tsr-symbol { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: 0.2px; }
         .tsr-live-price { font-size: 21px; font-weight: 800; color: #fff; margin-top: 2px; display: flex; align-items: center; }
         .tsr-live-dot {
@@ -8976,6 +8984,10 @@ window.smartsupp || (function(d) {
                 // Show corresponding page
                 document.getElementById(targetPage).classList.add('active');
 
+                // Reset scroll position so every page opens starting at the top
+                const contentEl = document.querySelector('.content');
+                if (contentEl) contentEl.scrollTop = 0;
+
             });
         });
 
@@ -12680,56 +12692,92 @@ window.smartsupp || (function(d) {
             var totalCurrentValue = 0;
             var cardsHTML = "";
 
-            trades.forEach(function (t) {
+            // Only rebuild the DOM from scratch when the set of trades has
+            // actually changed (added/removed/reordered). On every other
+            // tick we just patch the live numbers in place, so the cards
+            // don't flicker as their innerHTML gets torn down and rebuilt
+            // every few seconds.
+            var tradesKey = trades.map(function (t) { return (t.tradeId != null ? t.tradeId : "") + "|" + (t.status || "") + "|" + (t.side || ""); }).join(",");
+            var needsRebuild = (listEl.dataset.tsrKey !== tradesKey);
 
-                var side      = (t.side || "Buy");
-                var isBuy     = side.toLowerCase() !== "sell";
-                var isOpen    = (t.status || "Open") === "Open";
-                var entry     = Number(t.entry) || 0;
-                var amount    = Number(t.amount) || 0;
-                var shares    = Number(t.shares) || 0;
+            if (needsRebuild) {
 
-                // For open positions, value ticks live with the market price.
-                // Closed positions are frozen at their recorded amount.
-                var currentValue = isOpen ? (shares * price) : amount;
+                trades.forEach(function (t, i) {
 
-                // Long positions profit when price rises; short/"Sell" positions
-                // profit when price falls, so the P&L is mirrored.
-                var pl = isOpen
-                    ? (isBuy ? (currentValue - amount) : (amount - currentValue))
-                    : 0;
+                    var side      = (t.side || "Buy");
+                    var isBuy     = side.toLowerCase() !== "sell";
+                    var isOpen    = (t.status || "Open") === "Open";
+                    var entry     = Number(t.entry) || 0;
+                    var amount    = Number(t.amount) || 0;
+                    var shares    = Number(t.shares) || 0;
 
-                var plPercent = amount > 0 ? (pl / amount) * 100 : 0;
-                var plClass   = pl >= 0 ? "profit" : "loss";
-                var plSign    = pl >= 0 ? "+" : "-";
+                    var currentValue = isOpen ? (shares * price) : amount;
+                    var pl = isOpen
+                        ? (isBuy ? (currentValue - amount) : (amount - currentValue))
+                        : 0;
+                    var plPercent = amount > 0 ? (pl / amount) * 100 : 0;
+                    var plClass   = pl >= 0 ? "profit" : "loss";
+                    var plSign    = pl >= 0 ? "+" : "-";
 
-                totalInvested     += amount;
-                totalCurrentValue += currentValue;
+                    totalInvested     += amount;
+                    totalCurrentValue += currentValue;
 
-                cardsHTML +=
-                    '<div class="tsr-position-card">' +
-                        '<div class="tsr-pos-top">' +
-                            '<div class="tsr-pos-left">' +
-                                '<span class="tsr-pos-side ' + (isBuy ? "buy" : "sell") + '">' + (isBuy ? "Buy" : "Sell") + '</span>' +
-                                '<span class="tsr-pos-shares">' + shares.toFixed(4) + ' shares</span>' +
+                    cardsHTML +=
+                        '<div class="tsr-position-card">' +
+                            '<div class="tsr-pos-top">' +
+                                '<div class="tsr-pos-left">' +
+                                    '<span class="tsr-pos-side ' + (isBuy ? "buy" : "sell") + '">' + (isBuy ? "Buy" : "Sell") + '</span>' +
+                                    '<span class="tsr-pos-shares">' + shares.toFixed(4) + ' shares</span>' +
+                                '</div>' +
+                                '<span class="tsr-pos-status ' + (isOpen ? "open" : "closed") + '">' + (isOpen ? "Open" : "Closed") + '</span>' +
                             '</div>' +
-                            '<span class="tsr-pos-status ' + (isOpen ? "open" : "closed") + '">' + (isOpen ? "Open" : "Closed") + '</span>' +
-                        '</div>' +
-                        '<div class="tsr-pos-mid">' +
-                            '<div class="tsr-pos-col"><div class="l">Entry Price</div><div class="v">$' + entry.toFixed(2) + '</div></div>' +
-                            '<div class="tsr-pos-col"><div class="l">Current Price</div><div class="v">$' + price.toFixed(2) + '</div></div>' +
-                            '<div class="tsr-pos-col"><div class="l">Invested</div><div class="v">$' + amount.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + '</div></div>' +
-                            '<div class="tsr-pos-col"><div class="l">Current Value</div><div class="v">$' + currentValue.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + '</div></div>' +
-                        '</div>' +
-                        '<div class="tsr-pos-pl ' + plClass + '">' +
-                            '<span class="tsr-pos-pl-amt">' + plSign + '$' + Math.abs(pl).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + '</span>' +
-                            '<span class="tsr-pos-pl-pct">' + plSign + Math.abs(plPercent).toFixed(2) + '%</span>' +
-                        '</div>' +
-                        '<div class="tsr-pos-date">' + (t.date || "") + '</div>' +
-                    '</div>';
-            });
+                            '<div class="tsr-pos-mid">' +
+                                '<div class="tsr-pos-col"><div class="l">Entry Price</div><div class="v">$' + entry.toFixed(2) + '</div></div>' +
+                                '<div class="tsr-pos-col"><div class="l">Current Price</div><div class="v" id="tsrPosPrice-' + i + '">$' + price.toFixed(2) + '</div></div>' +
+                                '<div class="tsr-pos-col"><div class="l">Invested</div><div class="v">$' + amount.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + '</div></div>' +
+                                '<div class="tsr-pos-col"><div class="l">Current Value</div><div class="v" id="tsrPosValue-' + i + '">$' + currentValue.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + '</div></div>' +
+                            '</div>' +
+                            '<div class="tsr-pos-pl ' + plClass + '" id="tsrPosPL-' + i + '">' +
+                                '<span class="tsr-pos-pl-amt" id="tsrPosPLAmt-' + i + '">' + plSign + '$' + Math.abs(pl).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + '</span>' +
+                                '<span class="tsr-pos-pl-pct" id="tsrPosPLPct-' + i + '">' + plSign + Math.abs(plPercent).toFixed(2) + '%</span>' +
+                            '</div>' +
+                            '<div class="tsr-pos-date">' + (t.date || "") + '</div>' +
+                        '</div>';
+                });
 
-            listEl.innerHTML = cardsHTML;
+                listEl.innerHTML = cardsHTML;
+                listEl.dataset.tsrKey = tradesKey;
+
+            } else {
+
+                trades.forEach(function (t, i) {
+
+                    var side      = (t.side || "Buy");
+                    var isBuy     = side.toLowerCase() !== "sell";
+                    var isOpen    = (t.status || "Open") === "Open";
+                    var amount    = Number(t.amount) || 0;
+                    var shares    = Number(t.shares) || 0;
+
+                    var currentValue = isOpen ? (shares * price) : amount;
+                    var pl = isOpen
+                        ? (isBuy ? (currentValue - amount) : (amount - currentValue))
+                        : 0;
+                    var plPercent = amount > 0 ? (pl / amount) * 100 : 0;
+                    var plClass   = pl >= 0 ? "profit" : "loss";
+                    var plSign    = pl >= 0 ? "+" : "-";
+
+                    totalInvested     += amount;
+                    totalCurrentValue += currentValue;
+
+                    setText("tsrPosPrice-" + i, "$" + price.toFixed(2));
+                    setText("tsrPosValue-" + i, "$" + currentValue.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}));
+                    setText("tsrPosPLAmt-" + i, plSign + "$" + Math.abs(pl).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}));
+                    setText("tsrPosPLPct-" + i, plSign + Math.abs(plPercent).toFixed(2) + "%");
+
+                    var plEl = document.getElementById("tsrPosPL-" + i);
+                    if (plEl) plEl.className = "tsr-pos-pl " + plClass;
+                });
+            }
 
             var totalPL = totalCurrentValue - totalInvested;
             var totalPLPercent = totalInvested > 0 ? (totalPL / totalInvested) * 100 : 0;
@@ -13516,78 +13564,135 @@ function resetOrderButton() {
     <!-- ============ COPY TRADING SCRIPT ============ -->
     <script>
 
-    const CT_TRADERS = [
-        {
-            id: "trader_001",
-            name: "Alex Morgan",
-            handle: "@alexmorgan",
-            initials: "AM",
-            avatarColor: "linear-gradient(135deg,#e82127,#a0161b)",
-            badge: "Elite",
-            badgeClass: "badge-elite",
-            roi: "+41.8%",
-            winRate: 94,
-            followers: "2.3K",
-            trades: 1847,
-            copiers: 312,
-            strategy: "Scalping BTC/ETH"
-        },
-        {
-            id: "trader_002",
-            name: "Sarah Chen",
-            handle: "@sarachen",
-            initials: "SC",
-            avatarColor: "linear-gradient(135deg,#7b5cff,#4a3a99)",
-            badge: "Pro",
-            badgeClass: "badge-pro",
-            roi: "+29.3%",
-            winRate: 88,
-            followers: "1.1K",
-            trades: 934,
-            copiers: 178,
-            strategy: "Swing Trading Altcoins"
-        },
-        {
-            id: "trader_003",
-            name: "James Okafor",
-            handle: "@jamesokafor",
-            initials: "JO",
-            avatarColor: "linear-gradient(135deg,#39e7b0,#1a8f6b)",
-            badge: "Verified",
-            badgeClass: "badge-verified",
-            roi: "+22.7%",
-            winRate: 82,
-            followers: "680",
-            trades: 612,
-            copiers: 95,
-            strategy: "DeFi & Layer 2 Tokens"
-        },
-        {
-            id: "trader_004",
-            name: "Maria Diaz",
-            handle: "@mariadiaz",
-            initials: "MD",
-            avatarColor: "linear-gradient(135deg,#ff9800,#b56a00)",
-            badge: "Elite",
-            badgeClass: "badge-elite",
-            roi: "+38.5%",
-            winRate: 91,
-            followers: "1.8K",
-            trades: 1290,
-            copiers: 224,
-            strategy: "Futures & Options Hedge"
-        }
+    // Trader list is now populated dynamically from the backend (Copy Traders sheet)
+    let CT_TRADERS = [];
+
+    const CT_AVATAR_COLORS = [
+        "linear-gradient(135deg,#e82127,#a0161b)",
+        "linear-gradient(135deg,#7b5cff,#4a3a99)",
+        "linear-gradient(135deg,#39e7b0,#1a8f6b)",
+        "linear-gradient(135deg,#ff9800,#b56a00)",
+        "linear-gradient(135deg,#2196f3,#0d5aa7)",
+        "linear-gradient(135deg,#e91e8c,#9c1063)"
     ];
+
+    function ctBadgeClass(badge) {
+        const b = (badge || "").toString().trim().toLowerCase();
+        if (b === "elite") return "badge-elite";
+        if (b === "pro") return "badge-pro";
+        return "badge-verified";
+    }
+
+    function ctInitials(name) {
+        return (name || "")
+            .split(/\s+/)
+            .filter(Boolean)
+            .map(function(w) { return w[0]; })
+            .join("")
+            .slice(0, 2)
+            .toUpperCase() || "?";
+    }
+
+    function ctAvatarColor(idx) {
+        return CT_AVATAR_COLORS[idx % CT_AVATAR_COLORS.length];
+    }
+
+    // Normalize a raw trader record from the backend into the shape the UI expects
+    function ctNormalizeTrader(raw, idx) {
+        return {
+            id: (raw.id || "").toString(),
+            name: raw.name || "Unnamed Trader",
+            handle: raw.handle || "",
+            initials: ctInitials(raw.name),
+            avatarColor: ctAvatarColor(idx),
+            badge: raw.badge || "Verified",
+            badgeClass: ctBadgeClass(raw.badge),
+            roi: raw.roi || "+0%",
+            winRate: Number(raw.winRate) || 0,
+            trades: Number(raw.trades) || 0,
+            copiers: Number(raw.copiers) || 0,
+            strategy: raw.strategy || ""
+        };
+    }
+
+    async function ctFetchTraders() {
+        const list = document.getElementById("ctTraderList");
+        if (list) list.innerHTML = '<div class="ct-loading">Loading traders...</div>';
+
+        try {
+            const response = await fetch(API, {
+                method: "POST",
+                body: JSON.stringify({ action: "getCopyTraders" })
+            });
+            const result = await response.json();
+
+            if (result && result.status && Array.isArray(result.traders)) {
+                CT_TRADERS = result.traders.map(ctNormalizeTrader);
+            } else {
+                CT_TRADERS = [];
+                if (list) list.innerHTML = '<div class="ct-empty">No traders available right now.</div>';
+            }
+        } catch (err) {
+            console.error("Failed to load copy traders", err);
+            CT_TRADERS = [];
+            if (list) list.innerHTML = '<div class="ct-empty">Failed to load traders. Please try again.</div>';
+            if (typeof showToast === "function") showToast("Failed to load traders", "error");
+            return;
+        }
+
+        renderCopyTraders();
+    }
 
     let ctActiveSession = null;
     try { ctActiveSession = JSON.parse(localStorage.getItem("ct_active") || "null"); } catch(e) {}
     let ctSelectedTrader = null;
     let ctSelectedRisk = "Low";
 
+    // Sync active copy session from the backend (source of truth), falling back to localStorage
+    async function ctSyncActiveSession() {
+        var uid = localStorage.getItem("uid");
+        if (!uid) return;
+
+        try {
+            const response = await fetch(API, {
+                method: "POST",
+                body: JSON.stringify({ action: "getCopyStatus", uid: uid })
+            });
+            const result = await response.json();
+
+            if (result && result.status) {
+                if (result.active && result.session) {
+                    ctActiveSession = {
+                        traderId: result.session.traderId,
+                        traderName: result.session.traderName,
+                        strategy: (CT_TRADERS.find(t => t.id === result.session.traderId) || {}).strategy || "",
+                        amount: result.session.amount,
+                        risk: result.session.risk,
+                        startDate: result.session.startDate,
+                        pnl: 0
+                    };
+                } else {
+                    ctActiveSession = null;
+                }
+                try { localStorage.setItem("ct_active", JSON.stringify(ctActiveSession)); } catch(e) {}
+            }
+        } catch (err) {
+            console.error("Failed to sync copy status", err);
+        }
+
+        updateActiveBanner();
+        renderCopyTraders();
+    }
+
     function renderCopyTraders() {
         const list = document.getElementById("ctTraderList");
         if (!list) return;
         list.innerHTML = "";
+
+        if (!CT_TRADERS.length) {
+            list.innerHTML = '<div class="ct-empty">No traders available right now.</div>';
+            return;
+        }
 
         CT_TRADERS.forEach(t => {
             const isActive = ctActiveSession && ctActiveSession.traderId === t.id;
@@ -13663,7 +13768,7 @@ function resetOrderButton() {
         ctSelectedTrader = null;
     }
 
-    function confirmCopy() {
+    async function confirmCopy() {
         var amount = parseFloat(document.getElementById("ctCopyAmount").value);
         if (!amount || amount < 50) {
             if (typeof showToast === "function") showToast("Minimum copy amount is $50", "error");
@@ -13676,34 +13781,86 @@ function resetOrderButton() {
             if (typeof showToast === "function") showToast("Insufficient balance", "error");
             return;
         }
+        var uid = localStorage.getItem("uid");
+        if (!uid) {
+            if (typeof showToast === "function") showToast("Please log in again", "error");
+            return;
+        }
+
         var btn = document.getElementById("ctConfirmBtn");
         btn.disabled = true;
         btn.textContent = "Starting...";
 
-        setTimeout(function() {
-            ctActiveSession = {
-                traderId: ctSelectedTrader.id,
-                traderName: ctSelectedTrader.name,
-                traderHandle: ctSelectedTrader.handle,
-                strategy: ctSelectedTrader.strategy,
-                amount: amount,
-                risk: ctSelectedRisk,
-                startDate: new Date().toISOString(),
-                pnl: 0
-            };
-            try { localStorage.setItem("ct_active", JSON.stringify(ctActiveSession)); } catch(e) {}
-            closeCopyModal();
-            updateActiveBanner();
-            renderCopyTraders();
-            if (typeof showToast === "function") showToast("Now copying " + ctSelectedTrader.name + "!", "success");
-            btn.disabled = false;
-            btn.textContent = "Start Copying";
-        }, 1200);
+        try {
+            const response = await fetch(API, {
+                method: "POST",
+                body: JSON.stringify({
+                    action: "followTrader",
+                    uid: uid,
+                    traderId: ctSelectedTrader.id,
+                    amount: amount,
+                    risk: ctSelectedRisk
+                })
+            });
+            const result = await response.json();
+
+            if (result && result.status) {
+                ctActiveSession = {
+                    traderId: ctSelectedTrader.id,
+                    traderName: ctSelectedTrader.name,
+                    traderHandle: ctSelectedTrader.handle,
+                    strategy: ctSelectedTrader.strategy,
+                    amount: amount,
+                    risk: ctSelectedRisk,
+                    startDate: new Date().toISOString(),
+                    pnl: 0
+                };
+                try { localStorage.setItem("ct_active", JSON.stringify(ctActiveSession)); } catch(e) {}
+
+                // Reflect deducted balance if the caller keeps a cached user object
+                if (typeof result.balance !== "undefined") {
+                    user.balance = result.balance;
+                    try { sessionStorage.setItem("user", JSON.stringify(user)); } catch(e) {}
+                }
+
+                closeCopyModal();
+                updateActiveBanner();
+                renderCopyTraders();
+                if (typeof showToast === "function") showToast("Now copying " + ctSelectedTrader.name + "!", "success");
+            } else {
+                if (typeof showToast === "function") showToast((result && result.message) || "Failed to start copying", "error");
+            }
+        } catch (err) {
+            console.error("Failed to start copy session", err);
+            if (typeof showToast === "function") showToast("Failed to start copying", "error");
+        }
+
+        btn.disabled = false;
+        btn.textContent = "Start Copying";
     }
 
-    function stopCopying() {
+    async function stopCopying() {
         if (!ctActiveSession) return;
+        var uid = localStorage.getItem("uid");
         var name = ctActiveSession.traderName;
+
+        try {
+            const response = await fetch(API, {
+                method: "POST",
+                body: JSON.stringify({ action: "unfollowTrader", uid: uid })
+            });
+            const result = await response.json();
+
+            if (!result || !result.status) {
+                if (typeof showToast === "function") showToast((result && result.message) || "Failed to stop copying", "error");
+                return;
+            }
+        } catch (err) {
+            console.error("Failed to stop copy session", err);
+            if (typeof showToast === "function") showToast("Failed to stop copying", "error");
+            return;
+        }
+
         ctActiveSession = null;
         try { localStorage.removeItem("ct_active"); } catch(e) {}
         updateActiveBanner();
@@ -13744,9 +13901,9 @@ function resetOrderButton() {
 
     document.getElementById("ctConfirmBtn").addEventListener("click", confirmCopy);
 
-    // Init
-    renderCopyTraders();
+    // Init — load traders from the backend, then sync any active session
     updateActiveBanner();
+    ctFetchTraders().then(ctSyncActiveSession);
 
     </script>
 
