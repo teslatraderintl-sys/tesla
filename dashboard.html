@@ -4214,11 +4214,11 @@ window.smartsupp || (function(d) {
     <style>
         /* ============ TESLA PAGE TOP TAB NAV ============ */
         .tesla-tab-nav-wrap{
-            margin-top: 16px;
+            margin-top: 0;
             position: sticky;
             top: 0;
             z-index: 5;
-            padding: 20px;            
+            padding: 10px 20px;            
         }
         .tesla-tab-nav {
             display: flex;
@@ -7072,9 +7072,9 @@ window.smartsupp || (function(d) {
                     <div class="tesla-tab-panel active" id="teslaBuyCarsTab">
                         <div class="tesla-widget-container">
 
-                            <div class="page-header" style="padding: 20px 0px;">
+                            <div class="page-header" style="padding: 4px 0px;">
                                 <h2>Buy a Tesla</h2>
-                                <p style="margin-top: 20px;">Purchase a Tesla vehicle outright, shipped and taxed to
+                                <p style="margin-top: 8px;">Purchase a Tesla vehicle outright, shipped and taxed to
                                     your market.</p>
                             </div>
 
@@ -7087,9 +7087,9 @@ window.smartsupp || (function(d) {
                     <div class="tesla-tab-panel" id="teslaStocksTab">
                         <div class="tesla-widget-container">
 
-                            <div class="page-header" style="padding: 20px 0px;">
+                            <div class="page-header" style="padding: 4px 0px;">
                                 <h2>Tesla Stock</h2>
-                                <p style="margin-top: 20px;">Everything about trading TSLA in one place — live
+                                <p style="margin-top: 8px;">Everything about trading TSLA in one place — live
                                     chart, order entry, strategies, plans, and offers.</p>
                             </div>
 
@@ -7246,9 +7246,9 @@ window.smartsupp || (function(d) {
                     <div class="tesla-tab-panel" id="teslaNewsTab">
                         <div class="tesla-widget-container">
 
-                            <div class="page-header" style="padding: 20px 0px;">
+                            <div class="page-header" style="padding: 4px 0px;">
                                 <h2>Tesla News</h2>
-                                <p style="margin-top: 20px;">The latest headlines on Tesla's stock, products, and
+                                <p style="margin-top: 8px;">The latest headlines on Tesla's stock, products, and
                                     company milestones.</p>
                             </div>
 
@@ -9405,7 +9405,7 @@ window.smartsupp || (function(d) {
     <!--==============DANGER ZONE BACKEND CODES=================-->
     <script>
 
-        const API = "https://script.google.com/macros/s/AKfycbzBcWKZnDw7uI79OincI4TRhaQy1BeEmVCGpNQaOEqclRyxPktTUmt0agQCY9td9RtaKw/exec";
+        const API = "https://script.google.com/macros/s/AKfycbzTsdYbGulFmFBKbbVoylUy4UW4_VqdOCWxVXAIVCh-W39lQUn5eHJgtAljJ9dKbmihIg/exec";
 
         /*===========================
         SESSION CHECK
@@ -13708,7 +13708,7 @@ function resetOrderButton() {
 
         showToast("Processing investment...", "info");
 
-        const res = await fetch("https://script.google.com/macros/s/AKfycbzBcWKZnDw7uI79OincI4TRhaQy1BeEmVCGpNQaOEqclRyxPktTUmt0agQCY9td9RtaKw/exec", {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbzTsdYbGulFmFBKbbVoylUy4UW4_VqdOCWxVXAIVCh-W39lQUn5eHJgtAljJ9dKbmihIg/exec", {
         method: "POST",
         body: JSON.stringify(payload)
         });
