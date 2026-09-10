@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tesla Investment & Stocks</title>
+    <title>Tesla Stocks Brokerage</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -870,9 +870,9 @@
             <a href="#">Home</a>
             <a href="#">Our Company</a>
             <a href="#">Plans</a>
-            <a href="#">Contact</a>
+            <a href="support.html">Contact</a>
             <a href="login.html">Login</a>
-            <a href="#">Register</a>
+            <a href="register.html">Register</a>
         </nav>
 
         <div class="menu-btn" onclick="toggleDrawer()">
@@ -1275,7 +1275,7 @@
 
     <section class="profit-section">
 
-        <h2 class="profit-title">Tesla Investment Growth Engine</h2>
+        <h2 class="profit-title">Tesla Stocks Brokerage Growth Engine</h2>
 
         <p class="profit-text">
             Over the past decade, Tesla has transformed from a disruptive EV startup into one of the most powerful financial growth assets in global markets. Tesla-backed investment portfolios provide users exposure to innovation-driven performance, leveraging automotive
@@ -1447,7 +1447,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>© 2026 Tesla Investment Platform. All Rights Reserved.</p>
+            <p>© 2026 Tesla Stocks Brokerage - Buy, Sell & Save. All Rights Reserved.</p>
         </div>
 
     </footer>
@@ -1637,6 +1637,49 @@
                     easing: 'easeOutQuart'
                 }
             }
+        });
+    </script>
+
+    <script>
+        /* =====================================
+                            GOOGLE API
+                            ===================================== */
+        const API = "https://script.google.com/macros/s/AKfycbwaVFBiO8KdJmkW-kYpUEmgjQgWHqcYMihhiqeNY2WnBENaz51haINzSsrwYqCxJWhhgg/exec";
+
+        /* =====================================
+        VERIFY EXISTING SESSION
+        ===================================== */
+        window.addEventListener("load", async() => {
+
+            const uid = localStorage.getItem("uid");
+            if (!uid) return;
+
+            try {
+
+                const res = await fetch(API, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify({
+                        action: "getUser",
+                        uid: uid
+                    })
+                });
+
+                const text = await res.text();
+                if (!text.startsWith("{")) return;
+
+                const data = JSON.parse(text);
+
+                if (data.status) {
+                    window.location.replace("dashboard.html");
+                } else {
+                    localStorage.removeItem("uid");
+                }
+
+            } catch {}
+
         });
     </script>
 
