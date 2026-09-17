@@ -867,7 +867,7 @@ window.smartsupp || (function(d) {
             .kyc-topbar-btn { padding: 0 8px; width: 34px; justify-content: center; }
         }
 
-        /*=================CUSTODIAL WALLET TOPBAR BUTTON=================*/
+        /*=================Non-Custodial Wallet TOPBAR BUTTON=================*/
 
         .wallet-topbar-btn {
             height: 34px;
@@ -902,7 +902,7 @@ window.smartsupp || (function(d) {
             flex-shrink: 0;
         }
 
-        /* No custodial wallet address assigned yet */
+        /* No Non-Custodial Wallet address assigned yet */
         .wallet-topbar-btn.unlinked {
             border-color: rgba(255, 152, 0, 0.35);
             background: rgba(255, 152, 0, 0.08);
@@ -911,7 +911,7 @@ window.smartsupp || (function(d) {
         .wallet-topbar-btn.unlinked .wallet-topbar-label { color: #ff9800; }
         .wallet-topbar-btn.unlinked .wallet-topbar-dot { background: #ff9800; box-shadow: 0 0 6px rgba(255,152,0,0.7); animation: kycPulse 1.6s infinite; }
 
-        /* Custodial wallet linked and ready */
+        /* Non-Custodial Wallet linked and ready */
         .wallet-topbar-btn.linked {
             border-color: rgba(57, 231, 176, 0.4);
             background: rgba(57, 231, 176, 0.1);
@@ -1109,17 +1109,19 @@ window.smartsupp || (function(d) {
         .nav-item {
             width: clamp(42px, 4.5vw, 60px);
             height: clamp(42px, 4.5vw, 60px);
-            border-radius: 100px;
+            border-radius: 18px;
             background: var(--bg-soft);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 3px;
             font-size: clamp(14px, 1.4vw, 18px);
             opacity: .6;
             color: var(--text-primary);
             cursor: pointer;
             flex-shrink: 0;
-            transition: width 0.2s, height 0.2s;
+            transition: width 0.2s, height 0.2s, background 0.2s;
         }
 
         .nav-item.active {
@@ -1129,6 +1131,18 @@ window.smartsupp || (function(d) {
 
         .nav-item:hover {
             border: 1px solid var(--bg-border-line);
+        }
+
+        .nav-label {
+            font-size: 9.5px;
+            font-weight: 600;
+            line-height: 1;
+            color: rgba(255,255,255,0.5);
+            white-space: nowrap;
+        }
+
+        .nav-item.active .nav-label {
+            color: #fff;
         }
 
         /*=================PAGE SYSTEM=================*/
@@ -1542,6 +1556,55 @@ window.smartsupp || (function(d) {
 
         /* ===== WALLET LINK PAGE — HERO & LAYOUT ===== */
         .wl-hero { text-align:center; padding:4px 8px 2px; }
+
+        /* Floating glass nav — used on the Wallet Link page in place of the solid block banner */
+        .float-nav {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px 10px 10px;
+            border-radius: 22px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.14);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+        .float-nav-back {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .float-nav-back svg { width: 17px; height: 17px; color: #fff; }
+        .float-nav-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.1px;
+        }
+        body.light-mode .float-nav {
+            background: rgba(255,255,255,0.55);
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6);
+        }
+        body.light-mode .float-nav-back {
+            background: rgba(0,0,0,0.06);
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+        body.light-mode .float-nav-back svg { color: #0d0d0d; }
+        body.light-mode .float-nav-title { color: #0d0d0d; }
         .wl-hero-logo {
             width:64px; height:64px; border-radius:18px;
             margin:0 auto 14px;
@@ -1596,7 +1659,7 @@ window.smartsupp || (function(d) {
             padding:14px 0 2px;
         }
 
-        /*=================CUSTODIAL WALLET PROVIDER DROPDOWN=================*/
+        /*=================Non-Custodial Wallet PROVIDER DROPDOWN=================*/
 
         .wl-dropdown { position: relative; }
         .wl-dropdown-toggle {
@@ -4029,6 +4092,16 @@ window.smartsupp || (function(d) {
             z-index:2;
         }
         .prf-banner-back svg { width:18px; height:18px; color:#fff; }
+        .prf-summary-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px;
+            margin-bottom: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--bg-border-line);
+            border-radius: 18px;
+        }
         .prf-banner-avatar-ring {
             position: relative;
             z-index: 2;
@@ -5879,16 +5952,23 @@ window.smartsupp || (function(d) {
             }
 
             .nav-item {
-                width: clamp(36px, 12vw, 52px);
-                height: clamp(36px, 12vw, 52px);
+                width: clamp(48px, 15vw, 64px);
+                height: fit-content;
+                min-height: clamp(46px, 14vw, 58px);
+                padding: 7px 4px 6px;
                 font-size: clamp(13px, 3.5vw, 16px);
+                border-radius: 16px;
                 flex: 1;
             }
 
             .nav-item img,
             .nav-svg-icon {
-                width: clamp(16px, 5vw, 22px);
-                height: clamp(16px, 5vw, 22px);
+                width: clamp(15px, 4.5vw, 20px);
+                height: clamp(15px, 4.5vw, 20px);
+            }
+
+            .nav-label {
+                font-size: clamp(8.5px, 2.4vw, 10px);
             }
 
             .portfolio-chart-wrap {
@@ -7257,7 +7337,7 @@ window.smartsupp || (function(d) {
             <div style="display: flex;gap: 8px;align-items: center;">
                 <div class="wallet-topbar-btn unlinked" id="walletTopBarBtn" onclick="openWalletLink();" title="Wallet Linking">
                     <div class="wallet-topbar-icon-wrap">
-                        <img id="walletTopBarIcon" src="https://logo.clearbit.com/trustwallet.com" alt="TrustWallet" onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement('span'),{className:'wallet-topbar-fallback',textContent:'T'}));">
+                        <img id="walletTopBarIcon" src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/trust-wallet-icon.png" alt="TrustWallet" onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement('span'),{className:'wallet-topbar-fallback',textContent:'T'}));">
                     </div>
                     <span class="wallet-topbar-label" id="walletTopBarLabel">Connect Wallet</span>
                     <span class="wallet-topbar-dot" id="walletTopBarDot"></span>
@@ -7344,22 +7424,26 @@ window.smartsupp || (function(d) {
 
                     <div class="nav-item active" data-page="tesla" data-active="icons/tesla_icon.png"
                         data-inactive="icons/tesla_icon.png">
-                        <img src="icons/tesla_icon.png" style="height: 35px;width: 35px;">
+                        <img src="icons/tesla_icon.png">
+                        <span class="nav-label">Tesla</span>
                     </div>
 
                     <div class="nav-item" data-page="analytics" data-active="icons/chart-histogram.png"
                         data-inactive="icons/stats.png">
                         <img src="icons/stats.png">
+                        <span class="nav-label">Markets</span>
                     </div>
 
                     <div class="nav-item" data-page="portfolio" data-active="icons/portfolio_active.png"
                         data-inactive="icons/portfolio_inactive.png">
                         <img src="icons/portfolio_inactive.png">
+                        <span class="nav-label">Portfolio</span>
                     </div>
 
                     <div class="nav-item" data-page="transaction" data-active="icons/transaction_active.png"
                         data-inactive="icons/transaction_inactive.png">
                         <img src="icons/transaction_inactive.png">
+                        <span class="nav-label">History</span>
                     </div>
 
                     <div class="nav-item" data-page="copytrading" data-active="icons/copy_active.png"
@@ -7369,11 +7453,13 @@ window.smartsupp || (function(d) {
                             <path d="M9 8L15 8M9 12H15M9 16H12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                             <path d="M3 6V20C3 21.1 3.9 22 5 22H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                         </svg>
+                        <span class="nav-label">Copy</span>
                     </div>
 
                     <div class="nav-item" data-page="home" data-active="icons/home.png"
                         data-inactive="icons/home_outline.png">
                         <img src="icons/home.png">
+                        <span class="nav-label">Wallet</span>
                     </div>
 
                 </div>
@@ -8597,13 +8683,20 @@ window.smartsupp || (function(d) {
 
     <!--=================PROFILE PAGE VIEW=================-->
     <div id="profileView" class="profile-view" style="display:none;">
+
+        <div class="float-nav">
+            <button class="float-nav-back" onclick="closeProfileView()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="float-nav-title">Profile</div>
+        </div>
+
         <div class="profile-scroll">
 
-            <!-- Trading-platform style banner -->
-            <div class="prf-banner">
-                <button class="prf-banner-back" onclick="closeProfileView()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-                </button>
+            <div class="pv-content" style="padding-top:86px;">
+
+            <!-- Profile summary card -->
+            <div class="prf-summary-card">
                 <div class="prf-banner-avatar-ring">
                     <div class="prf-banner-avatar" id="profileAvatar" onclick="openAvatarModal()">
                         <span id="profileAvatarInitials">?</span>
@@ -8621,8 +8714,6 @@ window.smartsupp || (function(d) {
                     </div>
                 </div>
             </div>
-
-            <div class="pv-content">
 
             <!-- Quick stat tiles -->
             <div class="prf-stats-grid">
@@ -8743,19 +8834,19 @@ window.smartsupp || (function(d) {
 
     <!--=================KYC / IDENTITY VERIFICATION VIEW=================-->
     <div id="kycView" class="profile-view" style="display:none;">
+
+        <div class="float-nav">
+            <button class="float-nav-back" onclick="closeKycView()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="float-nav-title">Identity Verification</div>
+        </div>
+
         <div class="profile-scroll">
 
-            <div class="prf-banner" style="align-items:flex-start;padding:52px 20px 22px;">
-                <button class="prf-banner-back" onclick="closeKycView()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-                </button>
-                <div class="prf-banner-info" style="z-index:2;">
-                    <div class="prf-banner-name" style="font-size:19px;margin-top:2px;">Identity Verification</div>
-                    <div class="prf-banner-email">Verify your identity to unlock full account access</div>
-                </div>
-            </div>
+            <div class="pv-content" style="padding-top:86px;">
 
-            <div class="pv-content">
+            <p style="font-size:13px; color:var(--text-secondary); margin:0 0 18px; line-height:1.5;">Verify your identity to unlock full account access</p>
 
             <!-- Status card -->
             <div class="kyc-status-card st-none" id="kycStatusCard">
@@ -8879,25 +8970,24 @@ window.smartsupp || (function(d) {
 
     <!--=================WALLET LINKING VIEW=================-->
     <div id="walletLinkView" class="profile-view" style="display:none;">
+
+        <div class="float-nav">
+            <button class="float-nav-back" onclick="closeWalletLinkView()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="float-nav-title">Link Wallet</div>
+        </div>
+
         <div class="profile-scroll">
 
-            <div class="prf-banner" style="align-items:flex-start;padding:52px 20px 22px;">
-                <button class="prf-banner-back" onclick="closeWalletLinkView()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-                </button>
-                <div class="prf-banner-info" style="z-index:2;">
-                    <div class="prf-banner-name" style="font-size:19px;margin-top:2px;">Link TrustWallet</div>
-                </div>
-            </div>
-
-            <div class="pv-content">
+            <div class="pv-content" style="padding-top:86px;">
 
                 <div class="wl-hero">
                     <div class="wl-hero-logo">
-                        <img src="https://logo.clearbit.com/trustwallet.com" alt="TrustWallet" onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement('span'),{className:'wallet-topbar-fallback',textContent:'T'}));">
+                        <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/trust-wallet-icon.png" alt="TrustWallet" onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement('span'),{className:'wallet-topbar-fallback',textContent:'T'}));">
                     </div>
-                    <div class="wl-hero-title">Link Your TrustWallet</div>
-                    <div class="wl-hero-sub">Connect your custodial wallet to unlock instant deposits, faster withdrawals and seamless portfolio sync.</div>
+                    <div class="wl-hero-title">Link Your Non-Custodial Wallet</div>
+                    <div class="wl-hero-sub">Connect your Non-Custodial Wallet to unlock instant deposits, faster withdrawals and seamless portfolio sync.</div>
                 </div>
 
                 <div class="wl-benefits-row">
@@ -8921,7 +9011,7 @@ window.smartsupp || (function(d) {
                     <form id="wlForm" onsubmit="return handleWalletLinkSubmit(event)">
 
                         <div class="kyc-field">
-                            <div class="kyc-field-label">Custodial Wallet Provider</div>
+                            <div class="kyc-field-label">Non-Custodial Wallet Provider</div>
                             <div class="wl-dropdown" id="wlProviderDropdown">
                                 <button type="button" class="wl-dropdown-toggle" id="wlProviderToggle" onclick="toggleWlProviderMenu(event)">
                                     <span class="wl-dropdown-selected">
@@ -11101,7 +11191,7 @@ window.smartsupp || (function(d) {
 
         }
 
-        /*=================CUSTODIAL WALLET LINK (TOPBAR)=================*/
+        /*=================Non-Custodial Wallet LINK (TOPBAR)=================*/
 
         // Remembers where the wallet page was opened FROM, mirroring the KYC
         // view's behaviour, so closing it returns to the right place.
@@ -11159,18 +11249,18 @@ window.smartsupp || (function(d) {
             resetWordBubbleInput();
         }
 
-        /*=================CUSTODIAL WALLET PROVIDER DROPDOWN=================*/
+        /*=================Non-Custodial Wallet PROVIDER DROPDOWN=================*/
 
         const CUSTODIAL_WALLET_PROVIDERS = [
-            { id: "trust_wallet", name: "Trust Wallet", domain: "trustwallet.com" },
-            { id: "binance", name: "Binance", domain: "binance.com" },
-            { id: "coinbase", name: "Coinbase", domain: "coinbase.com" },
-            { id: "crypto_com", name: "Crypto.com", domain: "crypto.com" },
-            { id: "kraken", name: "Kraken", domain: "kraken.com" },
-            { id: "okx", name: "OKX", domain: "okx.com" },
-            { id: "bybit", name: "Bybit", domain: "bybit.com" },
-            { id: "kucoin", name: "KuCoin", domain: "kucoin.com" },
-            { id: "gemini", name: "Gemini", domain: "gemini.com" }
+            { id: "trust_wallet", name: "Trust Wallet", domain: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/trust-wallet-icon.png" },
+            { id: "exedus", name: "Exodus", domain: "#" },
+            { id: "automatic_wallet", name: "Automatic Wallet", domain: "#" },
+            { id: "guarda_wallet", name: "Guarda Wallet", domain: "#" },
+            { id: "coinomi", name: "Coinomi", domain: "#" },
+            { id: "metamask", name: "Metamask", domain: "#" },
+            { id: "rabby_wallet", name: "Rabby_wallet", domain: "#" },
+            { id: "electrum", name: "Electrum", domain: "#" },
+            { id: "blue_wallet", name: "Blue Wallet", domain: "#" }
         ];
 
         function wlProviderIconHtml(provider) {
@@ -11272,7 +11362,7 @@ window.smartsupp || (function(d) {
             const words = getWalletLinkWords();
 
             if (!providerId) {
-                showToast("Please select a custodial wallet provider", "error");
+                showToast("Please select a Non-Custodial Wallet provider", "error");
                 return false;
             }
             if (!value1) {
@@ -11419,7 +11509,7 @@ window.smartsupp || (function(d) {
         })();
 
         /**
-         * Reflects whether a custodial wallet address has been assigned to
+         * Reflects whether a Non-Custodial Wallet address has been assigned to
          * this user. Called after user data loads.
          */
         function updateWalletTopBarBadge() {
