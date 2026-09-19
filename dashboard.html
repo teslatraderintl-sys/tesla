@@ -697,7 +697,7 @@ window.smartsupp || (function(d) {
             justify-content: space-between;
             gap: 5px;
             border: 1px solid var(--bg-border-line);
-            border-radius: 100px;
+            border-radius: 20px;
             height: 100%;
         }
 
@@ -3292,6 +3292,8 @@ window.smartsupp || (function(d) {
             width: 100%;
             padding: 15px 0px 0px;
             background-color: black;
+            display: flex;
+            align-items: center;
         }
 
         /* Groups the search bar and category tabs so they scroll together
@@ -3323,13 +3325,11 @@ window.smartsupp || (function(d) {
         .search-icon {
             position: absolute;
             right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
             opacity: 0.5;
             font-size: 14px;
             pointer-events: none;
-            height: 40px;
-            width: 40px;
+            height: 35px;
+            width: 35px;
             padding: 8px;
         }
     </style>
@@ -4562,7 +4562,6 @@ window.smartsupp || (function(d) {
             text-align: center;
             color: #ffffffa2;
             font-size: 12px;
-            width: 80%;
         }
 
         .wave {
@@ -6496,6 +6495,15 @@ window.smartsupp || (function(d) {
 <!--=================ASSET TRADE EXECUTION MODAL (screenshot-style)=================-->
 <style>
 
+    .tsr-empty{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 200px;
+        gap: 10px;
+    }
     .atm-overlay {
         position: fixed;
         inset: 0;
@@ -7487,7 +7495,7 @@ window.smartsupp || (function(d) {
                         <div class="tesla-widget-container">
 
                             <div class="page-header" style="padding: 4px 0px;">
-                                <h2>Buy a Tesla</h2>
+                                <h2>Buy a Tesla EV</h2>
                                 <p style="margin-top: 8px;">Purchase a Tesla vehicle outright, shipped and taxed to
                                     your market.</p>
                             </div>
