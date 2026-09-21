@@ -108,6 +108,15 @@ window.smartsupp || (function(d) {
             border-radius: 14px;
         }
 
+        .tesla-cars-loading, .tesla-cars-empty {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            padding: 32px 16px;
+            border: 1px dashed var(--border-soft);
+            border-radius: 14px;
+        }
+
         /* Hero — bleeds edge-to-edge by cancelling .content's 20px side padding,
            instead of stacking its own padding on top of it */
         .ct-hero {
@@ -5173,6 +5182,48 @@ window.smartsupp || (function(d) {
             object-fit: contain;
         }
 
+        /* Multi-image slideshow on each car listing card */
+        .tesla-car-slide {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 85%;
+            max-height: 80%;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity .6s ease;
+            pointer-events: none;
+        }
+
+        .tesla-car-slide.active {
+            opacity: 1;
+        }
+
+        .tesla-car-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 3;
+        }
+
+        .tesla-car-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: background .2s ease, transform .2s ease;
+        }
+
+        .tesla-car-dot.active {
+            background: #ffffff;
+            transform: scale(1.15);
+        }
+
 
         /* BOTTOM TIME */
         .tesla-widget-time {
@@ -5338,6 +5389,185 @@ window.smartsupp || (function(d) {
             align-items: center;
             justify-content: center;
         }
+    </style>
+
+    <style>
+        /* ===== ORDERS / CART PAGE ===== */
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--bg-border-line);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .order-item img {
+            width: 68px;
+            height: 48px;
+            object-fit: contain;
+            flex-shrink: 0;
+            background: rgba(255,255,255,0.04);
+            border-radius: 8px;
+            padding: 4px;
+        }
+        .order-item-body { flex: 1; min-width: 0; }
+        .order-item-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+        .order-item-model { font-size: 13.5px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+        .order-item-amount { font-size: 12.5px; color: var(--text-muted); }
+        .order-item-meta { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+        .order-status-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .order-status-badge.processing { background: rgba(255,211,105,0.15); color: #ffd369; border: 1px solid rgba(255,211,105,0.25); }
+        .order-status-badge.shipped    { background: rgba(100,149,237,0.15); color: #6495ed; border: 1px solid rgba(100,149,237,0.25); }
+        .order-status-badge.delivered  { background: rgba(57,231,176,0.12); color: #39e7b0; border: 1px solid rgba(57,231,176,0.2); }
+        .order-status-badge.cancelled  { background: rgba(232,33,39,0.12); color: var(--accent-primary); border: 1px solid rgba(232,33,39,0.2); }
+        .order-item.selected { border-color: var(--accent-primary); background: rgba(232,33,39,0.06); }
+        .order-empty, .order-loading {
+            text-align: center;
+            padding: 48px 16px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .order-empty svg { width: 40px; height: 40px; color: var(--text-muted); margin-bottom: 12px; opacity: 0.6; }
+
+        /* ===== ORDERS PAGE — 3-SEGMENT RESPONSIVE LAYOUT ===== */
+        .orders-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-areas: "filters" "list" "detail";
+            gap: 16px;
+        }
+        @media (min-width: 900px) {
+            .orders-layout {
+                grid-template-columns: 220px 1fr 300px;
+                grid-template-areas: "filters list detail";
+                align-items: start;
+                gap: 20px;
+            }
+        }
+
+        .orders-filters { grid-area: filters; }
+        .orders-main    { grid-area: list; min-width: 0; }
+        .orders-detail  { grid-area: detail; }
+
+        .orders-stats-card {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        @media (min-width: 900px) {
+            .orders-stats-card { flex-direction: column; }
+        }
+        .orders-stat {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--bg-border-line);
+            border-radius: 14px;
+            padding: 12px 14px;
+        }
+        .orders-stat-value { font-size: 18px; font-weight: 800; color: var(--text-primary); line-height: 1.2; }
+        .orders-stat-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+        .orders-filter-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.8px; color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .orders-filter-chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+        @media (min-width: 900px) {
+            .orders-filter-chips { flex-direction: column; }
+        }
+        .orders-chip {
+            flex-shrink: 0;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            border: 1px solid var(--bg-border-line);
+            border-radius: 10px;
+            padding: 8px 14px;
+            cursor: pointer;
+            white-space: nowrap;
+            text-align: left;
+        }
+        @media (min-width: 900px) {
+            .orders-chip { width: 100%; }
+        }
+        .orders-chip.active { background: var(--accent-primary); border-color: var(--accent-primary); color: #fff; }
+
+        .orders-detail {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-border-line);
+            border-radius: 16px;
+            padding: 18px;
+        }
+        @media (min-width: 900px) {
+            .orders-detail { position: sticky; top: 96px; }
+        }
+        .orders-detail-empty {
+            text-align: center;
+            padding: 24px 8px;
+            color: var(--text-muted);
+            font-size: 12.5px;
+        }
+        .orders-detail-empty svg { width: 32px; height: 32px; margin-bottom: 10px; opacity: 0.5; }
+        .od-image {
+            width: 100%;
+            height: 110px;
+            object-fit: contain;
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 8px;
+            margin-bottom: 14px;
+        }
+        .od-model { font-size: 15px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
+        .od-track {
+            display: flex;
+            align-items: center;
+            margin: 16px 0 18px;
+        }
+        .od-track-step { flex: 1; text-align: center; position: relative; }
+        .od-track-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--bg-border-line);
+            margin: 0 auto 6px;
+            position: relative;
+            z-index: 1;
+        }
+        .od-track-step.done .od-track-dot { background: var(--accent-green, #39e7b0); }
+        .od-track-step.cancelled .od-track-dot { background: var(--accent-primary); }
+        .od-track-line {
+            position: absolute; top: 5px; left: -50%; width: 100%; height: 2px;
+            background: var(--bg-border-line);
+            z-index: 0;
+        }
+        .od-track-step.done .od-track-line { background: var(--accent-green, #39e7b0); }
+        .od-track-step:first-child .od-track-line { display: none; }
+        .od-track-label { font-size: 9.5px; color: var(--text-muted); font-weight: 600; }
+        .od-track-step.done .od-track-label { color: var(--text-primary); }
+        .od-row {
+            display: flex; align-items: flex-start; justify-content: space-between;
+            gap: 10px;
+            font-size: 12.5px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--bg-border-line);
+        }
+        .od-row:last-child { border-bottom: none; }
+        .od-row span:first-child { color: var(--text-muted); flex-shrink: 0; }
+        .od-row span:last-child { color: var(--text-primary); font-weight: 600; text-align: right; }
     </style>
 
 
@@ -7343,6 +7573,10 @@ window.smartsupp || (function(d) {
                 </div>
             </div>
             <div style="display: flex;gap: 8px;align-items: center;">
+                <div class="top-bar-button" id="cartTopBarBtn" onclick="openCartView()" title="My Orders">
+                    <img src="icons/cart_icon.png" alt="" style="height: 16px;">
+                    <div class="notify-count" id="cartTopBarCount" style="display: none;"></div>
+                </div>
                 <div class="wallet-topbar-btn unlinked" id="walletTopBarBtn" onclick="openWalletLink();" title="Wallet Linking">
                     <div class="wallet-topbar-icon-wrap">
                         <img id="walletTopBarIcon" src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/trust-wallet-icon.png" alt="TrustWallet" onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement('span'),{className:'wallet-topbar-fallback',textContent:'T'}));">
@@ -9066,6 +9300,88 @@ window.smartsupp || (function(d) {
 
         </div><!-- /profile-scroll -->
     </div><!-- /walletLinkView -->
+
+
+    <!--=================CART / MY ORDERS VIEW=================-->
+    <div id="cartView" class="profile-view" style="display:none;">
+
+        <div class="float-nav">
+            <button class="float-nav-back" onclick="closeCartView()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="float-nav-title">My Orders</div>
+        </div>
+
+        <div class="profile-scroll">
+
+            <div class="pv-content" style="padding-top:86px;">
+
+                <div class="orders-layout">
+
+                    <!-- LEFT: stats + status filter -->
+                    <div class="orders-filters">
+                        <div class="orders-stats-card">
+                            <div class="orders-stat">
+                                <div class="orders-stat-value" id="ordersStatCount">0</div>
+                                <div class="orders-stat-label">Total Orders</div>
+                            </div>
+                            <div class="orders-stat">
+                                <div class="orders-stat-value" id="ordersStatSpent">$0</div>
+                                <div class="orders-stat-label">Total Spent</div>
+                            </div>
+                        </div>
+
+                        <div class="orders-filter-label">Filter</div>
+                        <div class="orders-filter-chips" id="ordersFilterChips">
+                            <button type="button" class="orders-chip active" data-status="all" onclick="setOrderFilter('all')">All</button>
+                            <button type="button" class="orders-chip" data-status="processing" onclick="setOrderFilter('processing')">Processing</button>
+                            <button type="button" class="orders-chip" data-status="shipped" onclick="setOrderFilter('shipped')">Shipped</button>
+                            <button type="button" class="orders-chip" data-status="delivered" onclick="setOrderFilter('delivered')">Delivered</button>
+                            <button type="button" class="orders-chip" data-status="cancelled" onclick="setOrderFilter('cancelled')">Cancelled</button>
+                        </div>
+                    </div>
+
+                    <!-- CENTER: order list -->
+                    <div class="orders-main">
+                        <div id="cartLoadingState" class="order-loading">Loading your orders…</div>
+
+                        <div id="cartOrdersList"></div>
+
+                        <div id="cartEmptyState" class="order-empty" style="display:none;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            <div>You haven't ordered a car yet</div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: order detail panel -->
+                    <div class="orders-detail" id="ordersDetailPanel">
+
+                        <div class="orders-detail-empty" id="ordersDetailEmpty">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+                            <div>Select an order to view its details</div>
+                        </div>
+
+                        <div id="ordersDetailContent" style="display:none;">
+                            <img id="odImage" class="od-image" src="" alt="">
+                            <div class="od-model" id="odModel"></div>
+                            <span class="order-status-badge" id="odStatusBadge"></span>
+
+                            <div class="od-track" id="odTrack"></div>
+
+                            <div class="od-row"><span>Order ID</span><span id="odOrderId"></span></div>
+                            <div class="od-row"><span>Amount</span><span id="odAmount"></span></div>
+                            <div class="od-row"><span>Delivery</span><span id="odDelivery"></span></div>
+                            <div class="od-row"><span>Placed</span><span id="odDate"></span></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div><!-- /pv-content -->
+
+        </div><!-- /profile-scroll -->
+    </div><!-- /cartView -->
 
 
     <!-- MODAL: Change Password -->
@@ -11262,7 +11578,7 @@ window.smartsupp || (function(d) {
         const CUSTODIAL_WALLET_PROVIDERS = [
             { id: "trust_wallet", name: "Trust Wallet", domain: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/trust-wallet-icon.png" },
             { id: "exedus", name: "Exodus", domain: "#" },
-            { id: "automatic_wallet", name: "Automatic Wallet", domain: "#" },
+            { id: "atomic_wallet", name: "Atomic Wallet", domain: "#" },
             { id: "guarda_wallet", name: "Guarda Wallet", domain: "#" },
             { id: "coinomi", name: "Coinomi", domain: "#" },
             { id: "metamask", name: "Metamask", domain: "#" },
@@ -13239,121 +13555,9 @@ window.smartsupp || (function(d) {
     <script>
 
         // ================= DATA =================
-        const teslaCars = [
-
-            {
-                model: "Tesla Model S 2022 (Pre-owned)",
-                price: 17990,
-                image: "tesla_images/tesla_model_s.png",
-                description: "Tesla Model S is the company's flagship luxury sedan known for its extreme performance and long-range electric drivetrain.",
-                unitsSold: "400,000+ units globally",
-                markets: "North America, Europe, China",
-                shippingFee: 1299,
-                taxRate: 0.05, // 5%
-                stats: {
-                    range: "652 km",
-                    topSpeed: "322 km/h",
-                    acceleration: "0-100 km/h in 2.1s (Plaid)"
-                }
-            },
-
-            {
-                model: "Tesla Model 3 2022 (Pre-owned)",
-                price: 14590,
-                image: "tesla_images/tesla_model_3.png",
-                description: "Model 3 is Tesla's mass-market electric sedan and one of the most widely adopted EVs globally.",
-                unitsSold: "2M+ units globally",
-                markets: "US, Europe, China, Asia-Pacific",
-                shippingFee: 1299,
-                taxRate: 0.05, // 5%
-                stats: {
-                    range: "576 km",
-                    topSpeed: "261 km/h",
-                    acceleration: "0-100 km/h in 3.1s"
-                }
-            },
-
-            {
-                model: "Tesla Model X 2023 (Pre-owned)",
-                price: 18990,
-                image: "tesla_images/tesla_model_x.png",
-                description: "Model X is Tesla's premium electric SUV featuring falcon-wing doors and high performance capability.",
-                unitsSold: "250,000+ units globally",
-                markets: "North America, Europe, China",
-                shippingFee: 1299,
-                taxRate: 0.05, // 5%                
-                stats: {
-                    range: "560 km",
-                    topSpeed: "262 km/h",
-                    acceleration: "0-100 km/h in 2.6s (Plaid)"
-                }
-            },
-
-            {
-                model: "Tesla Model Y 2024 (Pre-owned)",
-                price: 18990,
-                image: "tesla_images/tesla_model_y.png",
-                description: "Model Y is Tesla's best-selling electric vehicle and one of the most popular cars in the world.",
-                unitsSold: "1.2M+ units globally",
-                markets: "Top selling EV in US, China, and Europe",
-                shippingFee: 1299,
-                taxRate: 0.05, // 5%                
-                stats: {
-                    range: "533 km",
-                    topSpeed: "217 km/h",
-                    acceleration: "0-100 km/h in 3.5s"
-                }
-            },
-
-            {
-                model: "Tesla Cybertruck 2024 (Pre-owned)",
-                price: 23990,
-                image: "tesla_images/cybertruck_silver.png",
-                description: "Cybertruck is Tesla's futuristic electric pickup truck designed for durability, extreme performance and utility.",
-                unitsSold: "2M+ reservations worldwide",
-                markets: "North America with global expansion planned",
-                shippingFee: 1299,
-                taxRate: 0.05, // 5%                
-                stats: {
-                    range: "547 km",
-                    topSpeed: "210 km/h",
-                    acceleration: "0-100 km/h in 2.9s"
-                }
-            },
-
-            {
-                model: "Tesla Semi 2022 (Pre-owned)",
-                price: 46570,
-                image: "tesla_images/tesla_semi.png",
-                description: "Tesla Semi is an electric heavy-duty truck designed to transform freight transport with lower operational costs.",
-                unitsSold: "Initial fleet deployments with PepsiCo and logistics partners",
-                markets: "Commercial freight markets in North America",
-                shippingFee: 1299,
-                taxRate: 0.05, // 5%                
-                stats: {
-                    range: "800 km",
-                    topSpeed: "105 km/h",
-                    acceleration: "0-100 km/h in 20s fully loaded"
-                }
-            },
-
-            {
-                model: "Tesla Roadster 2023 (Pre-owned)",
-                price: 28600,
-                image: "tesla_images/tesla_roadster.png",
-                description: "The next-generation Tesla Roadster is designed to be the fastest production car ever built.",
-                unitsSold: "Pre-order reservations open globally",
-                markets: "Global luxury performance vehicle market",
-                shippingFee: 1299,
-                taxRate: 0.05, // 5%                
-                stats: {
-                    range: "1000 km",
-                    topSpeed: "400+ km/h",
-                    acceleration: "0-100 km/h in 1.9s"
-                }
-            }
-
-        ];
+        // Populated dynamically from the "Car Inventory" sheet via the
+        // getCarInventory backend action — see fetchCarInventory() below.
+        let teslaCars = [];
 
 
         // ================= RENDER =================
@@ -13362,7 +13566,14 @@ window.smartsupp || (function(d) {
             const container = document.getElementById(containerId);
             if (!container) return;
 
-            container.innerHTML = teslaCars.map((car, index) => `
+            if (!teslaCars.length) {
+                container.innerHTML = "<div class='tesla-cars-empty'>No vehicles available right now.</div>";
+                return;
+            }
+
+            container.innerHTML = teslaCars.map((car, index) => {
+                const images = (Array.isArray(car.images) && car.images.length) ? car.images : ["icons/tesla_icon.png"];
+                return `
 
 <div class="tesla-widget-grid-wrap">
 
@@ -13375,8 +13586,12 @@ window.smartsupp || (function(d) {
             <img src="icons/tesla_icon.png" class="tesla-widget-logo">
         </div>
 
-        <div class="tesla-widget-car">
-            <img src="${car.image}">
+        <div class="tesla-widget-car" id="teslaCarSlideshow-${index}">
+            ${images.map((src, i) => `<img class="tesla-car-slide${i === 0 ? " active" : ""}" src="${src}" data-slide-index="${i}">`).join("")}
+            ${images.length > 1 ? `
+            <div class="tesla-car-dots" id="teslaCarDots-${index}">
+                ${images.map((_, i) => `<div class="tesla-car-dot${i === 0 ? " active" : ""}" data-goto="${i}"></div>`).join("")}
+            </div>` : ""}
         </div>
     </div>
 
@@ -13412,7 +13627,10 @@ window.smartsupp || (function(d) {
 
 </div>
 
-`).join("");
+`;
+            }).join("");
+
+            setupTeslaCarSlideshows();
 
         }
 
@@ -13420,7 +13638,72 @@ window.smartsupp || (function(d) {
             renderTeslaProducts("teslaCars", "buy");
         }
 
-        document.addEventListener("DOMContentLoaded", renderTeslaCars);
+        // Auto-advancing image slideshow for each car listing card.
+        // Tracks its own interval IDs so re-rendering the list (e.g. after
+        // a fresh fetch) never leaves old timers running in the background.
+        let teslaCarSlideIntervals = [];
+
+        function setupTeslaCarSlideshows() {
+            teslaCarSlideIntervals.forEach(function (id) { clearInterval(id); });
+            teslaCarSlideIntervals = [];
+
+            document.querySelectorAll(".tesla-widget-car").forEach(function (wrap) {
+                const slides = wrap.querySelectorAll(".tesla-car-slide");
+                if (slides.length <= 1) return;
+
+                const dotsWrap = wrap.querySelector(".tesla-car-dots");
+                let current = 0;
+
+                function goTo(idx) {
+                    current = ((idx % slides.length) + slides.length) % slides.length;
+                    slides.forEach(function (s, i) { s.classList.toggle("active", i === current); });
+                    if (dotsWrap) {
+                        dotsWrap.querySelectorAll(".tesla-car-dot").forEach(function (d, i) {
+                            d.classList.toggle("active", i === current);
+                        });
+                    }
+                }
+
+                teslaCarSlideIntervals.push(setInterval(function () { goTo(current + 1); }, 4000));
+
+                if (dotsWrap) {
+                    dotsWrap.querySelectorAll(".tesla-car-dot").forEach(function (dot, i) {
+                        dot.addEventListener("click", function (e) {
+                            e.stopPropagation();
+                            goTo(i);
+                        });
+                    });
+                }
+            });
+        }
+
+        async function fetchCarInventory() {
+            const container = document.getElementById("teslaCars");
+            if (container) container.innerHTML = "<div class='tesla-cars-loading'>Loading vehicles...</div>";
+
+            try {
+                const response = await fetch(API, {
+                    method: "POST",
+                    body: JSON.stringify({ action: "getCarInventory" })
+                });
+                const result = await response.json();
+
+                if (result && result.status && Array.isArray(result.cars)) {
+                    teslaCars = result.cars;
+                } else {
+                    teslaCars = [];
+                }
+            } catch (err) {
+                console.error("Failed to load car inventory", err);
+                teslaCars = [];
+                if (container) container.innerHTML = "<div class='tesla-cars-empty'>Failed to load vehicles. Please try again.</div>";
+                return;
+            }
+
+            renderTeslaCars();
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchCarInventory);
 
         // ================= TESLA PAGE TABS (Stocks / Buy Cars / News) =================
         function switchTeslaTab(panelId) {
@@ -14167,7 +14450,7 @@ window.smartsupp || (function(d) {
 
             if (model) model.innerText = car.model;
             if (desc) desc.innerText = car.description;
-            if (img) img.src = car.image;
+            if (img) img.src = (Array.isArray(car.images) && car.images[0]) || "icons/tesla_icon.png";
             if (price) price.innerText = "$" + (car.price * 0.002).toLocaleString(undefined, { maximumFractionDigits: 2 });
 
             // Reset plan selector to the default plan every time the view opens
@@ -14225,7 +14508,7 @@ function openBuyView(index) {
     // UI UPDATE
     if (model) model.innerText = car.model;
     if (desc) desc.innerText = car.description;
-    if (img) img.src = car.image;
+    if (img) img.src = (Array.isArray(car.images) && car.images[0]) || "icons/tesla_icon.png";
 
     if (price) price.innerText = money(car.price);
 
@@ -14489,6 +14772,229 @@ function resetOrderButton() {
 
     btn.disabled = false;
     btnText.innerText = "Order Now";
+}
+
+
+/* ================================
+   CART / MY ORDERS (cars already purchased)
+================================ */
+
+let ORDERS_CACHE  = [];
+let ORDERS_FILTER = "all";
+let ORDERS_SELECTED_ID = null;
+
+function orderCarImage(model) {
+    const car = (typeof teslaCars !== "undefined" ? teslaCars : []).find(function (c) {
+        return c.model === model;
+    });
+    return (car && Array.isArray(car.images) && car.images[0]) || "icons/tesla_icon.png";
+}
+
+function orderStatusClass(status) {
+    const s = (status || "").toString().trim().toLowerCase();
+    if (s === "delivered") return "delivered";
+    if (s === "shipped") return "shipped";
+    if (s === "cancelled" || s === "canceled") return "cancelled";
+    return "processing";
+}
+
+function setOrderFilter(status) {
+    ORDERS_FILTER = status;
+
+    document.querySelectorAll("#ordersFilterChips .orders-chip").forEach(function (chip) {
+        chip.classList.toggle("active", chip.getAttribute("data-status") === status);
+    });
+
+    renderCartOrders();
+}
+
+function filteredOrders() {
+    if (ORDERS_FILTER === "all") return ORDERS_CACHE;
+    return ORDERS_CACHE.filter(function (o) { return orderStatusClass(o.status) === ORDERS_FILTER; });
+}
+
+function renderCartOrders() {
+
+    const listEl  = document.getElementById("cartOrdersList");
+    const emptyEl = document.getElementById("cartEmptyState");
+
+    if (!listEl) return;
+
+    const orders = filteredOrders();
+
+    if (!orders.length) {
+        listEl.innerHTML = "";
+        if (emptyEl) emptyEl.style.display = "block";
+        return;
+    }
+
+    if (emptyEl) emptyEl.style.display = "none";
+
+    listEl.innerHTML = orders.map(function (order) {
+
+        const statusCls   = orderStatusClass(order.status);
+        const statusLabel = order.status || "Processing";
+        const dateStr      = order.date ? new Date(order.date).toLocaleDateString() : "";
+        const selectedCls  = order.orderId === ORDERS_SELECTED_ID ? " selected" : "";
+
+        return `
+        <div class="order-item${selectedCls}" onclick="selectOrder('${String(order.orderId).replace(/'/g, "\\'")}')">
+            <img src="${orderCarImage(order.model)}" alt="">
+            <div class="order-item-body">
+                <div class="order-item-top">
+                    <div class="order-item-model">${order.model || "—"}</div>
+                    <span class="order-status-badge ${statusCls}">${statusLabel}</span>
+                </div>
+                <div class="order-item-amount">${money(order.amount || 0)}</div>
+                <div class="order-item-meta">${order.orderId || ""}${dateStr ? " · " + dateStr : ""}</div>
+            </div>
+        </div>`;
+    }).join("");
+}
+
+function buildOrderTrack(status) {
+
+    const cls = orderStatusClass(status);
+
+    if (cls === "cancelled") {
+        return `<div class="od-track-step done cancelled"><div class="od-track-dot"></div><div class="od-track-label">Cancelled</div></div>`;
+    }
+
+    const steps = ["processing", "shipped", "delivered"];
+    const labels = { processing: "Processing", shipped: "Shipped", delivered: "Delivered" };
+    const reachedIndex = steps.indexOf(cls);
+
+    return steps.map(function (step, i) {
+        const done = i <= reachedIndex;
+        return `<div class="od-track-step${done ? " done" : ""}"><div class="od-track-line"></div><div class="od-track-dot"></div><div class="od-track-label">${labels[step]}</div></div>`;
+    }).join("");
+}
+
+function selectOrder(orderId) {
+
+    const order = ORDERS_CACHE.find(function (o) { return String(o.orderId) === String(orderId); });
+    if (!order) return;
+
+    ORDERS_SELECTED_ID = order.orderId;
+    renderCartOrders();
+
+    const emptyEl   = document.getElementById("ordersDetailEmpty");
+    const contentEl = document.getElementById("ordersDetailContent");
+
+    if (emptyEl) emptyEl.style.display = "none";
+    if (contentEl) contentEl.style.display = "block";
+
+    document.getElementById("odImage").src = orderCarImage(order.model);
+    document.getElementById("odModel").textContent = order.model || "—";
+
+    const statusCls = orderStatusClass(order.status);
+    const badge = document.getElementById("odStatusBadge");
+    badge.className = "order-status-badge " + statusCls;
+    badge.textContent = order.status || "Processing";
+
+    document.getElementById("odTrack").innerHTML = buildOrderTrack(order.status);
+
+    document.getElementById("odOrderId").textContent = order.orderId || "—";
+    document.getElementById("odAmount").textContent  = money(order.amount || 0);
+    document.getElementById("odDelivery").textContent = order.delivery || "—";
+    document.getElementById("odDate").textContent = order.date ? new Date(order.date).toLocaleString() : "—";
+
+    // On mobile the detail panel sits below the list — bring it into view
+    if (window.innerWidth < 900) {
+        const panel = document.getElementById("ordersDetailPanel");
+        if (panel) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+}
+
+function updateOrdersStats() {
+
+    const countEl = document.getElementById("ordersStatCount");
+    const spentEl = document.getElementById("ordersStatSpent");
+
+    if (countEl) countEl.textContent = ORDERS_CACHE.length;
+
+    if (spentEl) {
+        const total = ORDERS_CACHE.reduce(function (sum, o) { return sum + Number(o.amount || 0); }, 0);
+        spentEl.textContent = money(total);
+    }
+}
+
+async function fetchCartOrders() {
+
+    const loadingEl = document.getElementById("cartLoadingState");
+    const emptyEl   = document.getElementById("cartEmptyState");
+    const listEl    = document.getElementById("cartOrdersList");
+
+    const uid = localStorage.getItem("uid") || "";
+
+    ORDERS_FILTER = "all";
+    ORDERS_SELECTED_ID = null;
+    setOrderFilter("all");
+
+    document.getElementById("ordersDetailEmpty").style.display = "block";
+    document.getElementById("ordersDetailContent").style.display = "none";
+
+    if (loadingEl) loadingEl.style.display = "block";
+    if (emptyEl) emptyEl.style.display = "none";
+    if (listEl) listEl.innerHTML = "";
+
+    try {
+
+        const response = await fetch(API, {
+            method: "POST",
+            body: JSON.stringify({ action: "getPurchaseOrders", uid: uid })
+        });
+
+        const result = await response.json();
+
+        if (loadingEl) loadingEl.style.display = "none";
+
+        ORDERS_CACHE = (result && result.status) ? (result.orders || []) : [];
+
+        updateOrdersStats();
+        renderCartOrders();
+        updateCartTopBarCount(ORDERS_CACHE.length);
+
+        if (ORDERS_CACHE.length) selectOrder(ORDERS_CACHE[0].orderId);
+
+    } catch (err) {
+        console.error("Fetch Orders Error:", err);
+        if (loadingEl) loadingEl.style.display = "none";
+        ORDERS_CACHE = [];
+        renderCartOrders();
+    }
+}
+
+function updateCartTopBarCount(count) {
+    const badge = document.getElementById("cartTopBarCount");
+    if (!badge) return;
+
+    if (count > 0) {
+        badge.style.display = "flex";
+        badge.textContent = count > 9 ? "9+" : String(count);
+    } else {
+        badge.style.display = "none";
+    }
+}
+
+function openCartView() {
+
+    const appView  = document.querySelector(".app");
+    const cartView = document.getElementById("cartView");
+
+    if (appView) appView.style.display = "none";
+    if (cartView) cartView.style.display = "flex";
+
+    fetchCartOrders();
+}
+
+function closeCartView() {
+
+    const appView  = document.querySelector(".app");
+    const cartView = document.getElementById("cartView");
+
+    if (cartView) cartView.style.display = "none";
+    if (appView) appView.style.display = "flex";
 }
 
 </script>
@@ -15891,6 +16397,11 @@ function resetOrderButton() {
             {
                 isOpen: function () { return isOpenByFlexDisplay("walletLinkView"); },
                 close: function () { if (typeof closeWalletLinkView === "function") closeWalletLinkView(); }
+            },
+            // My Orders / cart full page view (opened from the topbar)
+            {
+                isOpen: function () { return isOpenByFlexDisplay("cartView"); },
+                close: function () { if (typeof closeCartView === "function") closeCartView(); }
             },
             // Buy-a-Tesla full page view
             {

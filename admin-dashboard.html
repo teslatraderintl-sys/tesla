@@ -392,6 +392,11 @@
         <span>Copy Traders</span>
         <span class="badge" id="badge-copytraders">–</span>
       </div>
+      <div class="nav-item" data-tab="cars" onclick="switchTab('cars')">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 13l1.5-4.5A2 2 0 0 1 6.4 7h11.2a2 2 0 0 1 1.9 1.5L21 13"/><path d="M3 13h18v4a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H6v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4Z"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/></svg>
+        <span>Car Inventory</span>
+        <span class="badge" id="badge-cars">–</span>
+      </div>
     </nav>
 
     <div class="sidebar-foot">
@@ -631,6 +636,33 @@
         </div>
       </section>
 
+      <!-- CAR INVENTORY -->
+      <section id="tab-cars" style="display:none">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Car Inventory</h3>
+              <div class="panel-sub">Add, edit or remove vehicle listings shown on the Buy a Tesla page</div>
+            </div>
+            <div class="panel-actions">
+              <button class="btn btn-primary btn-sm" onclick="openAddCarModal()">+ Add Car</button>
+              <button class="btn btn-ghost btn-sm" onclick="loadCars()">Refresh</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Photos</th><th>Car ID</th><th>Model</th><th>Price</th><th>Shipping</th>
+                  <th>Tax</th><th>Range</th><th>Status</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="carsBody"><tr class="loading-row"><td colspan="9"><span class="spin"></span>Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 </div>
@@ -670,6 +702,57 @@
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeTraderModal()">Cancel</button>
       <button class="btn btn-primary" style="width:auto;padding-left:24px;padding-right:24px" onclick="saveTrader()">Save Trader</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CAR MODAL ============ -->
+<div class="modal-overlay" id="carModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="carModalTitle">Add Car</h3>
+      <button class="modal-close" onclick="closeCarModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="carModalId" />
+      <div class="field full"><label>Model</label><input type="text" id="carModel" placeholder="Tesla Model 3 2022 (Pre-owned)" /></div>
+      <div class="field"><label>Price ($)</label><input type="number" id="carPrice" placeholder="14590" min="0" step="0.01" /></div>
+      <div class="field"><label>Shipping Fee ($)</label><input type="number" id="carShippingFee" placeholder="1299" min="0" step="0.01" /></div>
+      <div class="field"><label>Tax Rate (0.05 = 5%)</label><input type="number" id="carTaxRate" placeholder="0.05" min="0" max="1" step="0.001" /></div>
+      <div class="field full">
+        <label>Car Photos</label>
+        <div id="carImagesGallery" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;"></div>
+        <div style="display:flex;align-items:center;gap:14px;padding:12px;background:var(--surface-2);border:1px dashed var(--border);border-radius:8px;">
+          <div style="flex:1;min-width:0;">
+            <input type="file" id="carImageFile" accept="image/*" multiple style="display:block;width:100%;font-size:12.5px;color:var(--text-dim);" />
+            <div id="carImageStatus" style="font-size:12px;color:var(--text-dim);margin-top:6px;"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <input type="text" id="carImageUrlInput" placeholder="…or paste an image URL and click Add" style="flex:1;" />
+          <button type="button" class="btn btn-ghost btn-sm" onclick="addCarImageFromUrl()">Add URL</button>
+        </div>
+      </div>
+      <div class="field full">
+        <label>Description</label>
+        <textarea id="carDescription" rows="3" placeholder="Model 3 is Tesla's mass-market electric sedan and one of the most widely adopted EVs globally." style="width:100%;padding:11px 13px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:13.5px;outline:none;resize:vertical;"></textarea>
+      </div>
+      <div class="field"><label>Units Sold</label><input type="text" id="carUnitsSold" placeholder="2M+ units globally" /></div>
+      <div class="field"><label>Markets</label><input type="text" id="carMarkets" placeholder="US, Europe, China, Asia-Pacific" /></div>
+      <div class="field"><label>Range</label><input type="text" id="carRange" placeholder="576 km" /></div>
+      <div class="field"><label>Top Speed</label><input type="text" id="carTopSpeed" placeholder="261 km/h" /></div>
+      <div class="field full"><label>Acceleration</label><input type="text" id="carAcceleration" placeholder="0-100 km/h in 3.1s" /></div>
+      <div class="field">
+        <label>Status</label>
+        <select id="carActive" style="width:100%;padding:11px 13px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:13.5px;outline:none;">
+          <option value="true">Active</option>
+          <option value="false">Inactive</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeCarModal()">Cancel</button>
+      <button class="btn btn-primary" style="width:auto;padding-left:24px;padding-right:24px" onclick="saveCar()">Save Car</button>
     </div>
   </div>
 </div>
@@ -738,6 +821,19 @@
 
 <script>
 /* ============================================================
+   CLOUDINARY CONFIG
+   Car photos uploaded in the Car Inventory modal go straight to
+   Cloudinary from the browser (unsigned upload — no API secret
+   needed client-side). Replace these two with your own Cloudinary
+   account's values before use:
+     1. Sign in at cloudinary.com → Dashboard → copy your "Cloud name".
+     2. Settings → Upload → Upload presets → Add upload preset →
+        set Signing Mode to "Unsigned" → Save → copy its name.
+============================================================ */
+const CLOUDINARY_CLOUD_NAME    = "hwabfjcu";
+const CLOUDINARY_UPLOAD_PRESET = "TESLA MEDIA";
+
+/* ============================================================
    STATE
 ============================================================ */
 const state = {
@@ -758,6 +854,7 @@ const PAGE_META = {
   wallet:       { title:'Global Wallet',     sub:'Deposit address shown to users' },
   notify:       { title:'Notify User',       sub:'Send a one-off in-app notification' },
   copytraders:  { title:'Copy Traders',      sub:'Manage the copy trader directory shown to users' },
+  cars:         { title:'Car Inventory',     sub:'Manage the vehicle listings shown on the Buy a Tesla page' },
 };
 
 /* ============================================================
@@ -897,6 +994,7 @@ function switchTab(tab) {
   if (tab === 'transactions' && !state.cache.tx) loadTransactions();
   if (tab === 'wallet') loadWallet();
   if (tab === 'copytraders') loadCopyTraders();
+  if (tab === 'cars') loadCars();
 }
 
 /* ============================================================
@@ -1584,6 +1682,249 @@ async function handleDeleteTrader(traderId, name) {
     if (!res.status) throw new Error(res.message || 'Failed to delete trader');
     showToast('Trader deleted', 'ok');
     loadCopyTraders();
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+/* ============================================================
+   CAR INVENTORY
+============================================================ */
+let carImagesState = [];
+let carImagesUploadingCount = 0;
+
+function renderCarImagesGallery() {
+  const gallery = document.getElementById('carImagesGallery');
+  if (!carImagesState.length) {
+    gallery.innerHTML = `<div style="font-size:12px;color:var(--text-dim);">No photos added yet.</div>`;
+    return;
+  }
+  gallery.innerHTML = carImagesState.map((url, i) => `
+    <div style="position:relative;width:72px;height:72px;">
+      <img src="${escapeHtml(url)}" alt="" style="width:72px;height:72px;object-fit:cover;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);" />
+      <button type="button" onclick="removeCarImage(${i})" title="Remove"
+        style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:var(--danger,#e5484d);color:#fff;border:2px solid var(--surface-1);font-size:11px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">✕</button>
+    </div>
+  `).join('');
+}
+
+function removeCarImage(index) {
+  carImagesState.splice(index, 1);
+  renderCarImagesGallery();
+}
+
+function addCarImageFromUrl() {
+  const input = document.getElementById('carImageUrlInput');
+  const url = input.value.trim();
+  if (!url) return;
+  carImagesState.push(url);
+  input.value = '';
+  renderCarImagesGallery();
+}
+
+async function uploadCarImageToCloudinary(file) {
+  const statusEl = document.getElementById('carImageStatus');
+
+  if (!file) return;
+
+  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
+    statusEl.style.color = 'var(--danger, #e5484d)';
+    statusEl.textContent = 'Cloudinary is not configured yet — set CLOUDINARY_CLOUD_NAME / CLOUDINARY_UPLOAD_PRESET, or paste a URL below instead.';
+    return;
+  }
+
+  carImagesUploadingCount++;
+  statusEl.style.color = 'var(--text-dim)';
+  statusEl.textContent = `Uploading ${carImagesUploadingCount} photo${carImagesUploadingCount > 1 ? 's' : ''}…`;
+
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    formData.append('folder', 'car-inventory');
+
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+
+    if (!res.ok || !data.secure_url) {
+      throw new Error((data && data.error && data.error.message) || 'Upload failed');
+    }
+
+    carImagesState.push(data.secure_url);
+    renderCarImagesGallery();
+  } catch (err) {
+    statusEl.style.color = 'var(--danger, #e5484d)';
+    statusEl.textContent = 'Upload failed: ' + err.message + ' — you can paste a URL below instead.';
+  } finally {
+    carImagesUploadingCount--;
+    if (carImagesUploadingCount <= 0) {
+      carImagesUploadingCount = 0;
+      statusEl.style.color = 'var(--success, #30a46c)';
+      statusEl.textContent = carImagesState.length ? 'Uploaded ✓' : '';
+    } else {
+      statusEl.textContent = `Uploading ${carImagesUploadingCount} photo${carImagesUploadingCount > 1 ? 's' : ''}…`;
+    }
+  }
+}
+
+document.getElementById('carImageFile').addEventListener('change', function (e) {
+  const files = Array.from(e.target.files || []);
+  files.forEach(function (file) { uploadCarImageToCloudinary(file); });
+  e.target.value = ''; // allow re-selecting the same file(s) later
+});
+
+async function loadCars() {
+  const tbody = document.getElementById('carsBody');
+  tbody.innerHTML = `<tr class="loading-row"><td colspan="9"><span class="spin"></span>Loading…</td></tr>`;
+
+  try {
+    const res = await api('getCarInventoryAdmin');
+    if (!res.status) throw new Error(res.message || 'Failed to load cars');
+
+    const badge = document.getElementById('badge-cars');
+    if (badge) badge.textContent = res.cars.length;
+
+    if (!res.cars.length) {
+      tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="ic">∅</div><div class="title">No cars yet</div><div class="sub">Click "+ Add Car" to create the first listing.</div></div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = res.cars.map(c => {
+      const images = Array.isArray(c.images) ? c.images : [];
+      const thumb = images[0]
+        ? `<img src="${escapeHtml(images[0])}" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:6px;background:var(--surface-2);" />`
+        : `<div style="width:44px;height:44px;border-radius:6px;background:var(--surface-2);"></div>`;
+      return `
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:8px;">
+            ${thumb}
+            <span class="pill pill-neutral" style="white-space:nowrap;">${images.length} photo${images.length === 1 ? '' : 's'}</span>
+          </div>
+        </td>
+        <td class="mono">${escapeHtml(c.id)}</td>
+        <td><strong>${escapeHtml(c.model)}</strong></td>
+        <td class="num">${fmtMoney(c.price)}</td>
+        <td class="num">${fmtMoney(c.shippingFee)}</td>
+        <td class="num">${(Number(c.taxRate) * 100).toFixed(1)}%</td>
+        <td>${escapeHtml((c.stats && c.stats.range) || '')}</td>
+        <td>${c.active ? '<span class="pill pill-ok">Active</span>' : '<span class="pill pill-neutral">Inactive</span>'}</td>
+        <td>
+          <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" onclick='openEditCarModal(${JSON.stringify(c)})'>Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="handleDeleteCar('${escapeHtml(c.id)}','${escapeHtml(c.model)}')">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `;
+    }).join('');
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="ic">!</div><div class="title">Couldn't load cars</div><div class="sub">${escapeHtml(err.message)}</div></div></td></tr>`;
+  }
+}
+
+function openAddCarModal() {
+  document.getElementById('carModalTitle').textContent = 'Add Car';
+  document.getElementById('carModalId').value = '';
+  document.getElementById('carModel').value = '';
+  document.getElementById('carPrice').value = '';
+  document.getElementById('carShippingFee').value = '';
+  document.getElementById('carTaxRate').value = '';
+  carImagesState = [];
+  renderCarImagesGallery();
+  document.getElementById('carImageFile').value = '';
+  document.getElementById('carImageUrlInput').value = '';
+  document.getElementById('carImageStatus').textContent = '';
+  document.getElementById('carDescription').value = '';
+  document.getElementById('carUnitsSold').value = '';
+  document.getElementById('carMarkets').value = '';
+  document.getElementById('carRange').value = '';
+  document.getElementById('carTopSpeed').value = '';
+  document.getElementById('carAcceleration').value = '';
+  document.getElementById('carActive').value = 'true';
+  document.getElementById('carModal').classList.add('show');
+}
+
+function openEditCarModal(c) {
+  document.getElementById('carModalTitle').textContent = 'Edit Car';
+  document.getElementById('carModalId').value       = c.id;
+  document.getElementById('carModel').value         = c.model;
+  document.getElementById('carPrice').value         = c.price;
+  document.getElementById('carShippingFee').value   = c.shippingFee;
+  document.getElementById('carTaxRate').value       = c.taxRate;
+  carImagesState = Array.isArray(c.images) ? c.images.slice() : (c.image ? [c.image] : []);
+  renderCarImagesGallery();
+  document.getElementById('carImageFile').value = '';
+  document.getElementById('carImageUrlInput').value = '';
+  document.getElementById('carImageStatus').textContent = '';
+  document.getElementById('carDescription').value   = c.description;
+  document.getElementById('carUnitsSold').value     = c.unitsSold;
+  document.getElementById('carMarkets').value       = c.markets;
+  document.getElementById('carRange').value         = (c.stats && c.stats.range) || '';
+  document.getElementById('carTopSpeed').value      = (c.stats && c.stats.topSpeed) || '';
+  document.getElementById('carAcceleration').value  = (c.stats && c.stats.acceleration) || '';
+  document.getElementById('carActive').value        = c.active ? 'true' : 'false';
+  document.getElementById('carModal').classList.add('show');
+}
+
+function closeCarModal() {
+  document.getElementById('carModal').classList.remove('show');
+}
+
+async function saveCar() {
+  if (carImagesUploadingCount > 0) {
+    showToast('Photos are still uploading — please wait a moment', 'err');
+    return;
+  }
+
+  const carId = document.getElementById('carModalId').value.trim();
+  const payload = {
+    model:        document.getElementById('carModel').value.trim(),
+    price:        Number(document.getElementById('carPrice').value),
+    shippingFee:  Number(document.getElementById('carShippingFee').value),
+    taxRate:      Number(document.getElementById('carTaxRate').value),
+    images:       carImagesState.slice(),
+    description:  document.getElementById('carDescription').value.trim(),
+    unitsSold:    document.getElementById('carUnitsSold').value.trim(),
+    markets:      document.getElementById('carMarkets').value.trim(),
+    range:        document.getElementById('carRange').value.trim(),
+    topSpeed:     document.getElementById('carTopSpeed').value.trim(),
+    acceleration: document.getElementById('carAcceleration').value.trim(),
+    active:       document.getElementById('carActive').value,
+  };
+
+  if (!payload.model || !payload.price) {
+    showToast('Model and Price are required', 'err');
+    return;
+  }
+
+  try {
+    let res;
+    if (carId) {
+      res = await api('updateCar', { carId, ...payload });
+    } else {
+      res = await api('addCar', payload);
+    }
+    if (!res.status) throw new Error(res.message || 'Failed to save car');
+    showToast(carId ? 'Car updated' : 'Car added', 'ok');
+    closeCarModal();
+    loadCars();
+  } catch (err) {
+    showToast(err.message, 'err');
+  }
+}
+
+async function handleDeleteCar(carId, model) {
+  const ok = await showConfirm({ title: 'Delete car', message: `Remove "${model}" from the car inventory? This cannot be undone.`, detail: carId, danger: true });
+  if (!ok) return;
+  try {
+    const res = await api('deleteCar', { carId });
+    if (!res.status) throw new Error(res.message || 'Failed to delete car');
+    showToast('Car deleted', 'ok');
+    loadCars();
   } catch (err) {
     showToast(err.message, 'err');
   }
