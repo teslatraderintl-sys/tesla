@@ -4063,6 +4063,7 @@ window.smartsupp || (function(d) {
         .profile-scroll {
             flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
         }
 
@@ -5444,6 +5445,8 @@ window.smartsupp || (function(d) {
             grid-template-columns: 1fr;
             grid-template-areas: "filters" "list" "detail";
             gap: 16px;
+            width: 100%;
+            min-width: 0;
         }
         @media (min-width: 900px) {
             .orders-layout {
@@ -5454,9 +5457,9 @@ window.smartsupp || (function(d) {
             }
         }
 
-        .orders-filters { grid-area: filters; }
+        .orders-filters { grid-area: filters; min-width: 0; }
         .orders-main    { grid-area: list; min-width: 0; }
-        .orders-detail  { grid-area: detail; }
+        .orders-detail  { grid-area: detail; min-width: 0; }
 
         .orders-stats-card {
             display: flex;
@@ -5485,6 +5488,9 @@ window.smartsupp || (function(d) {
             display: flex;
             gap: 8px;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            max-width: 100%;
             padding-bottom: 2px;
         }
         @media (min-width: 900px) {
@@ -5567,7 +5573,7 @@ window.smartsupp || (function(d) {
         }
         .od-row:last-child { border-bottom: none; }
         .od-row span:first-child { color: var(--text-muted); flex-shrink: 0; }
-        .od-row span:last-child { color: var(--text-primary); font-weight: 600; text-align: right; }
+        .od-row span:last-child { color: var(--text-primary); font-weight: 600; text-align: right; min-width: 0; overflow-wrap: break-word; word-break: break-word; }
     </style>
 
 
@@ -9371,6 +9377,8 @@ window.smartsupp || (function(d) {
                             <div class="od-row"><span>Order ID</span><span id="odOrderId"></span></div>
                             <div class="od-row"><span>Amount</span><span id="odAmount"></span></div>
                             <div class="od-row"><span>Delivery</span><span id="odDelivery"></span></div>
+                            <div class="od-row"><span>Address</span><span id="odAddress"></span></div>
+                            <div class="od-row"><span>Phone</span><span id="odPhone"></span></div>
                             <div class="od-row"><span>Placed</span><span id="odDate"></span></div>
                         </div>
 
@@ -14897,6 +14905,8 @@ function selectOrder(orderId) {
     document.getElementById("odOrderId").textContent = order.orderId || "—";
     document.getElementById("odAmount").textContent  = money(order.amount || 0);
     document.getElementById("odDelivery").textContent = order.delivery || "—";
+    document.getElementById("odAddress").textContent = order.address || "—";
+    document.getElementById("odPhone").textContent = order.phone || "—";
     document.getElementById("odDate").textContent = order.date ? new Date(order.date).toLocaleString() : "—";
 
     // On mobile the detail panel sits below the list — bring it into view

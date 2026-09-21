@@ -316,14 +316,10 @@
       </div>
     </div>
     <div class="login-title">Admin sign in</div>
-    <div class="login-sub">Enter your deployment URL and admin credentials to access the control panel.</div>
+    <div class="login-sub">Enter your admin credentials to access the control panel.</div>
 
     <div class="login-error" id="loginError"></div>
 
-    <div class="field">
-      <label>Apps Script Web App URL</label>
-      <input type="text" id="apiUrl" placeholder="https://script.google.com/macros/s/XXXX/exec" autocomplete="off" />
-    </div>
     <div class="field">
       <label>Admin Email</label>
       <input type="email" id="adminEmail" placeholder="admin@teslatrading.test" autocomplete="off" />
@@ -834,10 +830,15 @@ const CLOUDINARY_CLOUD_NAME    = "hwabfjcu";
 const CLOUDINARY_UPLOAD_PRESET = "TESLA MEDIA";
 
 /* ============================================================
+   API DEPLOYMENT URL
+============================================================ */
+const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbzTsdYbGulFmFBKbbVoylUy4UW4_VqdOCWxVXAIVCh-W39lQUn5eHJgtAljJ9dKbmihIg/exec";
+
+/* ============================================================
    STATE
 ============================================================ */
 const state = {
-  apiUrl: localStorage.getItem('tt_api_url') || '',
+  apiUrl: DEFAULT_API_URL,
   token: localStorage.getItem('tt_admin_token') || '',
   email: localStorage.getItem('tt_admin_email') || '',
   role: localStorage.getItem('tt_admin_role') || 'admin',
@@ -907,7 +908,6 @@ function setConn(ok) {
    AUTH
 ============================================================ */
 async function handleLogin() {
-  const apiUrl = document.getElementById('apiUrl').value.trim();
   const email = document.getElementById('adminEmail').value.trim();
   const password = document.getElementById('adminPassword').value;
   const errorBox = document.getElementById('loginError');
@@ -915,18 +915,17 @@ async function handleLogin() {
 
   errorBox.style.display = 'none';
 
-  if (!apiUrl || !email || !password) {
-    errorBox.textContent = 'Fill in the deployment URL, email and password.';
+  if (!email || !password) {
+    errorBox.textContent = 'Fill in your email and password.';
     errorBox.style.display = 'block';
     return;
   }
 
-  state.apiUrl = apiUrl;
   btn.disabled = true;
   btn.innerHTML = '<span class="spin"></span>Signing in…';
 
   try {
-    const res = await fetch(apiUrl, {
+    const res = await fetch(state.apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ action: 'adminLogin', email, password })
@@ -938,7 +937,6 @@ async function handleLogin() {
       state.email = data.admin?.email || email;
       state.role = data.admin?.role || 'admin';
 
-      localStorage.setItem('tt_api_url', state.apiUrl);
       localStorage.setItem('tt_admin_token', state.token);
       localStorage.setItem('tt_admin_email', state.email);
       localStorage.setItem('tt_admin_role', state.role);
@@ -949,7 +947,7 @@ async function handleLogin() {
       errorBox.style.display = 'block';
     }
   } catch (err) {
-    errorBox.textContent = 'Could not reach the API. Check the deployment URL.';
+    errorBox.textContent = 'Could not reach the API. Please try again.';
     errorBox.style.display = 'block';
   } finally {
     btn.disabled = false;
@@ -1692,6 +1690,7 @@ async function handleDeleteTrader(traderId, name) {
 ============================================================ */
 let carImagesState = [];
 let carImagesUploadingCount = 0;
+let CARS_CACHE = [];
 
 function renderCarImagesGallery() {
   const gallery = document.getElementById('carImagesGallery');
@@ -1787,6 +1786,8 @@ async function loadCars() {
     const badge = document.getElementById('badge-cars');
     if (badge) badge.textContent = res.cars.length;
 
+    CARS_CACHE = res.cars;
+
     if (!res.cars.length) {
       tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="ic">∅</div><div class="title">No cars yet</div><div class="sub">Click "+ Add Car" to create the first listing.</div></div></td></tr>`;
       return;
@@ -1814,8 +1815,8 @@ async function loadCars() {
         <td>${c.active ? '<span class="pill pill-ok">Active</span>' : '<span class="pill pill-neutral">Inactive</span>'}</td>
         <td>
           <div class="row-actions">
-            <button class="btn btn-ghost btn-sm" onclick='openEditCarModal(${JSON.stringify(c)})'>Edit</button>
-            <button class="btn btn-danger btn-sm" onclick="handleDeleteCar('${escapeHtml(c.id)}','${escapeHtml(c.model)}')">Delete</button>
+            <button class="btn btn-ghost btn-sm" onclick="openEditCarModal('${escapeHtml(c.id)}')">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="handleDeleteCar('${escapeHtml(c.id)}')">Delete</button>
           </div>
         </td>
       </tr>
@@ -1848,7 +1849,13 @@ function openAddCarModal() {
   document.getElementById('carModal').classList.add('show');
 }
 
-function openEditCarModal(c) {
+function openEditCarModal(carId) {
+  const c = CARS_CACHE.find(x => String(x.id) === String(carId));
+  if (!c) {
+    showToast('Could not find that car — try refreshing the list', 'err');
+    return;
+  }
+
   document.getElementById('carModalTitle').textContent = 'Edit Car';
   document.getElementById('carModalId').value       = c.id;
   document.getElementById('carModel').value         = c.model;
@@ -1917,7 +1924,10 @@ async function saveCar() {
   }
 }
 
-async function handleDeleteCar(carId, model) {
+async function handleDeleteCar(carId) {
+  const c = CARS_CACHE.find(x => String(x.id) === String(carId));
+  const model = c ? c.model : carId;
+
   const ok = await showConfirm({ title: 'Delete car', message: `Remove "${model}" from the car inventory? This cannot be undone.`, detail: carId, danger: true });
   if (!ok) return;
   try {
@@ -1940,10 +1950,9 @@ document.addEventListener('click', e => {
    INIT — auto sign-in if a session is stored
 ============================================================ */
 (function init() {
-  document.getElementById('apiUrl').value = state.apiUrl;
   document.getElementById('adminEmail').value = state.email;
 
-  if (state.apiUrl && state.token) {
+  if (state.token) {
     enterApp();
   }
 })();
