@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="scroll-behavior:smooth">
 
 <head>
+    <script>document.documentElement.classList.add('js');</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tesla Stocks Brokerage</title>
@@ -141,19 +142,38 @@
             justify-content: space-between;
         }
         
-        .animate-card {
+        .js .animate-card {
             opacity: 0;
-            transform: translateY(60px) scale(0.95);
-            transition: 0.8s cubic-bezier(.2, .8, .2, 1);
+            transform: translate3d(0, 40px, 0);
+            /* only animate what changes, never "all" */
+            transition: opacity 0.7s cubic-bezier(.22, .61, .36, 1), transform 0.7s cubic-bezier(.22, .61, .36, 1);
+            transition-delay: var(--delay, 0ms);
+            will-change: opacity, transform;
+            backface-visibility: hidden;
         }
         
-        .animate-card.show {
+        .js .animate-card.show {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translate3d(0, 0, 0);
+        }
+        /* after the reveal finishes: no delay, quick hover, free the GPU layer */
+        
+        .animate-card.done {
+            will-change: auto;
+            transition: transform 0.3s ease;
+            transition-delay: 0ms;
         }
         
-        .card:hover {
-            transform: translateY(-10px);
+        .card.done:hover {
+            transform: translate3d(0, -10px, 0);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .js .animate-card {
+                transition: none;
+                opacity: 1;
+                transform: none;
+            }
         }
         /* IMAGE HOLDER */
         
@@ -858,21 +878,394 @@
 
 
 
+
+    <style>
+        /* ===== DEPTH & SECTION HEADINGS (sitewide polish) ===== */
+        
+        section:not([class]) {
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232, 33, 39, 0.10), transparent 70%);
+        }
+        
+        section:not([class])>h2,
+        .sec-head h2 {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+        
+        section:not([class])>h2::after,
+        .sec-head h2::after {
+            content: "";
+            display: block;
+            width: 64px;
+            height: 4px;
+            margin: 18px auto 0;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #e82127, #ff6a6f);
+        }
+        
+        .sec-head {
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+        
+        .eyebrow {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #e82127;
+            margin-bottom: 14px;
+        }
+        
+        .sec-head p {
+            opacity: 0.7;
+            line-height: 1.7;
+            margin-top: 18px;
+        }
+        
+        .card {
+            background: linear-gradient(180deg, #181818, #0e0e0e);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+        }
+        
+        .card.done,
+        .car-card.done,
+        .benefit.done,
+        .step.done {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .card.done:hover,
+        .car-card.done:hover {
+            border-color: rgba(232, 33, 39, 0.55);
+            box-shadow: 0 25px 55px rgba(232, 33, 39, 0.18), 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        /* ===== SHOWROOM ===== */
+        
+        .showroom {
+            background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(232, 33, 39, 0.14), transparent 70%), #0a0a0a;
+        }
+        
+        .showroom {
+            scroll-margin-top: 60px;
+        }
+        
+        .car-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 36px;
+            margin-top: 60px;
+        }
+        
+        .car-card {
+            background: linear-gradient(180deg, #181818, #0e0e0e);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .car-card.done:hover {
+            transform: translate3d(0, -10px, 0);
+        }
+        
+        .car-img {
+            position: relative;
+            height: 240px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .car-img::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 45%, #121212);
+        }
+        
+        .car-tag {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            z-index: 2;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 30px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .car-body {
+            padding: 8px 26px 28px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        .car-body h3 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .car-body p {
+            opacity: 0.7;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+        
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .chips span {
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .car-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+        
+        .car-actions a {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            padding: 13px 10px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        
+        .btn-buy {
+            background: #e82127;
+            color: white;
+        }
+        
+        .btn-buy:hover {
+            background: white;
+            color: black;
+        }
+        
+        .btn-ghost {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        
+        .btn-ghost:hover {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        /* ===== BENEFITS ===== */
+        
+        .benefits {
+            padding-top: 40px;
+        }
+        
+        .benefit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 24px;
+        }
+        
+        .benefit {
+            padding: 30px 26px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        
+        .benefit svg {
+            width: 34px;
+            height: 34px;
+            stroke: #e82127;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            margin-bottom: 18px;
+        }
+        
+        .benefit h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        
+        .benefit p {
+            font-size: 14px;
+            opacity: 0.7;
+            line-height: 1.6;
+        }
+        /* ===== HOW IT WORKS ===== */
+        
+        .how {
+            background: linear-gradient(180deg, #0a0a0a, #130808 50%, #0a0a0a);
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+            counter-reset: step;
+        }
+        
+        .step {
+            position: relative;
+            padding: 40px 30px 30px;
+            border-radius: 20px;
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            counter-increment: step;
+        }
+        
+        .step::before {
+            content: "0" counter(step);
+            position: absolute;
+            top: -22px;
+            left: 28px;
+            font-size: 22px;
+            font-weight: 700;
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #e82127;
+            box-shadow: 0 10px 25px rgba(232, 33, 39, 0.4);
+        }
+        
+        .step h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .step p {
+            font-size: 14px;
+            opacity: 0.7;
+            line-height: 1.7;
+        }
+        /* ===== CTA BANNER ===== */
+        
+        .cta-banner {
+            position: relative;
+            text-align: center;
+            padding: 140px 30px;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+        
+        .cta-banner::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, #0a0a0a, rgba(0, 0, 0, 0.55) 40%, rgba(0, 0, 0, 0.55) 60%, #0a0a0a);
+        }
+        
+        .cta-inner {
+            position: relative;
+            z-index: 2;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        
+        .cta-inner h2 {
+            font-size: clamp(30px, 5vw, 50px);
+            margin-bottom: 18px;
+        }
+        
+        .cta-inner p {
+            opacity: 0.8;
+            line-height: 1.7;
+            margin-bottom: 36px;
+        }
+        
+        .cta-inner .car-actions {
+            justify-content: center;
+            max-width: 460px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 600px) {
+            .car-actions {
+                flex-direction: column;
+            }
+            .cta-banner {
+                padding: 100px 20px;
+            }
+        }
+    </style>
+
+    <style>
+        nav a.active {
+            color: #e82127;
+        }
+        
+        nav a.nav-cta {
+            background: #e82127;
+            color: #fff;
+            padding: 9px 22px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+        
+        nav a.nav-cta:hover {
+            background: #fff;
+            color: #000;
+        }
+        
+        .mobile-drawer a.active {
+            color: #e82127;
+        }
+        
+        .mobile-drawer a.nav-cta {
+            background: #e82127;
+            text-align: center;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        header .logo {
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
 
     <header>
 
-        <div class="logo"> <img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="" style="height: 40px;"></div>
+        <a class="logo" href="index.html"> <img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="Tesla Invest" style="height: 40px;"></a>
 
         <nav>
-            <a href="#">Home</a>
-            <a href="#">Our Company</a>
-            <a href="#">Plans</a>
+            <a href="index.html" class="active">Home</a>
+            <a href="cars.html">Cars</a>
+            <a href="company.html">Our Company</a>
+            <a href="plans.html">Plans</a>
             <a href="support.html">Contact</a>
-            <a href="login.html">Login</a>
-            <a href="register.html">Register</a>
+            <a href="register.html" class="nav-cta">Get Started</a>
         </nav>
 
         <div class="menu-btn" onclick="toggleDrawer()">
@@ -886,25 +1279,29 @@
     <div class="drawer-overlay" onclick="toggleDrawer()"></div>
 
     <div class="mobile-drawer" id="drawer">
-        <a href="#" onclick="toggleDrawer()">Home</a>
-        <a href="#" onclick="toggleDrawer()">Our Company</a>
-        <a href="#" onclick="toggleDrawer()">Plans</a>
-        <a href="#" onclick="toggleDrawer()">contact</a>
-        <a href="login.html" onclick="toggleDrawer()">Login</a>
-        <a href="register.html" onclick="toggleDrawer()">Register</a>
+        <a href="index.html" class="active" onclick="toggleDrawer()">Home</a>
+        <a href="cars.html" onclick="toggleDrawer()">Cars</a>
+        <a href="company.html" onclick="toggleDrawer()">Our Company</a>
+        <a href="plans.html" onclick="toggleDrawer()">Plans</a>
+        <a href="support.html" onclick="toggleDrawer()">Contact</a>
+        <a href="register.html" class="nav-cta" onclick="toggleDrawer()">Get Started</a>
     </div>
 
     <section class="hero">
 
-        <div class="slide active" style="background-image:url('https://images.unsplash.com/photo-1549921296-3ecf9a4c2a95')"></div>
-        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3')"></div>
-        <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1639322537228-f710d846310a')"></div>
-        <div class="slide" style="background-image:url('https://i.pinimg.com/736x/7a/01/56/7a01565573d66e87ef5f7be8b111f944.jpg')"></div>
-        <div class="slide" style="background-image:url('https://i.pinimg.com/1200x/ca/d9/29/cad92920257faaba7c0b31e4eaa8472e.jpg')"></div>
-        <div class="slide" style="background-image:url('https://i.pinimg.com/736x/66/93/b3/6693b3c90990a231b66591d26d33d39a.jpg')"></div>
-        <div class="slide" style="background-image:url('https://i.pinimg.com/736x/8e/9e/ba/8e9ebaca1e610a64e55db3f6d81d8cd0.jpg')"></div>
-        <div class="slide" style="background-image:url('https://i.pinimg.com/736x/69/1f/9d/691f9df43977c520d68cf4e5850f8139.jpg')"></div>
-        <div class="slide" style="background-image:url('https://i.pinimg.com/1200x/4c/0e/60/4c0e605143e6dcf0befb74bcc02ff6c8.jpg')"></div>
+        <div class="slide active" data-title="AI Powered Investment Platform" data-text="Trade Stocks, Crypto &amp; Forex with Tesla-grade Intelligence" data-cta="Get Started" style="background-image:url('https://images.unsplash.com/photo-1549921296-3ecf9a4c2a95')"></div>
+        <div class="slide" data-title="Model 3: The Sedan Leading The Shift" data-text="Buy the world's most adopted electric sedan and drive the future today" data-cta="Buy Model 3" style="background-image:url('https://images.unsplash.com/photo-1617788138017-80ad40651399')"></div>
+        <div class="slide" data-title="Invest Like The Future" data-text="Experience Tesla-grade intelligence across Stocks, Crypto &amp; Forex" data-cta="Get Started" style="background-image:url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3')"></div>
+        <div class="slide" data-title="Model Y: Built For Global Demand" data-text="Buy the electric SUV with space, range and performance for every journey" data-cta="Buy Model Y" style="background-image:url('https://i.pinimg.com/736x/34/66/3f/34663f039350b56847ecaa2a833b04f7.jpg')"></div>
+        <div class="slide" data-title="AI That Trades Faster" data-text="Machine learning executes precision trades in real time" data-cta="Start Trading" style="background-image:url('https://images.unsplash.com/photo-1639322537228-f710d846310a')"></div>
+        <div class="slide" data-title="Dominate Global Markets" data-text="From Wall Street to Web3 — all markets unified" data-cta="Get Started" style="background-image:url('https://i.pinimg.com/736x/7a/01/56/7a01565573d66e87ef5f7be8b111f944.jpg')"></div>
+        <div class="slide" data-title="Cybertruck: Utility Reinvented" data-text="Buy the stainless-steel electric truck built for work, adventure and everything between" data-cta="Buy Cybertruck" style="background-image:url('https://i.pinimg.com/736x/68/44/cf/6844cf1840f435eff37652cd385a668f.jpg')"></div>
+        <div class="slide" data-title="Own The EV Economy" data-text="Tap into the electric mobility revolution" data-cta="Buy a Tesla" style="background-image:url('https://i.pinimg.com/1200x/ca/d9/29/cad92920257faaba7c0b31e4eaa8472e.jpg')"></div>
+        <div class="slide" data-title="Predict. Execute. Win." data-text="AI reads sentiment before the market reacts" data-cta="Get Started" style="background-image:url('https://i.pinimg.com/736x/66/93/b3/6693b3c90990a231b66591d26d33d39a.jpg')"></div>
+        <div class="slide" data-title="Autonomy: The Road Ahead" data-text="Buy a Tesla and experience the self-driving technology shaping the future of mobility" data-cta="Buy a Tesla" style="background-image:url('https://i.pinimg.com/736x/3e/eb/92/3eeb921534e29b70178359fd3496d5d2.jpg')"></div>
+        <div class="slide" data-title="Autonomous Wealth Engine" data-text="Automation designed for exponential growth" data-cta="Get Started" style="background-image:url('https://i.pinimg.com/736x/8e/9e/ba/8e9ebaca1e610a64e55db3f6d81d8cd0.jpg')"></div>
+        <div class="slide" data-title="Trade Without Emotion" data-text="No fear. No bias. Just data-driven execution" data-cta="Start Trading" style="background-image:url('https://i.pinimg.com/736x/69/1f/9d/691f9df43977c520d68cf4e5850f8139.jpg')"></div>
+        <div class="slide" data-title="Build Smart Portfolios" data-text="Balance growth with adaptive intelligence" data-cta="Get Started" style="background-image:url('https://i.pinimg.com/1200x/4c/0e/60/4c0e605143e6dcf0befb74bcc02ff6c8.jpg')"></div>
 
 
         <div class="overlay"></div>
@@ -917,10 +1314,91 @@
                 Trade Stocks, Crypto & Forex with Tesla-grade Intelligence
             </p>
 
-            <button class="btn" onclick="window.location.href='register.html'">Start Investing</button>
+            <button class="btn" onclick="window.location.href='register.html'">Get Started</button>
 
         </div>
 
+    </section>
+
+    <section class="showroom" id="showroom">
+        <div class="sec-head">
+            <span class="eyebrow">Tesla Showroom</span>
+            <h2>Buy Your Tesla Today</h2>
+            <p>Choose from the most advanced electric vehicles on the road. Order online, finance it your way and have it delivered.</p>
+        </div>
+
+        <div class="car-grid">
+
+            <div class="car-card animate-card">
+                <div class="car-img" style="background-image:url('https://images.unsplash.com/photo-1617788138017-80ad40651399')"><span class="car-tag">SEDAN</span></div>
+                <div class="car-body">
+                    <h3>Tesla Model 3</h3>
+                    <p>The electric sedan that made EVs mainstream. Quick, efficient and made for everyday driving.</p>
+                    <div class="chips"><span>Autopilot</span><span>Supercharging</span><span>Over-the-air updates</span></div>
+                    <div class="car-actions">
+                        <a class="btn-buy" href="register.html">Buy Model 3</a>
+                        <a class="btn-ghost" href="support.html?topic=test-drive">Test Drive</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="car-card animate-card">
+                <div class="car-img" style="background-image:url('https://i.pinimg.com/736x/34/66/3f/34663f039350b56847ecaa2a833b04f7.jpg')"><span class="car-tag">SUV</span></div>
+                <div class="car-body">
+                    <h3>Tesla Model Y</h3>
+                    <p>An electric SUV with room for the whole family, generous cargo space and everyday practicality.</p>
+                    <div class="chips"><span>Family ready</span><span>Supercharging</span><span>Over-the-air updates</span></div>
+                    <div class="car-actions">
+                        <a class="btn-buy" href="register.html">Buy Model Y</a>
+                        <a class="btn-ghost" href="support.html?topic=test-drive">Test Drive</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="car-card animate-card">
+                <div class="car-img" style="background-image:url('https://i.pinimg.com/736x/68/44/cf/6844cf1840f435eff37652cd385a668f.jpg')"><span class="car-tag">TRUCK</span></div>
+                <div class="car-body">
+                    <h3>Tesla Cybertruck</h3>
+                    <p>A stainless-steel electric truck built for work and play, ready to tow, haul and turn heads.</p>
+                    <div class="chips"><span>Stainless steel</span><span>Towing capable</span><span>Supercharging</span></div>
+                    <div class="car-actions">
+                        <a class="btn-buy" href="register.html">Buy Cybertruck</a>
+                        <a class="btn-ghost" href="support.html?topic=test-drive">Test Drive</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="benefits">
+        <div class="benefit-grid">
+
+            <div class="benefit animate-card">
+                <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+                <h3>Home Delivery</h3>
+                <p>Your new Tesla delivered straight to your door, ready to drive.</p>
+            </div>
+
+            <div class="benefit animate-card">
+                <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+                <h3>Flexible Financing</h3>
+                <p>Pay outright or spread the cost with payment plans that suit your budget.</p>
+            </div>
+
+            <div class="benefit animate-card">
+                <svg viewBox="0 0 24 24"><path d="M7 7h12l-3-3M17 17H5l3 3"/></svg>
+                <h3>Easy Trade-In</h3>
+                <p>Get a fair offer on your current car and put it toward your Tesla.</p>
+            </div>
+
+            <div class="benefit animate-card">
+                <svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>
+                <h3>Charging Support</h3>
+                <p>Access to the Supercharger network plus help setting up home charging.</p>
+            </div>
+
+        </div>
     </section>
 
     <section>
@@ -1025,6 +1503,29 @@
                 <button class="card-btn" onclick="window.location.href='register.html'">Invest in Cybertruck</button>
             </div>
 
+        </div>
+    </section>
+
+    <section class="how">
+        <div class="sec-head">
+            <span class="eyebrow">How It Works</span>
+            <h2>From Click To Keys In 3 Steps</h2>
+            <p>Buying a Tesla is simple, transparent and fully online.</p>
+        </div>
+
+        <div class="steps">
+            <div class="step animate-card">
+                <h3>Choose Your Model</h3>
+                <p>Pick the Model 3, Model Y or Cybertruck that fits your lifestyle, then select your colour and wheels.</p>
+            </div>
+            <div class="step animate-card">
+                <h3>Pay Or Finance</h3>
+                <p>Complete your order online, with your trade-in and financing options handled in one place.</p>
+            </div>
+            <div class="step animate-card">
+                <h3>Take Delivery</h3>
+                <p>We deliver your Tesla and walk you through every feature, so you can drive away with confidence.</p>
+            </div>
         </div>
     </section>
 
@@ -1392,6 +1893,18 @@
     </section>
 
 
+    <section class="cta-banner" style="background-image:url('https://i.pinimg.com/736x/68/44/cf/6844cf1840f435eff37652cd385a668f.jpg')">
+        <div class="cta-inner">
+            <span class="eyebrow">Ready When You Are</span>
+            <h2>Ready To Drive Electric?</h2>
+            <p>Order your Tesla online in minutes, or book a test drive and feel the difference first.</p>
+            <div class="car-actions">
+                <a class="btn-buy" href="register.html">Buy Now</a>
+                <a class="btn-ghost" href="support.html?topic=test-drive">Book a Test Drive</a>
+            </div>
+        </div>
+    </section>
+
     <footer class="footer">
 
         <img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="" style="height: 50px; margin-bottom: 50px;">
@@ -1409,11 +1922,11 @@
             <!-- NAV -->
             <div class="footer-col">
                 <h3>Platform</h3>
-                <a href="#">Home</a>
+                <a href="index.html">Home</a>
                 <a href="#">Markets</a>
                 <a href="#">AI Trading</a>
-                <a href="#">Plans</a>
-                <a href="#">Tesla Vehicles</a>
+                <a href="plans.html">Plans</a>
+                <a href="cars.html">Tesla Vehicles</a>
             </div>
 
             <!-- INVEST -->
@@ -1429,7 +1942,7 @@
             <!-- SUPPORT -->
             <div class="footer-col">
                 <h3>Support</h3>
-                <a href="#">Contact</a>
+                <a href="support.html">Contact</a>
                 <a href="#">Help Center</a>
                 <a href="#">Privacy Policy</a>
                 <a href="#">Terms</a>
@@ -1455,40 +1968,62 @@
     <script>
         let slides = document.querySelectorAll(".slide");
         let index = 0;
-
-        setInterval(() => {
-            slides[index].classList.remove("active");
-            index = (index + 1) % slides.length;
-            slides[index].classList.add("active");
-        }, 4000);
     </script>
 
     <script>
-        const observer = new IntersectionObserver((entries) => {
+        const cards = document.querySelectorAll(".animate-card");
 
-            entries.forEach(entry => {
+        const revealObserver = new IntersectionObserver((entries) => {
+            // only the cards that just entered, staggered within this batch
+            const visible = entries
+                .filter(e => e.isIntersecting)
+                .sort((x, y) => {
+                    const a = x.boundingClientRect,
+                        b = y.boundingClientRect;
+                    return a.top - b.top || a.left - b.left;
+                });
 
-                if (entry.isIntersecting) {
+            visible.forEach((entry, i) => {
+                const card = entry.target;
+                card.style.setProperty("--delay", (i * 100) + "ms");
+                requestAnimationFrame(() => card.classList.add("show"));
+                revealObserver.unobserve(card); // animate once, never re-fire
 
-                    const animatedItems = entry.target.querySelectorAll(".animate-card");
+                card.addEventListener("transitionend", function end(e) {
+                    if (e.propertyName !== "transform") return;
+                    card.classList.add("done");
+                    card.removeEventListener("transitionend", end);
+                });
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -60px 0px"
+        });
 
-                    animatedItems.forEach((item, i) => {
-                        setTimeout(() => {
-                            item.classList.add("show");
-                        }, i * 120);
-                    });
+        function revealNow(card) {
+            if (card.classList.contains("show")) return;
+            requestAnimationFrame(() => card.classList.add("show"));
+            revealObserver.unobserve(card);
+        }
 
-                }
-
+        if (!("IntersectionObserver" in window)) {
+            // very old browsers: just show everything
+            cards.forEach(card => card.classList.add("show", "done"));
+        } else {
+            // start right away (do not wait for the page "load" event, which
+            // can be delayed by slow external scripts, fonts and images)
+            requestAnimationFrame(() => {
+                cards.forEach(card => revealObserver.observe(card));
             });
 
-        }, {
-            threshold: 0.2
-        });
-
-        document.querySelectorAll("div").forEach(div => {
-            observer.observe(div);
-        });
+            // safety net: anything already on screen after 2.5s gets revealed
+            setTimeout(() => {
+                cards.forEach(card => {
+                    const r = card.getBoundingClientRect();
+                    if (r.top < window.innerHeight && r.bottom > 0) revealNow(card);
+                });
+            }, 2500);
+        }
     </script>
 
     <script>
@@ -1500,33 +2035,15 @@
 
 
     <script>
-        const titles = [
-            "Invest Like The Future",
-            "AI That Trades Faster",
-            "Dominate Global Markets",
-            "Own The EV Economy",
-            "Predict. Execute. Win.",
-            "Autonomous Wealth Engine",
-            "Trade Without Emotion",
-            "Build Smart Portfolios",
-            "Welcome To Intelligent Finance"
-        ];
-
-        const texts = [
-            "Experience Tesla-grade intelligence across Stocks, Crypto & Forex",
-            "Machine learning executes precision trades in real time",
-            "From Wall Street to Web3 — all markets unified",
-            "Tap into the electric mobility revolution",
-            "AI reads sentiment before the market reacts",
-            "Automation designed for exponential growth",
-            "No fear. No bias. Just data-driven execution",
-            "Balance growth with adaptive intelligence",
-            "The next evolution of investing starts here"
-        ];
-
         const title = document.getElementById("hero-title");
         const text = document.getElementById("hero-text");
         const btn = document.querySelector(".btn");
+
+        // preload every slide image so cross-fades never wait on the network
+        slides.forEach(sl => {
+            const m = sl.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/);
+            if (m) new Image().src = m[1];
+        });
 
         function animateTextOut() {
             title.style.transform = "translateY(-60px) scale(0.9)";
@@ -1560,8 +2077,9 @@
 
                 slides[index].classList.add("active");
 
-                title.innerText = titles[index];
-                text.innerText = texts[index];
+                title.innerText = slides[index].dataset.title;
+                text.innerText = slides[index].dataset.text;
+                btn.innerText = slides[index].dataset.cta || "Get Started";
 
                 animateTextIn();
 

@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla Showroom | Tesla Stocks Brokerage</title>
+    <meta name="description" content="Buy a Tesla Model 3, Model Y or Cybertruck online.">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* ---------- HEADER / NAV ---------- */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav a {
+            color: #fff;
+            margin-left: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #e82127;
+        }
+
+        nav a.nav-cta {
+            background: #e82127;
+            color: #fff;
+            padding: 9px 22px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        nav a.nav-cta:hover,
+        nav a.nav-cta.active {
+            background: #fff;
+            color: #000;
+        }
+
+        .menu-btn {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .menu-btn span {
+            width: 25px;
+            height: 2px;
+            background: #fff;
+            margin: 5px 0;
+            transition: 0.4s;
+        }
+
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 80px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            transition: 0.5s;
+            z-index: 1000;
+        }
+
+        .mobile-drawer a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: 0.4s;
+        }
+
+        .mobile-drawer a.active {
+            color: #e82127;
+        }
+
+        .mobile-drawer a.nav-cta {
+            background: #e82127;
+            color: #fff;
+            text-align: center;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .mobile-drawer.open {
+            right: 0;
+        }
+
+        .mobile-drawer.open a {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.4s;
+            z-index: 999;
+        }
+
+        .drawer-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ---------- PAGE HERO ---------- */
+        .page-hero {
+            position: relative;
+            padding: 170px 60px 90px;
+            text-align: center;
+            background: radial-gradient(ellipse 70% 80% at 50% 0%, rgba(232, 33, 39, 0.22), transparent 70%), #0a0a0a;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .page-hero.img::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), #0a0a0a);
+        }
+
+        .page-hero>* {
+            position: relative;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #e82127;
+            margin-bottom: 14px;
+        }
+
+        .page-hero h1 {
+            font-size: clamp(34px, 6vw, 60px);
+            letter-spacing: -1px;
+            margin-bottom: 18px;
+        }
+
+        .page-hero p {
+            max-width: 640px;
+            margin: 0 auto;
+            opacity: 0.75;
+            line-height: 1.7;
+        }
+
+        /* ---------- LAYOUT ---------- */
+        .block {
+            padding: 90px 60px;
+        }
+
+        .block.alt {
+            background: linear-gradient(180deg, #0a0a0a, #130808 50%, #0a0a0a);
+        }
+
+        .wrap {
+            max-width: 1150px;
+            margin: 0 auto;
+        }
+
+        .sec-head {
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto 60px;
+        }
+
+        .sec-head h2 {
+            font-size: clamp(26px, 4vw, 40px);
+            letter-spacing: -0.5px;
+        }
+
+        .sec-head h2::after {
+            content: "";
+            display: block;
+            width: 64px;
+            height: 4px;
+            margin: 18px auto 0;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #e82127, #ff6a6f);
+        }
+
+        .sec-head p {
+            opacity: 0.7;
+            line-height: 1.7;
+            margin-top: 18px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 28px;
+        }
+
+        .panel {
+            background: linear-gradient(180deg, #181818, #0e0e0e);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            padding: 32px 28px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .panel:hover {
+            transform: translateY(-8px);
+            border-color: rgba(232, 33, 39, 0.55);
+            box-shadow: 0 25px 55px rgba(232, 33, 39, 0.18), 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .panel h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .panel p {
+            font-size: 14px;
+            line-height: 1.7;
+            opacity: 0.7;
+        }
+
+        .prose p {
+            line-height: 1.9;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* ---------- BUTTONS ---------- */
+        .car-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .car-actions.center {
+            justify-content: center;
+        }
+
+        .btn-buy,
+        .btn-ghost {
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            padding: 13px 26px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-buy {
+            background: #e82127;
+            color: #fff;
+        }
+
+        .btn-buy:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .btn-ghost {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            background: transparent;
+        }
+
+        .btn-ghost:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 18px 0 26px;
+        }
+
+        .chips span {
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* ---------- CARS PAGE ---------- */
+        .model {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 100px;
+        }
+
+        .model:last-child {
+            margin-bottom: 0;
+        }
+
+        .model.flip .model-img {
+            order: 2;
+        }
+
+        .model-img {
+            height: 420px;
+            border-radius: 24px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .model h2 {
+            font-size: clamp(28px, 4vw, 40px);
+            margin-bottom: 14px;
+        }
+
+        .model>div>p {
+            line-height: 1.8;
+            opacity: 0.75;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 30px;
+            border: 1px solid rgba(232, 33, 39, 0.6);
+            color: #ff6a6f;
+            margin-bottom: 16px;
+        }
+
+        .specs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        .specs div {
+            padding: 14px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .specs dt {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.55;
+            margin-bottom: 4px;
+        }
+
+        .specs dd {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 640px;
+            background: #111;
+        }
+
+        th,
+        td {
+            padding: 18px 22px;
+            text-align: left;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        th {
+            background: #181818;
+            font-size: 15px;
+        }
+
+        td:first-child {
+            opacity: 0.6;
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 34px;
+            counter-reset: step;
+        }
+
+        .step {
+            position: relative;
+            padding: 42px 30px 30px;
+            border-radius: 20px;
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            counter-increment: step;
+        }
+
+        .step::before {
+            content: "0" counter(step);
+            position: absolute;
+            top: -22px;
+            left: 28px;
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            border-radius: 50%;
+            background: #e82127;
+            box-shadow: 0 10px 25px rgba(232, 33, 39, 0.4);
+        }
+
+        .step h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            font-size: 14px;
+            line-height: 1.7;
+            opacity: 0.7;
+        }
+
+        /* ---------- COMPANY ---------- */
+        .team {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 28px;
+        }
+
+        .team-card {
+            border-radius: 20px;
+            overflow: hidden;
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(232, 33, 39, 0.55);
+        }
+
+        .team-img {
+            height: 320px;
+            background-size: cover;
+            background-position: center top;
+            background-color: #1a1a1a;
+        }
+
+        .team-info {
+            padding: 20px 24px 24px;
+        }
+
+        .team-info h3 {
+            font-size: 18px;
+        }
+
+        .team-info span {
+            font-size: 13px;
+            color: #ff6a6f;
+        }
+
+        /* ---------- PLANS ---------- */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 28px;
+            align-items: stretch;
+        }
+
+        .plan {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 36px 28px;
+            border-radius: 22px;
+            background: linear-gradient(180deg, #181818, #0e0e0e);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .plan:hover {
+            transform: translateY(-8px);
+            border-color: rgba(232, 33, 39, 0.55);
+        }
+
+        .plan.featured {
+            border-color: #e82127;
+            box-shadow: 0 25px 60px rgba(232, 33, 39, 0.2);
+        }
+
+        .plan .badge {
+            position: absolute;
+            top: -13px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #e82127;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 5px 14px;
+            border-radius: 30px;
+            white-space: nowrap;
+        }
+
+        .plan h3 {
+            font-size: 22px;
+        }
+
+        .plan .min {
+            color: #ff6a6f;
+            font-size: 15px;
+            font-weight: 600;
+            margin: 8px 0 22px;
+        }
+
+        .plan ul {
+            list-style: none;
+            margin-bottom: 28px;
+            flex: 1;
+        }
+
+        .plan li {
+            font-size: 14px;
+            opacity: 0.8;
+            padding: 9px 0 9px 26px;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .plan li::before {
+            content: "";
+            position: absolute;
+            left: 2px;
+            top: 14px;
+            width: 10px;
+            height: 6px;
+            border-left: 2px solid #e82127;
+            border-bottom: 2px solid #e82127;
+            transform: rotate(-45deg);
+        }
+
+        .plan .btn-buy {
+            width: 100%;
+        }
+
+        .note {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 13px;
+            opacity: 0.5;
+            line-height: 1.7;
+        }
+
+        /* ---------- FAQ ---------- */
+        .faq {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq details {
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            margin-bottom: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .faq details[open] {
+            border-color: rgba(232, 33, 39, 0.5);
+        }
+
+        .faq summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 20px 24px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .faq summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq summary::after {
+            content: "+";
+            color: #e82127;
+            font-size: 22px;
+            line-height: 1;
+        }
+
+        .faq details[open] summary::after {
+            content: "\2212";
+        }
+
+        .faq details p {
+            padding: 0 24px 22px;
+            font-size: 14px;
+            line-height: 1.8;
+            opacity: 0.7;
+        }
+
+        /* ---------- FORMS ---------- */
+        .form-card {
+            background: linear-gradient(180deg, #181818, #0e0e0e);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 44px 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-card h2 {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .form-card>p,
+        .form-sub {
+            font-size: 14px;
+            opacity: 0.65;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            opacity: 0.85;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #0a0a0a;
+            color: #fff;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #e82127;
+            box-shadow: 0 0 0 3px rgba(232, 33, 39, 0.2);
+        }
+
+        textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .check {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            font-size: 13px;
+            opacity: 0.75;
+            font-weight: 400;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .check input {
+            width: auto;
+            margin-top: 3px;
+        }
+
+        .form-card .btn-buy {
+            width: 100%;
+            padding: 15px;
+            font-size: 15px;
+        }
+
+        .form-msg {
+            display: none;
+            margin-top: 18px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-msg.ok {
+            display: block;
+            background: rgba(40, 180, 100, 0.12);
+            border: 1px solid rgba(40, 180, 100, 0.5);
+        }
+
+        .form-msg.err {
+            display: block;
+            background: rgba(232, 33, 39, 0.12);
+            border: 1px solid rgba(232, 33, 39, 0.55);
+        }
+
+
+
+
+
+
+
+
+
+
+        .perks {
+            list-style: none;
+            margin-top: 28px;
+        }
+
+        .perks li {
+            padding: 10px 0 10px 28px;
+            position: relative;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        .perks li::before {
+            content: "";
+            position: absolute;
+            left: 2px;
+            top: 15px;
+            width: 11px;
+            height: 6px;
+            border-left: 2px solid #e82127;
+            border-bottom: 2px solid #e82127;
+            transform: rotate(-45deg);
+        }
+
+        /* ---------- CTA BAND ---------- */
+        .cta-band {
+            text-align: center;
+            padding: 110px 30px;
+            background: radial-gradient(ellipse 60% 100% at 50% 100%, rgba(232, 33, 39, 0.25), transparent 70%), #0a0a0a;
+        }
+
+        .cta-band h2 {
+            font-size: clamp(28px, 5vw, 44px);
+            margin-bottom: 16px;
+        }
+
+        .cta-band p {
+            opacity: 0.75;
+            max-width: 560px;
+            margin: 0 auto 34px;
+            line-height: 1.7;
+        }
+
+        /* ---------- FOOTER ---------- */
+        .footer {
+            background: #050505;
+            padding: 80px 60px 40px;
+        }
+
+        .footer-logo-img {
+            height: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h2 {
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .footer-col h3 {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .footer-col p {
+            opacity: 0.6;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .footer-col a {
+            display: block;
+            color: #fff;
+            opacity: 0.6;
+            text-decoration: none;
+            margin-bottom: 8px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .footer-col a:hover {
+            opacity: 1;
+            color: #e82127;
+        }
+
+        .footer-col input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 0;
+            background: #111;
+            color: #fff;
+        }
+
+        .footer-btn {
+            width: 100%;
+            padding: 10px;
+            background: #e82127;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .footer-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #222;
+            padding-top: 20px;
+            text-align: center;
+            opacity: 0.5;
+            font-size: 13px;
+        }
+
+        /* ---------- REVEAL ---------- */
+        .reveal {
+            opacity: 0;
+            transform: translate3d(0, 36px, 0);
+            transition: opacity 0.7s cubic-bezier(.22, .61, .36, 1), transform 0.7s cubic-bezier(.22, .61, .36, 1);
+            transition-delay: var(--delay, 0ms);
+        }
+
+        .reveal.show {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 900px) {
+            nav {
+                display: none;
+            }
+            .menu-btn {
+                display: flex;
+            }
+            header {
+                padding: 18px 25px;
+            }
+            .page-hero {
+                padding: 140px 25px 70px;
+            }
+            .block {
+                padding: 70px 25px;
+            }
+            .split,
+            .model {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .model {
+                margin-bottom: 70px;
+            }
+            .model.flip .model-img {
+                order: 0;
+            }
+            .model-img {
+                height: 280px;
+            }
+            .footer {
+                padding: 60px 25px 30px;
+            }
+            .form-card {
+                padding: 32px 22px;
+            }
+            .field-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .specs {
+                grid-template-columns: 1fr;
+            }
+            .car-actions .btn-buy,
+            .car-actions .btn-ghost {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+    <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+</head>
+
+<body>
+
+    <header>
+        <a class="logo" href="index.html"><img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="Tesla Invest" style="height: 40px;"></a>
+        <nav><a href="index.html">Home</a><a href="cars.html" class="active">Cars</a><a href="company.html">Our Company</a><a href="plans.html">Plans</a><a href="support.html">Contact</a><a href="register.html" class="nav-cta">Get Started</a></nav>
+        <div class="menu-btn" onclick="toggleDrawer()" aria-label="Open menu"><span></span><span></span><span></span></div>
+    </header>
+
+    <div class="drawer-overlay" onclick="toggleDrawer()"></div>
+    <div class="mobile-drawer" id="drawer"><a href="index.html" onclick="toggleDrawer()">Home</a><a href="cars.html" class="active" onclick="toggleDrawer()">Cars</a><a href="company.html" onclick="toggleDrawer()">Our Company</a><a href="plans.html" onclick="toggleDrawer()">Plans</a><a href="support.html" onclick="toggleDrawer()">Contact</a><a href="register.html" class="nav-cta" onclick="toggleDrawer()">Get Started</a></div>
+
+
+    <section class="page-hero img" style="background-image:url('https://images.unsplash.com/photo-1617788138017-80ad40651399')">
+        <span class="eyebrow">Tesla Showroom</span>
+        <h1>Buy Your Tesla Today</h1>
+        <p>Explore the Model 3, Model Y and Cybertruck. Order online, finance it your way and have it delivered to your door.</p>
+    </section>
+
+    <section class="block">
+        <div class="wrap">
+            <article class="model reveal">
+                <div class="model-img" style="background-image:url('https://images.unsplash.com/photo-1617788138017-80ad40651399')"></div>
+                <div>
+                    <span class="tag">SEDAN</span>
+                    <h2>Tesla Model 3</h2>
+                    <p>The electric sedan that made EVs mainstream. Quick, efficient and made for everyday driving, with Tesla's latest technology built in.</p>
+                    <dl class="specs">
+                        <div><dt>Body</dt><dd>Sedan</dd></div>
+                        <div><dt>Seats</dt><dd>5</dd></div>
+                        <div><dt>Best for</dt><dd>Daily driving</dd></div>
+                    </dl>
+                    <div class="chips"><span>Autopilot</span><span>Supercharging</span><span>Over-the-air updates</span></div>
+                    <div class="car-actions">
+                        <a class="btn-buy" href="register.html">Buy Model 3</a>
+                        <a class="btn-ghost" href="support.html?topic=test-drive">Test Drive</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="model reveal flip">
+                <div class="model-img" style="background-image:url('https://i.pinimg.com/736x/34/66/3f/34663f039350b56847ecaa2a833b04f7.jpg')"></div>
+                <div>
+                    <span class="tag">SUV</span>
+                    <h2>Tesla Model Y</h2>
+                    <p>An electric SUV with room for the whole family, generous cargo space and the everyday practicality of a crossover.</p>
+                    <dl class="specs">
+                        <div><dt>Body</dt><dd>SUV</dd></div>
+                        <div><dt>Seats</dt><dd>5</dd></div>
+                        <div><dt>Best for</dt><dd>Families</dd></div>
+                    </dl>
+                    <div class="chips"><span>Family ready</span><span>Supercharging</span><span>Over-the-air updates</span></div>
+                    <div class="car-actions">
+                        <a class="btn-buy" href="register.html">Buy Model Y</a>
+                        <a class="btn-ghost" href="support.html?topic=test-drive">Test Drive</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="model reveal">
+                <div class="model-img" style="background-image:url('https://i.pinimg.com/736x/68/44/cf/6844cf1840f435eff37652cd385a668f.jpg')"></div>
+                <div>
+                    <span class="tag">TRUCK</span>
+                    <h2>Tesla Cybertruck</h2>
+                    <p>A stainless-steel electric truck built for work and play. Ready to tow, haul and turn heads wherever you take it.</p>
+                    <dl class="specs">
+                        <div><dt>Body</dt><dd>Truck</dd></div>
+                        <div><dt>Seats</dt><dd>5</dd></div>
+                        <div><dt>Best for</dt><dd>Work &amp; adventure</dd></div>
+                    </dl>
+                    <div class="chips"><span>Stainless steel</span><span>Towing capable</span><span>Supercharging</span></div>
+                    <div class="car-actions">
+                        <a class="btn-buy" href="register.html">Buy Cybertruck</a>
+                        <a class="btn-ghost" href="support.html?topic=test-drive">Test Drive</a>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <section class="block alt">
+        <div class="wrap">
+            <div class="sec-head reveal">
+                <span class="eyebrow">Compare</span>
+                <h2>Which Tesla Is Right For You?</h2>
+            </div>
+            <div class="table-wrap reveal">
+                <table>
+                    <thead><tr><th></th><th>Model 3</th><th>Model Y</th><th>Cybertruck</th></tr></thead>
+                    <tbody>
+                        <tr><td>Body type</td><td>Sedan</td><td>SUV</td><td>Truck</td></tr>
+                        <tr><td>Seating</td><td>5</td><td>5</td><td>5</td></tr>
+                        <tr><td>Best for</td><td>Daily driving</td><td>Families</td><td>Work &amp; adventure</td></tr>
+                        <tr><td>Storage</td><td>Trunk + front trunk</td><td>Hatch + front trunk</td><td>Lockable covered bed</td></tr>
+                        <tr><td>Supercharger access</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+                        <tr><td>Over-the-air updates</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="block">
+        <div class="wrap">
+            <div class="sec-head reveal">
+                <span class="eyebrow">How It Works</span>
+                <h2>From Click To Keys In 3 Steps</h2>
+                <p>Buying a Tesla is simple, transparent and fully online.</p>
+            </div>
+            <div class="steps">
+                <div class="step reveal"><h3>Choose Your Model</h3><p>Pick the Model 3, Model Y or Cybertruck that fits your lifestyle, then select your colour and wheels.</p></div>
+                <div class="step reveal"><h3>Pay Or Finance</h3><p>Complete your order online, with your trade-in and financing options handled in one place.</p></div>
+                <div class="step reveal"><h3>Take Delivery</h3><p>We deliver your Tesla and walk you through every feature, so you can drive away with confidence.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-band">
+        <span class="eyebrow">Ready When You Are</span>
+        <h2>Ready To Drive Electric?</h2>
+        <p>Order your Tesla online in minutes, or book a test drive and feel the difference first.</p>
+        <div class="car-actions center">
+            <a class="btn-buy" href="register.html">Buy Now</a>
+            <a class="btn-ghost" href="support.html?topic=test-drive">Book a Test Drive</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <img class="footer-logo-img" src="tesla_images/1686390747tesla-logo-transparent.webp" alt="">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h2>TESLA INVEST</h2>
+                <p>AI-powered investment platform designed for the future of finance. Trade Stocks, Crypto &amp; Forex with intelligent automation, and buy your next Tesla.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Platform</h3>
+                <a href="index.html">Home</a>
+                <a href="plans.html">Plans</a>
+                <a href="cars.html">Tesla Vehicles</a>
+                <a href="company.html">Our Company</a>
+            </div>
+            <div class="footer-col">
+                <h3>Support</h3>
+                <a href="support.html">Contact</a>
+                <a href="support.html?topic=test-drive">Book a Test Drive</a>
+                <a href="register.html">Get Started</a>
+            </div>
+            <div class="footer-col">
+                <h3>Stay Updated</h3>
+                <p>Get AI market insights &amp; investment updates</p>
+                <input type="email" placeholder="Enter your email">
+                <button class="footer-btn">Subscribe</button>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Tesla Stocks Brokerage - Buy, Sell &amp; Save. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        /* Cars page */
+        // Mobile menu
+        function toggleDrawer() {
+            document.getElementById("drawer").classList.toggle("open");
+            document.querySelector(".drawer-overlay").classList.toggle("show");
+        }
+
+        // Smooth scroll-reveal (animates once, staggers items that enter together)
+        (function() {
+            const items = document.querySelectorAll(".reveal");
+            if (!("IntersectionObserver" in window)) {
+                items.forEach(el => el.classList.add("show"));
+                return;
+            }
+            const io = new IntersectionObserver((entries) => {
+                entries
+                    .filter(e => e.isIntersecting)
+                    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top || a.boundingClientRect.left - b.boundingClientRect.left)
+                    .forEach((entry, i) => {
+                        entry.target.style.setProperty("--delay", (i * 100) + "ms");
+                        requestAnimationFrame(() => entry.target.classList.add("show"));
+                        io.unobserve(entry.target);
+                    });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+            window.addEventListener("load", () => {
+                requestAnimationFrame(() => items.forEach(el => io.observe(el)));
+            });
+        })();
+
+        // Footer newsletter
+        document.querySelectorAll(".footer-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const input = btn.parentElement.querySelector("input");
+                if (input && input.checkValidity() && input.value.trim()) {
+                    btn.textContent = "Subscribed \u2713";
+                    input.value = "";
+                } else if (input) {
+                    input.focus();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
