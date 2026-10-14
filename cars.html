@@ -348,6 +348,34 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
+
+        /* Hero "Get Started" button: its own class, never stretches to the parent width */
+        
+        .hero-cta-wrap {
+            margin-top: 32px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .hero-cta {
+            display: inline-block;
+            width: auto;
+            flex: 0 0 auto;
+            padding: 14px 38px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            color: #fff;
+            background: #e82127;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        
+        .hero-cta:hover {
+            background: #fff;
+            color: #000;
+        }
+
         /* ---------- CARS PAGE ---------- */
         .model {
             display: grid;
@@ -1050,8 +1078,8 @@
         <span class="eyebrow">Tesla Showroom</span>
         <h1>Buy Your Tesla Today</h1>
         <p>Explore every Tesla EV: Roadster, Model S, Model 3, Model X, Model Y, Cybertruck and Semi. Order online, finance it your way and have it delivered.</p>
-        <div class="car-actions center" style="margin-top: 32px;">
-            <a class="btn-buy" href="register.html">Get Started</a>
+        <div class="hero-cta-wrap">
+            <a class="hero-cta" href="register.html">Get Started</a>
         </div>
     </section>
 
