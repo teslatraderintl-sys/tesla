@@ -502,6 +502,36 @@
             opacity: 0.7;
         }
 
+
+        .model-img.ph {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(232, 33, 39, 0.28), transparent 70%), linear-gradient(160deg, #1a1a1a, #0c0c0c);
+        }
+        
+        .model-img.ph span {
+            font-size: clamp(34px, 6vw, 64px);
+            font-weight: 700;
+            letter-spacing: 6px;
+            text-align: center;
+            text-shadow: 0 0 40px rgba(232, 33, 39, 0.5);
+        }
+        
+        .model-img.ph small {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.45;
+        }
+        
+        .tag.muted {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
         /* ---------- COMPANY ---------- */
         .team {
             display: grid;
@@ -1018,8 +1048,8 @@
 
     <section class="page-hero img" style="background-image:url('https://images.unsplash.com/photo-1617788138017-80ad40651399')">
         <span class="eyebrow">Tesla Showroom</span>
-        <h1>Buy Your Tesla Today</h1>
-        <p>Explore the Model 3, Model Y and Cybertruck. Order online, finance it your way and have it delivered to your door.</p>
+        <h1>The Full Tesla Lineup</h1>
+        <p>Explore every Tesla EV: Roadster, Model S, Model 3, Model X, Model Y, Cybertruck and Semi. Order online, finance it your way and have it delivered.</p>
     </section>
 
     <section class="block">
@@ -1027,12 +1057,48 @@
             <article class="model reveal">
                 <div class="model-img" style="background-image:url('https://images.unsplash.com/photo-1617788138017-80ad40651399')"></div>
                 <div>
+                    <span class="tag">SPORTS CAR</span>
+                    <h2>Tesla Roadster</h2>
+                    <p>The next-generation Roadster is Tesla's halo sports car, built for record-breaking performance. Register your interest to be first in line.</p>
+                    <dl class="specs">
+                        <div><dt>Body</dt><dd>Sports car</dd></div>
+                        <div><dt>Status</dt><dd>Coming soon</dd></div>
+                        <div><dt>Best for</dt><dd>Performance</dd></div>
+                    </dl>
+                    <div class="chips"><span>Halo car</span><span>Next generation</span><span>Register interest</span></div>
+                    <div class="car-actions">
+                        <a class="btn-buy" href="register.html">Reserve Roadster</a>
+                        <a class="btn-ghost" href="support.html?topic=buy-vehicle">Ask Us</a>
+                    </div>
+                </div>
+            </article>
+            <article class="model reveal flip">
+                <div class="model-img" style="background-image:url('https://car-images.bauersecure.com/wp-images/12947/tesla-model-s-07.jpg')"></div>
+                <div>
+                    <span class="tag muted">LUXURY SEDAN</span>
+                    <h2>Tesla Model S</h2>
+                    <p>Tesla's flagship luxury liftback and one of the most influential electric cars ever made. Production ended in May 2026, so ask us about remaining and final-edition cars.</p>
+                    <dl class="specs">
+                        <div><dt>Body</dt><dd>Liftback sedan</dd></div>
+                        <div><dt>Status</dt><dd>Production ended</dd></div>
+                        <div><dt>Best for</dt><dd>Luxury driving</dd></div>
+                    </dl>
+                    <div class="chips"><span>Luxury</span><span>Liftback</span><span>Final editions</span></div>
+                    <div class="car-actions">
+                        <a class="btn-buy" href="support.html?topic=buy-vehicle">Ask About Availability</a>
+                        <a class="btn-ghost" href="support.html">Contact Us</a>
+                    </div>
+                </div>
+            </article>
+            <article class="model reveal">
+                <div class="model-img" style="background-image:url('https://hips.hearstapps.com/hmg-prod/images/frontend-zoom-1539175063.jpg?crop=0.883xw:0.896xh;0.0884xw,0&resize=980:*')"></div>
+                <div>
                     <span class="tag">SEDAN</span>
                     <h2>Tesla Model 3</h2>
                     <p>The electric sedan that made EVs mainstream. Quick, efficient and made for everyday driving, with Tesla's latest technology built in.</p>
                     <dl class="specs">
                         <div><dt>Body</dt><dd>Sedan</dd></div>
-                        <div><dt>Seats</dt><dd>5</dd></div>
+                        <div><dt>Status</dt><dd>In production</dd></div>
                         <div><dt>Best for</dt><dd>Daily driving</dd></div>
                     </dl>
                     <div class="chips"><span>Autopilot</span><span>Supercharging</span><span>Over-the-air updates</span></div>
@@ -1042,8 +1108,25 @@
                     </div>
                 </div>
             </article>
-
             <article class="model reveal flip">
+                <div class="model-img" style="background-image:url('https://www.electriccarlease.co.uk/userfiles/ckfinder/images/Tesla-MODEL-X-HATCHBACK-449kW-100kWh-Dual-Motor-5dr-Auto-Car-Leasing-1024x768.jpg')"></div>
+                <div>
+                    <span class="tag muted">LUXURY SUV</span>
+                    <h2>Tesla Model X</h2>
+                    <p>A premium electric SUV known for its falcon-wing doors and family-sized cabin. Production ended in May 2026, so ask us about remaining and final-edition cars.</p>
+                    <dl class="specs">
+                        <div><dt>Body</dt><dd>SUV</dd></div>
+                        <div><dt>Status</dt><dd>Production ended</dd></div>
+                        <div><dt>Best for</dt><dd>Luxury family travel</dd></div>
+                    </dl>
+                    <div class="chips"><span>Falcon-wing doors</span><span>Family SUV</span><span>Final editions</span></div>
+                    <div class="car-actions">
+                        <a class="btn-buy" href="support.html?topic=buy-vehicle">Ask About Availability</a>
+                        <a class="btn-ghost" href="support.html">Contact Us</a>
+                    </div>
+                </div>
+            </article>
+            <article class="model reveal">
                 <div class="model-img" style="background-image:url('https://i.pinimg.com/736x/34/66/3f/34663f039350b56847ecaa2a833b04f7.jpg')"></div>
                 <div>
                     <span class="tag">SUV</span>
@@ -1051,7 +1134,7 @@
                     <p>An electric SUV with room for the whole family, generous cargo space and the everyday practicality of a crossover.</p>
                     <dl class="specs">
                         <div><dt>Body</dt><dd>SUV</dd></div>
-                        <div><dt>Seats</dt><dd>5</dd></div>
+                        <div><dt>Status</dt><dd>In production</dd></div>
                         <div><dt>Best for</dt><dd>Families</dd></div>
                     </dl>
                     <div class="chips"><span>Family ready</span><span>Supercharging</span><span>Over-the-air updates</span></div>
@@ -1061,16 +1144,15 @@
                     </div>
                 </div>
             </article>
-
-            <article class="model reveal">
+            <article class="model reveal flip">
                 <div class="model-img" style="background-image:url('https://i.pinimg.com/736x/68/44/cf/6844cf1840f435eff37652cd385a668f.jpg')"></div>
                 <div>
                     <span class="tag">TRUCK</span>
                     <h2>Tesla Cybertruck</h2>
                     <p>A stainless-steel electric truck built for work and play. Ready to tow, haul and turn heads wherever you take it.</p>
                     <dl class="specs">
-                        <div><dt>Body</dt><dd>Truck</dd></div>
-                        <div><dt>Seats</dt><dd>5</dd></div>
+                        <div><dt>Body</dt><dd>Pickup truck</dd></div>
+                        <div><dt>Status</dt><dd>In production</dd></div>
                         <div><dt>Best for</dt><dd>Work &amp; adventure</dd></div>
                     </dl>
                     <div class="chips"><span>Stainless steel</span><span>Towing capable</span><span>Supercharging</span></div>
@@ -1080,7 +1162,24 @@
                     </div>
                 </div>
             </article>
-
+            <article class="model reveal">
+                <div class="model-img" style="background-image:url('https://www.vehiclesuggest.com/wp-content/uploads/2021/02/tesla-semi-1024x685.jpeg')"></div>
+                <div>
+                    <span class="tag">COMMERCIAL</span>
+                    <h2>Tesla Semi</h2>
+                    <p>Tesla's all-electric Class 8 truck, designed to cut the running costs of freight and long-haul transport. Contact us for fleet enquiries.</p>
+                    <dl class="specs">
+                        <div><dt>Body</dt><dd>Class 8 truck</dd></div>
+                        <div><dt>Status</dt><dd>For fleets</dd></div>
+                        <div><dt>Best for</dt><dd>Freight &amp; logistics</dd></div>
+                    </dl>
+                    <div class="chips"><span>Class 8</span><span>Freight</span><span>Megacharger</span></div>
+                    <div class="car-actions">
+                        <a class="btn-buy" href="support.html?topic=buy-vehicle">Enquire For Fleets</a>
+                        <a class="btn-ghost" href="support.html">Contact Us</a>
+                    </div>
+                </div>
+            </article>
         </div>
     </section>
 
@@ -1088,18 +1187,16 @@
         <div class="wrap">
             <div class="sec-head reveal">
                 <span class="eyebrow">Compare</span>
-                <h2>Which Tesla Is Right For You?</h2>
+                <h2>Compare Every Tesla</h2>
             </div>
             <div class="table-wrap reveal">
                 <table>
-                    <thead><tr><th></th><th>Model 3</th><th>Model Y</th><th>Cybertruck</th></tr></thead>
+                    <thead><tr><th></th><th>Roadster</th><th>Model S</th><th>Model 3</th><th>Model X</th><th>Model Y</th><th>Cybertruck</th><th>Semi</th></tr></thead>
                     <tbody>
-                        <tr><td>Body type</td><td>Sedan</td><td>SUV</td><td>Truck</td></tr>
-                        <tr><td>Seating</td><td>5</td><td>5</td><td>5</td></tr>
-                        <tr><td>Best for</td><td>Daily driving</td><td>Families</td><td>Work &amp; adventure</td></tr>
-                        <tr><td>Storage</td><td>Trunk + front trunk</td><td>Hatch + front trunk</td><td>Lockable covered bed</td></tr>
-                        <tr><td>Supercharger access</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-                        <tr><td>Over-the-air updates</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+                        <tr><td>Body type</td><td>Sports car</td><td>Sedan</td><td>Sedan</td><td>SUV</td><td>SUV</td><td>Truck</td><td>Class 8 truck</td></tr>
+                        <tr><td>Status</td><td>Coming soon</td><td>Production ended</td><td>In production</td><td>Production ended</td><td>In production</td><td>In production</td><td>For fleets</td></tr>
+                        <tr><td>Best for</td><td>Performance</td><td>Luxury</td><td>Daily driving</td><td>Luxury family</td><td>Families</td><td>Work &amp; adventure</td><td>Freight</td></tr>
+                        <tr><td>Charging</td><td>To be confirmed</td><td>Supercharger</td><td>Supercharger</td><td>Supercharger</td><td>Supercharger</td><td>Supercharger</td><td>Megacharger</td></tr>
                     </tbody>
                 </table>
             </div>
