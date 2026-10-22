@@ -20,6 +20,7 @@
         }
 
         body {
+            position: relative;
             background: #0a0a0a;
             color: #fff;
             overflow-x: hidden;
@@ -167,11 +168,53 @@
             overflow: hidden;
         }
 
-        .page-hero.img::before {
+        /* Hero GIF: sits at the top of the page behind everything, full screen width,
+           height follows the GIF's original aspect ratio, and the bottom fades into the page */
+        .page-hero.img {
+            background: none;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            transform: translateY(-20%);
+            z-index: -1;
+            pointer-events: none;
+            -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+        }
+
+        .hero-bg img {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0;
+            vertical-align: top;
+            object-fit: cover;
+            object-position: top center;
+        }
+
+        .hero-bg::after {
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), #0a0a0a);
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.2));
+        }
+
+        /* Desktop: show the GIF's full height and crop the sides instead */
+        @media (min-width: 901px) {
+            .hero-bg {
+                transform: none;
+                height: 100vh;
+                overflow: hidden;
+            }
+            .hero-bg img {
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+            }
         }
 
         .page-hero>* {
@@ -1064,6 +1107,8 @@
 
 <body>
 
+    <div class="hero-bg" aria-hidden="true"><img src="tesla_images/roadster-hero-video.gif" alt=""></div>
+
     <header>
         <a class="logo" href="index.html"><img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="Tesla Invest" style="height: 40px;"></a>
         <nav><a href="index.html">Home</a><a href="cars.html" class="active">Cars</a><a href="company.html">Our Company</a><a href="plans.html">Plans</a><a href="support.html">Contact</a><a href="register.html" class="nav-cta">Get Started</a></nav>
@@ -1074,7 +1119,7 @@
     <div class="mobile-drawer" id="drawer"><a href="index.html" onclick="toggleDrawer()">Home</a><a href="cars.html" class="active" onclick="toggleDrawer()">Cars</a><a href="company.html" onclick="toggleDrawer()">Our Company</a><a href="plans.html" onclick="toggleDrawer()">Plans</a><a href="support.html" onclick="toggleDrawer()">Contact</a><a href="register.html" class="nav-cta" onclick="toggleDrawer()">Get Started</a></div>
 
 
-    <section class="page-hero img" style="background-image:url('https://images.unsplash.com/photo-1617788138017-80ad40651399')">
+    <section class="page-hero img">
         <span class="eyebrow">Tesla Showroom</span>
         <h1>Buy Your Tesla Today</h1>
         <p>Explore every Tesla EV: Roadster, Model S, Model 3, Model X, Model Y, Cybertruck and Semi. Order online, finance it your way and have it delivered.</p>
@@ -1301,9 +1346,15 @@
 
         // Smooth scroll-reveal (animates once, staggers items that enter together)
         (function() {
-            const items = document.querySelectorAll(".reveal");
+            const all = document.querySelectorAll(".reveal");
+            // First card animates in on page load; everything else reveals on scroll
+            const first = document.querySelector(".model.reveal");
+            const items = Array.from(all).filter(el => el !== first);
+            window.addEventListener("load", () => {
+                if (first) setTimeout(() => requestAnimationFrame(() => first.classList.add("show")), 300);
+            });
             if (!("IntersectionObserver" in window)) {
-                items.forEach(el => el.classList.add("show"));
+                all.forEach(el => el.classList.add("show"));
                 return;
             }
             const io = new IntersectionObserver((entries) => {
