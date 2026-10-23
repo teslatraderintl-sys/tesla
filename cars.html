@@ -203,11 +203,24 @@
             background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.2));
         }
 
-        /* Desktop: show the GIF's full height and crop the sides instead */
+        /* Keep the GIF layer absolutely positioned (beats the generic ".page-hero > *" rule) */
+        .page-hero > .hero-bg {
+            position: absolute;
+        }
+
+        /* Mobile: the GIF may run past the hero, behind the cards */
+        @media (max-width: 900px) {
+            .page-hero.img {
+                overflow: visible;
+            }
+        }
+
+        /* Desktop: GIF fills the hero from just below the nav bar to the top of the cards section, sides cropped */
         @media (min-width: 901px) {
             .hero-bg {
                 transform: none;
-                height: 100vh;
+                top: 80px;
+                height: calc(100% - 80px);
                 overflow: hidden;
             }
             .hero-bg img {
@@ -1107,8 +1120,6 @@
 
 <body>
 
-    <div class="hero-bg" aria-hidden="true"><img src="tesla_images/roadster-hero-video.gif" alt=""></div>
-
     <header>
         <a class="logo" href="index.html"><img src="tesla_images/1686390747tesla-logo-transparent.webp" alt="Tesla Invest" style="height: 40px;"></a>
         <nav><a href="index.html">Home</a><a href="cars.html" class="active">Cars</a><a href="company.html">Our Company</a><a href="plans.html">Plans</a><a href="support.html">Contact</a><a href="register.html" class="nav-cta">Get Started</a></nav>
@@ -1120,6 +1131,7 @@
 
 
     <section class="page-hero img">
+        <div class="hero-bg" aria-hidden="true"><img src="tesla_images/roadster-hero-video.gif" alt=""></div>
         <span class="eyebrow">Tesla Showroom</span>
         <h1>Buy Your Tesla Today</h1>
         <p>Explore every Tesla EV: Roadster, Model S, Model 3, Model X, Model Y, Cybertruck and Semi. Order online, finance it your way and have it delivered.</p>
